@@ -12,9 +12,7 @@ use Idea\exception\StorageException;
 
 abstract class AbstractController
 {
-    protected const DEFAULT_ACTION = 'layout';
-
-
+    protected const DEFAULT_ACTION = 'statistics';
     protected RequestModel $Request;
     protected View $View;
     protected $Session;
@@ -33,22 +31,6 @@ abstract class AbstractController
             $action = self::DEFAULT_ACTION . 'Idea';
         }
         $this->$action();
-    }
-    final protected function redirect(array $params): void
-    {
-        if ($params) {
-            $queryParams = [];
-            foreach ($params as $key => $value) {
-                var_dump($key);
-                $queryParams[] = urlencode($key) . '=' . urlencode($value);
-            }
-
-            $queryParams = implode('&', $queryParams);
-            $location = '?' . $queryParams;
-        }
-
-        header("Location: $location ");
-        exit;
     }
     private function action(): string
     {

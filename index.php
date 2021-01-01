@@ -24,7 +24,6 @@ try {
         'phpInput' => file_get_contents('php://input')
     ];
 
-
     $RequestModel = new RequestModel($request);
     $View = new View();
 

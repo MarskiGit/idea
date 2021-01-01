@@ -17,8 +17,9 @@ class IdeaController extends AbstractController
         $this->View->layout($this->SessionParam);
         $this->View->list();
     }
-    protected function layoutIdea(): void
+    protected function statisticsIdea(): void
     {
         $this->View->layout($this->SessionParam);
+        $this->View->statistics();
     }
 }

@@ -9,7 +9,7 @@ class View
     public function __construct()
     {
     }
-    private function renderHTML(string $name, string $path = '')
+    private function renderHTML(string $name, string $path = '', $param = null)
     {
         $path = DIR_TEMPLATE . $path . $name . '.php';
         try {
@@ -36,9 +36,7 @@ class View
     {
         $accountRang = $SessionParam['rang'] ?? null;
         header('Content-type: text/html; charset=utf-8');
-
-        $this->renderHTML('layout');
-        $this->renderHTML('nav', 'page/');
+        $this->renderHTML('layout', '', $accountRang);
     }
     public function create(): void
     {
@@ -48,6 +46,11 @@ class View
     public function list(): void
     {
         $this->renderHTML('listIdea', 'page/');
+        $this->renderHTML('footer', 'page/');
+    }
+    public function statistics(): void
+    {
+        $this->renderHTML('statistics', 'page/');
         $this->renderHTML('footer', 'page/');
     }
 }

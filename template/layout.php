@@ -1,3 +1,5 @@
+<?php var_dump($param) ?>
+
 <!DOCTYPE html>
 <html lang="pl">
 
@@ -50,3 +52,8 @@
     <header id="section0">
 
     </header>
+    <nav id="section0">
+        <a class="btn " href="?action=list">Lista pomysłów</a>
+        <a class="btn " href="?action=create">Napisz pomysł</a>
+        <div class="logo_idea"></div>
+    </nav>
