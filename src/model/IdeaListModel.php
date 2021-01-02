@@ -2,33 +2,25 @@
 
 declare(strict_types=1);
 
+namespace Idea\model;
 
-require_once("../database/DB.php");
-
-
-header('Content-type: application/json');
-$secure = file_get_contents('php://input');
+use PDO;
+use PDOException;
+use Exception;
 
 class IdeaListModel
 {
-    private $obj;
-    private $db_limit;
-    private $dbh_result;
+
+    private int $dbh_limit;
+    private array $dbh_result;
     private $dbh_count;
-    private $json_dbh;
-    private $dbh;
-    public function __construct($secure, PDO $db)
+    private array $json_dbh = ['list' => null];
+    private PDO $dbh;
+    public function __construct($obj, PDO $db)
     {
-        $this->obj = json_decode($secure, true);
         $this->dbh = $db;
-        $this->dbh_limit = intval($this->obj['last_result']);
+        $this->dbh_limit = $obj;
         $this->dbh_count = null;
-        $this->dbh_result = [];
-        $this->json_dbh = 0;
-    }
-    private function jsonE($json): string
-    {
-        return json_encode($json);
     }
     private function getName($id_users)
     {
@@ -83,7 +75,7 @@ class IdeaListModel
     public function retrievingRecords()
     {
         try {
-            $stmt = $this->dbh->prepare("SELECT id_idea, id_area, id_users, before_value, after_value, date_added, date_implementation, pkt_mod, status FROM idea WHERE id_idea < " . $this->limit($this->dbh_limit) . " ORDER BY id_idea DESC LIMIT 4");
+            $stmt = $this->dbh->prepare("SELECT id_idea, id_area, id_users, before_value, after_value, date_added, date_implementation, pkt_mod, status FROM idea WHERE id_idea < " . $this->limit($this->dbh_limit) . " ORDER BY id_idea DESC LIMIT 6");
             $stmt->execute();
         } catch (PDOException $e) {
             throw new Exception('Błąd List bazy danych');
@@ -94,19 +86,9 @@ class IdeaListModel
                 $row['id_area'] = $this->getArea($row['id_area']);
                 $this->dbh_result[] = $row;
             }
-            $this->json_dbh = $this->jsonE($this->dbh_result);
-            return $this->json_dbh;
+            return $this->dbh_result;
         } else {
-            $this->json_dbh = $this->jsonE($this->json_dbh);
             return $this->json_dbh;
         }
     }
-}
-
-$newList = new IdeaListModel($secure, DB::conn());
-try {
-    echo $newList->retrievingRecords();
-} catch (Exception $e) {
-    echo $e->getMessage();
-    die();
 }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
@@ -6,7 +8,9 @@ ini_set('display_errors', '1');
 function dump($data)
 {
   echo '<br/><div
+  
     style="
+    font-size: 15px;
     display: inline-block;
     padding: 1px 10px;
     margin: 5px;

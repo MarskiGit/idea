@@ -70,7 +70,7 @@
                         </select>
                     </div>
                 </li>
-                <li> <span class="pkt">Suma punktów:&nbsp;</span><span class="pktnum">10</span><span class="pktpkt">&nbsp;pkt.</span></li>
+                <li class="sum_pkt"> <span>Suma punktów:&nbsp;</span><span class="pktnum">10</span><span>&nbsp;pkt.</span></li>
             </ol>
         </div>
         <div class="board">

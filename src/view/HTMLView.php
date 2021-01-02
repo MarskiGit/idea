@@ -26,12 +26,6 @@ class HTMLView
             exit;
         }
     }
-    public function renderJSON($reply): void
-    {
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode($reply);
-        exit;
-    }
     public function layout($param): void
     {
         header('Content-type: text/html; charset=utf-8');
@@ -40,16 +34,17 @@ class HTMLView
     public function create(): void
     {
         $this->renderHTML('createIdea', 'page/');
-        $this->renderHTML('footer', 'page/');
     }
     public function list(): void
     {
         $this->renderHTML('listIdea', 'page/');
-        $this->renderHTML('footer', 'page/');
     }
     public function statistics(): void
     {
-        $this->renderHTML('statistics', 'page/');
+        $this->renderHTML('statisticsIdea', 'page/');
+    }
+    public function footer(): void
+    {
         $this->renderHTML('footer', 'page/');
     }
 }

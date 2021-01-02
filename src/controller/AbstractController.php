@@ -6,37 +6,38 @@ namespace Idea\controller;
 
 use Idea\model\RequestModel;
 use Idea\view\HTMLView;
-use Idea\exception\ConfigurationException;
-use Idea\exception\NotFoundException;
-use Idea\exception\StorageException;
+use Idea\model\SessionModel;
 
 abstract class AbstractController
 {
-    protected const DEFAULT_ACTION = 'statistics';
+    protected const DEFAULT_ACTION_HTML = 'statistics';
+    protected SessionModel $Session;
     protected RequestModel $Request;
     protected HTMLView $HTMLView;
-    protected $SessionParam;
+    protected  $SessionParam;
     protected string $action;
 
-    public function __construct(RequestModel $RequestModel, HTMLView $HTMLView)
+    public function __construct(RequestModel $Request, HTMLView $HTMLView, SessionModel $Session)
     {
-        $this->Request = $RequestModel;
+        $this->Session = $Session;
+        $this->Request = $Request;
         $this->HTMLView = $HTMLView;
-        $this->SessionParam = $this->Request->sessionParam('account');
+        $this->SessionParam = $this->Session->sessionParam('account');
 
         $this->run();
     }
-    final public function run(): void
+    protected function run(): void
     {
-
-        $action = $this->action() . 'Idea';
-        $this->action = $action;
-        if (!method_exists($this, $action)) {
-            $action = self::DEFAULT_ACTION . 'Idea';
+        if (!is_null($this->action())) {
+            $action = $this->action() . 'Idea';
+            $this->action = $action;
+            if (!method_exists($this, $action)) {
+                $action = self::DEFAULT_ACTION_HTML . 'Idea';
+            }
         }
         $this->$action();
     }
-    private function action(): string
+    private function action(): ?string
     {
         return $this->Request->checkRequest();
     }

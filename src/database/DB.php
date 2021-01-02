@@ -2,6 +2,12 @@
 
 declare(strict_types=1);
 
+namespace Idea\database;
+
+use Throwable;
+use Exception;
+use PDO;
+
 class DB
 {
     private static string $host = 'localhost';

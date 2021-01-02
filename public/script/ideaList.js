@@ -7,12 +7,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     class IdeaList {
         constructor() {
-            this.table = document.querySelector('[data-ol="idea"]');
+            this.ol = document.querySelector('[data-ol="idea"]');
             this.flag = {
                 scrollList: true,
                 listEnd: true
             };
             this.lastResult = {
+                action: 'listIdea',
                 last_result: 0
             }
             this.getIdeaList();
@@ -26,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         loadingListIdea() {
             if (this.flag.listEnd) {
-                dataFetch('src/model/IdeaListModel.php', this.lastResult, 0).then(data => {
+                dataFetch('index.php', this.lastResult, 0).then(data => {
                     this.addDataToDOM(data);
                 }).finally(() => {
                     console.log('end');
@@ -74,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     listLi.appendChild(postElement);
                     if (obj.id_idea * 1 === 1) this.flag.listEnd = false;
                 })
-                this.table.appendChild(listLi);
+                this.ol.appendChild(listLi);
             };
         };
         border(st) {
@@ -105,21 +106,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     };
             };
         };
-
         throttled(f, t) {
             let l = Date.now();
             return function () {
                 l + t - Date.now() < 0 && (f(), l = Date.now())
             };
         };
-    }
-
-
-
-
-
-
-
+    };
     const IDEALIST = new IdeaList();
 
 });
