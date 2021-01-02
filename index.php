@@ -10,9 +10,9 @@ spl_autoload_register(function (string $classNamespace) {
     require_once($path);
 });
 
-use Idea\controller\IdeaController;
+use Idea\controller\HTMLController;
 use Idea\model\RequestModel;
-use Idea\view\View;
+use Idea\view\HTMLView;
 use Idea\exception\IdeaException;
 
 try {
@@ -25,9 +25,9 @@ try {
     ];
 
     $RequestModel = new RequestModel($request);
-    $View = new View();
+    $HTMLView = new HTMLView();
 
-    (new IdeaController($RequestModel, $View));
+    (new HTMLController($RequestModel, $HTMLView));
 } catch (IdeaException $e) {
     echo '<h1>Wystąpił błąd w aplikacji</h1>';
     echo '<h3>' . $e->getMessage() . $e->getFile() . '</h3>';

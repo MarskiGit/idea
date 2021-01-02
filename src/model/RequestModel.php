@@ -6,6 +6,7 @@ namespace Idea\model;
 
 class RequestModel
 {
+    protected const DEFAULT_ACTION = 'statistics';
     private array $get = [];
     private array $post = [];
     private array $server = [];
@@ -34,14 +35,12 @@ class RequestModel
     }
     public function sessionParam(string $session_name)
     {
-        if (!empty($this->session[$session_name])) {
-            return $this->session[$session_name];
-        }
+        return (!empty($this->session[$session_name])) ? $this->session[$session_name] : 0;
     }
-    public function checkMethod(): string
+    public function checkRequest(): string
     {
         if (!$this->hasphpInput() && $this->isGet() && !$this->isPost()) {
-            return 'layout';
+            return $this->getparam('action', self::DEFAULT_ACTION);
         }
         if ($this->hasPhpInput()) {
             if (array_key_exists('account', $this->phpInputParam())) {

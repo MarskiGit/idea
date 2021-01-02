@@ -1,0 +1,349 @@
+/* =========== SECTION CREATE CONCEPT =========== */
+form {
+    width: 80%;
+    background-color: #f5f5f5;
+    position: relative;
+    font-family: 'Source Sans Pro', sans-serif;
+    padding: 2rem 1rem;
+    border-radius: .3em;
+    -webkit-box-shadow: 0px 0px 7px 1px rgba(120, 88, 128, 0.75);
+    box-shadow: 0px 0px 7px 1px rgba(120, 88, 128, 0.75);
+}
+
+.title h3 {
+    font-size: .6rem;
+    text-transform: uppercase;
+    color: #f5f5f5;
+    font-weight: 400;
+    width: 100%;
+    font-family: 'Raleway', sans-serif;
+    border-radius: 0.12em 0.12em 0px 0px;
+    padding: .1em;
+    text-align: center;
+    line-height: 1rem;
+    letter-spacing: .9px;
+    background-color: #7f5a83;
+    background-image: -o-linear-gradient(135deg, #7f5a83 0%, #0d324d 74%);
+    background-image: linear-gradient(315deg, #7f5a83 0%, #0d324d 74%);
+
+}
+
+textarea {
+    resize: none;
+    width: 100%;
+    font-size: .7rem;
+    border: var(--border);
+    border-radius: 0 0 .12em .12em;
+    padding: .3em;
+    background-color: #f3f3f3;
+    letter-spacing: 1px;
+}
+
+textarea:focus {
+    background-color: #ffffff;
+}
+
+.sign {
+    font-size: .5rem;
+    padding: .2em;
+    margin-bottom: 1em;
+    text-align: end;
+    min-height: 2em;
+}
+
+/* =========== SECTION CREATE CONCEPT => Rating =========== */
+.rating {
+    font-size: .8rem;
+    list-style: none;
+    padding: .3em;
+    border: var(--border);
+}
+
+.rating li {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: baseline;
+    -ms-flex-align: baseline;
+    align-items: baseline;
+    padding: .3em;
+}
+
+.weight {
+    font-weight: bold;
+}
+
+.rating li label {
+    margin-right: .2em;
+}
+
+.select select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    color: #222222;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    padding: 0 .5em;
+    cursor: pointer;
+    border: var(--border);
+}
+
+
+
+/* Remove IE arrow */
+.select>select::-ms-expand {
+    display: none;
+}
+
+/* Custom Select */
+.select {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: 5em;
+    height: 1.5em;
+    line-height: 1.5;
+    overflow: hidden;
+}
+
+/* Arrow */
+.select::after {
+    content: '\25BC';
+    position: absolute;
+    top: 0;
+    right: 3px;
+    cursor: pointer;
+    pointer-events: none;
+    -webkit-transition: .25s all ease;
+    -o-transition: .25s all ease;
+    transition: .25s all ease;
+}
+
+/* Transition */
+.select:hover::after {
+    color: #f39c12;
+}
+
+.pkt {
+    margin-left: 70%;
+}
+
+.pktnum {
+    font-weight: 700;
+    font-size: 2rem;
+}
+
+.popup {
+    border: var(--border);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    border-radius: .3em;
+    display: none;
+    background-color: var(--bacgroundPopup);
+    padding: .3em;
+    z-index: 2;
+}
+
+.repeat>p {
+    text-align: center;
+    text-transform: uppercase;
+    padding: .5em;
+}
+
+.area_list {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+.area {
+    margin: .5em;
+    font-size: .9rem;
+    text-align: center;
+    border: var(--border);
+    border-radius: .2em .2em 0 0;
+    padding: .2em;
+    background-color: rgb(245, 245, 245);
+    letter-spacing: 0.1em;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url(img/sort-down.png);
+    background-repeat: no-repeat, repeat;
+    background-position: right .5em top 50%, 0 0;
+    background-size: .65em auto, 100%;
+}
+
+.btn_area {
+    border-radius: .3em;
+    background-color: var(--colorBody);
+    color: #fff;
+    width: 50%;
+    margin: 0 auto;
+}
+
+.btn_area:hover {
+    color: var(--colorHover);
+    border: 1px solid var(--colorHover);
+}
+
+/* =========== SECTION CREATE CONCEPT => Live Search =========== */
+.user_list {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    border: var(--border);
+    min-height: 10em;
+}
+
+.user_add_list {
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    margin: 10px;
+}
+
+.user_add_list>ol>li {
+    margin: 0 0 0 1em;
+}
+
+input[type="search"] {
+    width: 90%;
+    background-color: #ffffff;
+    border: var(--border);
+    font-size: .8rem;
+    outline: none;
+    padding: .2em;
+    border-radius: .2em .2em 0 0;
+}
+
+.live_search {
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    margin: 0 10px;
+    line-height: 21px;
+}
+
+[data-load] {
+    width: 10%;
+    font-size: .8rem;
+    padding: .4em;
+    color: transparent;
+}
+
+.live_search>[data-search="error"] {
+    width: 90%;
+    display: block;
+    font-size: .7rem;
+    text-align: center;
+    padding: .2em;
+    color: #ff0000;
+    height: 1em;
+}
+
+.live_search>div {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    width: 90%;
+    border-radius: 0 0 .2em .2em;
+}
+
+.list_label {
+    font-size: .6rem;
+    opacity: .5;
+}
+
+#sugestion_name {
+    font-size: .9rem;
+    width: 100%;
+    display: none;
+    margin: 0;
+    list-style: none;
+    counter-reset: my-awesome-counter;
+    border: var(--border);
+    border-top: 0px;
+    text-indent: .3em;
+    border-radius: 0 0 .2em .2em;
+}
+
+#sugestion_name>li {
+    padding: .4em;
+    letter-spacing: .1em;
+    cursor: pointer;
+}
+
+#sugestion_name>li:hover {
+    background-color: #b7f589;
+}
+
+.center {
+    text-align: center;
+    text-indent: 0px;
+}
+
+.repeat_ok {
+    border-radius: .3em;
+    margin: 1px;
+}
+
+.repeat_ok:hover {
+    color: #413a1b;
+    border: 1px solid #413a1b;
+    background-color: var(--colorBody);
+}
+
+/* =========== SECTION CREATE CONCEPT => Add idea =========== */
+button {
+    color: #fff;
+    border: var(--borderBtn);
+    background-color: var(--colorBody);
+    letter-spacing: .2em;
+    padding: .4em;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    -webkit-transition: color 0.3s ease, background-color 0.3s ease;
+    -o-transition: color 0.3s ease, background-color 0.3s ease;
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.add_idea {
+    border-radius: var(--borderRadiusBtn);
+    position: absolute;
+    right: .6em;
+    bottom: -.53em;
+    background-color: var(--colorBody);
+    color: #fff;
+    z-index: 2;
+}
+
+.add_idea:hover {
+    color: var(--colorHover);
+    background-color: var(--colorBody);
+}
+
+.messages {
+    height: 2em;
+    width: 60%;
+    margin: .2em auto;
+}
+
+.messages>p {
+    text-align: center;
+    color: #9a4700;
+}

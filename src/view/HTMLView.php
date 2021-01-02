@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Idea\view;
 
-class View
+class HTMLView
 {
     public function __construct()
     {
@@ -32,11 +32,10 @@ class View
         echo json_encode($reply);
         exit;
     }
-    public function layout($SessionParam): void
+    public function layout($param): void
     {
-        $accountRang = $SessionParam['rang'] ?? null;
         header('Content-type: text/html; charset=utf-8');
-        $this->renderHTML('layout', '', $accountRang);
+        $this->renderHTML('layout', '', $param);
     }
     public function create(): void
     {

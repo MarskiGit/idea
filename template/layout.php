@@ -1,5 +1,3 @@
-<?php var_dump($param) ?>
-
 <!DOCTYPE html>
 <html lang="pl">
 
@@ -18,9 +16,17 @@
     <meta name="robots" content="noindex, nofollow">
     <link rel="shortcut icon" href="public/img/idea.png" type="image/x-icon" sizes="16x16">
     <link rel="stylesheet" href="public/style/layout.css" type="text/css" media="all">
-
-
-
+    <?php switch ($param['action']):
+        case 'listIdea': ?>
+            <link rel="stylesheet" href="public/style/layoutList.css" type="text/css" media="all">
+            <script defer type="module" src="public/script/ideaList.js"></script>
+            <?php break; ?>
+        <?php
+        case 'createIdea': ?>
+            <link rel="stylesheet" href="public/style/layoutCreate.css" type="text/css" media="all">
+            <script defer type="module" src="public/script/ideaCreate.js"></script>
+            <?php break; ?>
+    <?php endswitch; ?>
     <style>
         *,
         *:before,
