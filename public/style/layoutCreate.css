@@ -272,31 +272,30 @@ input[type="search"] {
 }
 
 /* =========== SECTION CREATE CONCEPT => Add idea =========== */
-button {
-    color: #fff;
-    border: var(--borderBtn);
-    background-color: var(--colorBody);
-    letter-spacing: .2em;
-    padding: .4em;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: color 0.3s ease, background-color 0.3s ease;
-}
+
 
 .add_idea {
     position: absolute;
-    color: #fff;
     z-index: 2;
     right: .6em;
     bottom: -.53em;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    padding: var(--buttonPadiing);
+    cursor: pointer;
+    border: var(--borderBtn);
     border-radius: var(--borderRadiusBtn);
     background-color: var(--colorBody);
+    transition-property: all;
+    transition-duration: .3s;
+    transition-timing-function: linear;
 }
 
 .add_idea:hover {
     color: var(--colorHover);
-    background-color: var(--colorBody);
 }
 
 .messages {

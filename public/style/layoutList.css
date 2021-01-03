@@ -43,21 +43,20 @@ ol {
 }
 
 .idea_authors {
-    flex-grow: 1;
+    flex-basis: 10%;
     text-align: center;
     list-style: none;
     padding: .3em 0 0 .3em;
 }
 
 .idea_value {
-    flex-grow: 8;
+    flex-basis: 90%;
     text-align: justify;
     padding: .3em;
 }
 
 .idea_val {
     line-height: 1.4em;
-    text-indent: .5em;
 }
 
 .font_pattern {

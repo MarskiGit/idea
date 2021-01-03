@@ -3,7 +3,7 @@
 :root {
     --borderRadius: .2rem;
     --colorBody: #52b6d5;
-    --colorHover: #0d324d;
+    --colorHover: #214A57;
     --widthContent: 98%;
     --border: 1px solid #223957;
     --borderHover: 1px solid #413a1b;
@@ -12,6 +12,7 @@
     --bacgroundPopup: #FFF43C;
     --bacgroundContent: #f5f5f5;
     --bacgroundGradientColor: #7f5a83;
+    --buttonPadiing: .3rem 1rem;
     --bacgroundGradient: linear-gradient(315deg, #7f5a83 0%, #0d324d 74%);
 
 }
@@ -42,6 +43,7 @@ body {
 }
 
 nav {
+    font-size: .7rem;
     width: var(--widthContent);
     margin: 10px auto;
     border-radius: var(--borderRadius);
@@ -62,17 +64,19 @@ nav {
 .sticky {
     position: fixed;
     width: 100%;
-    font-size: .6rem;
+    font-size: .5rem !important;
     margin: 0;
     top: 0;
     z-index: 2;
-
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
 }
 
 .a_btn {
-    font-weight: 700;
     margin: .3rem;
-    padding: .3rem 1rem;
+    padding: var(--buttonPadiing);
+    font-weight: 700;
+    text-transform: uppercase;
     color: #fff;
     background-color: var(--colorBody);
     border-radius: var(--borderRadius);
@@ -97,9 +101,12 @@ nav {
     background-position: center;
     background-repeat: no-repeat;
     background-size: 100%;
+    transition-property: all;
+    transition-duration: .2s;
+    transition-timing-function: linear;
 }
 
-.up:hover {
+.arrow_up:hover {
     filter: invert(0%);
 
 }
@@ -152,8 +159,10 @@ footer {
 }
 
 h1 {
+    font-weight: 800;
+    text-transform: uppercase;
     font-size: 2rem;
     text-align: center;
-    letter-spacing: .1em;
+    color: var(--colorHover);
     padding: .3em;
 }
