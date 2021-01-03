@@ -1,6 +1,7 @@
 'use strict';
 export {
-    dataFetch
+    dataFetch,
+    windowScroll
 };
 /////// FETCH \\\\\\\ 
 const handleError = err => {
@@ -34,3 +35,8 @@ const dataFetch = async (url = '', data = {}) => {
     return response.code && response.code == 400 ? onsole.log("AJAX CODE 400") : res.json();
 
 };
+
+const windowScroll = callback => {
+    window.addEventListener('scroll', callback);
+
+}

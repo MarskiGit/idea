@@ -27,6 +27,8 @@
             <script defer type="module" src="public/script/createIdea.js"></script>
             <?php break; ?>
     <?php endswitch; ?>
+    <script defer type="module" src="public/script/layout.js"></script>
+
     <style>
         *,
         *:before,
@@ -56,11 +58,15 @@
 </head>
 
 <body>
-    <header id="section0">
+    <scroll-page id="page-1"></scroll-page>
+    <header>
 
     </header>
-    <nav id="section0">
-        <a class="a_btn " href="?action=list">Lista pomysłów</a>
-        <a class="a_btn " href="?action=create">Napisz pomysł</a>
-        <div class="logo_idea"></div>
+    <nav>
+        <div class="menu">
+            <a class="a_btn " href="?action=list">Lista pomysłów</a>
+            <a class="a_btn " href="?action=create">Napisz pomysł</a>
+            <a class="arrow_up none" href="#page-1"></a>
+            <div class="logo_idea"></div>
+        </div>
     </nav>

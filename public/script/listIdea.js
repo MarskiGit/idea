@@ -1,9 +1,9 @@
 'use strict';
 import {
-    dataFetch
+    dataFetch,
+    windowScroll
 } from './abstract.js';
 document.addEventListener('DOMContentLoaded', function () {
-
 
     class IdeaList {
         constructor() {
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         getIdeaList() {
             if (this.flag.scrollList) {
-                window.addEventListener('scroll', this.throttled(this.loadingListIdea.bind(this), 800));
+                windowScroll(this.throttled(this.loadingListIdea.bind(this), 800));
             };
             this.loadingListIdea();
             this.flag.scrollList = false;
