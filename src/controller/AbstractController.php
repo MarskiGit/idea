@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Idea\controller;
 
-use Idea\model\RequestModel;
+use Idea\view\Request;
 use Idea\view\HTMLView;
 use Idea\model\SessionModel;
 
@@ -12,12 +12,12 @@ abstract class AbstractController
 {
     protected const DEFAULT_ACTION_HTML = 'statistics';
     protected SessionModel $Session;
-    protected RequestModel $Request;
+    protected Request $Request;
     protected HTMLView $HTMLView;
     protected  $SessionParam;
     protected string $action;
 
-    public function __construct(RequestModel $Request, HTMLView $HTMLView, SessionModel $Session)
+    public function __construct(Request $Request, HTMLView $HTMLView, SessionModel $Session)
     {
         $this->Session = $Session;
         $this->Request = $Request;
@@ -28,17 +28,13 @@ abstract class AbstractController
     }
     protected function run(): void
     {
-        if (!is_null($this->action())) {
-            $action = $this->action() . 'Idea';
-            $this->action = $action;
+        if ($this->Request->isGet()) {
+            $this->action = $this->Request->getparam('action', self::DEFAULT_ACTION_HTML) . 'Idea';
+            $action = $this->action;
             if (!method_exists($this, $action)) {
                 $action = self::DEFAULT_ACTION_HTML . 'Idea';
             }
         }
         $this->$action();
-    }
-    private function action(): ?string
-    {
-        return $this->Request->checkRequest();
     }
 }

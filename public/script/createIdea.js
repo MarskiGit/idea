@@ -1,7 +1,7 @@
 'use strict';
 import {
     dataFetch
-} from '../script/abstract.js';
+} from './abstract.js';
 document.addEventListener('DOMContentLoaded', function () {
 
 });

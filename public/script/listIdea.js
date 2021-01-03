@@ -1,7 +1,7 @@
 'use strict';
 import {
     dataFetch
-} from '../script/abstract.js';
+} from './abstract.js';
 document.addEventListener('DOMContentLoaded', function () {
 
 
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         loadingListIdea() {
             if (this.flag.listEnd) {
-                dataFetch('index.php', this.lastResult, 0).then(data => {
+                dataFetch('ajax.php', this.lastResult, 0).then(data => {
                     this.addDataToDOM(data);
                 }).finally(() => {
                     console.log('end');

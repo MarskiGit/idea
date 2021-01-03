@@ -20,12 +20,11 @@ Zasady projektu:
 
 Założenia:
 
-Asynchroniczne ładowanie treści w poszczególnych zakładkach wykonywane tylko za pomocą JavaScript.
-Akcje zmiany zakładek obsługiwane za pomocą żądania GET.
-Obsługa kont użytkowników w AJAX.
+Asynchroniczne ładowanie treści w poszczególnych zakładkach wykonywane tylko za pomocą Ajax.
+Akcje zmiany zakładek obsługiwane za pomocą żądania w url.
 
-BRAK OBSŁUGI POST PO STRONIE SERWERA TYM ZAJMUJE SIĘ AJAX
+Obsługa logowania użytkowników za pomocą AJAX.
 
-Zapytanie AJAX odbywa się bezpośrednio do modelu, pomijając zbędną drogę kontroli żądania.
+BRAK OBSŁUGI POST PO STRONIE SERWERA TYM ZAJMUJE SIĘ AJAX.
 
-Wzapytania musi być okreslona wartość w obiekcie {action: }
+Wzapytania musi być okreslona wartość w obiekcie {action: }.

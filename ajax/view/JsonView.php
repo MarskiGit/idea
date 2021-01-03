@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Idea\view;
+namespace Ajax\view;
 
-use Idea\database\DB;
-use Idea\model\IdeaListModel;
+use Ajax\model\IdeaListModel;
+use Ajax\database\DB;
 
-class AjaxView
+
+class JsonView
 {
     private $DB;
 
@@ -15,7 +16,7 @@ class AjaxView
     {
         $this->DB = DB::conn();
     }
-    public function renderJSON($reply): void
+    private function renderJSON($reply): void
     {
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode($reply);

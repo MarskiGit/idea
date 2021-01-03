@@ -19,12 +19,12 @@
     <?php switch ($param['action']):
         case 'listIdea': ?>
             <link rel="stylesheet" href="public/style/layoutList.css" type="text/css" media="all">
-            <script defer type="module" src="public/script/ideaList.js"></script>
+            <script defer type="module" src="public/script/listIdea.js"></script>
             <?php break; ?>
         <?php
         case 'createIdea': ?>
             <link rel="stylesheet" href="public/style/layoutCreate.css" type="text/css" media="all">
-            <script defer type="module" src="public/script/ideaCreate.js"></script>
+            <script defer type="module" src="public/script/createIdea.js"></script>
             <?php break; ?>
     <?php endswitch; ?>
     <style>

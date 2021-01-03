@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Idea\model;
+namespace Ajax\model;
 
 use PDO;
 use PDOException;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Idea\database;
+namespace Ajax\database;
 
 use Throwable;
 use Exception;
