@@ -26,16 +26,16 @@ class IdeaListModel
     {
         $json_name = [];
         try {
-            $stmt = $this->dbh->prepare("SELECT name FROM user WHERE id_user IN (" . $id_users . ")");
+            $stmt = $this->dbh->query("SELECT name FROM user WHERE id_user IN (" . $id_users . ")");
             $stmt->execute();
         } catch (PDOException $e) {
             throw new Exception('Błąd Name bazy danych');
         }
         if ($stmt->rowCount() > 0) {
-            while ($wor = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $json_name[] = $wor['name'];
-                return $json_name;
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $json_name[] = $row['name'];
             }
+            return $json_name;
         } else {
             $json_name[] = 'Anonim';
             return $json_name;
@@ -44,7 +44,7 @@ class IdeaListModel
     private function getArea($id_area)
     {
         try {
-            $stmt = $this->dbh->prepare("SELECT area_name FROM area WHERE id_area = $id_area");
+            $stmt = $this->dbh->query("SELECT area_name FROM area WHERE id_area = $id_area");
             $stmt->execute();
         } catch (PDOException $e) {
             throw new Exception('Błąd Area bazy danych');
@@ -56,7 +56,7 @@ class IdeaListModel
     private function countDB()
     {
         try {
-            $stmt = $this->dbh->prepare("SELECT COUNT(id_idea) FROM idea");
+            $stmt = $this->dbh->query("SELECT COUNT(id_idea) FROM idea");
             $stmt->execute();
             $this->dbh_count = $stmt->fetchColumn();
         } catch (PDOException $e) {
@@ -75,7 +75,7 @@ class IdeaListModel
     public function retrievingRecords()
     {
         try {
-            $stmt = $this->dbh->prepare("SELECT id_idea, id_area, id_users, before_value, after_value, date_added, date_implementation, pkt_mod, status FROM idea WHERE id_idea < " . $this->limit($this->dbh_limit) . " ORDER BY id_idea DESC LIMIT 6");
+            $stmt = $this->dbh->query("SELECT id_idea, id_area, id_users, before_value, after_value, date_added, date_implementation, pkt_mod, status FROM idea WHERE id_idea < " . $this->limit($this->dbh_limit) . " ORDER BY id_idea DESC LIMIT 6");
             $stmt->execute();
         } catch (PDOException $e) {
             throw new Exception('Błąd List bazy danych');

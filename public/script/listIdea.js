@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         getIdeaList() {
             if (this.flag.scrollList) {
-                windowScroll(this.throttled(this.loadingListIdea.bind(this), 800));
+                windowScroll(this.throttled(this.loadingListIdea.bind(this), 900));
             };
             this.loadingListIdea();
             this.flag.scrollList = false;
@@ -42,10 +42,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     listLi = document.createDocumentFragment();
                 data.forEach(obj => {
                     color = this.border(obj.status * 1);
-                    lastResult.push(obj.id_idea)
+                    lastResult.push(obj.id_idea);
+                    console.log(obj.id_users)
                     this.lastResult.last_result = Math.min(...lastResult);
                     const postElement = document.createElement('tbody');
-                    postElement.classList.add('tbody');
                     postElement.setAttribute('data-id_idea', `${obj.id_idea}`);
                     postElement.style.setProperty('--color', `${color.border}`);
                     if (obj.date_implementation) {

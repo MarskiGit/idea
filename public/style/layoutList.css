@@ -37,6 +37,7 @@
      width: 11%;
  }
 
+
  .date_add {
      text-align: right;
  }
@@ -59,9 +60,9 @@
  }
 
  tr:nth-of-type(6) {
-     border-bottom: 5px solid var(--color);
+     border-bottom: 2px solid var(--color);
  }
 
  tr:nth-of-type(1) {
-     border-top: 2px solid var(--color);
+     border-top: 3px solid var(--color);
  }
