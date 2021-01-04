@@ -35,38 +35,40 @@ document.addEventListener('DOMContentLoaded', function () {
             };
         };
         addDataToDOM(data) {
-            const lastResult = [];
             if (data.length) {
-                let divDat = '';
-                const listLi = document.createDocumentFragment();
+                let color,
+                    divDat = '';
+                const lastResult = [],
+                    listLi = document.createDocumentFragment();
                 data.forEach(obj => {
+                    color = this.border(obj.status * 1);
                     lastResult.push(obj.id_idea)
                     this.lastResult.last_result = Math.min(...lastResult);
                     const postElement = document.createElement('li');
-                    postElement.classList.add('li_idea');
+                    postElement.classList.add('idea_li');
                     postElement.setAttribute('data-id_idea', `${obj.id_idea}`);
-                    postElement.style.setProperty('--color', `${this.border(obj.status * 1).border}`);
+                    postElement.style.setProperty('--color', `${color.border}`);
                     if (obj.date_implementation) {
-                        divDat = `<div><span class="idea_imp">Data wdrożenia: ${(obj.date_implementation)}</span></div>`;
+                        divDat = `<div><span class="idea_date_imp">Data wdrożenia: ${(obj.date_implementation)}</span></div>`;
                     };
 
                     postElement.innerHTML = `
     <span class="idea_date_in font_pattern">Data dodania: ${(obj.date_added).slice(0,10)}</span>
-    <div class="idea_blackboard">
+    <div class="idea_container">
         <ol class="idea_authors">
             <span class="idea_title font_pattern">${(obj.id_users.length > 1) ? 'Pomysłodawcy' : 'Pomysłodawca'}</span>
             ${obj.id_users.map(name =>`<li>${name}</li>`).join('')}
         </ol>
         <div class="idea_value">
             <span class="idea_title font_pattern">Opis stanu obecnego</span>
-            <p class="idea_val">${obj.before_value}</p>
+            <p class="idea_contents">${obj.before_value}</p>
             <span class="idea_title font_pattern">Propozycja usprawnienia</span>
-            <p class="idea_val">${obj.after_value}</p>
+            <p class="idea_contents">${obj.after_value}</p>
         </div>
     </div>
-    <div class="idea_wrap font_pattern" style="background-color: ${this.border(obj.status * 1).back}">
+    <div class="idea_footer font_pattern" style="background-color: ${color.back}">
         <div><span class="idea_pkt">Przyznane punkty: ${(obj.pkt_mod) ? obj.pkt_mod : 0}</span></div>
-        <div><span class="idea_stat">Status: ${this.border(obj.status * 1).status}</span></div>
+        <div><span class="idea_stat">Status: ${color.status}</span></div>
         <div><span class="idea_num">Numer propozycji: ${obj.id_idea}</span></div>
         ${divDat}
     </div>
@@ -76,7 +78,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (obj.id_idea * 1 === 1) this.flag.listEnd = false;
                 })
                 this.ol.appendChild(listLi);
-            };
+            } else {
+                this.ol.innerHTML = '<li><h4 class="empty_idea">Brak elementów do wyświetlenia.</h4></li>';
+            }
         };
         border(st) {
             switch (st) {

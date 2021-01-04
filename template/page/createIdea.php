@@ -1,17 +1,17 @@
 <main>
     <h1>Propozycja</h1>
-    <form data-idea="form">
+    <form data-create="form">
         <div class="board">
             <div class="title">
                 <h3>Opis stanu obecnego</h3>
             </div>
-            <textarea maxlength="2000" rows="15" placeholder="Proszę wypełnić to pole" data-idea="before"></textarea>
-            <p class="sign" data-idea="be_sign"></p>
+            <textarea maxlength="2000" rows="15" placeholder="Proszę wypełnić to pole" data-create="before"></textarea>
+            <p class="sign" data-create="be_sign"></p>
             <div class="title">
                 <h3>Propozycja usprawnienia</h3>
             </div>
-            <textarea maxlength="2000" rows="15" placeholder="Proszę wypełnić to pole" data-idea="after"></textarea>
-            <p class="sign" data-idea="af_sign"></p>
+            <textarea maxlength="2000" rows="15" placeholder="Proszę wypełnić to pole" data-create="after"></textarea>
+            <p class="sign" data-create="af_sign"></p>
         </div>
         <div class="board">
             <div class="title">
@@ -84,25 +84,25 @@
                     <input id="search_name" data-search="searchName" type="search" autocomplete="off" placeholder="Nazwisko">
                     <span data-load="live_search">M</span>
                     <div>
-                        <ol id="sugestion_name" data-idea="sugestionName"></ol>
+                        <ol id="sugestion_name" data-create="sugestionName"></ol>
                     </div>
                 </div>
                 <div class="user_add_list">
                     <label for="select_name" class="list_label">Lista pomysłodawców: </label>
-                    <ol id="select_name" data-idea="selectName"></ol>
+                    <ol id="select_name" data-create="selectName"></ol>
                 </div>
             </div>
         </div>
-        <button class="add_idea" data-idea="add">Wyślij</button>
+        <button class="add_idea" data-create="add">Wyślij</button>
     </form>
-    <div class="messages" data-idea="messages">
+    <div class="messages" data-create="messages">
         <p> </p>
     </div>
-    <div class="area_list popup" data-idea="popupArea">
+    <div class="area_list popup" data-create="popupArea">
         <p>Wybierz obszar dla pomysłu</p>
-        <select class="area" data-idea="area">
+        <select class="area" data-create="area">
         </select>
-        <button class="btn_area" data-idea="btnArea">Akceptuj</button>
+        <button class="btn_area" data-create="btnArea">Akceptuj</button>
     </div>
     <div class="repeat popup" data-user="repeatUser">
         <p>Ten pomysłodawca już jest na liście</p>
