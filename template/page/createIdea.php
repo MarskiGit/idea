@@ -2,81 +2,93 @@
     <h1>Propozycja</h1>
     <form data-create="form">
         <div class="board">
-            <div class="title">
-                <h3>Opis stanu obecnego</h3>
-            </div>
+            <h3 class="m_bottom">Opis stanu obecnego</h3>
             <textarea maxlength="2000" rows="15" placeholder="Proszę wypełnić to pole" data-create="before"></textarea>
             <p class="sign" data-create="be_sign"></p>
-            <div class="title">
-                <h3>Propozycja usprawnienia</h3>
-            </div>
+        </div>
+        <div class="board">
+            <h3 class="m_bottom">Propozycja usprawnienia</h3>
             <textarea maxlength="2000" rows="15" placeholder="Proszę wypełnić to pole" data-create="after"></textarea>
             <p class="sign" data-create="af_sign"></p>
         </div>
         <div class="board">
-            <div class="title">
-                <h3>Ocena propozycji</h3>
-            </div>
-            <ol class="rating">
-                <li>
-                    <label>Propozycja oszczędnościowa 5000 PLN w skali roku: </label>
-                    <div class="select">
-                        <select name="savings" data-select="savings">
-                            <option value="0">NIE</option>
-                            <option value="1">TAK</option>
+            <h3>Ocena propozycji</h3>
+            <table class="rating">
+                <tbody>
+                    <tr>
+                        <td> Propozycja oszczędnościowa 5000 PLN w skali roku:</td>
+                        <td>
+                            <div class="select">
+                                <select name="savings" data-select="savings">
+                                    <option value="0">NIE</option>
+                                    <option value="1">TAK</option>
 
-                        </select>
-                    </div>
-                </li>
-                <li>
-                    <label for="any_suggestion">Każda propozycja usprawnieniowa zgłoszona i zaakceptowana: </label>
-                    <div id="any_suggestion" class="select">
-                        <select name="any_suggestion" data-select="number">
-                            <option value="10">10pkt</option>
-                            <option value="20">20pkt</option>
-                        </select>
-                    </div>
-                </li>
-                <li class="weight">Dodatkowo propozycje związane z:</li>
-                <li>
-                    <label for="bhp">Polepszenie BHP: </label>
-                    <div id="bhp" class="select">
-                        <select name="bhp" data-select="number">
-                            <option value="0">0pkt</option>
-                            <option value="10">10pkt</option>
-                            <option value="20">20pkt</option>
-                            <option value="30">30pkt</option>
-                        </select>
-                    </div>
-                </li>
-                <li>
-                    <label for="other_savings">Oszczędność czasu energii, materiałów itp: </label>
-                    <div id="other_savings" class="select">
-                        <select name="other_savings" data-select="number">
-                            <option value="0">0pkt</option>
-                            <option value="10">10pkt</option>
-                            <option value="20">20pkt</option>
-                        </select>
-                    </div>
-                </li>
-                <li>
-                    <label for="independence">Samodzielne wdrożenie:</label>
-                    <div id="independence" class="select">
-                        <select name="independence" data-select="number">
-                            <option value="0">0pkt</option>
-                            <option value="10">10pkt</option>
-                            <option value="20">20pkt</option>
-                            <option value="30">30pkt</option>
-                        </select>
-                    </div>
-                </li>
-                <li class="sum_pkt"> <span>Suma punktów:&nbsp;</span><span class="pktnum">10</span><span>&nbsp;pkt.</span></li>
-            </ol>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> Każda propozycja usprawnieniowa zgłoszona i zaakceptowana: </td>
+                        <td>
+                            <div class="select">
+                                <select name="any_suggestion" data-select="number">
+                                    <option value="10">10pkt</option>
+                                    <option value="20">20pkt</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Dodatkowo propozycje związane z:</th>
+                        <th> </th>
+                    </tr>
+                    <tr>
+                        <td>Polepszenie BHP: </td>
+                        <td>
+                            <div class="select">
+                                <select name="bhp" data-select="number">
+                                    <option value="0">0pkt</option>
+                                    <option value="10">10pkt</option>
+                                    <option value="20">20pkt</option>
+                                    <option value="30">30pkt</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> Oszczędność czasu energii, materiałów itp:</td>
+                        <td>
+                            <div class="select">
+                                <select name="other_savings" data-select="number">
+                                    <option value="0">0pkt</option>
+                                    <option value="10">10pkt</option>
+                                    <option value="20">20pkt</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> Samodzielne wdrożenie:</td>
+                        <td>
+                            <div class="select">
+                                <select name="independence" data-select="number">
+                                    <option value="0">0pkt</option>
+                                    <option value="10">10pkt</option>
+                                    <option value="20">20pkt</option>
+                                    <option value="30">30pkt</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th> </th>
+                        <th> <span>Suma punktów:&nbsp;</span><span class="pktnum">10</span><span>&nbsp;pkt.</span></th>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <div class="board">
-            <div class="title">
-                <h3>Pomysłodawcy</h3>
-            </div>
+            <h3>Pomysłodawcy</h3>
             <div class="user_list">
                 <div class="live_search">
                     <span class="error" data-search="error"></span>

@@ -1,4 +1,9 @@
 /* =========== SECTION CREATE CONCEPT =========== */
+.board {
+    position: relative;
+    margin-bottom: 1em;
+}
+
 form {
     position: relative;
     width: 80%;
@@ -9,7 +14,11 @@ form {
     box-shadow: 0px 0px 7px 1px rgba(120, 88, 128, 0.75);
 }
 
-.title h3 {
+.m_bottom {
+    margin-bottom: -.2em;
+}
+
+h3 {
     width: 100%;
     font-family: 'Raleway', sans-serif;
     font-size: .6rem;
@@ -41,33 +50,51 @@ textarea:focus {
 }
 
 .sign {
+    position: absolute;
+    bottom: 0;
+    right: 50%;
+    transform: translate(50%, 0);
     font-size: .5rem;
     text-align: end;
     padding: .2em;
-    margin-bottom: 1em;
     min-height: 2em;
 }
 
 /* =========== SECTION CREATE CONCEPT => Rating =========== */
-.rating {
+
+table,
+td,
+th {
+    border-collapse: collapse;
+}
+
+table {
+    width: 100%;
     font-size: .8rem;
-    list-style: none;
-    padding: .3em;
+    table-layout: auto;
     border: var(--border);
+    white-space: wrap;
+    margin-bottom: ;
 }
 
-.rating li {
-    display: flex;
-    align-items: baseline;
-    padding: .3em;
+td,
+th {
+    padding: .2rem;
+    text-align: left;
 }
 
-.weight {
-    font-weight: 700;
+td {
+    transition: all 300ms;
 }
 
-.rating li label {
-    margin-right: .2em;
+tbody:hover td {
+    color: transparent;
+    text-shadow: 0 0 3px #aaa;
+}
+
+tbody:hover tr:hover td {
+    color: #444;
+    text-shadow: 0 1px 0 #fff;
 }
 
 .select select {
@@ -138,40 +165,8 @@ textarea:focus {
     padding: .5em;
 }
 
-.area_list {
-    flex-direction: column;
-}
-
-.area {
-    font-size: .9rem;
-    margin: .5em;
-    text-align: center;
-    letter-spacing: 0.1em;
-    appearance: none;
-    padding: .2em;
-    border: var(--border);
-    border-radius: .2em .2em 0 0;
-    background-color: var(--bacgroundContent);
-    background-image: url(img/sort-down.png);
-    background-repeat: no-repeat, repeat;
-    background-position: right .5em top 50%, 0 0;
-    background-size: .65em auto, 100%;
-}
-
-.btn_area {
-    border-radius: .3em;
-    background-color: var(--colorBody);
-    color: #fff;
-    width: 50%;
-    margin: 0 auto;
-}
-
-.btn_area:hover {
-    color: var(--colorHover);
-    border: 1px solid var(--colorHover);
-}
-
 /* =========== SECTION CREATE CONCEPT => Live Search =========== */
+
 .user_list {
     display: flex;
     border: var(--border);
@@ -273,7 +268,6 @@ input[type="search"] {
 
 /* =========== SECTION CREATE CONCEPT => Add idea =========== */
 
-
 .add_idea {
     position: absolute;
     z-index: 2;
@@ -307,4 +301,38 @@ input[type="search"] {
 .messages>p {
     text-align: center;
     color: #9a4700;
+}
+
+.area_list {
+    flex-direction: column;
+}
+
+.area {
+    font-size: .9rem;
+    margin: .5em;
+    text-align: center;
+    letter-spacing: 0.1em;
+    appearance: none;
+    padding: .2em;
+    border: var(--border);
+    border-radius: .2em .2em 0 0;
+    background-color: var(--bacgroundContent);
+    background-image: url(img/sort-down.png);
+    background-repeat: no-repeat, repeat;
+    background-position: right .5em top 50%, 0 0;
+    background-size: .65em auto, 100%;
+}
+
+/* =========== SECTION CREATE CONCEPT => Add button =========== */
+.btn_area {
+    border-radius: .3em;
+    background-color: var(--colorBody);
+    color: #fff;
+    width: 50%;
+    margin: 0 auto;
+}
+
+.btn_area:hover {
+    color: var(--colorHover);
+    border: 1px solid var(--colorHover);
 }
