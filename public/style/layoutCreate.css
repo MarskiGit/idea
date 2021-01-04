@@ -74,7 +74,6 @@ table {
     table-layout: auto;
     border: var(--border);
     white-space: wrap;
-    margin-bottom: ;
 }
 
 td,
