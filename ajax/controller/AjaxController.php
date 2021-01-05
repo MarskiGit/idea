@@ -40,6 +40,6 @@ class AjaxController
     private function listIdeaAjax(): void
     {
         $list = new IdeaListModel($this->param['last_result']);
-        $this->JsonView->renderJSON($list->retrievingRecords());
+        $this->JsonView->renderJSON($list->getRow());
     }
 }

@@ -43,7 +43,7 @@ class IdeaListModel extends AjaxAbstractModel
             return $stmt->fetch(PDO::FETCH_ASSOC);
         }
     }
-    private function countDB()
+    private function countTable()
     {
         try {
             $stmt = $this->DB->query("SELECT COUNT(id_idea) FROM idea");
@@ -55,14 +55,14 @@ class IdeaListModel extends AjaxAbstractModel
     }
     private function limit(int $num): int
     {
-        $this->countDB();
+        $this->countTable();
         if (!$num) {
             return $this->dbh_count + 1;
         } else {
             return $num;
         }
     }
-    public function retrievingRecords()
+    public function getRow()
     {
         try {
             $stmt = $this->DB->query("SELECT id_idea, id_area, id_users, before_value, after_value, date_added, date_implementation, pkt_mod, status FROM idea WHERE id_idea < " . $this->limit($this->dbh_limit) . " ORDER BY id_idea DESC LIMIT 6");
