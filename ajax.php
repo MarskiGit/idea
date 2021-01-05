@@ -13,8 +13,6 @@ use Ajax\controller\AjaxController;
 use Ajax\view\JsonView;
 use Ajax\exception\AjaxException;
 use Ajax\view\PhpInput;
-use Throwable;
-
 
 if ($secure !== false && !empty($secure)) {
     try {

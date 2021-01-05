@@ -14,7 +14,6 @@ use Idea\model\SessionModel;
 use Idea\view\HTMLView;
 use Idea\view\Request;
 use Idea\exception\IdeaException;
-use Throwable;
 
 try {
     $request = [
