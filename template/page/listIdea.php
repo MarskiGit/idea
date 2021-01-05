@@ -1,5 +1,5 @@
 <main>
     <h1>Lista Pomysłów</h1>
-    <table data-ol="idea">
+    <table data-table="idea">
     </table>
 </main>

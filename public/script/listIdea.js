@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     class IdeaList {
         constructor() {
-            this.ol = document.querySelector('[data-ol="idea"]');
+            this.table = document.querySelector('[data-table="idea"]');
             this.flag = {
                 scrollList: true,
                 listEnd: true
@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
             this.postElement = null;
             this.color = null;
             this.arrayResult = [];
+            this.dateAddIdea = '';
             this.getIdeaList();
         };
         getIdeaList() {
@@ -40,7 +41,6 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         addDataToDOM(data) {
             if (data.length) {
-                let dateAddIdea = '';
                 data.forEach(obj => {
                     this.color = this.border(obj.status * 1);
                     this.arrayResult.push(obj.id_idea);
@@ -48,9 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     this.postElement = document.createElement('tbody');
                     this.postElement.setAttribute('data-id_idea', `${obj.id_idea}`);
                     this.postElement.style.setProperty('--color', `${this.color.border}`);
-                    if (obj.date_implementation) {
-                        this.dateAddIdea = `Data wdrożenia: ${(obj.date_implementation)}`;
-                    };
+                    (obj.date_implementation) ? this.dateAddIdea = `Data wdrożenia: ${(obj.date_implementation)}`: this.dateAddIdea = '';
                     this.postElement.innerHTML = `
                     <tr style="line-height: 1.2rem; background-color: ${this.color.back};">
                     <th class="idea_authors">${(obj.id_users.length > 1) ? 'Pomysłodawcy' : 'Pomysłodawca'}</th>
@@ -91,13 +89,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     <th class="date_add">${this.dateAddIdea}</th>
                 </tr>
     `;
-                    this.dateAddIdea = '';
                     this.tbody.appendChild(this.postElement);
                     if (obj.id_idea * 1 === 1) this.flag.listEnd = false;
                 })
-                this.ol.appendChild(this.tbody);
+                this.table.appendChild(this.tbody);
             } else {
-                this.ol.innerHTML = '<tr><td><h4 class="empty_idea">Brak elementów do wyświetlenia.</h4></td></tr>';
+                this.table.innerHTML = '<tr><td><h4 class="empty_idea">Brak elementów do wyświetlenia.</h4></td></tr>';
             }
         };
         border(st) {

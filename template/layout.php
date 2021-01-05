@@ -58,7 +58,7 @@
 </head>
 
 <body>
-    <scroll-page id="page-1"></scroll-page>
+    <scroll-page id="scroll_up"></scroll-page>
     <header>
 
     </header>
@@ -66,7 +66,7 @@
         <div class="menu">
             <a class="a_btn " href="?action=list">Lista pomysłów</a>
             <a class="a_btn " href="?action=create">Napisz pomysł</a>
-            <a class="arrow_up none" href="#page-1"></a>
+            <a class="arrow_up none" href="#scroll_up"></a>
             <div class="logo_idea"></div>
         </div>
     </nav>
