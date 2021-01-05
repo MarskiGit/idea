@@ -13,6 +13,7 @@ use Ajax\controller\AjaxController;
 use Ajax\view\JsonView;
 use Ajax\exception\AjaxException;
 use Ajax\view\PhpInput;
+use Throwable;
 
 
 if ($secure !== false && !empty($secure)) {
@@ -24,7 +25,7 @@ if ($secure !== false && !empty($secure)) {
     } catch (AjaxException $e) {
         echo '<h1>Wystąpił błąd w aplikacji</h1>';
         echo '<h3>' . $e->getMessage() . $e->getFile() . '</h3>';
-    } catch (\Throwable $e) {
+    } catch (Throwable $e) {
         echo '<h1>Wystąpił błąd w aplikacji</h1>';
         dump($e);
     }

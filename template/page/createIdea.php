@@ -1,6 +1,3 @@
-<?php dump($params) ?>
-
-
 <main>
     <h1>Propozycja</h1>
     <form data-create="form">
@@ -18,74 +15,26 @@
             <h3>Ocena propozycji</h3>
             <table class="rating">
                 <tbody>
-                    <tr>
-                        <td> Propozycja oszczędnościowa 5000 PLN w skali roku:</td>
-                        <td>
-                            <div class="select">
-                                <select name="savings" data-select="savings">
-                                    <option value="0">NIE</option>
-                                    <option value="1">TAK</option>
-
-                                </select>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td> Każda propozycja usprawnieniowa zgłoszona i zaakceptowana: </td>
-                        <td>
-                            <div class="select">
-                                <select name="any_suggestion" data-select="number">
-                                    <option value="10">10pkt</option>
-                                    <option value="20">20pkt</option>
-                                </select>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Dodatkowo propozycje związane z:</th>
-                        <th> </th>
-                    </tr>
-                    <tr>
-                        <td>Polepszenie BHP: </td>
-                        <td>
-                            <div class="select">
-                                <select name="bhp" data-select="number">
-                                    <option value="0">0pkt</option>
-                                    <option value="10">10pkt</option>
-                                    <option value="20">20pkt</option>
-                                    <option value="30">30pkt</option>
-                                </select>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td> Oszczędność czasu energii, materiałów itp:</td>
-                        <td>
-                            <div class="select">
-                                <select name="other_savings" data-select="number">
-                                    <option value="0">0pkt</option>
-                                    <option value="10">10pkt</option>
-                                    <option value="20">20pkt</option>
-                                </select>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td> Samodzielne wdrożenie:</td>
-                        <td>
-                            <div class="select">
-                                <select name="independence" data-select="number">
-                                    <option value="0">0pkt</option>
-                                    <option value="10">10pkt</option>
-                                    <option value="20">20pkt</option>
-                                    <option value="30">30pkt</option>
-                                </select>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th> </th>
-                        <th> <span>Suma punktów:&nbsp;</span><span class="pktnum">10</span><span>&nbsp;pkt.</span></th>
+                    <?php
+                    foreach ($params as $key => $value) {
+                        $title = $value['title'];
+                        $value_option = $value['value_option'];
+                        $name_option = $value['name_option'];
+                        $header = $value['header'];
+                        if (!$header) {
+                            $value_option  = explode(',', $value_option);
+                            echo "<tr><td>$title</td><td><div class='select'><select name='$name_option' data-select='$name_option'>";
+                            foreach ($value_option as $key => $value) {
+                                echo "<option value=" . $key . ">$value</option>";
+                            }
+                        } else {
+                            echo "<th>$title</th><th> </th>";
+                        }
+                        echo '</select></div></td></tr>';
+                    }
+                    ?>
+                    <th> </th>
+                    <th class="a_center"> <span>Suma punktów:&nbsp;</span><span class="pktnum">10</span><span>&nbsp;pkt.</span></th>
                     </tr>
                 </tbody>
             </table>

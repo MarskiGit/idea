@@ -12,8 +12,6 @@ use Exception;
 
 class IdeaListModel extends AjaxAbstractModel
 {
-
-
     private function getName($id_users)
     {
         $json_name = [];

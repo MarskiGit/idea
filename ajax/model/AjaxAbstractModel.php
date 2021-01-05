@@ -12,6 +12,7 @@ use PDO;
 abstract class AjaxAbstractModel
 {
     protected ?PDO $DB;
+
     protected int $dbh_limit;
     protected array $dbh_result;
     protected $dbh_count;

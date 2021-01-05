@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Exception;
+namespace Idea\exception;
 
-class ConfigurationException extends AppException
+use Idea\exceptions\IdeaException;
+
+class ConfigurationException extends IdeaException
 {
 }

@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Exception;
+namespace Idea\Exception;
 
-class NotFoundException extends AppException
+use Idea\exceptions\IdeaException;
+
+class NotFoundException extends IdeaException
 {
 }

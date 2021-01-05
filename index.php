@@ -14,6 +14,7 @@ use Idea\model\SessionModel;
 use Idea\view\HTMLView;
 use Idea\view\Request;
 use Idea\exception\IdeaException;
+use Throwable;
 
 try {
     $request = [
@@ -30,7 +31,7 @@ try {
 } catch (IdeaException $e) {
     echo '<h1>Wystąpił błąd w aplikacji</h1>';
     echo '<h3>' . $e->getMessage() . $e->getFile() . '</h3>';
-} catch (\Throwable $e) {
+} catch (Throwable $e) {
     echo '<h1>Wystąpił błąd w aplikacji</h1>';
     dump($e);
 }

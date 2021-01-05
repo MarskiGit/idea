@@ -15,7 +15,7 @@ form {
 }
 
 .m_bottom {
-    margin-bottom: -.2em;
+    margin-bottom: -.3em;
 }
 
 h3 {
@@ -94,6 +94,10 @@ tbody:hover td {
 tbody:hover tr:hover td {
     color: #444;
     text-shadow: 0 1px 0 #fff;
+}
+
+.a_center {
+    text-align: center;
 }
 
 .select select {

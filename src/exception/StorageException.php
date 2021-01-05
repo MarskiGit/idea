@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Exception;
+namespace Idea\exception;
 
-class StorageException extends AppException
+use Idea\exceptions\IdeaException;
+
+class StorageException extends IdeaException
 {
 }
