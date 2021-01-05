@@ -12,10 +12,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 scrollList: true,
                 listEnd: true
             };
-            this.lastResult = {
+            this.request = {
                 action: 'listIdea',
                 last_result: 0
-            }
+            };
+            this.tbody = document.createDocumentFragment();
+            this.postElement = null;
+            this.color = null;
+            this.arrayResult = [];
             this.getIdeaList();
         };
         getIdeaList() {
@@ -27,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         loadingListIdea() {
             if (this.flag.listEnd) {
-                dataFetch('ajax.php', this.lastResult, 0).then(data => {
+                dataFetch('ajax.php', this.request, 0).then(data => {
                     this.addDataToDOM(data);
                 }).finally(() => {
                     console.log('end');
@@ -36,26 +40,22 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         addDataToDOM(data) {
             if (data.length) {
-                let color,
-                    divDat = '';
-                const lastResult = [],
-                    listLi = document.createDocumentFragment();
+                let dateAddIdea = '';
                 data.forEach(obj => {
-                    color = this.border(obj.status * 1);
-                    lastResult.push(obj.id_idea);
-                    console.log(obj.id_users)
-                    this.lastResult.last_result = Math.min(...lastResult);
-                    const postElement = document.createElement('tbody');
-                    postElement.setAttribute('data-id_idea', `${obj.id_idea}`);
-                    postElement.style.setProperty('--color', `${color.border}`);
+                    this.color = this.border(obj.status * 1);
+                    this.arrayResult.push(obj.id_idea);
+                    this.request.last_result = Math.min(...this.arrayResult);
+                    this.postElement = document.createElement('tbody');
+                    this.postElement.setAttribute('data-id_idea', `${obj.id_idea}`);
+                    this.postElement.style.setProperty('--color', `${this.color.border}`);
                     if (obj.date_implementation) {
-                        divDat = `Data wdrożenia: ${(obj.date_implementation)}`;
+                        this.dateAddIdea = `Data wdrożenia: ${(obj.date_implementation)}`;
                     };
-                    postElement.innerHTML = `
-                    <tr style="line-height: 1.2rem; background-color: ${color.back};">
+                    this.postElement.innerHTML = `
+                    <tr style="line-height: 1.2rem; background-color: ${this.color.back};">
                     <th class="idea_authors">${(obj.id_users.length > 1) ? 'Pomysłodawcy' : 'Pomysłodawca'}</th>
-                    <th></th>
-                    <th></th>
+                    <th>Status: ${this.color.status}</th>
+                    <th>Przyznane punkty: ${(obj.pkt_mod) ? obj.pkt_mod : 0}</th>
                     <th></th>
                     <th class="date_add">Data dodania: ${(obj.date_added).slice(0,10)}</th>
                 </tr>
@@ -85,17 +85,17 @@ document.addEventListener('DOMContentLoaded', function () {
                     </td>
                 </tr>
                 <tr>
-                    <th>Przyznane punkty: ${(obj.pkt_mod) ? obj.pkt_mod : 0}</th>
-                    <th>Status: ${color.status}</th>
                     <th>Numer propozycji: ${obj.id_idea}</th>
-                    <th>${divDat}</th>
+                    <th></th>
+                    <th></th>
+                    <th class="date_add">${this.dateAddIdea}</th>
                 </tr>
     `;
-                    divDat = '';
-                    listLi.appendChild(postElement);
+                    this.dateAddIdea = '';
+                    this.tbody.appendChild(this.postElement);
                     if (obj.id_idea * 1 === 1) this.flag.listEnd = false;
                 })
-                this.ol.appendChild(listLi);
+                this.ol.appendChild(this.tbody);
             } else {
                 this.ol.innerHTML = '<tr><td><h4 class="empty_idea">Brak elementów do wyświetlenia.</h4></td></tr>';
             }
@@ -104,19 +104,19 @@ document.addEventListener('DOMContentLoaded', function () {
             switch (st) {
                 case 0:
                     return {
-                        border: 'rgb(255, 209, 102)', back: 'rgba(255, 209, 102, 0.1)', status: 'Oczekuje'
+                        border: 'rgb(255, 209, 102)', back: 'rgba(255, 209, 102, 0.2)', status: 'Oczekuje'
                     };
                 case 1:
                     return {
-                        border: 'rgb(6, 214, 160)', back: 'rgba(6, 214, 160, 0.1)', status: 'Zakceptowany'
+                        border: 'rgb(6, 214, 160)', back: 'rgba(6, 214, 160, 0.2)', status: 'Zakceptowany'
                     };
                 case 2:
                     return {
-                        border: 'rgb(17, 138, 178)', back: 'rgb(17, 138, 178, 0.1)', status: 'Wdrożony'
+                        border: 'rgb(17, 138, 178)', back: 'rgb(17, 138, 178, 0.2)', status: 'Wdrożony'
                     };
                 case 3:
                     return {
-                        border: 'rgb(239, 71, 111)', back: 'rgba(239, 71, 111, 0.1)', status: 'Odrzucony'
+                        border: 'rgb(239, 71, 111)', back: 'rgba(239, 71, 111, 0.2)', status: 'Odrzucony'
                     };
                 case 4:
                     return {
