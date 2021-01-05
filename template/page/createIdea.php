@@ -1,3 +1,6 @@
+<?php dump($params) ?>
+
+
 <main>
     <h1>Propozycja</h1>
     <form data-create="form">

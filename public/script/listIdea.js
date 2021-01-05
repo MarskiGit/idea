@@ -50,48 +50,48 @@ document.addEventListener('DOMContentLoaded', function () {
                     this.postElement.style.setProperty('--color', `${this.color.border}`);
                     (obj.date_implementation) ? this.dateAddIdea = `Data wdrożenia: ${(obj.date_implementation)}`: this.dateAddIdea = '';
                     this.postElement.innerHTML = `
-                    <tr style="line-height: 1.2rem; background-color: ${this.color.back};">
-                    <th class="idea_authors">${(obj.id_users.length > 1) ? 'Pomysłodawcy' : 'Pomysłodawca'}</th>
-                    <th>Status: ${this.color.status}</th>
-                    <th>Przyznane punkty: ${(obj.pkt_mod) ? obj.pkt_mod : 0}</th>
-                    <th></th>
-                    <th class="date_add">Data dodania: ${(obj.date_added).slice(0,10)}</th>
-                </tr>
-                <tr>
-                    <td rowspan="5">
-                        <ol>
-                            ${obj.id_users.map(name =>`<li>${name}</li>`).join('')}
-                        </ol>
-                    </td>
-                    <th colspan=" 4" class="title">
-                        Opis stanu obecnego
-                    </th>
-                </tr>
-                <tr>
-                    <td colspan="4">
-                        ${obj.before_value}
-                    </td>
-                </tr>
-                <tr>
-                    <th colspan="4" class="title">
-                        Propozycja usprawnienia
-                    </th>
-                </tr>
-                <tr>
-                    <td colspan="4">
-                        ${obj.after_value}
-                    </td>
-                </tr>
-                <tr>
-                    <th>Numer propozycji: ${obj.id_idea}</th>
-                    <th></th>
-                    <th></th>
-                    <th class="date_add">${this.dateAddIdea}</th>
-                </tr>
-    `;
+                        <tr style="line-height: 1.2rem; background-color: ${this.color.back};">
+                        <th class="idea_authors">${(obj.id_users.length > 1) ? 'Pomysłodawcy' : 'Pomysłodawca'}</th>
+                        <th>Status: ${this.color.status}</th>
+                        <th>Przyznane punkty: ${(obj.pkt_mod) ? obj.pkt_mod : 0}</th>
+                        <th></th>
+                        <th class="date_add">Data dodania: ${(obj.date_added).slice(0,10)}</th>
+                    </tr>
+                    <tr>
+                        <td rowspan="5">
+                            <ol>
+                                ${obj.id_users.map(name =>`<li>${name}</li>`).join('')}
+                            </ol>
+                        </td>
+                        <th colspan=" 4" class="title">
+                            Opis stanu obecnego
+                        </th>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            ${obj.before_value}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th colspan="4" class="title">
+                            Propozycja usprawnienia
+                        </th>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            ${obj.after_value}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Numer propozycji: ${obj.id_idea}</th>
+                        <th></th>
+                        <th></th>
+                        <th class="date_add">${this.dateAddIdea}</th>
+                    </tr>
+        `;
                     this.tbody.appendChild(this.postElement);
                     if (obj.id_idea * 1 === 1) this.flag.listEnd = false;
-                })
+                });
                 this.table.appendChild(this.tbody);
             } else {
                 this.table.innerHTML = '<tr><td><h4 class="empty_idea">Brak elementów do wyświetlenia.</h4></td></tr>';

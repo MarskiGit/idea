@@ -9,7 +9,7 @@ class HTMLView
     public function __construct()
     {
     }
-    private function renderHTML(string $name, string $path = '', $param = null)
+    private function renderHTML(string $name, string $path = '', $params = null)
     {
         $path = DIR_TEMPLATE . $path . $name . '.php';
         try {
@@ -26,14 +26,14 @@ class HTMLView
             exit;
         }
     }
-    public function layout($param): void
+    public function layout($params): void
     {
         header('Content-type: text/html; charset=utf-8');
-        $this->renderHTML('layout', '', $param);
+        $this->renderHTML('layout', '', $params);
     }
-    public function create(): void
+    public function create($params): void
     {
-        $this->renderHTML('createIdea', 'page/');
+        $this->renderHTML('createIdea', 'page/', $params);
     }
     public function list(): void
     {
