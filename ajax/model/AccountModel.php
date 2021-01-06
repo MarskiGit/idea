@@ -42,7 +42,7 @@ class AccountModel extends AjaxAbstractModel
             $stmt = $this->DB->prepare('INSERT INTO accounts (account_name, account_passwd, account_rang) VALUES (:name, :passwd, :account_rang)');
             $stmt->execute($values);
         } catch (PDOException $e) {
-            throw new AjaxException('Account creation error');
+            throw new AjaxException('Błąd Add AccountModel');
         }
 
         $id = intval($this->DB->lastInsertId());
@@ -63,7 +63,7 @@ class AccountModel extends AjaxAbstractModel
             $stmt->bindValue(':name', $request['username'], PDO::PARAM_STR);
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Login execution error');
+            throw new AjaxException('Błąd Login AccountModel');
         }
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -122,7 +122,7 @@ class AccountModel extends AjaxAbstractModel
             $stmt->bindValue(':name', $this->request['username'], PDO::PARAM_STR);
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('ID retrieval error');
+            throw new AjaxException('Błąd ID AccountModel');
         }
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if (is_array($row)) {

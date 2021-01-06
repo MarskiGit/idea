@@ -19,7 +19,7 @@ class IdeaListModel extends AjaxAbstractModel
             $stmt = $this->DB->query("SELECT name FROM user WHERE id_user IN (" . $id_users . ")");
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Błąd Name bazy danych');
+            throw new AjaxException('Błąd Name IdeaModel');
         }
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -37,7 +37,7 @@ class IdeaListModel extends AjaxAbstractModel
             $stmt = $this->DB->query("SELECT area_name FROM area WHERE id_area = $id_area");
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Błąd Area bazy danych');
+            throw new AjaxException('Błąd Area IdeaModel');
         }
         if ($stmt->rowCount() > 0) {
             return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -50,7 +50,7 @@ class IdeaListModel extends AjaxAbstractModel
             $stmt->execute();
             $this->dbh_count = $stmt->fetchColumn();
         } catch (PDOException $e) {
-            throw new AjaxException('Błąd Count bazy danych');
+            throw new AjaxException('Błąd Count IdeaModel');
         }
     }
     private function limit(int $num): int
@@ -68,7 +68,7 @@ class IdeaListModel extends AjaxAbstractModel
             $stmt = $this->DB->query("SELECT id_idea, id_area, id_users, before_value, after_value, date_added, date_implementation, pkt_mod, status FROM idea WHERE id_idea < " . $this->limit($this->dbh_limit) . " ORDER BY id_idea DESC LIMIT 6");
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Błąd Idea bazy danych');
+            throw new AjaxException('Błąd Row IdeaModel');
         }
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {

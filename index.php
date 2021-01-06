@@ -30,7 +30,7 @@ try {
 
     (new HTMLController($Request, $HTMLView));
 } catch (IdeaException $e) {
-    echo "<div class='exception align_center'><p>Błąd Idea aplikacji</p>" . $e->getMessage() . "<p></p><div class='exception_img'></div></div>";
+    echo "<div class='exception align_center'><p>Błąd Aplikacji</p><p>" . $e->getMessage() . "</p><div class='exception_img'></div></div>";
 } catch (Throwable $e) {
-    echo "<div class='exception align_center'><p>Błąd aplikacji</p>" . $e->getMessage() . "<p></p><div class='exception_img'></div></div>";
+    echo "<div class='exception align_center'><p>Błąd Aplikacji</p><p>" . $e->getMessage() . "</p><div class='exception_img'></div></div>";
 }

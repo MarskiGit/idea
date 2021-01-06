@@ -75,7 +75,7 @@ nav {
     padding: 1rem;
     background-color: #52b6d5;
     border-radius: 50px;
-    background: linear-gradient(145deg, #58c3e4, #4aa4c0);
+    background: linear-gradient(145deg, #4aa4c0, #58c3e4);
     box-shadow: 20px 20px 60px #469bb5,
         -20px -20px 60px #5ed1f5;
 }

@@ -17,7 +17,7 @@ class RatingSettingModel extends AbstractModel
             $stmt = $this->DB->query('SELECT * FROM rating_setting');
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new Exception('Błąd Ustawień');
+            throw new Exception('Błąd Rating Model');
         }
 
         if ($stmt->rowCount() > 0) {

@@ -46,7 +46,7 @@ const ajaxException = data => {
     const main = document.querySelector('main');
     if (data.exception) {
         main.style.justifyContent = 'center';
-        main.innerHTML = `<div class="exception"><p>Błąd Ajax aplikacji</p> <p>${data.exception}</p><div class="exception_img"></div></div>`;
+        main.innerHTML = `<div class="exception"><p>Błąd Aplikacji - Ajax</p> <p>${data.exception}</p><div class="exception_img"></div></div>`;
         console.log(data.file, data.line);
         return 0;
     } else {
