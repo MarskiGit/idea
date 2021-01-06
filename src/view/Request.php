@@ -33,4 +33,8 @@ class Request
     {
         return $this->server['REQUEST_METHOD'] === 'GET';
     }
+    public function sessionParam(string $session_name)
+    {
+        return (!empty($this->session[$session_name])) ? $this->session[$session_name] : 0;
+    }
 }

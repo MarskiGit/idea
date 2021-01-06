@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Idea\model;
+namespace Ajax\model;
 
-use Idea\exceptions\IdeaException;
-use Idea\model\SessionModel;
-
+use Ajax\model\AjaxAbstractModel;
+use Ajax\exception\AjaxException;
 use PDO;
-use Throwable;
+use PDOException;
 
-class AccountModel
+class AccountModel extends AjaxAbstractModel
 {
     public Session $Session;
     private array $request;
@@ -21,7 +20,6 @@ class AccountModel
     private bool $authenticated;
     public function __construct()
     {
-        $this->Session = new Session();
     }
     public function addAccount(): array
     {
@@ -41,13 +39,13 @@ class AccountModel
         $values = [':name' => $this->request['username'], ':passwd' => $hash_2, ':account_rang' => $this->request['rang']];
 
         try {
-            $stmt = DB::conn()->prepare('INSERT INTO accounts (account_name, account_passwd, account_rang) VALUES (:name, :passwd, :account_rang)');
+            $stmt = $this->DB->prepare('INSERT INTO accounts (account_name, account_passwd, account_rang) VALUES (:name, :passwd, :account_rang)');
             $stmt->execute($values);
-        } catch (Throwable $e) {
-            throw new IdeaException('Account creation error');
+        } catch (PDOException $e) {
+            throw new AjaxException('Account creation error');
         }
 
-        $id = intval(DB::conn()->lastInsertId());
+        $id = intval($this->DB->lastInsertId());
         return $this->answer($id);
     }
     public function login($request): array
@@ -61,11 +59,11 @@ class AccountModel
         }
 
         try {
-            $stmt = DB::conn()->prepare('SELECT * FROM accounts WHERE (account_name = :name) AND (account_enabled = 1)');
+            $stmt = $this->DB->prepare('SELECT * FROM accounts WHERE (account_name = :name) AND (account_enabled = 1)');
             $stmt->bindValue(':name', $request['username'], PDO::PARAM_STR);
             $stmt->execute();
-        } catch (Throwable $e) {
-            throw new IdeaException('Login execution error');
+        } catch (PDOException $e) {
+            throw new AjaxException('Login execution error');
         }
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -81,7 +79,7 @@ class AccountModel
                     'name' => $this->request['username'],
                     'id' => $row['account_id']
                 ];
-                $this->Session->create_session('account', $user);
+                $_SESSION['account'] = $user;
 
                 return $this->answer(1);
             }
@@ -94,16 +92,8 @@ class AccountModel
             $this->id = null;
             $this->name = null;
             $this->authenticated = false;
-
-            $this->Session->remove_session('account');
-
+            unset($_SESSION['account']);
             return $this->answer(0);
-        }
-    }
-    public function init_session(): void
-    {
-        if (!isset($_SESSION)) {
-            session_start();
         }
     }
     private function isNameValid(): bool
@@ -128,11 +118,11 @@ class AccountModel
     {
         $id = null;
         try {
-            $stmt = DB::conn()->prepare('SELECT account_id FROM accounts WHERE (account_name = :name)');
+            $stmt = $this->DB->prepare('SELECT account_id FROM accounts WHERE (account_name = :name)');
             $stmt->bindValue(':name', $this->request['username'], PDO::PARAM_STR);
             $stmt->execute();
-        } catch (Throwable $e) {
-            throw new IdeaException('ID retrieval error');
+        } catch (PDOException $e) {
+            throw new AjaxException('ID retrieval error');
         }
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if (is_array($row)) {
@@ -149,21 +139,5 @@ class AccountModel
         ];
         $hash_2 = password_hash($value, PASSWORD_BCRYPT, $options);
         return $hash_2;
-    }
-
-    private function create_session($session_name, $is_array = false)
-    {
-        if (!isset($_SESSION[$session_name])) {
-            if ($is_array == true) {
-                $_SESSION[$session_name] = $is_array;
-            } else {
-                $_SESSION[$session_name] = '';
-            }
-        }
-    }
-    private function answer(int $num): array
-    {
-        $answer = array('answer' => $num);
-        return $answer;
     }
 }

@@ -1,7 +1,8 @@
 'use strict';
 import {
     dataFetch,
-    windowScroll
+    windowScroll,
+    ajaxException
 } from './abstract.js';
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -33,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
         loadingListIdea() {
             if (this.flag.listEnd) {
                 dataFetch('ajax.php', this.request, 0).then(data => {
-                    this.addDataToDOM(data);
+                    if (ajaxException(data)) this.addDataToDOM(data);
                 }).finally(() => {
                     console.log('end');
                 });

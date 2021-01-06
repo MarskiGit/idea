@@ -21,10 +21,10 @@ if ($secure !== false && !empty($secure)) {
 
         (new AjaxController($PhpInput, $JsonView));
     } catch (AjaxException $e) {
-        echo '<h1>Wystąpił błąd w aplikacji</h1>';
-        echo '<h3>' . $e->getMessage() . $e->getFile() . '</h3>';
+        header('Content-Type: application/json; charset=utf-8');
+        echo $e->jsonException($e->getMessage(), $e->getFile(), $e->getLine());
     } catch (Throwable $e) {
-        echo '<h1>Wystąpił błąd w aplikacji</h1>';
+        echo $e->jsonException($e->getMessage(), $e->getFile(), $e->getLine());
         dump($e);
     }
 } else {

@@ -22,4 +22,9 @@ abstract class AjaxAbstractModel
         $this->dbh_limit = $obj;
         $this->dbh_count = null;
     }
+    protected function answer(int $num): array
+    {
+        $answer = array('answer' => $num);
+        return $answer;
+    }
 }

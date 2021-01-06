@@ -46,7 +46,6 @@ nav {
     font-size: .7rem;
     width: var(--widthContent);
     margin: 10px auto;
-    border-radius: var(--borderRadius);
     background-color: var(--bacgroundGradientColor);
     background-image: var(--bacgroundGradient);
     box-shadow: -1px 1px 7px 0px rgba(120, 88, 128, 0.75);
@@ -59,6 +58,47 @@ nav {
 
 .menu a {
     display: inline-block;
+}
+
+.align_center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.exception {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: var(--borderRadius);
+    padding: 1rem;
+    background-color: #52b6d5;
+    border-radius: 50px;
+    background: linear-gradient(145deg, #58c3e4, #4aa4c0);
+    box-shadow: 20px 20px 60px #469bb5,
+        -20px -20px 60px #5ed1f5;
+}
+
+.exception p:nth-of-type(1) {
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.exception p:nth-of-type(2) {
+    font-size: .5rem;
+    text-transform: uppercase;
+    font-weight: 300;
+    padding: .2rem;
+}
+
+.exception_img {
+    flex-basis: 50vh;
+    width: 50vh;
+    background-image: url('../img/exception.png');
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .sticky {

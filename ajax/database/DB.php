@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Ajax\database;
 
-use Throwable;
-use Exception;
+use Ajax\exception\AjaxException;
 use PDO;
+use PDOException;
 
 class DB
 {
@@ -32,8 +32,8 @@ class DB
                 self::$DB->exec('set names utf8');
                 self::$DB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 define('DB_CONNECTED', true);
-            } catch (Throwable $e) {
-                throw new Exception('Connecting error');
+            } catch (PDOException $e) {
+                throw new AjaxException('Connecting error');
             }
             return self::$DB;
         }

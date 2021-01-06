@@ -4,35 +4,21 @@ declare(strict_types=1);
 
 namespace Idea\controller;
 
-use Idea\model\CreateIdeaModel;
+use Idea\model\RatingSettingModel;
 
 class HTMLController extends AbstractController
 {
-
     protected function createIdea(): void
     {
-        $create = new CreateIdeaModel();
-        $this->HTMLView->layout($this->getParam());
-        $this->HTMLView->create($create->retrievingRecords());
-        $this->HTMLView->footer();
+        $create = new RatingSettingModel();
+        $this->HTMLView->create($create->getSetings());
     }
     protected function listIdea(): void
     {
-        $this->HTMLView->layout($this->getParam());
         $this->HTMLView->list();
-        $this->HTMLView->footer();
     }
     protected function statisticsIdea(): void
     {
-        $this->HTMLView->layout($this->getParam());
         $this->HTMLView->statistics();
-        $this->HTMLView->footer();
-    }
-    protected function getParam(): array
-    {
-        return $param = [
-            'action' => $this->action,
-            'sesion' => $this->SessionParam
-        ];
     }
 }

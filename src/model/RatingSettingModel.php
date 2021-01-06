@@ -9,15 +9,15 @@ use PDO;
 use PDOException;
 use Exception;
 
-class CreateIdeaModel extends AbstractModel
+class RatingSettingModel extends AbstractModel
 {
-    public function retrievingRecords()
+    public function getSetings()
     {
         try {
-            $stmt = $this->DB->query("SELECT * FROM seting_create");
+            $stmt = $this->DB->query('SELECT * FROM rating_setting');
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new Exception('Błąd List bazy danych');
+            throw new Exception('Błąd Ustawień');
         }
 
         if ($stmt->rowCount() > 0) {

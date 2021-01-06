@@ -1,7 +1,8 @@
 'use strict';
 export {
     dataFetch,
-    windowScroll
+    windowScroll,
+    ajaxException
 };
 /////// FETCH \\\\\\\ 
 const handleError = err => {
@@ -36,7 +37,19 @@ const dataFetch = async (url = '', data = {}) => {
 
 };
 
-const windowScroll = callback => {
-    window.addEventListener('scroll', callback);
+const windowScroll = fn => {
+    window.addEventListener('scroll', fn);
 
+};
+
+const ajaxException = data => {
+    const main = document.querySelector('main');
+    if (data.exception) {
+        main.style.justifyContent = 'center';
+        main.innerHTML = `<div class="exception"><p>Błąd Ajax aplikacji</p> <p>${data.exception}</p><div class="exception_img"></div></div>`;
+        console.log(data.file, data.line);
+        return 0;
+    } else {
+        return 1
+    }
 }
