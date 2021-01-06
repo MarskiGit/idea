@@ -45,6 +45,7 @@ body {
 nav {
     font-size: .7rem;
     width: var(--widthContent);
+    border-radius: var(--borderRadius);
     margin: 10px auto;
     background-color: var(--bacgroundGradientColor);
     background-image: var(--bacgroundGradient);
@@ -52,12 +53,31 @@ nav {
 
 }
 
-.menu {
-    position: relative;
+main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: var(--widthContent);
 }
 
-.menu a {
-    display: inline-block;
+footer {
+    width: 100%;
+    flex-basis: 1rem;
+    display: flex;
+    justify-content: center;
+    align-self: flex-end;
+    color: #ffffff;
+    background-color: #1e2528;
+}
+
+h1 {
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 2rem;
+    text-align: center;
+    color: var(--colorHover);
+    padding: .3em;
 }
 
 .align_center {
@@ -67,6 +87,129 @@ nav {
     transform: translate(-50%, -50%);
 }
 
+/* =========== NAV =========== */
+.menu {
+    display: flex;
+    position: relative;
+}
+
+.sticky {
+    position: fixed;
+    width: 100%;
+    font-size: .5rem !important;
+    margin: 0;
+    top: 0;
+    z-index: 2;
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+}
+
+/* =========== NAV-> a hreaf =========== */
+.a_btn {
+    margin: .3rem;
+    padding: var(--buttonPadiing);
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #fff;
+    background-color: var(--colorBody);
+    border-radius: var(--borderRadius);
+    transition-property: all;
+    transition-duration: .3s;
+    transition-timing-function: linear;
+}
+
+.a_btn:hover {
+    color: var(--colorHover);
+}
+
+.arrow_up {
+    background-image: url(../img/arrow_up.png);
+
+}
+
+.home_page {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: .3rem;
+    background-image: url(../img/home_page.png);
+}
+
+.border_icon {
+    position: absolute;
+    transform: rotate(0deg);
+    transform-origin: center;
+    width: 100%;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    animation-name: load;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes load {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(1000deg);
+    }
+
+}
+
+.load {
+    animation-play-state: paused;
+}
+
+.link_img {
+    flex-basis: 1.6rem;
+    filter: invert(100%);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    transition-property: all;
+    transition-duration: .2s;
+    transition-timing-function: linear;
+}
+
+.link_img:hover {
+    filter: invert(0%);
+
+}
+
+/* =========== NAV -> logo=========== */
+nav .logo_idea {
+    position: absolute;
+    top: 0;
+    right: 3px;
+    height: 100%;
+    width: 1.6rem;
+    background-image: url(../img/idea.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+.none {
+    opacity: 0;
+}
+
+/* =========== FOTTER -> element =========== */
+.marski {
+    font-size: .5rem;
+    padding: 1em;
+    display: flex;
+    justify-content: center;
+}
+
+.marski span {
+    margin-right: .2em;
+}
+
+/* =========== EXCEPTION =========== */
 .exception {
     display: flex;
     flex-direction: column;
@@ -99,110 +242,4 @@ nav {
     background-image: url('../img/exception.png');
     background-size: cover;
     background-repeat: no-repeat;
-}
-
-.sticky {
-    position: fixed;
-    width: 100%;
-    font-size: .5rem !important;
-    margin: 0;
-    top: 0;
-    z-index: 2;
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
-}
-
-.a_btn {
-    margin: .3rem;
-    padding: var(--buttonPadiing);
-    font-weight: 700;
-    text-transform: uppercase;
-    color: #fff;
-    background-color: var(--colorBody);
-    border-radius: var(--borderRadius);
-    transition-property: all;
-    transition-duration: .3s;
-    transition-timing-function: linear;
-}
-
-.a_btn:hover {
-    color: var(--colorHover);
-}
-
-.arrow_up {
-    position: absolute;
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 1.6rem;
-    filter: invert(100%);
-    background-color: transparent;
-    background-image: url(../img/arrow_up.png);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 100%;
-    transition-property: all;
-    transition-duration: .2s;
-    transition-timing-function: linear;
-}
-
-.arrow_up:hover {
-    filter: invert(0%);
-
-}
-
-nav .logo_idea {
-    position: absolute;
-    top: 0;
-    right: 3px;
-    height: 100%;
-    width: 1.6rem;
-    background-image: url(../img/idea.png);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 100%;
-}
-
-
-
-.none {
-    opacity: 0;
-}
-
-main {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: var(--widthContent);
-}
-
-footer {
-    width: 100%;
-    flex-basis: 1rem;
-    display: flex;
-    justify-content: center;
-    align-self: flex-end;
-    color: #ffffff;
-    background-color: #1e2528;
-}
-
-.marski {
-    font-size: .5rem;
-    padding: 1em;
-    display: flex;
-    justify-content: center;
-}
-
-.marski span {
-    margin-right: .2em;
-}
-
-h1 {
-    font-weight: 800;
-    text-transform: uppercase;
-    font-size: 2rem;
-    text-align: center;
-    color: var(--colorHover);
-    padding: .3em;
 }

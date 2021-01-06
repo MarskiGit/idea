@@ -64,9 +64,12 @@
     </header>
     <nav>
         <div class="menu">
-            <a class="a_btn " href="?action=list">Lista pomysłów</a>
-            <a class="a_btn " href="?action=create">Napisz pomysł</a>
-            <a class="arrow_up none" href="#scroll_up"></a>
+            <a class="link_img home_page" href="http://h.localhost/01_MOJE/01_GIT/idea/">
+                <img class="border_icon load" src="public/img/border_icon.png" alt="Idea">
+            </a>
+            <a class="a_btn" href="?action=list">Lista pomysłów</a>
+            <a class="a_btn" href="?action=create">Napisz pomysł</a>
+            <a class="link_img arrow_up none" href="#scroll_up"></a>
             <div class="logo_idea"></div>
         </div>
     </nav>

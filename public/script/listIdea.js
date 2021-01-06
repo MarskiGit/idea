@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', function () {
     class IdeaList {
         constructor() {
             this.table = document.querySelector('[data-table="idea"]');
+            this.load = document.querySelector('.border_icon');
+            console.log(this.load)
             this.flag = {
                 scrollList: true,
                 listEnd: true
@@ -33,10 +35,11 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         loadingListIdea() {
             if (this.flag.listEnd) {
+                this.load.classList.remove('load');
                 dataFetch('ajax.php', this.request, 0).then(data => {
                     if (ajaxException(data)) this.addDataToDOM(data);
                 }).finally(() => {
-                    console.log('end');
+                    this.load.classList.add('load');
                 });
             };
         };
