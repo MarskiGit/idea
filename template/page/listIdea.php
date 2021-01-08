@@ -1,5 +1,5 @@
 <main>
     <h1>Lista Pomysłów</h1>
-    <table data-table="idea">
-    </table>
+    <div class="table" data-table="idea">
+    </div>
 </main>

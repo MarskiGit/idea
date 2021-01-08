@@ -14,6 +14,8 @@
     --bacgroundGradientColor: #7f5a83;
     --buttonPadiing: .3rem 1rem;
     --bacgroundGradient: linear-gradient(315deg, #7f5a83 0%, #0d324d 74%);
+    --boxSadow: -1px 1px 7px 0px rgba(120, 88, 128, 0.75);
+
 
 }
 
@@ -49,7 +51,7 @@ nav {
     margin: 10px auto;
     background-color: var(--bacgroundGradientColor);
     background-image: var(--bacgroundGradient);
-    box-shadow: -1px 1px 7px 0px rgba(120, 88, 128, 0.75);
+    box-shadow: var(--boxSadow);
 
 }
 
@@ -144,7 +146,7 @@ h1 {
     background-size: 100%;
     background-repeat: no-repeat;
     animation-name: load;
-    animation-duration: 2s;
+    animation-duration: 1s;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
 }

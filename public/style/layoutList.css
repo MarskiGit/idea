@@ -1,68 +1,56 @@
  /* =========== SECTION IDEA LIST =========== */
- table ol {
-     list-style: none;
-     text-align: center;
- }
-
- table {
+ .table {
+     width: 100%;
      font-family: 'Source Sans Pro', sans-serif;
      font-size: .58rem;
-     border-collapse: collapse;
+     padding: .3rem;
      margin-bottom: 2rem;
- }
-
- tbody {
-     --color: rgb(255, 209, 102);
      background-color: var(--bacgroundContent);
+     box-shadow: var(--boxSadow);
+     border-radius: var(--borderRadius);
  }
 
- tbody tr,
- th,
- td {
-     padding: .1rem;
+ .tbody ol {
+     list-style: none;
+     text-align: center;
+     width: 100%;
  }
 
- tbody th {
-     color: #8b8b8b;
-     font-weight: 500;
-     letter-spacing: 0.083em;
+ .tbody {
+     --color: rgb(255, 209, 102);
+     margin-bottom: .5rem;
+     border-radius: var(--borderRadius);
+     border: 2px solid var(--color);
  }
 
- tbody td {
-     letter-spacing: 0.019em;
-     line-height: 1.4;
+ .tr {
+     display: flex;
+     justify-content: space-between;
+ }
+
+ .tr .author {
+     flex-basis: 11%;
+ }
+
+ .tr .idea {
+     flex-basis: 89%;
+ }
+
+ .th {
+     text-align: center;
+     padding: .2rem;
+     color: var(--colorHover);
+
  }
 
  .idea_authors {
      width: 11%;
  }
 
-
- .date_add {
-     text-align: right;
- }
-
- .title {
-     text-align: left;
- }
-
- tbody::after {
-     content: "@";
-     display: block;
-     line-height: .5rem;
-     text-indent: -99999px;
-     background-color: var(--colorBody);
- }
-
- tr {
-     border-left: 2px solid var(--color);
-     border-right: 2px solid var(--color);
- }
-
- tr:nth-of-type(6) {
-     border-bottom: 2px solid var(--color);
- }
-
- tr:nth-of-type(1) {
-     border-top: 3px solid var(--color);
+ h4 {
+     text-transform: uppercase;
+     text-align: center;
+     padding: 1rem;
+     font-weight: 500;
+     letter-spacing: 0.101em;
  }

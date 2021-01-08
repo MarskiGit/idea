@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', function () {
         constructor() {
             this.table = document.querySelector('[data-table="idea"]');
             this.load = document.querySelector('.border_icon');
-            console.log(this.load)
             this.flag = {
                 scrollList: true,
                 listEnd: true
@@ -20,88 +19,81 @@ document.addEventListener('DOMContentLoaded', function () {
                 last_result: 0
             };
             this.tbody = document.createDocumentFragment();
-            this.postElement = null;
-            this.color = null;
-            this.arrayResult = [];
-            this.dateAddIdea = '';
-            this.getIdeaList();
+            this.tr = null;
+            this.statusInfo = null;
+            this.ideaNumber = [];
+            this.loadingIdeaList();
         };
-        getIdeaList() {
+        loadingIdeaList() {
             if (this.flag.scrollList) {
-                windowScroll(this.throttled(this.loadingListIdea.bind(this), 900));
+                windowScroll(this.throttled(this.getListIdea.bind(this), 950));
             };
-            this.loadingListIdea();
+            this.getListIdea();
             this.flag.scrollList = false;
         };
-        loadingListIdea() {
+        getListIdea() {
             if (this.flag.listEnd) {
                 this.load.classList.remove('load');
                 dataFetch('ajax.php', this.request, 0).then(data => {
-                    if (ajaxException(data)) this.addDataToDOM(data);
+                    if (ajaxException(data)) this.renderIdea(data);
                 }).finally(() => {
                     this.load.classList.add('load');
                 });
             };
         };
-        addDataToDOM(data) {
+        renderIdea(data) {
             if (data.length) {
                 data.forEach(obj => {
-                    this.color = this.border(obj.status * 1);
-                    this.arrayResult.push(obj.id_idea);
-                    this.request.last_result = Math.min(...this.arrayResult);
-                    this.postElement = document.createElement('tbody');
-                    this.postElement.setAttribute('data-id_idea', `${obj.id_idea}`);
-                    this.postElement.style.setProperty('--color', `${this.color.border}`);
-                    (obj.date_implementation) ? this.dateAddIdea = `Data wdrożenia: ${(obj.date_implementation)}`: this.dateAddIdea = '';
-                    this.postElement.innerHTML = `
-                        <tr style="line-height: 1.2rem; background-color: ${this.color.back};">
-                        <th class="idea_authors">${(obj.id_users.length > 1) ? 'Pomysłodawcy' : 'Pomysłodawca'}</th>
-                        <th>Status: ${this.color.status}</th>
-                        <th>Przyznane punkty: ${(obj.pkt_mod) ? obj.pkt_mod : 0}</th>
-                        <th></th>
-                        <th class="date_add">Data dodania: ${(obj.date_added).slice(0,10)}</th>
-                    </tr>
-                    <tr>
-                        <td rowspan="5">
-                            <ol>
-                                ${obj.id_users.map(name =>`<li>${name}</li>`).join('')}
-                            </ol>
-                        </td>
-                        <th colspan=" 4" class="title">
-                            Opis stanu obecnego
-                        </th>
-                    </tr>
-                    <tr>
-                        <td colspan="4">
-                            ${obj.before_value}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th colspan="4" class="title">
-                            Propozycja usprawnienia
-                        </th>
-                    </tr>
-                    <tr>
-                        <td colspan="4">
-                            ${obj.after_value}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Numer propozycji: ${obj.id_idea}</th>
-                        <th></th>
-                        <th></th>
-                        <th class="date_add">${this.dateAddIdea}</th>
-                    </tr>
-        `;
-                    this.tbody.appendChild(this.postElement);
+                    this.statusInfo = this.renderInfo(obj.status * 1);
+                    this.ideaNumber.push(obj.id_idea);
+                    this.tr = document.createElement('div');
+                    this.tr.className = 'tbody';
+                    this.tr.setAttribute('data-id_idea', `${obj.id_idea}`);
+                    this.tr.style.setProperty('--color', `${this.statusInfo.border}`);
+                    this.tr.innerHTML = this.renderInner(obj);
+                    this.tbody.appendChild(this.tr);
                     if (obj.id_idea * 1 === 1) this.flag.listEnd = false;
                 });
-                this.table.appendChild(this.tbody);
+                this.request.last_result = Math.min(...this.ideaNumber);
+                this.addIdea();
             } else {
-                this.table.innerHTML = '<tr><td><h4 class="empty_idea">Brak elementów do wyświetlenia.</h4></td></tr>';
+                this.table.innerHTML = '<div class=tbody"><h4 class="empty_idea">Brak elementów do wyświetlenia.</h4></div>';
             }
         };
-        border(st) {
+        renderInner(obj) {
+            return `
+        <div class="tr" style="background-color: ${this.statusInfo.back};">
+            <span class="th">${(obj.id_users.length > 1) ? 'Pomysłodawcy' : 'Pomysłodawca'}</span>
+            <span class="th">Status: ${this.statusInfo.status}</span>
+            <span class="th">Przyznane punkty: ${(obj.pkt_mod) ? obj.pkt_mod : 0}</span>
+            <span class="th">Data dodania: ${(obj.date_added).slice(0,10)}</span>
+        </div>
+        <div class="tr">
+            <div class="td author">
+                <ol>
+                    ${obj.id_users.map(name =>`<li>${name}</li>`).join('')}
+                </ol>
+            </div>
+            <div class="td idea">
+                <span class="th"> Opis stanu obecnego </span>
+                <p class="td"> ${obj.before_value} </p>
+                <span class="th"> Propozycja usprawnienia </span>
+                <p class="td"> ${obj.after_value} </p>
+            </div>
+        </div>
+        <div class="tr">
+            <span class="th">Numer propozycji: ${obj.id_idea}</span>
+            <span class="th date_add">${this.renderDataAdd(obj.date_implementation)}</span>
+        </div>
+        `;
+        };
+        renderDataAdd(date) {
+            return (date) ? `Data wdrożenia: ${date}` : '';
+        };
+        addIdea() {
+            this.table.appendChild(this.tbody);
+        };
+        renderInfo(st) {
             switch (st) {
                 case 0:
                     return {
