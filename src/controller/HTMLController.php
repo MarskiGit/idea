@@ -21,4 +21,8 @@ class HTMLController extends AbstractController
     {
         $this->HTMLView->statistics();
     }
+    protected function loginIdea(): void
+    {
+        $this->HTMLView->login();
+    }
 }

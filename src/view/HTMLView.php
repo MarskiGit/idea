@@ -47,4 +47,8 @@ class HTMLView
     {
         $this->renderHTML('footer', 'page/');
     }
+    public function login(): void
+    {
+        $this->renderHTML('login', 'page/');
+    }
 }

@@ -26,6 +26,12 @@
             <link rel="stylesheet" href="public/style/layoutCreate.css" type="text/css" media="all">
             <script defer type="module" src="public/script/createIdea.js"></script>
             <?php break; ?>
+        <?php
+        case 'login': ?>
+            <link rel="stylesheet" href="public/style/layoutlogin.css" type="text/css" media="all">
+            <script defer type="module" src="public/script/login.js"></script>
+            <?php break; ?>
+
     <?php endswitch; ?>
     <script defer type="module" src="public/script/layout.js"></script>
 
@@ -70,6 +76,7 @@
             <a class="a_btn" href="?action=list">Lista pomysłów</a>
             <a class="a_btn" href="?action=create">Napisz pomysł</a>
             <a class="link_img arrow_up none" href="#scroll_up"></a>
+            <a class="a_btn" href="?action=login">Zaloguj</a>
             <div class="logo_idea"></div>
         </div>
     </nav>
