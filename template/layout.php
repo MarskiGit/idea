@@ -1,3 +1,5 @@
+<!-- <?php dump($params); ?> -->
+
 <!DOCTYPE html>
 <html lang="pl">
 
@@ -27,7 +29,7 @@
             <script defer type="module" src="public/script/createIdea.js"></script>
             <?php break; ?>
         <?php
-        case 'login': ?>
+        case 'loginIdea': ?>
             <link rel="stylesheet" href="public/style/layoutlogin.css" type="text/css" media="all">
             <script defer type="module" src="public/script/login.js"></script>
             <?php break; ?>
@@ -70,13 +72,10 @@
     </header>
     <nav>
         <div class="menu">
-            <a class="link_img home_page" href="http://h.localhost/01_MOJE/01_GIT/idea/">
-                <img class="border_icon load" src="public/img/border_icon.png" alt="Idea">
-            </a>
-            <a class="a_btn" href="?action=list">Lista pomysłów</a>
-            <a class="a_btn" href="?action=create">Napisz pomysł</a>
-            <a class="link_img arrow_up none" href="#scroll_up"></a>
-            <a class="a_btn" href="?action=login">Zaloguj</a>
-            <div class="logo_idea"></div>
+            <a href="http://h.localhost/01_MOJE/01_GIT/idea/" class="home_img home_page"><img class="border_icon load" src="public/img/border_icon.png" alt="Idea"></a>
+            <a href="?action=list" class="a_btn">Lista pomysłów</a>
+            <a href="?action=create" class="a_btn">Napisz pomysł</a>
+            <a href="#scroll_up" class="home_img arrow_up none"></a>
+            <a href="?action=login"><img class="logo_idea" src="public/img/idea.png" alt="Idea"></a>
         </div>
     </nav>

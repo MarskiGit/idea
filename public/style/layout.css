@@ -52,7 +52,9 @@ nav {
     background-color: var(--bacgroundGradientColor);
     background-image: var(--bacgroundGradient);
     box-shadow: var(--boxSadow);
-
+    transition-property: all;
+    transition-duration: .3s;
+    transition-timing-function: linear;
 }
 
 main {
@@ -115,7 +117,7 @@ h1 {
     color: #fff;
     background-color: var(--colorBody);
     border-radius: var(--borderRadius);
-    transition-property: all;
+    transition-property: color;
     transition-duration: .3s;
     transition-timing-function: linear;
 }
@@ -127,6 +129,11 @@ h1 {
 .arrow_up {
     background-image: url(../img/arrow_up.png);
 
+}
+
+.login {
+    font-size: .5rem;
+    align-self: center;
 }
 
 .home_page {
@@ -166,7 +173,7 @@ h1 {
     animation-play-state: paused;
 }
 
-.link_img {
+.home_img {
     flex-basis: 1.6rem;
     filter: invert(100%);
     background-position: center;
@@ -177,22 +184,22 @@ h1 {
     transition-timing-function: linear;
 }
 
-.link_img:hover {
+.home_img:hover {
     filter: invert(0%);
 
 }
 
-/* =========== NAV -> logo=========== */
+/* =========== NAV -> logo =========== */
 nav .logo_idea {
     position: absolute;
     top: 0;
     right: 3px;
     height: 100%;
     width: 1.6rem;
-    background-image: url(../img/idea.png);
     background-position: center;
     background-repeat: no-repeat;
     background-size: 100%;
+    padding: .2rem 0;
 }
 
 .none {
