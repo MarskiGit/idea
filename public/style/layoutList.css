@@ -1,5 +1,5 @@
  /* =========== SECTION IDEA LIST =========== */
- .table {
+ .idea_container {
      width: 100%;
      font-family: 'Source Sans Pro', sans-serif;
      font-size: .58rem;
@@ -10,13 +10,13 @@
      border-radius: var(--borderRadius);
  }
 
- .tbody ol {
+ .idea ol {
      list-style: none;
      text-align: center;
      width: 100%;
  }
 
- .tbody {
+ .idea {
      --color: rgb(255, 209, 102);
      margin-bottom: .5rem;
      border-radius: var(--borderRadius);
@@ -28,11 +28,11 @@
      justify-content: space-between;
  }
 
- .tr .author {
+ .tr .idea_authors {
      flex-basis: 11%;
  }
 
- .tr .idea {
+ .tr .idea_value {
      flex-basis: 89%;
  }
 
@@ -41,10 +41,6 @@
      padding: .2rem;
      color: var(--colorHover);
 
- }
-
- .idea_authors {
-     width: 11%;
  }
 
  h4 {

@@ -62,7 +62,7 @@ class IdeaListModel extends AjaxAbstractModel
             return $num;
         }
     }
-    public function getRow()
+    public function get()
     {
         try {
             $stmt = $this->DB->query("SELECT id_idea, id_area, id_users, before_value, after_value, date_added, date_implementation, pkt_mod, status FROM idea WHERE id_idea < " . $this->limit($this->dbh_limit) . " ORDER BY id_idea DESC LIMIT 6");

@@ -4,30 +4,30 @@ declare(strict_types=1);
 
 namespace Idea\view;
 
-class HTMLView
+use Idea\exception\IdeaException;
+use Exception;
+
+class View
 {
     public function __construct()
     {
     }
-    private function renderHTML(string $name, string $path = '', $params = null)
+    private function renderHTML(string $name, string $path = '', $params = null): void
     {
         $path = DIR_TEMPLATE . $path . $name . '.php';
         try {
             if (is_file($path)) {
                 require $path;
             } else {
-                throw new \Exception('Can not open template ' . $name . ' in: ' . $path);
+                throw new IdeaException('Błąd otwarcia szablonu' . $name . ' in: ' . $path);
             }
-        } catch (\Exception $e) {
-            echo $e->getMessage() . '<br />
-            File: ' . $e->getFile() . '<br />
-            Code line: ' . $e->getLine() . '<br />
-            Trace: ' . $e->getTraceAsString();
-            exit;
+        } catch (Exception $e) {
+            throw new IdeaException('Błąd Renderowania Strony');
         }
     }
     public function layout($params): void
     {
+        // dump($params);
         header('Content-type: text/html; charset=utf-8');
         $this->renderHTML('layout', '', $params);
     }
@@ -37,11 +37,11 @@ class HTMLView
     }
     public function list(): void
     {
-        $this->renderHTML('listIdea', 'page/');
+        $this->renderHTML('ideaList', 'page/');
     }
     public function statistics(): void
     {
-        $this->renderHTML('statisticsIdea', 'page/');
+        $this->renderHTML('ideaStatistics', 'page/');
     }
     public function footer(): void
     {

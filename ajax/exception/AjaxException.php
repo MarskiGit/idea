@@ -13,7 +13,8 @@ class AjaxException extends Exception
         $temp = [
             'exception' => $m,
             'file' => $f,
-            'line' => $l
+            'line' => $l,
+            'type' => ''
         ];
         $answer = json_encode($temp);
         return  $answer;

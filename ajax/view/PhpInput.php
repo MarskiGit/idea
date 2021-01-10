@@ -16,7 +16,7 @@ class PhpInput
     {
         return !empty($this->phpInput);
     }
-    public function InputParam(): array
+    public function getParam_PhpInput(): array
     {
         return json_decode($this->phpInput, true);
     }

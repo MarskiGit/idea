@@ -11,11 +11,11 @@ spl_autoload_register(function (string $classNamespace) {
     require_once($path);
 });
 
-use Idea\controller\HTMLController;
-use Idea\model\SessionModel;
-use Idea\view\HTMLView;
-use Idea\view\Request;
 use Idea\exception\IdeaException;
+use Idea\controller\PageController;
+use Idea\view\View;
+use Idea\view\Request;
+
 
 try {
     $request = [
@@ -26,11 +26,11 @@ try {
     ];
 
     $Request = new Request($request);
-    $HTMLView = new HTMLView();
+    $View = new View();
 
-    (new HTMLController($Request, $HTMLView));
+    (new PageController($Request, $View));
 } catch (IdeaException $e) {
     echo "<div class='exception align_center'><p>Błąd Aplikacji</p><p>" . $e->getMessage() . "</p><div class='exception_img'></div></div>";
 } catch (Throwable $e) {
-    echo "<div class='exception align_center'><p>Błąd Aplikacji</p><p>" . $e->getMessage() . "</p><div class='exception_img'></div></div>";
+    echo "<div class='exception align_center'><p>Krytyczny Błąd Aplikacji</p><p>" . $e->getMessage() . "</p><div class='exception_img'></div></div>";
 }

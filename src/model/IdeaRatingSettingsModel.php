@@ -5,19 +5,20 @@ declare(strict_types=1);
 namespace Idea\model;
 
 use Idea\model\AbstractModel;
+use Idea\exception\IdeaException;
 use PDO;
 use PDOException;
-use Exception;
 
-class RatingSettingModel extends AbstractModel
+
+class IdeaRatingSettingsModel extends AbstractModel
 {
-    public function getSetings()
+    public function get()
     {
         try {
             $stmt = $this->DB->query('SELECT * FROM rating_setting');
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new Exception('Błąd Rating Model');
+            throw new IdeaException('Błąd Ustawień Oceny');
         }
 
         if ($stmt->rowCount() > 0) {

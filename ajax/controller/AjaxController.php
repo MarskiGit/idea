@@ -5,31 +5,30 @@ declare(strict_types=1);
 namespace Ajax\controller;
 
 use Ajax\model\IdeaListModel;
-use Ajax\view\JsonView;
+use Ajax\view\AjaxView;
 use Ajax\view\PhpInput;
 
 class AjaxController
 {
-    private const DEFAULT_ACTION_AJAX = 'listIdea';
+    private const DEFAULT_ACTION_AJAX = 'ideaList';
     private PhpInput $PhpInput;
-    private JsonView $JsonView;
+    private AjaxView $AjaxView;
     private array $param;
 
 
-    public function __construct(PhpInput $PhpInput, JsonView $JsonView)
+    public function __construct(PhpInput $PhpInput, AjaxView $AjaxView)
     {
         $this->PhpInput = $PhpInput;
-        $this->JsonView = $JsonView;
+        $this->AjaxView = $AjaxView;
 
         $this->run();
     }
     private function run(): void
     {
-        if ($this->PhpInput->hasphpInput()) {
+        if ($this->PhpInput->hasPhpInput()) {
 
-            $this->param = $this->PhpInput->InputParam();
+            $this->param = $this->PhpInput->getParam_PhpInput();
             $action = $this->param['action'] . 'Ajax';
-
             if (!method_exists($this, $action)) {
                 $action = self::DEFAULT_ACTION_AJAX . 'Ajax';
             } else {
@@ -37,9 +36,9 @@ class AjaxController
             }
         }
     }
-    private function listIdeaAjax(): void
+    private function ideaListAjax(): void
     {
-        $list = new IdeaListModel($this->param['last_result']);
-        $this->JsonView->renderJSON($list->getRow());
+        $ideaList = new IdeaListModel($this->param['last_result']);
+        $this->AjaxView->renderJSON($ideaList->get());
     }
 }

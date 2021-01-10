@@ -1,5 +1,3 @@
-<!-- <?php dump($params); ?> -->
-
 <!DOCTYPE html>
 <html lang="pl">
 
@@ -21,7 +19,7 @@
     <?php switch ($params['action']):
         case 'listIdea': ?>
             <link rel="stylesheet" href="public/style/layoutList.css" type="text/css" media="all">
-            <script defer type="module" src="public/script/listIdea.js"></script>
+            <script defer type="module" src="public/script/IdeaList.js"></script>
             <?php break; ?>
         <?php
         case 'createIdea': ?>

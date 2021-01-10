@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Idea\exceptions;
+namespace Idea\exception;
 
 use Exception;
 

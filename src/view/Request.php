@@ -6,7 +6,6 @@ namespace Idea\view;
 
 class Request
 {
-    private const DEFAULT_ACTION_HTML = 'statistics';
     private array $get = [];
     private array $post = [];
     private array $server = [];
@@ -17,11 +16,11 @@ class Request
         $this->post = $params['post'];
         $this->server = $params['server'];
     }
-    public function getParam(string $name, $default = null)
+    public function getParam_GET(string $name, $default = null): ?string
     {
         return $this->get[$name] ?? $default;
     }
-    public function postParam(string $name, $default = null)
+    public function getParam_POST(string $name, $default = null): ?string
     {
         return $this->post[$name] ?? $default;
     }
@@ -33,8 +32,8 @@ class Request
     {
         return $this->server['REQUEST_METHOD'] === 'GET';
     }
-    public function sessionParam(string $session_name)
+    public function getParam_SESSION(string $session_name): ?string
     {
-        return (!empty($this->session[$session_name])) ? $this->session[$session_name] : 0;
+        return (!empty($this->session[$session_name])) ? $this->session[$session_name] : null;
     }
 }

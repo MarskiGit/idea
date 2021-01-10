@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ajax\view;
 
-class JsonView
+class AjaxView
 {
     private $DB;
 

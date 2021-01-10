@@ -5,43 +5,42 @@ declare(strict_types=1);
 namespace Idea\controller;
 
 use Idea\view\Request;
-use Idea\view\HTMLView;
+use Idea\view\View;
 
 abstract class AbstractController
 {
     protected const DEFAULT_ACTION_HTML = 'statistics';
     protected Request $Request;
-    protected HTMLView $HTMLView;
+    protected View $View;
     protected  $SessionParam;
     protected string $action;
 
-    public function __construct(Request $Request, HTMLView $HTMLView)
+    public function __construct(Request $Request, View $View)
     {
 
         $this->Request = $Request;
-        $this->HTMLView = $HTMLView;
-        $this->SessionParam = $this->Request->sessionParam('account');
-
-        $this->run();
+        $this->View = $View;
+        $this->SessionParam = $this->Request->getParam_SESSION('account');
+        $this->action = $this->Request->getParam_GET('action', self::DEFAULT_ACTION_HTML) . 'Idea';
+        $this->runPage();
     }
-    private function run(): void
+    private function runPage(): void
     {
         if ($this->Request->isGet()) {
-            $this->action = $this->Request->getparam('action', self::DEFAULT_ACTION_HTML) . 'Idea';
             $action = $this->action;
-            if (!method_exists($this, $action)) {
+            if (!method_exists($this, $this->action)) {
                 $action = self::DEFAULT_ACTION_HTML . 'Idea';
             }
         }
-        $this->HTMLView->layout($this->getParam());
+        $this->View->layout($this->params());
         $this->$action();
-        $this->HTMLView->footer();
+        $this->View->footer();
     }
-    protected function getParam(): array
+    protected function params(): array
     {
-        return $param = [
+        return [
             'action' => $this->action,
-            'sesion' => $this->SessionParam
+            'session' => $this->SessionParam
         ];
     }
 }
