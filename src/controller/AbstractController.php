@@ -26,7 +26,7 @@ abstract class AbstractController
     }
     private function runPage(): void
     {
-        if ($this->Request->isGet()) {
+        if ($this->Request->is_Get()) {
             $action = $this->action;
             if (!method_exists($this, $this->action)) {
                 $action = self::DEFAULT_ACTION_HTML . 'Idea';

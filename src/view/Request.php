@@ -24,11 +24,11 @@ class Request
     {
         return $this->post[$name] ?? $default;
     }
-    public function isPost(): bool
+    public function is_Post(): bool
     {
         return $this->server['REQUEST_METHOD'] === 'POST';
     }
-    public function isGet(): bool
+    public function is_Get(): bool
     {
         return $this->server['REQUEST_METHOD'] === 'GET';
     }
