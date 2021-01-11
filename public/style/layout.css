@@ -127,6 +127,7 @@ h1 {
 }
 
 .arrow_up {
+    display: none;
     background-image: url(../img/arrow_up.png);
 
 }
@@ -200,10 +201,6 @@ nav .logo_idea {
     background-repeat: no-repeat;
     background-size: 100%;
     padding: .2rem 0;
-}
-
-.none {
-    opacity: 0;
 }
 
 /* =========== FOTTER -> element =========== */

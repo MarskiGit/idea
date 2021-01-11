@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ajax\controller;
 
-use Ajax\model\IdeaListModel;
+use Ajax\model\ListIdeaModel;
 use Ajax\view\AjaxView;
 use Ajax\view\PhpInput;
 
@@ -38,7 +38,7 @@ class AjaxController
     }
     private function ideaListAjax(): void
     {
-        $ideaList = new IdeaListModel($this->requestParam);
+        $ideaList = new ListIdeaModel($this->requestParam);
         $this->AjaxView->renderJSON($ideaList->get());
     }
 }

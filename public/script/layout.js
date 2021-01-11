@@ -13,10 +13,10 @@ document.addEventListener('DOMContentLoaded', function () {
         sticky() {
             if (window.pageYOffset > this.nav.offsetTop) {
                 this.nav.classList.add('sticky');
-                this.arrowUp.classList.remove('none');
+                this.arrowUp.style.display = "block";
             } else {
                 this.nav.classList.remove('sticky');
-                this.arrowUp.classList.add('none');
+                this.arrowUp.style.display = "none";
             }
         };
     };

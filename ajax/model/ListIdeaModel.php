@@ -10,7 +10,7 @@ use PDO;
 use PDOException;
 
 
-class IdeaListModel extends AjaxAbstractModel
+class ListIdeaModel extends AjaxAbstractModel
 {
     private function getListNames($id_users): array
     {

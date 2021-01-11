@@ -7,7 +7,7 @@ import {
 } from './abstract.js';
 document.addEventListener('DOMContentLoaded', function () {
 
-    class IdeaList {
+    class ListIdea {
         constructor() {
             this.ideaContainer = document.querySelector('[data-idea="idea_container"]');
             this.endTuples = false;
@@ -124,6 +124,6 @@ document.addEventListener('DOMContentLoaded', function () {
             };
         };
     };
-    const IDEALIST = new IdeaList();
+    const LISTIDEA = new ListIdea();
 
 });

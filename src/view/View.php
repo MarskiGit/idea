@@ -37,11 +37,11 @@ class View
     }
     public function list(): void
     {
-        $this->renderHTML('ideaList', 'page/');
+        $this->renderHTML('listIdea', 'page/');
     }
     public function statistics(): void
     {
-        $this->renderHTML('ideaStatistics', 'page/');
+        $this->renderHTML('statisticsIdea', 'page/');
     }
     public function footer(): void
     {
