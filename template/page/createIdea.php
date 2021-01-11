@@ -3,17 +3,17 @@
     <form data-create="form">
         <div class="board">
             <h3 class="m_bottom">Opis stanu obecnego</h3>
-            <textarea maxlength="2000" rows="15" placeholder="Proszę wypełnić to pole" data-create="before"></textarea>
-            <p class="sign" data-create="be_sign"></p>
+            <textarea maxlength="2000" rows="15" placeholder="Proszę wypełnić to pole" data-create="before" require></textarea>
+            <p class="sign" data-error="before"></p>
         </div>
         <div class="board">
             <h3 class="m_bottom">Propozycja usprawnienia</h3>
-            <textarea maxlength="2000" rows="15" placeholder="Proszę wypełnić to pole" data-create="after"></textarea>
-            <p class="sign" data-create="af_sign"></p>
+            <textarea maxlength="2000" rows="15" placeholder="Proszę wypełnić to pole" data-create="after" require></textarea>
+            <p class="sign" data-error="after"></p>
         </div>
         <div class="board">
             <h3>Ocena propozycji</h3>
-            <table class="rating">
+            <table class="rating" data-create="rating">
                 <tbody>
                     <?php
                     foreach ($params as $key => $value) {
@@ -25,7 +25,8 @@
                             $value_option  = explode(',', $value_option);
                             echo "<tr><td>$title</td><td><div class='select'><select name='$name_option' data-select='$name_option'>";
                             foreach ($value_option as $key => $value) {
-                                echo "<option value=" . $key . ">$value</option>";
+                                // $output = preg_replace('/[^0-9]/', '', $value);
+                                echo "<option value=" . $value . ">$value</option>";
                             }
                         } else {
                             echo "<th>$title</th><th> </th>";
@@ -34,7 +35,7 @@
                     }
                     ?>
                     <th> </th>
-                    <th class="a_center"> <span>Suma punktów:&nbsp;</span><span class="pktnum">10</span><span>&nbsp;pkt.</span></th>
+                    <th class="a_center"> <span>Suma punktów:&nbsp;</span><span class="pktnum" data-create="sum_pkt">10</span><span>&nbsp;pkt.</span></th>
                     </tr>
                 </tbody>
             </table>
@@ -70,6 +71,6 @@
     </div>
     <div class="repeat popup" data-user="repeatUser">
         <p>Ten pomysłodawca już jest na liście</p>
-        <button class="repeat_ok" data-user="OK">OK</button>
+        <button type="submit" class="repeat_ok" data-user="OK">OK</button>
     </div>
 </main>

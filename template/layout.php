@@ -16,7 +16,7 @@
     <meta name="robots" content="noindex, nofollow">
     <link rel="shortcut icon" href="public/img/idea.png" type="image/x-icon" sizes="16x16">
     <link rel="stylesheet" href="public/style/layout.css" type="text/css" media="all">
-    <link rel="stylesheet" href="public/style/statisticsLayout.css" type="text/css" media="all">
+    <script defer type="module" src="public/script/layout.js"></script>
     <?php switch ($params['action']):
         case 'listIdea': ?>
             <link rel="stylesheet" href="public/style/listLayout.css" type="text/css" media="all">
@@ -24,18 +24,20 @@
             <?php break; ?>
         <?php
         case 'createIdea': ?>
-            <link rel="stylesheet" href="public/style/writeLayout.css" type="text/css" media="all">
-            <script defer type="module" src="public/script/WriteIdea.js"></script>
+            <link rel="stylesheet" href="public/style/createLayout.css" type="text/css" media="all">
+            <script defer type="module" src="public/script/CreateIdea.js"></script>
             <?php break; ?>
         <?php
         case 'loginIdea': ?>
             <link rel="stylesheet" href="public/style/loginLayout.css" type="text/css" media="all">
             <script defer type="module" src="public/script/login.js"></script>
             <?php break; ?>
-
+        <?php
+        default: ?>
+            <link rel="stylesheet" href="public/style/statisticsLayout.css" type="text/css" media="all">
+            <!-- <script defer type="module" src="public/script/login.js"></script> -->
+            <?php break; ?>
     <?php endswitch; ?>
-    <script defer type="module" src="public/script/layout.js"></script>
-
     <style>
         *,
         *:before,
