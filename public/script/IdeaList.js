@@ -1,61 +1,57 @@
 'use strict';
 import {
     dataFetch,
-    windowScroll,
-    ajaxException
+    eventWindowScroll,
+    displayException,
+    pageLoadingStatus
 } from './abstract.js';
 document.addEventListener('DOMContentLoaded', function () {
 
     class IdeaList {
         constructor() {
             this.ideaContainer = document.querySelector('[data-idea="idea_container"]');
-            this.chargingState = document.querySelector('.border_icon');
-            this.flag = {
-                scrollList: true,
-                listEnd: true
-            };
+            this.endTuples = false;
             this.request = {
                 action: 'ideaList',
-                last_result: 0
+                last_tuple: 0
             };
             this.list = document.createDocumentFragment();
             this.div = null;
             this.status = null;
-            this.number = [];
+            this.tupleNumber = [];
             this.runIdea();
         };
         runIdea() {
-            if (this.flag.scrollList) {
-                windowScroll(this.throttled(this.getIdeaList.bind(this), 950));
-            };
             this.getIdeaList();
-            this.flag.scrollList = false;
+            eventWindowScroll(this.throttled(this.getIdeaList.bind(this), 950));
         };
         getIdeaList() {
-            if (this.flag.listEnd) {
-                this.chargingState.classList.remove('load');
-                dataFetch('ajax.php', this.request, 0).then(data => {
-                    if (ajaxException(data)) this.renderList(data);
-                }).finally(() => {
-                    this.chargingState.classList.add('load');
-                });
+            if (!this.endTuples) {
+                pageLoadingStatus(1);
+                dataFetch('ajax.php', this.request, 0)
+                    .then(data => {
+                        (data.exception) ? displayException(data): this.renderList(data);
+                    })
+                    .finally(() => {
+                        pageLoadingStatus(0);
+                    });
             };
         };
-        renderList(listData) {
-            if (listData.length) {
-                listData.forEach(idea => {
+        renderList(listIdea) {
+            if (listIdea.length) {
+                listIdea.forEach(idea => {
                     this.status = this.state(idea.status * 1);
-                    this.number.push(idea.id_idea);
+                    this.tupleNumber.push(idea.id_idea);
                     this.div = document.createElement('div');
                     this.div.className = 'idea';
                     this.div.setAttribute('data-id_idea', `${idea.id_idea}`);
                     this.div.style.setProperty('--color', `${this.status.border}`);
                     this.div.innerHTML = this.renderIdea(idea);
                     this.list.appendChild(this.div);
-                    if (idea.id_idea * 1 === 1) this.flag.listEnd = false;
+                    if (idea.id_idea * 1 === 1) this.endTuples = true;
                 });
-                this.request.last_result = Math.min(...this.number);
-                this.addList();
+                this.request.last_tuple = Math.min(...this.tupleNumber);
+                this.addListPage();
             } else {
                 this.ideaContainer.innerHTML = '<div class=IdeaList"><h4 class="empty_idea">Brak elementów do wyświetlenia.</h4></div>';
             }
@@ -90,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
         renderDataAdd(date) {
             return (date) ? `Data wdrożenia: ${date}` : '';
         };
-        addList() {
+        addListPage() {
             this.ideaContainer.appendChild(this.list);
         };
         state(st) {

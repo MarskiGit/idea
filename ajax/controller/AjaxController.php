@@ -13,7 +13,7 @@ class AjaxController
     private const DEFAULT_ACTION_AJAX = 'ideaList';
     private PhpInput $PhpInput;
     private AjaxView $AjaxView;
-    private array $param;
+    private array $requestParam;
 
 
     public function __construct(PhpInput $PhpInput, AjaxView $AjaxView)
@@ -27,8 +27,8 @@ class AjaxController
     {
         if ($this->PhpInput->hasPhpInput()) {
 
-            $this->param = $this->PhpInput->getParam_PhpInput();
-            $action = $this->param['action'] . 'Ajax';
+            $this->requestParam = $this->PhpInput->getParam_PhpInput();
+            $action = $this->requestParam['action'] . 'Ajax';
             if (!method_exists($this, $action)) {
                 $action = self::DEFAULT_ACTION_AJAX . 'Ajax';
             } else {
@@ -38,7 +38,7 @@ class AjaxController
     }
     private function ideaListAjax(): void
     {
-        $ideaList = new IdeaListModel($this->param['last_result']);
+        $ideaList = new IdeaListModel($this->requestParam);
         $this->AjaxView->renderJSON($ideaList->get());
     }
 }

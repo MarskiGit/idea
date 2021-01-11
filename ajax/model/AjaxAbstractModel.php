@@ -12,19 +12,19 @@ use PDO;
 abstract class AjaxAbstractModel
 {
     protected ?PDO $DB;
-    protected int $dbh_limit;
-    protected array $dbh_result;
-    protected $dbh_count;
-    protected array $json_dbh = ['list' => null];
-    public function __construct($obj)
+    protected array $requestParam;
+    public function __construct(array $requestParam)
     {
         $this->DB = DB::conn();
-        $this->dbh_limit = $obj;
-        $this->dbh_count = null;
+        $this->requestParam = $requestParam;
     }
-    protected function answer(int $num): array
+    protected function answer($param, $message = ''): array
     {
-        $answer = array('answer' => $num);
+        $answer = array($param => $message);
         return $answer;
+    }
+    protected function notification($message): array
+    {
+        return [$message];
     }
 }

@@ -1,8 +1,9 @@
 'use strict';
 export {
     dataFetch,
-    windowScroll,
-    ajaxException
+    eventWindowScroll,
+    displayException,
+    pageLoadingStatus
 };
 /////// FETCH \\\\\\\ 
 const handleError = err => {
@@ -37,19 +38,18 @@ const dataFetch = async (url = '', data = {}) => {
 
 };
 
-const windowScroll = fn => {
+const eventWindowScroll = fn => {
     window.addEventListener('scroll', fn);
 
 };
+const displayException = data => {
+    const mainContainer = document.querySelector('[data-page="main"]');
+    mainContainer.style.justifyContent = 'center';
+    mainContainer.innerHTML = `<div class="exception"><p>${data.type} Błąd Aplikacji - Ajax</p> <p>${data.exception}</p><div class="exception_img"></div></div>`;
+    console.log(data.file, data.line);
+}
 
-const ajaxException = data => {
-    const main = document.querySelector('main');
-    if (data.exception) {
-        main.style.justifyContent = 'center';
-        main.innerHTML = `<div class="exception"><p>${data.type} Błąd Aplikacji - Ajax</p> <p>${data.exception}</p><div class="exception_img"></div></div>`;
-        console.log(data.file, data.line);
-        return 0;
-    } else {
-        return 1
-    }
+const pageLoadingStatus = bool => {
+    const statusIndicator = document.querySelector('[data-page="status_indicator"]');
+    (bool) ? statusIndicator.classList.remove('load'): statusIndicator.classList.add('load');
 }

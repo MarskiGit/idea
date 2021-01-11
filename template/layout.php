@@ -64,16 +64,16 @@
 </head>
 
 <body>
-    <scroll-page id="scroll_up"></scroll-page>
+    <scroll-page id="top_page"></scroll-page>
     <header>
 
     </header>
-    <nav>
+    <nav data-page="nav">
         <div class="menu">
-            <a href="http://h.localhost/01_MOJE/01_GIT/idea/" class="home_img home_page"><img class="border_icon load" src="public/img/border_icon.png" alt="Idea"></a>
+            <a href="http://h.localhost/01_MOJE/01_GIT/idea/" class="home_img home_page"><img class="border_icon load" data-page="status_indicator" src="public/img/border_icon.png" alt="Idea"></a>
             <a href="?action=list" class="a_btn">Lista pomysłów</a>
             <a href="?action=create" class="a_btn">Napisz pomysł</a>
-            <a href="#scroll_up" class="home_img arrow_up none"></a>
+            <a href="#top_page" class="home_img arrow_up none" data-page="arrow_up"></a>
             <a href="?action=login"><img class="logo_idea" src="public/img/idea.png" alt="Idea"></a>
         </div>
     </nav>

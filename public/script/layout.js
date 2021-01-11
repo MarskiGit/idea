@@ -1,19 +1,17 @@
 'use strict';
 import {
-    windowScroll
+    eventWindowScroll
 } from './abstract.js';
 document.addEventListener('DOMContentLoaded', function () {
 
-    class Nav {
+    class NavAnimation {
         constructor() {
-            this.nav = document.querySelector('nav');
-            this.arrowUp = document.querySelector('.arrow_up');
-            this.offset = this.nav.offsetTop;
-
-            windowScroll(this.sticky.bind(this));
+            this.nav = document.querySelector('[data-page="nav"]');
+            this.arrowUp = document.querySelector('[data-page="arrow_up"]');
+            eventWindowScroll(this.sticky.bind(this));
         }
         sticky() {
-            if (window.pageYOffset > this.offset) {
+            if (window.pageYOffset > this.nav.offsetTop) {
                 this.nav.classList.add('sticky');
                 this.arrowUp.classList.remove('none');
             } else {
@@ -24,5 +22,5 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
 
-    const NAV = new Nav();
+    const NAV = new NavAnimation();
 });

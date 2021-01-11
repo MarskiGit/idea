@@ -1,4 +1,4 @@
-<main>
+<main data-page="main">
     <form class="align_center">
         <h1>Witam</h1>
         <label for="login">Login</label>

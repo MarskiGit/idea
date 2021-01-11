@@ -12,9 +12,8 @@ use PDOException;
 
 class IdeaListModel extends AjaxAbstractModel
 {
-    private function getName($id_users)
+    private function getListNames($id_users): array
     {
-        $json_name = [];
         try {
             $stmt = $this->DB->query("SELECT name FROM user WHERE id_user IN (" . $id_users . ")");
             $stmt->execute();
@@ -23,15 +22,14 @@ class IdeaListModel extends AjaxAbstractModel
         }
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $json_name[] = $row['name'];
+                $name[] = $row['name'];
             }
-            return $json_name;
+            return $name;
         } else {
-            $json_name[] = 'Anonim';
-            return $json_name;
+            return $this->notification('Bark pomysłodawców');
         }
     }
-    private function getArea($id_area)
+    private function getArea($id_area): array
     {
         try {
             $stmt = $this->DB->query("SELECT area_name FROM area WHERE id_area = $id_area");
@@ -41,44 +39,45 @@ class IdeaListModel extends AjaxAbstractModel
         }
         if ($stmt->rowCount() > 0) {
             return $stmt->fetch(PDO::FETCH_ASSOC);
+        } else {
+            return $this->notification('Brak obszaru');
         }
     }
-    private function countTable()
+    private function getNumberTuples(): int
     {
         try {
             $stmt = $this->DB->query("SELECT COUNT(id_idea) FROM idea");
             $stmt->execute();
-            $this->dbh_count = $stmt->fetchColumn();
+            return intval($stmt->fetchColumn());
         } catch (PDOException $e) {
-            throw new AjaxException('Błąd Count IdeaModel');
+            throw new AjaxException('Błąd Number Tuples IdeaModel');
         }
     }
-    private function limit(int $num): int
+    private function limitTuples(int $num): int
     {
-        $this->countTable();
         if (!$num) {
-            return $this->dbh_count + 1;
+            return $this->getNumberTuples() + 1;
         } else {
             return $num;
         }
     }
-    public function get()
+    public function get(): array
     {
         try {
-            $stmt = $this->DB->query("SELECT id_idea, id_area, id_users, before_value, after_value, date_added, date_implementation, pkt_mod, status FROM idea WHERE id_idea < " . $this->limit($this->dbh_limit) . " ORDER BY id_idea DESC LIMIT 6");
+            $stmt = $this->DB->query("SELECT id_idea, id_area, id_users, before_value, after_value, date_added, date_implementation, pkt_mod, status FROM idea WHERE id_idea < " . $this->limitTuples($this->requestParam['last_tuple']) . " ORDER BY id_idea DESC LIMIT 6");
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Błąd Row IdeaModel');
+            throw new AjaxException('Błąd Get IdeaModel');
         }
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $row['id_users'] = $this->getName($row['id_users']);
+                $row['id_users'] = $this->getListNames($row['id_users']);
                 $row['id_area'] = $this->getArea($row['id_area']);
-                $this->dbh_result[] = $row;
+                $result[] = $row;
             }
-            return $this->dbh_result;
+            return $result;
         } else {
-            return $this->json_dbh;
+            return [];
         }
     }
 }

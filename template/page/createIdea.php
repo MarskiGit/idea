@@ -1,4 +1,4 @@
-<main>
+<main data-page="main">
     <h1>Propozycja</h1>
     <form data-create="form">
         <div class="board">
