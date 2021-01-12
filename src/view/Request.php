@@ -6,15 +6,17 @@ namespace Idea\view;
 
 class Request
 {
-    private array $get = [];
-    private array $post = [];
-    private array $server = [];
+    private array $get;
+    private array $post;
+    private array $server;
+    private $session;
 
     public function __construct(array $params)
     {
         $this->get = $params['get'];
         $this->post = $params['post'];
         $this->server = $params['server'];
+        $this->session = $params['session'];
     }
     public function getParam_GET(string $name, $default = null): ?string
     {
@@ -34,6 +36,6 @@ class Request
     }
     public function getParam_SESSION(string $session_name): ?string
     {
-        return (!empty($this->session[$session_name])) ? $this->session[$session_name] : null;
+        return $this->session[$session_name] ?? null;
     }
 }

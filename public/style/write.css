@@ -1,6 +1,13 @@
-/* =========== SECTION CREATE CONCEPT =========== */
+/* =========== WRITE AN IDEA SECTION =========== */
+.board:nth-of-type(1) {
+    margin: 0;
+}
+
+.board:nth-of-type(2) {
+    margin: 0;
+}
+
 .board {
-    position: relative;
     margin-bottom: 1em;
 }
 
@@ -18,17 +25,16 @@ form {
     margin-bottom: -.3em;
 }
 
-h3 {
-    width: 100%;
+.label_h3 {
+    display: block;
     font-family: 'Raleway', sans-serif;
     font-size: .6rem;
     font-weight: 400;
     text-transform: uppercase;
     text-align: center;
-    line-height: 1rem;
+    line-height: 1.1rem;
     letter-spacing: .9px;
     color: var(--bacgroundContent);
-    padding: .1em;
     border-radius: 0.12em 0.12em 0px 0px;
     background-color: var(--bacgroundGradientColor);
     background-image: var(--bacgroundGradient)
@@ -49,58 +55,66 @@ textarea:focus {
     background-color: #ffffff;
 }
 
-.sign {
-    position: absolute;
-    bottom: 0;
-    right: 50%;
-    transform: translate(50%, 0);
+/* =========== WRITE AN IDEA SECTION => display the list of characters =========== */
+.sign_number {
     font-size: .5rem;
     text-align: end;
     padding: .2em;
     min-height: 2em;
 }
 
-/* =========== SECTION CREATE CONCEPT => Rating =========== */
+/* =========== WRITE AN IDEA SECTION => Calculate PointsIdea =========== */
 
-table,
-td,
-th {
-    border-collapse: collapse;
-}
-
-table {
+.rating {
     width: 100%;
     font-size: .8rem;
     table-layout: auto;
     border: var(--border);
-    white-space: wrap;
+    display: flex;
+    flex-direction: column;
 }
 
-td,
-th {
+.options_rating {
+    display: flex;
+    color: var(--colorFont);
     padding: .2rem;
-    text-align: left;
+    transition: all .3s;
+
 }
 
-td {
-    transition: all 300ms;
+.options_rating span {
+    flex-basis: 80%;
+    transition: all .3s;
 }
 
-tbody:hover td {
+.title_rating {
+    color: var(--colorFont);
+    font-weight: 600;
+    padding: .2rem;
+
+}
+
+.rating:hover .options_rating {
     color: transparent;
     text-shadow: 0 0 3px #aaa;
 }
 
-tbody:hover tr:hover td {
-    color: #444;
+.options_rating:hover span {
+    color: var(--colorFont);
     text-shadow: 0 1px 0 #fff;
 }
 
-.a_center {
-    text-align: center;
+.options_rating:hover .option_pkt {
+    color: var(--colorFont);
+    text-shadow: 0 1px 0 #fff;
 }
 
-.select select {
+.number_rating {
+    text-align: right;
+    padding: .2rem 1rem;
+}
+
+.option_pkt select {
     flex: 1;
     appearance: none;
     color: #222222;
@@ -110,12 +124,13 @@ tbody:hover tr:hover td {
 }
 
 /* Remove IE arrow */
-.select select::-ms-expand {
+.option_pkt select::-ms-expand {
     display: none;
 }
 
 /* Custom Select */
-.select {
+.option_pkt {
+    align-self: center;
     position: relative;
     display: flex;
     width: 5em;
@@ -125,7 +140,7 @@ tbody:hover tr:hover td {
 }
 
 /* Arrow */
-.select::after {
+.option_pkt::after {
     content: '\25BC';
     position: absolute;
     top: 0;
@@ -136,7 +151,7 @@ tbody:hover tr:hover td {
 }
 
 /* Transition */
-.select:hover::after {
+.option_pkt:hover::after {
     color: #f39c12;
 }
 
@@ -168,7 +183,7 @@ tbody:hover tr:hover td {
     padding: .5em;
 }
 
-/* =========== SECTION CREATE CONCEPT => Live Search =========== */
+/* =========== WRITE AN IDEA SECTION => Live Search =========== */
 
 .user_list {
     display: flex;
@@ -269,7 +284,7 @@ input[type="search"] {
     background-color: var(--colorBody);
 }
 
-/* =========== SECTION CREATE CONCEPT => Add idea =========== */
+/* =========== WRITE AN IDEA SECTION => Add idea =========== */
 
 .add_idea {
     position: absolute;
@@ -326,7 +341,7 @@ input[type="search"] {
     background-size: .65em auto, 100%;
 }
 
-/* =========== SECTION CREATE CONCEPT => Add button =========== */
+/* =========== WRITE AN IDEA SECTION => Add button =========== */
 .btn_area {
     border-radius: .3em;
     background-color: var(--colorBody);

@@ -33,15 +33,15 @@ class View
     }
     public function create($params): void
     {
-        $this->renderHTML('createIdea', 'page/', $params);
+        $this->renderHTML('write', 'page/', $params);
     }
     public function list(): void
     {
-        $this->renderHTML('listIdea', 'page/');
+        $this->renderHTML('list', 'page/');
     }
     public function statistics(): void
     {
-        $this->renderHTML('statisticsIdea', 'page/');
+        $this->renderHTML('statistics', 'page/');
     }
     public function footer(): void
     {

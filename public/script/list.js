@@ -19,9 +19,9 @@ document.addEventListener('DOMContentLoaded', function () {
             this.div = null;
             this.status = null;
             this.tupleNumber = [];
-            this.ListIdea();
+            this.start();
         };
-        ListIdea() {
+        start() {
             this.getIdeaList();
             eventWindowScroll(this.throttled(this.getIdeaList.bind(this), 950));
         };

@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-session_start();
 
 require_once("utils/debug.php");
 require_once('config/config.php');
@@ -21,10 +20,9 @@ try {
     $request = [
         'get' => $_GET,
         'post' => $_POST,
-        'session' => $_SESSION,
+        'session' => isset($_SESSION),
         'server' => $_SERVER
     ];
-
     $Request = new Request($request);
     $View = new View();
 

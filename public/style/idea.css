@@ -4,6 +4,7 @@
     --borderRadius: .2rem;
     --colorBody: #52b6d5;
     --colorHover: #214A57;
+    --colorFont: #222222;
     --widthContent: 98%;
     --border: 1px solid #223957;
     --borderHover: 1px solid #413a1b;
@@ -39,7 +40,7 @@ body {
     min-height: 100vh;
     align-items: center;
     font-family: 'Montserrat', sans-serif;
-    color: #222222;
+    color: var(--colorFont);
     background-color: var(--colorBody);
 
 }
