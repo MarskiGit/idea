@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Ajax\controller;
 
-use Ajax\model\ListIdeaModel;
+
 use Ajax\view\AjaxView;
 use Ajax\view\PhpInput;
+use Ajax\model\ListIdeaModel;
+use Ajax\model\UserSearchModel;
 
 class AjaxController
 {
@@ -36,9 +38,14 @@ class AjaxController
             }
         }
     }
-    private function ideaListAjax(): void
+    private function listIdeaAjax(): void
     {
         $ideaList = new ListIdeaModel($this->requestParam);
         $this->AjaxView->renderJSON($ideaList->get());
+    }
+    private function userSerchAjax(): void
+    {
+        $userSearch = new UserSearchModel($this->requestParam);
+        $this->AjaxView->renderJSON($userSearch->get());
     }
 }

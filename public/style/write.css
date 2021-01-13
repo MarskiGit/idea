@@ -171,24 +171,37 @@ textarea:focus {
     padding: .5em;
 }
 
-/* =========== WRITE AN IDEA SECTION => Live Search =========== */
+/* =========== WRITE AN IDEA SECTION => Originators =========== */
 
-.user_list {
+.originators {
     display: flex;
+    flex-direction: row;
     border: var(--border);
     min-height: 5rem;
 }
 
-.user_add_list {
-    flex-grow: 1;
-    margin: 10px;
+.originators label {
+    display: block;
+    font-size: .6rem;
+    opacity: .5;
+    width: 100%;
+    text-align: center;
 }
 
-.user_add_list ol li {
-    margin: 0 0 0 1em;
+/* =========== WRITE AN IDEA SECTION => Live Search =========== */
+.live_search {
+    flex-basis: 45%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: .3rem;
 }
 
-input[type="search"] {
+.live_search ol {
+    width: 90%;
+}
+
+.input_search {
     width: 90%;
     background-color: #ffffff;
     border: var(--border);
@@ -198,42 +211,26 @@ input[type="search"] {
     border-radius: .2em .2em 0 0;
 }
 
-.live_search {
-    flex-grow: 1;
-    margin: 0 10px;
-    line-height: 21px;
-}
-
-[data-load] {
-    width: 10%;
-    font-size: .8rem;
-    padding: .4em;
-    color: transparent;
-}
-
-.live_search [data-search="error"] {
-    display: block;
-    width: 90%;
-    font-size: .7rem;
-    text-align: center;
-    padding: .2em;
+.errorSearch {
+    border: 1px solid red;
     color: #ff0000;
-    height: 1em;
+
 }
 
-.live_search div {
+/* =========== WRITE AN IDEA SECTION => Chosen ones =========== */
+.chosen_ones {
+    flex-basis: 55%;
     display: flex;
-    width: 90%;
-    flex-direction: row;
-    border-radius: 0 0 .2em .2em;
+    flex-direction: column;
+    align-items: center;
+    padding: .3rem;
 }
 
-.list_label {
-    font-size: .6rem;
-    opacity: .5;
+.chosen_ones ol li {
+    margin: 0 0 0 1em;
 }
 
-#sugestion_name {
+.view_user {
     display: none;
     width: 100%;
     list-style: none;
@@ -246,13 +243,13 @@ input[type="search"] {
     border-radius: 0 0 .2em .2em;
 }
 
-#sugestion_name li {
+.view_user li {
     padding: .4em;
     letter-spacing: .1em;
     cursor: pointer;
 }
 
-#sugestion_name li:hover {
+.view_user li:hover {
     background-color: #b7f589;
 }
 

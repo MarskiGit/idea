@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
             this.ideaContainer = document.querySelector('[data-idea="idea_container"]');
             this.endTuples = false;
             this.request = {
-                action: 'ideaList',
+                action: 'listIdea',
                 last_tuple: 0
             };
             this.list = document.createDocumentFragment();
@@ -28,9 +28,9 @@ document.addEventListener('DOMContentLoaded', function () {
         getIdeaList() {
             if (!this.endTuples) {
                 pageLoadingStatus(1);
-                dataFetch('ajax.php', this.request, 0)
-                    .then(data => {
-                        (data.exception) ? displayException(data): this.renderList(data);
+                dataFetch('ajax.php', this.request)
+                    .then(listIdea => {
+                        (listIdea.exception) ? displayException(listIdea): this.renderList(listIdea);
                     })
                     .finally(() => {
                         pageLoadingStatus(0);

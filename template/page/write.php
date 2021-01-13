@@ -16,7 +16,7 @@
 
         <fieldset>
             <legend>Ocena propozycji</legend>
-            <div class="rating" name="after" id="rating" data-write="rating">
+            <div class="rating">
                 <?php
                 foreach ($params as $key => $value) {
                     $title = $value['title'];
@@ -36,7 +36,7 @@
                     }
                 }
                 ?>
-                <div class="number_rating"> <span>Suma punktów:&nbsp;</span><span class="pktnum" data-write="sum_pkt">10</span><span>&nbsp;pkt.</span></div>
+                <div class="number_rating"> <span>Suma punktów:&nbsp;</span><span class="pktnum" data-write="view_points">10</span><span>&nbsp;pkt.</span></div>
             </div>
             <span class="sign_number" data-write=""></span>
         </fieldset>
@@ -44,19 +44,16 @@
 
         <fieldset>
             <legend>Pomysłodawcy</legend>
-            <div class="user_list" name="originators" id="originators">
+            <div class="originators">
                 <div class="live_search">
-                    <span class="error" data-search="error"></span>
-                    <label for="search_name" class="list_label">Wyszukaj i kliknij: </label>
-                    <input id="search_name" data-search="searchName" type="search" autocomplete="off" placeholder="Nazwisko">
-                    <span data-load="live_search">M</span>
-                    <div>
-                        <ol id="sugestion_name" data-write="sugestionName"></ol>
-                    </div>
+                    <!-- <span class="error" data-search="error"></span> -->
+                    <label for="input_search" class="list_label">Wyszukaj i kliknij: </label>
+                    <input id="input_search" class="input_search" data-write="input_search" type="search" autocomplete="off" placeholder="Nazwisko">
+                    <ol class="view_user" data-write="view_user"></ol>
                 </div>
-                <div class="user_add_list">
+                <div class="chosen_ones">
                     <label for="select_name" class="list_label">Lista pomysłodawców: </label>
-                    <ol id="select_name" data-write="selectName"></ol>
+                    <ol id="select_name" data-write="chosen_ones"></ol>
                 </div>
             </div>
         </fieldset>
