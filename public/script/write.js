@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
         start() {
             this.form.addEventListener('submit', event => {
                 event.preventDefault();
-                console.log(this.textAreas)
+                console.log(this.form)
             })
         };
     };

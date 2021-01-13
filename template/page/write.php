@@ -2,18 +2,20 @@
     <h1>Propozycja</h1>
     <form data-write="form" novalidate>
 
-        <section class="board">
-            <label class="label_h3 m_bottom " for="before">Opis stanu obecnego</label>
+        <fieldset>
+            <legend>Opis stanu obecnego</legend>
             <textarea maxlength="2000" rows="15" placeholder="Proszę wypełnić to pole" name="before" id="before" data-write="before" require></textarea>
-            <p class="sign_number" data-write="sign_before"></p>
-        </section>
-        <section class="board">
-            <label class="label_h3 m_bottom " for="after">Propozycja usprawnienia</label>
+            <span class="sign_number" data-write="sign_before"></span>
+        </fieldset>
+
+        <fieldset>
+            <legend>Propozycja usprawnienia</legend>
             <textarea maxlength="2000" rows="15" placeholder="Proszę wypełnić to pole" name="after" id="after" data-write="after" require></textarea>
-            <p class="sign_number" data-write="sign_after"></p>
-        </section>
-        <section class="board">
-            <label class="label_h3" for="rating">Ocena propozycji</label>
+            <span class="sign_number" data-write="sign_after"></span>
+        </fieldset>
+
+        <fieldset>
+            <legend>Ocena propozycji</legend>
             <div class="rating" name="after" id="rating" data-write="rating">
                 <?php
                 foreach ($params as $key => $value) {
@@ -23,7 +25,7 @@
                     $header = $value['header'];
                     if (!$header) {
                         $value_option  = explode(',', $value_option);
-                        echo "<div class='options_rating'><span>$title</span><div class='option_pkt'><select name='$name_option' data-select='$name_option'>";
+                        echo "<div class='options_rating'><span>$title</span><div class='option_pkt'><select>";
                         foreach ($value_option as $key => $value) {
                             // $output = preg_replace('/[^0-9]/', '', $value); pozostawia tylko cyfry
                             echo "<option value=" . $value . ">$value</option>";
@@ -36,10 +38,12 @@
                 ?>
                 <div class="number_rating"> <span>Suma punktów:&nbsp;</span><span class="pktnum" data-write="sum_pkt">10</span><span>&nbsp;pkt.</span></div>
             </div>
-        </section>
+            <span class="sign_number" data-write=""></span>
+        </fieldset>
 
-        <section class="board">
-            <label class="label_h3" for="originators">Pomysłodawcy</label>
+
+        <fieldset>
+            <legend>Pomysłodawcy</legend>
             <div class="user_list" name="originators" id="originators">
                 <div class="live_search">
                     <span class="error" data-search="error"></span>
@@ -55,7 +59,7 @@
                     <ol id="select_name" data-write="selectName"></ol>
                 </div>
             </div>
-        </section>
+        </fieldset>
         <button class="add_idea" data-write="add">Wyślij</button>
     </form>
 

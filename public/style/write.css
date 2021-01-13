@@ -1,15 +1,4 @@
 /* =========== WRITE AN IDEA SECTION =========== */
-.board:nth-of-type(1) {
-    margin: 0;
-}
-
-.board:nth-of-type(2) {
-    margin: 0;
-}
-
-.board {
-    margin-bottom: 1em;
-}
 
 form {
     position: relative;
@@ -21,12 +10,9 @@ form {
     box-shadow: 0px 0px 7px 1px rgba(120, 88, 128, 0.75);
 }
 
-.m_bottom {
-    margin-bottom: -.3em;
-}
-
-.label_h3 {
+legend {
     display: block;
+    width: 100%;
     font-family: 'Raleway', sans-serif;
     font-size: .6rem;
     font-weight: 400;
@@ -46,7 +32,7 @@ textarea {
     font-size: .7rem;
     letter-spacing: 1px;
     border: var(--border);
-    padding: .3em;
+    padding: .5em;
     border-radius: 0 0 .12em .12em;
     background-color: #f3f3f3;
 }
@@ -57,6 +43,8 @@ textarea:focus {
 
 /* =========== WRITE AN IDEA SECTION => display the list of characters =========== */
 .sign_number {
+    width: 100%;
+    display: block;
     font-size: .5rem;
     text-align: end;
     padding: .2em;
