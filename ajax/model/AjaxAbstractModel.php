@@ -18,11 +18,6 @@ abstract class AjaxAbstractModel
         $this->DB = DB::conn();
         $this->requestParam = $requestParam;
     }
-    protected function answer($param, $message = ''): array
-    {
-        $answer = array($param => $message);
-        return $answer;
-    }
     protected function notification($message): array
     {
         return [$message];

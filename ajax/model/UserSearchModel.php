@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-declare(strict_types=1);
-
 namespace Ajax\model;
 
 use Ajax\model\AjaxAbstractModel;
@@ -30,8 +28,7 @@ class UserSearchModel extends AjaxAbstractModel
             }
             return $result;
         } else {
-            $result[] = ['name' => 'Nie odnaleziono'];
-            return $result;
+            return $this->notification(['name' => 'Nie odnaleziono']);
         }
     }
 }

@@ -46,7 +46,6 @@
             <legend>Pomysłodawcy</legend>
             <div class="originators">
                 <div class="live_search">
-                    <!-- <span class="error" data-search="error"></span> -->
                     <label for="input_search" class="list_label">Wyszukaj i kliknij: </label>
                     <input id="input_search" class="input_search" data-write="input_search" type="search" autocomplete="off" placeholder="Nazwisko">
                     <ol class="view_user" data-write="view_user"></ol>
