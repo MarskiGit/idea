@@ -171,16 +171,16 @@ textarea:focus {
     padding: .5em;
 }
 
-/* =========== WRITE AN IDEA SECTION => initiators =========== */
+/* =========== WRITE AN IDEA SECTION => creator =========== */
 
-.initiators {
+.creator {
     display: flex;
     flex-direction: row;
     border: var(--border);
     min-height: 8rem;
 }
 
-.initiators label {
+.creator label {
     display: block;
     font-size: .6rem;
     opacity: .5;
@@ -188,8 +188,8 @@ textarea:focus {
     text-align: center;
 }
 
-/* =========== WRITE AN IDEA SECTION => Initiators Search =========== */
-.initiators_search {
+/* =========== WRITE AN IDEA SECTION => creator Search =========== */
+.creator_search {
     flex-basis: 45%;
     display: flex;
     flex-direction: column;
@@ -197,7 +197,7 @@ textarea:focus {
     padding: .3rem;
 }
 
-.initiators_search ol {
+.creator_search ol {
     width: 90%;
     max-height: 4.5rem;
     overflow: hidden;
@@ -218,7 +218,7 @@ textarea:focus {
     background-color: #ffffff;
 }
 
-.view_initiators {
+.view_creator {
     display: none;
     width: 100%;
     list-style: none;
@@ -245,15 +245,15 @@ textarea:focus {
     transition-timing-function: linear;
 }
 
-.initiators_li {
+.creator_li {
     cursor: pointer;
 }
 
-.initiators_li:last-child {
+.creator_li:last-child {
     border-radius: 0 0 .2rem .2rem;
 }
 
-.initiators_li:hover {
+.creator_li:hover {
     background-color: #b7f589;
     letter-spacing: .11rem;
 }

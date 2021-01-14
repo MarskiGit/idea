@@ -10,7 +10,7 @@ use PDO;
 use PDOException;
 
 
-class UserSearchModel extends AjaxAbstractModel
+class CreatorSearchModel extends AjaxAbstractModel
 {
     public function get(): array
     {

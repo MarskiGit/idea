@@ -44,11 +44,11 @@
 
         <fieldset>
             <legend>Pomysłodawcy</legend>
-            <div class="initiators">
-                <div class="initiators_search">
+            <div class="creator">
+                <div class="creator_search">
                     <label for="input_search" class="list_label">Wyszukaj i kliknij: </label>
                     <input id="input_search" class="input_search" data-write="input_search" type="search" autocomplete="off" placeholder="Nazwisko">
-                    <ol class="view_initiators" data-write="view_initiators"></ol>
+                    <ol class="view_creator" data-write="view_creator"></ol>
                 </div>
                 <div class="chosen_ones">
                     <label for="select_name" class="list_label">Lista pomysłodawców: </label>

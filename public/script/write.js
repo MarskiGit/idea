@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
         constructor() {
             this.form = document.querySelector('[data-write="form"]');
             this.viewPoints = document.querySelector('[data-write="view_points"]');
-            this.viewInitiators = document.querySelector('[data-write="view_initiators"]');
+            this.viewCreator = document.querySelector('[data-write="view_creator"]');
             this.inputSearch = document.querySelector('[data-write="input_search"]');
             this.textAreas = document.querySelectorAll('textarea');
             this.errors = [];
@@ -27,8 +27,8 @@ document.addEventListener('DOMContentLoaded', function () {
             };
         };
         setingListUser(display) {
-            this.viewInitiators.innerText = '';
-            this.viewInitiators.style.display = `${display}`;
+            this.viewCreator.innerText = '';
+            this.viewCreator.style.display = `${display}`;
         };
     };
 
@@ -98,13 +98,13 @@ document.addEventListener('DOMContentLoaded', function () {
         };
     };
 
-    class UserSearch extends WriteAbstract {
+    class CreatorSearch extends WriteAbstract {
         constructor() {
             super();
             this.listUser = document.createDocumentFragment();
             this.li = null;
             this.request = {
-                action: 'userSerch',
+                action: 'creatorSearch',
                 select: 'name',
                 name: null
             };
@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', function () {
         renderList(listUser) {
             listUser.forEach(user => {
                 this.li = document.createElement('li');
-                this.li.setAttribute('class', `${(user.row)? 'view_li _li' : 'view_li initiators_li'}`)
+                this.li.setAttribute('class', `${(user.row)? 'view_li' : 'view_li creator_li'}`)
                 this.li.setAttribute('data-user', `[${user.id_user},${user.id_area}]`);
                 this.li.innerText = user.name;
                 this.listUser.appendChild(this.li);
@@ -157,11 +157,11 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         addListPage() {
             this.setingListUser('block');
-            this.viewInitiators.appendChild(this.listUser);
+            this.viewCreator.appendChild(this.listUser);
         };
     };
 
-    const SEARCHUSER = new UserSearch();
+    const SEARCHUSER = new CreatorSearch();
     const SIGN = new NumberCharacters();
     const RATINGIDEA = new CalculatePoints();
     const WRITEIDEA = new Validation();
