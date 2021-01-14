@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
         constructor() {
             this.form = document.querySelector('[data-write="form"]');
             this.viewPoints = document.querySelector('[data-write="view_points"]');
-            this.viewUser = document.querySelector('[data-write="view_user"]');
+            this.viewInitiators = document.querySelector('[data-write="view_initiators"]');
             this.inputSearch = document.querySelector('[data-write="input_search"]');
             this.textAreas = document.querySelectorAll('textarea');
             this.errors = [];
@@ -27,12 +27,12 @@ document.addEventListener('DOMContentLoaded', function () {
             };
         };
         setingListUser(display) {
-            this.viewUser.innerText = '';
-            this.viewUser.style.display = `${display}`;
+            this.viewInitiators.innerText = '';
+            this.viewInitiators.style.display = `${display}`;
         };
     };
 
-    class ValidationIdea extends WriteAbstract {
+    class Validation extends WriteAbstract {
         constructor() {
             super();
             this.start();
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
     };
 
-    class CalculatePointsIdea extends WriteAbstract {
+    class CalculatePoints extends WriteAbstract {
         constructor() {
             super()
             this.formSelect = [...this.form.elements].filter(el => el.type === 'select-one');
@@ -59,7 +59,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 this.sumPoints();
                 this.displayPoints();
             }));
-
         };
         downloadPoints() {
             this.pointsIdea = [...this.formSelect].map(this.filterNumber);
@@ -78,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
     class NumberCharacters extends WriteAbstract {
         constructor() {
             super();
-            this.viewElemnt = null;
+            this.viewCount = null;
             this.maxCharacters = null;
             this.numberSign = null;
             this.textLenght = null;
@@ -88,14 +87,14 @@ document.addEventListener('DOMContentLoaded', function () {
             this.textAreas.forEach(textArea => textArea.addEventListener('keyup', this.countCharacters.bind(this)));
         };
         countCharacters(event) {
-            this.viewElemnt = event.target.nextElementSibling;
+            this.viewCount = event.target.nextElementSibling;
             this.maxCharacters = event.target.maxLength;
             this.textLenght = event.target.textLength;
             this.numberSign = this.maxCharacters - event.target.textLength;
             this.displayCount();
         };
         displayCount() {
-            this.viewElemnt.innerHTML = (this.textLenght) ? `${this.numberSign}  &#8725;  ${this.maxCharacters}` : this.viewElemnt.innerHTML = '';
+            this.viewCount.innerHTML = (this.textLenght) ? `${this.numberSign}  &#8725;  ${this.maxCharacters}` : this.viewCount.innerHTML = '';
         };
     };
 
@@ -136,13 +135,8 @@ document.addEventListener('DOMContentLoaded', function () {
             (inputText.length >= 3) ? this.selectType(inputText): this.setingListUser('none');
         };
         selectType(inputText) {
-            if (inputText * 1) {
-                this.request.select = 'pass_number';
-                this.request.name = inputText;
-            } else {
-                this.requestselect = 'name';
-                this.request.name = inputText;
-            };
+            (inputText * 1) ? this.request.select = 'pass_number': this.request.select = 'name';
+            this.request.name = inputText;
             this.getUser();
         };
         getUser() {
@@ -154,6 +148,7 @@ document.addEventListener('DOMContentLoaded', function () {
         renderList(listUser) {
             listUser.forEach(user => {
                 this.li = document.createElement('li');
+                this.li.setAttribute('class', `${(user.row)? 'view_li _li' : 'view_li initiators_li'}`)
                 this.li.setAttribute('data-user', `[${user.id_user},${user.id_area}]`);
                 this.li.innerText = user.name;
                 this.listUser.appendChild(this.li);
@@ -162,128 +157,12 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         addListPage() {
             this.setingListUser('block');
-            this.viewUser.appendChild(this.listUser);
+            this.viewInitiators.appendChild(this.listUser);
         };
-
     };
 
     const SEARCHUSER = new UserSearch();
     const SIGN = new NumberCharacters();
-    const RATINGIDEA = new CalculatePointsIdea();
-    const WRITEIDEA = new ValidationIdea();
-});
-
-
-
-
-"use strict";
-import {
-    dataFetch,
-    pageLoadingStatus
-} from "./abstract.js";
-document.addEventListener("DOMContentLoaded", function () {
-    class t {
-        constructor() {
-            this.form = document.querySelector('[data-write="form"]'), this.viewPoints = document.querySelector('[data-write="view_points"]'), this.viewUser = document.querySelector('[data-write="view_user"]'), this.inputSearch = document.querySelector('[data-write="input_search"]'), this.textAreas = document.querySelectorAll("textarea"), this.errors = []
-        }
-        takePoints() {
-            return parseInt(this.viewPoints.textContent)
-        }
-        checkError() {
-            return !!this.errors.length
-        }
-        debounced(t, e) {
-            let s;
-            return (...i) => {
-                const r = this;
-                clearTimeout(s), s = setTimeout(() => t.apply(r, i), e)
-            }
-        }
-        setingListUser(t) {
-            this.viewUser.innerText = "", this.viewUser.style.display = `${t}`
-        }
-    }
-    new class extends t {
-        constructor() {
-            super(), this.listUser = document.createDocumentFragment(), this.li = null, this.request = {
-                action: "userSerch",
-                select: "name",
-                name: null
-            }, this.start()
-        }
-        start() {
-            this.inputSearch.addEventListener("input", this.debounced(this.search.bind(this), 500))
-        }
-        search(t) {
-            this.verificationSymbol(t.target.value) ? this.errorSymbol(1) : this.checkSearch(t.target.value)
-        }
-        verificationSymbol(t) {
-            return /[^A-Z-ŚŁŻŹĆa-z-ęóąśłżźćń\s0-9]/gi.test(t)
-        }
-        errorSymbol(t) {
-            t ? (this.inputSearch.labels[0].style.color = "red", this.inputSearch.labels[0].textContent = "Tylko znaki alfabetu i cyfry", this.inputSearch.classList.add("errorSearch")) : (this.inputSearch.labels[0].style.color = "", this.inputSearch.labels[0].textContent = "Wyszukaj i kliknij:", this.inputSearch.classList.remove("errorSearch"))
-        }
-        checkSearch(t) {
-            this.errorSymbol(0), t.length >= 3 ? this.selectType(t) : this.setingListUser("none")
-        }
-        selectType(t) {
-            1 * t ? (this.request.select = "pass_number", this.request.name = t) : (this.requestselect = "name", this.request.name = t), this.getUser()
-        }
-        getUser() {
-            pageLoadingStatus(1), dataFetch("ajax.php", this.request).then(t => {
-                this.renderList(t)
-            }).finally(pageLoadingStatus(0))
-        }
-        renderList(t) {
-            t.forEach(t => {
-                this.li = document.createElement("li"), this.li.setAttribute("data-user", `[${t.id_user},${t.id_area}]`), this.li.innerText = t.name, this.listUser.appendChild(this.li)
-            }), this.addListPage()
-        }
-        addListPage() {
-            this.setingListUser("block"), this.viewUser.appendChild(this.listUser)
-        }
-    }, new class extends t {
-        constructor() {
-            super(), this.viewElemnt = null, this.maxCharacters = null, this.numberSign = null, this.textLenght = null, this.start()
-        }
-        start() {
-            this.textAreas.forEach(t => t.addEventListener("keyup", this.countCharacters.bind(this)))
-        }
-        countCharacters(t) {
-            this.viewElemnt = t.target.nextElementSibling, this.maxCharacters = t.target.maxLength, this.textLenght = t.target.textLength, this.numberSign = this.maxCharacters - t.target.textLength, this.displayCount()
-        }
-        displayCount() {
-            this.viewElemnt.innerHTML = this.textLenght ? `${this.numberSign}  &#8725;  ${this.maxCharacters}` : this.viewElemnt.innerHTML = ""
-        }
-    }, new class extends t {
-        constructor() {
-            super(), this.formSelect = [...this.form.elements].filter(t => "select-one" === t.type), this.pointsIdea = null, this.ratingIdea = null, this.start()
-        }
-        start() {
-            this.formSelect.forEach(t => t.addEventListener("mouseup", () => {
-                this.downloadPoints(), this.sumPoints(), this.displayPoints()
-            }))
-        }
-        downloadPoints() {
-            this.pointsIdea = [...this.formSelect].map(this.filterNumber)
-        }
-        sumPoints() {
-            this.ratingIdea = this.pointsIdea.filter(t => parseInt(t)).reduce((t, e) => t + e)
-        }
-        filterNumber(t) {
-            return parseInt(t.value.replace(/\D/g, ""))
-        }
-        displayPoints() {
-            this.viewPoints.innerText = `${this.ratingIdea}`
-        }
-    }, new class extends t {
-        constructor() {
-            super(), this.start()
-        }
-        start() {
-            this.form.addEventListener("submit", t => {
-                t.preventDefault(), console.log(this.form)
-            })
-        }
-    }
+    const RATINGIDEA = new CalculatePoints();
+    const WRITEIDEA = new Validation();
 });

@@ -16,7 +16,7 @@ class UserSearchModel extends AjaxAbstractModel
     {
         $search = "%" . $this->requestParam['name'] . "%";
         try {
-            $stmt = $this->DB->prepare("SELECT id_user, id_area, name FROM user WHERE " . $this->requestParam['select'] . " LIKE :name ");
+            $stmt = $this->DB->prepare("SELECT id_user, id_area, name FROM user WHERE " . $this->requestParam['select'] . " LIKE :name LIMIT 3");
             $stmt->bindValue(':name', $search, PDO::PARAM_STR);
             $stmt->execute();
         } catch (PDOException $e) {
@@ -28,7 +28,7 @@ class UserSearchModel extends AjaxAbstractModel
             }
             return $result;
         } else {
-            return $this->notification(['name' => 'Nie odnaleziono']);
+            return $this->notification(['name' => 'Nie odnaleziono', 'row' => 'empty']);
         }
     }
 }

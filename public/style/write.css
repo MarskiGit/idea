@@ -34,7 +34,7 @@ textarea {
     border: var(--border);
     padding: .5em;
     border-radius: 0 0 .12em .12em;
-    background-color: #f3f3f3;
+    background-color: var(--bacgroundContent);
 }
 
 textarea:focus {
@@ -171,16 +171,16 @@ textarea:focus {
     padding: .5em;
 }
 
-/* =========== WRITE AN IDEA SECTION => Originators =========== */
+/* =========== WRITE AN IDEA SECTION => initiators =========== */
 
-.originators {
+.initiators {
     display: flex;
     flex-direction: row;
     border: var(--border);
-    min-height: 5rem;
+    min-height: 8rem;
 }
 
-.originators label {
+.initiators label {
     display: block;
     font-size: .6rem;
     opacity: .5;
@@ -188,8 +188,8 @@ textarea:focus {
     text-align: center;
 }
 
-/* =========== WRITE AN IDEA SECTION => Live Search =========== */
-.live_search {
+/* =========== WRITE AN IDEA SECTION => Initiators Search =========== */
+.initiators_search {
     flex-basis: 45%;
     display: flex;
     flex-direction: column;
@@ -197,18 +197,65 @@ textarea:focus {
     padding: .3rem;
 }
 
-.live_search ol {
+.initiators_search ol {
     width: 90%;
+    max-height: 4.5rem;
+    overflow: hidden;
 }
 
 .input_search {
     width: 90%;
-    background-color: #ffffff;
+    padding: .3rem;
     border: var(--border);
     font-size: .8rem;
     outline: none;
-    padding: .2em;
-    border-radius: .2em .2em 0 0;
+    border-radius: .2rem .2rem 0 0;
+    background-color: var(--bacgroundContent);
+    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+}
+
+.input_search:focus {
+    background-color: #ffffff;
+}
+
+.view_initiators {
+    display: none;
+    width: 100%;
+    list-style: none;
+    font-size: .9rem;
+    text-indent: .3em;
+    margin: 0;
+    counter-reset: my-awesome-counter;
+    background-color: #ffffff;
+    border: var(--border);
+    border-top: 0px;
+    border-radius: 0 0 .2rem .2rem;
+    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+}
+
+.view_li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0 .3rem;
+    line-height: 1.5rem;
+    letter-spacing: .1rem;
+    transition-property: all;
+    transition-duration: .2s;
+    transition-timing-function: linear;
+}
+
+.initiators_li {
+    cursor: pointer;
+}
+
+.initiators_li:last-child {
+    border-radius: 0 0 .2rem .2rem;
+}
+
+.initiators_li:hover {
+    background-color: #b7f589;
+    letter-spacing: .11rem;
 }
 
 .errorSearch {
@@ -226,32 +273,6 @@ textarea:focus {
     padding: .3rem;
 }
 
-.chosen_ones ol li {
-    margin: 0 0 0 1em;
-}
-
-.view_user {
-    display: none;
-    width: 100%;
-    list-style: none;
-    font-size: .9rem;
-    text-indent: .3em;
-    margin: 0;
-    counter-reset: my-awesome-counter;
-    border: var(--border);
-    border-top: 0px;
-    border-radius: 0 0 .2em .2em;
-}
-
-.view_user li {
-    padding: .4em;
-    letter-spacing: .1em;
-    cursor: pointer;
-}
-
-.view_user li:hover {
-    background-color: #b7f589;
-}
 
 .center {
     text-align: center;
