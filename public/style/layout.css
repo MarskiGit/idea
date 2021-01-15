@@ -83,14 +83,14 @@ h1 {
 nav {
     font-size: .7rem;
     width: var(--widthContent);
-    border-radius: var(--borderRadius);
+    padding: .1rem .2rem;
     margin: 10px auto;
-    height: 2.2rem;
     display: grid;
     justify-items: center;
     align-items: center;
-    grid-template-columns: .3rem 2rem 10rem 10rem 2rem auto 2rem .3rem;
-    grid-template-areas: "margin-l load list write page_up empty logo margin-r";
+    grid-template-columns: 2rem 10rem 10rem 2rem auto 2rem;
+    grid-template-areas: "load list write page_up empty logo ";
+    border-radius: var(--borderRadius);
     background-color: var(--bacgroundGradientColor);
     background-image: var(--bacgroundGradient);
     box-shadow: var(--boxSadow);
@@ -163,7 +163,7 @@ nav a:nth-of-type(5) {
 }
 
 .home_nav img:last-child {
-    width: 80%;
+    width: 75%;
     transform: rotate(0deg);
     transform-origin: center;
     animation-name: load;
@@ -206,7 +206,7 @@ nav a:nth-of-type(5) {
 
 .page_up img {
     filter: invert(100%);
-    width: 80%;
+    width: 75%;
     position: absolute;
     top: 50%;
     left: 50%;
