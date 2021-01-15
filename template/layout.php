@@ -15,7 +15,7 @@
     <meta name="copyright" content="Copyright owner">
     <meta name="robots" content="noindex, nofollow">
     <link rel="shortcut icon" href="public/img/idea.png" type="image/x-icon" sizes="16x16">
-    <link rel="stylesheet" href="public/style/idea.css" type="text/css" media="all">
+    <link rel="stylesheet" href="public/style/layout.css" type="text/css" media="all">
     <script defer type="module" src="public/script/idea.js"></script>
     <?php switch ($params['action']):
         case 'listIdea': ?>
@@ -72,11 +72,11 @@
 
     </header>
     <nav data-page="nav">
-        <div class="menu">
-            <a href="http://h.localhost/01_MOJE/01_GIT/idea/" class="home_img home_page"><img class="border_icon load" data-page="status_indicator" src="public/img/border_icon.png" alt="Idea"></a>
-            <a href="?action=list" class="a_btn">Lista pomysłów</a>
-            <a href="?action=write" class="a_btn">Napisz pomysł</a>
-            <a href="#top_page" class="home_img arrow_up" data-page="arrow_up"></a>
-            <a href="?action=login"><img class="logo_idea" src="public/img/idea.png" alt="Idea"></a>
-        </div>
+
+        <a href="http://h.localhost/01_MOJE/01_GIT/idea/" class="home_nav hover_img"><img src="public/img/home_icon.svg"><img src="public/img/border_icon.svg" class="load" data-page="status_indicator"></a>
+        <a href="?action=list" class="a_btn">Lista pomysłów</a>
+        <a href="?action=write" class="a_btn">Napisz pomysł</a>
+        <a href="#top_page" class="page_up hover_img" data-page="page_up"><img src="public/img/page_up.svg"></a>
+        <a href="?action=login" class="logo_idea"><img src="public/img/idea.png" alt="Idea"></a>
+
     </nav>

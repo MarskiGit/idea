@@ -39,6 +39,7 @@ textarea {
 
 textarea:focus {
     background-color: #ffffff;
+    box-shadow: var(--boxSadowInset);
 }
 
 /* =========== WRITE AN IDEA SECTION => display the list of characters =========== */
@@ -211,11 +212,12 @@ textarea:focus {
     outline: none;
     border-radius: .2rem .2rem 0 0;
     background-color: var(--bacgroundContent);
-    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+
 }
 
 .input_search:focus {
     background-color: #ffffff;
+    box-shadow: var(--boxSadowInset);
 }
 
 .view_creator {

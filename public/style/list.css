@@ -21,6 +21,7 @@
      margin-bottom: .5rem;
      border-radius: var(--borderRadius);
      border: 2px solid var(--color);
+     box-shadow: var(--boxSadowInset);
  }
 
  .tr {

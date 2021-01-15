@@ -7,16 +7,19 @@ document.addEventListener('DOMContentLoaded', function () {
     class NavAnimation {
         constructor() {
             this.nav = document.querySelector('[data-page="nav"]');
-            this.arrowUp = document.querySelector('[data-page="arrow_up"]');
+            this.pageUp = document.querySelector('[data-page="page_up"]');
+            this.main = document.querySelector('[data-page="main"]')
             eventWindowScroll(this.sticky.bind(this));
         }
         sticky() {
             if (window.pageYOffset > this.nav.offsetTop) {
                 this.nav.classList.add('sticky');
-                this.arrowUp.style.display = "block";
+                this.main.style.paddingTop = `${this.nav.offsetHeight}px`;
+                this.pageUp.style.display = "block";
             } else {
                 this.nav.classList.remove('sticky');
-                this.arrowUp.style.display = "none";
+                this.main.style.paddingTop = '0px';
+                this.pageUp.style.display = "none";
             }
         };
     };
