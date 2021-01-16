@@ -17,7 +17,18 @@ const handleError = err => {
     return resp;
 };
 
+const displayException = data => {
+    const mainContainer = document.querySelector('[data-page="main"]');
+    mainContainer.style.justifyContent = 'center';
+    mainContainer.innerHTML = `<div class="exception"><p>${data.type} Błąd Aplikacji - Ajax</p> <p>${data.exception}</p><div class="exception_img"></div></div>`;
+    console.warn(data.file, data.line);
+}
+
 const dataFetch = async (url = '', data = {}) => {
+    const exception = {
+        type: 'Ajax',
+        exception: 'Utrata połączenia. Spróbuj ponownie za parę chwil.'
+    };
     const opt = {
         method: 'POST',
         mode: 'cors',
@@ -34,20 +45,13 @@ const dataFetch = async (url = '', data = {}) => {
     const response = await fetch(url, opt).catch(handleError);
     const res = await response;
 
-    return response.code && response.code == 400 ? onsole.log("AJAX CODE 400") : res.json();
+    return response.code && response.code == 400 ? displayException(exception) : res.json();
 
 };
 
 const eventWindowScroll = fn => {
     window.addEventListener('scroll', fn);
-
 };
-const displayException = data => {
-    const mainContainer = document.querySelector('[data-page="main"]');
-    mainContainer.style.justifyContent = 'center';
-    mainContainer.innerHTML = `<div class="exception"><p>${data.type} Błąd Aplikacji - Ajax</p> <p>${data.exception}</p><div class="exception_img"></div></div>`;
-    console.log(data.file, data.line);
-}
 
 const pageLoadingStatus = bool => {
     const statusIndicator = document.querySelector('[data-page="status_indicator"]');

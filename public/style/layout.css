@@ -16,6 +16,7 @@
     --buttonPadiing: .3rem 1rem;
     --bacgroundGradient: linear-gradient(315deg, #7f5a83 0%, #0d324d 74%);
     --boxSadow: -1px 1px 7px 0px rgba(120, 88, 128, 0.75);
+    --boxSadowInset: inset 0 2px 4px 0 rgba(0, 0, 0, 0.08);
 
 
 }

@@ -12,18 +12,19 @@ document.addEventListener('DOMContentLoaded', function () {
             eventWindowScroll(this.sticky.bind(this));
         }
         sticky() {
-            if (window.pageYOffset > this.nav.offsetTop) {
-                this.nav.classList.add('sticky');
-                this.main.style.paddingTop = `${this.nav.offsetHeight}px`;
-                this.pageUp.style.display = "block";
-            } else {
-                this.nav.classList.remove('sticky');
-                this.main.style.paddingTop = '0px';
-                this.pageUp.style.display = "none";
-            }
+            (window.pageYOffset > this.nav.offsetTop) ? this.on(): this.off();
+        };
+        on() {
+            this.nav.classList.add('sticky');
+            this.main.style.paddingTop = `${this.nav.offsetHeight}px`;
+            this.pageUp.style.display = "block";
+        };
+        off() {
+            this.nav.classList.remove('sticky');
+            this.main.style.paddingTop = '0px';
+            this.pageUp.style.display = "none";
         };
     };
-
 
     const NAV = new NavAnimation();
 });
