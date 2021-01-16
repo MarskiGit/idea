@@ -71,7 +71,7 @@
     <header>
 
     </header>
-    <nav data-page="nav">
+    <nav class="menu" data-page="nav">
         <a href="http://h.localhost/01_MOJE/01_GIT/idea/" class="home_nav hover_img"><img src="public/img/home_icon.svg"><img src="public/img/border_icon.svg" class="load" data-page="status_indicator"></a>
         <a href="?action=list" class="a_btn">Lista pomysłów</a>
         <a href="?action=write" class="a_btn">Napisz pomysł</a>

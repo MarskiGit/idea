@@ -120,7 +120,7 @@ nav a:nth-of-type(5) {
     grid-area: logo;
 }
 
-.sticky {
+.menu.sticky {
     position: fixed;
     width: 100%;
     margin: 0;
@@ -191,7 +191,7 @@ nav a:nth-of-type(5) {
 }
 
 .hover_img:hover img {
-    filter: invert(0%);
+    filter: invert(90%);
 }
 
 .load {
