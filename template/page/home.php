@@ -1,3 +1,3 @@
 <main data-page="main">
-    <h1>Statystyki</h1>
+    <h1>Home</h1>
 </main>

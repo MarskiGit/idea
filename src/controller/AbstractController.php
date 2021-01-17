@@ -9,10 +9,10 @@ use Idea\view\View;
 
 abstract class AbstractController
 {
-    protected const DEFAULT_ACTION_HTML = 'statistics';
+    protected const DEFAULT_ACTION_HTML = 'home';
     protected Request $Request;
     protected View $View;
-    protected  $SessionParam;
+    protected array $SessionParam;
     protected string $action;
 
     public function __construct(Request $Request, View $View)
@@ -20,7 +20,7 @@ abstract class AbstractController
 
         $this->Request = $Request;
         $this->View = $View;
-        $this->SessionParam = $this->Request->getParam_SESSION('account');
+        $this->SessionParam = $this->Request->getParam_SESSION();
         $this->action = $this->Request->getParam_GET('action', self::DEFAULT_ACTION_HTML) . 'Idea';
         $this->runPage();
     }
@@ -40,7 +40,7 @@ abstract class AbstractController
     {
         return [
             'action' => $this->action,
-            'session' => $this->SessionParam
+            'session' => $this->SessionParam,
         ];
     }
 }

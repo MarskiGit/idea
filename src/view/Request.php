@@ -9,14 +9,12 @@ class Request
     private array $get;
     private array $post;
     private array $server;
-    private $session;
 
     public function __construct(array $params)
     {
         $this->get = $params['get'];
         $this->post = $params['post'];
         $this->server = $params['server'];
-        $this->session = $params['session'];
     }
     public function getParam_GET(string $name, $default = null): ?string
     {
@@ -34,8 +32,19 @@ class Request
     {
         return $this->server['REQUEST_METHOD'] === 'GET';
     }
-    public function getParam_SESSION(string $session_name): ?string
+    public function is_SESSION(): bool
     {
-        return $this->session[$session_name] ?? null;
+        return (session_status() == PHP_SESSION_ACTIVE);
+    }
+    public function getParam_SESSION(): array
+    {
+        if ($this->is_SESSION()) {
+            $session = $_SESSION;
+            $session['set'] = 1;
+            return $session;
+        } else {
+            $session['set'] = 0;
+            return $session;
+        }
     }
 }

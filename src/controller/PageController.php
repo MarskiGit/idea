@@ -17,9 +17,9 @@ class PageController extends AbstractController
     {
         $this->View->list();
     }
-    protected function statisticsIdea(): void
+    protected function homeIdea(): void
     {
-        $this->View->statistics();
+        $this->View->home();
     }
     protected function loginIdea(): void
     {

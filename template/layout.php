@@ -38,32 +38,6 @@
             <!-- <script defer type="module" src="public/script/statistics.js"></script> -->
             <?php break; ?>
     <?php endswitch; ?>
-    <style>
-        *,
-        *:before,
-        *:after {
-            margin: 0;
-            padding: 0;
-            border: 0;
-            outline: 0;
-            vertical-align: baseline;
-            background-color: transparent;
-            -webkit-box-sizing: border-box;
-            box-sizing: border-box
-        }
-
-        html {
-            font-size: calc(16px + (28 - 16) * (100vw - 400px) / (1920 - 360));
-            scroll-behavior: smooth;
-        }
-
-        a {
-            display: block;
-            text-decoration: none;
-            color: #ffffff;
-        }
-    </style>
-
 </head>
 
 <body>

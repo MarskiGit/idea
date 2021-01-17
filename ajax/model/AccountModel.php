@@ -11,9 +11,9 @@ use PDOException;
 
 class AccountModel extends AjaxAbstractModel
 {
-    public Session $Session;
+
     private array $request;
-    private array $answer;
+    private array $notification;
     private ?int $id;
     private ?int $rang;
     private ?string $name;
@@ -24,15 +24,15 @@ class AccountModel extends AjaxAbstractModel
     public function addAccount(): array
     {
         if (!$this->isNameValid()) {
-            return $this->answer(1);
+            return $this->notification(1);
         }
 
         if (!$this->isPasswdValid()) {
-            return $this->answer(2);
+            return $this->notification(2);
         }
 
         if (!is_null($this->getIdFromName())) {
-            return $this->answer(3);
+            return $this->notification(3);
         }
 
         $hash_2 = $this->hash($this->request['password']);
@@ -46,16 +46,16 @@ class AccountModel extends AjaxAbstractModel
         }
 
         $id = intval($this->DB->lastInsertId());
-        return $this->answer($id);
+        return $this->notification($id);
     }
     public function login($request): array
     {
         $this->request = $request;
         if (!$this->isNameValid($request)) {
-            return  $this->answer(0);
+            return  $this->notification(0);
         }
         if (!$this->isPasswdValid()) {
-            return  $this->answer(0);
+            return  $this->notification(0);
         }
 
         try {
@@ -69,11 +69,12 @@ class AccountModel extends AjaxAbstractModel
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if (is_array($row)) {
             if (password_verify($this->request['password'], $row['account_passwd'])) {
-                $this->id = intval($row['account_id'], 10);
-                $this->name = $this->request['username'];
-                $this->authenticated = true;
-                $this->rang = (int) $row['account_rang'];
-
+                session_start();
+                $id = intval($row['account_id'], 10);
+                $name = $this->request['username'];
+                $authenticated = true;
+                $rang = (int) $row['account_rang'];
+                // pusz to araay sesion
                 $user = [
                     'rang' => $row['account_rang'],
                     'name' => $this->request['username'],
@@ -81,19 +82,16 @@ class AccountModel extends AjaxAbstractModel
                 ];
                 $_SESSION['account'] = $user;
 
-                return $this->answer(1);
+                return $this->notification(1);
             }
         }
-        return $this->answer(0);
+        return $this->notification(0);
     }
     public function logout()
     {
         if (session_status() == PHP_SESSION_ACTIVE) {
-            $this->id = null;
-            $this->name = null;
-            $this->authenticated = false;
             unset($_SESSION['account']);
-            return $this->answer(0);
+            return $this->notification(0);
         }
     }
     private function isNameValid(): bool

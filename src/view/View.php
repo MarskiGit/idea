@@ -27,9 +27,16 @@ class View
     }
     public function layout($params): void
     {
-        // dump($params);
         header('Content-type: text/html; charset=utf-8');
         $this->renderHTML('layout', '', $params);
+    }
+    public function home(): void
+    {
+        $this->renderHTML('home', 'page/');
+    }
+    public function footer(): void
+    {
+        $this->renderHTML('footer', 'page/');
     }
     public function create($params): void
     {
@@ -38,14 +45,6 @@ class View
     public function list(): void
     {
         $this->renderHTML('list', 'page/');
-    }
-    public function statistics(): void
-    {
-        $this->renderHTML('statistics', 'page/');
-    }
-    public function footer(): void
-    {
-        $this->renderHTML('footer', 'page/');
     }
     public function login(): void
     {
