@@ -40,15 +40,19 @@ document.addEventListener('DOMContentLoaded', function () {
         renderList(listIdea) {
             if (listIdea.length) {
                 listIdea.forEach(idea => {
-                    this.status = this.state(idea.status * 1);
-                    this.tupleNumber.push(idea.id_idea);
+                    const {
+                        status,
+                        id_idea
+                    } = idea;
+                    this.status = this.state(status * 1);
+                    this.tupleNumber.push(id_idea);
                     this.div = document.createElement('div');
                     this.div.className = 'idea';
-                    this.div.setAttribute('data-id_idea', `${idea.id_idea}`);
+                    this.div.setAttribute('data-id_idea', `${id_idea}`);
                     this.div.style.setProperty('--color', `${this.status.border}`);
                     this.div.innerHTML = this.renderIdea(idea);
                     this.list.appendChild(this.div);
-                    if (idea.id_idea * 1 === 1) this.endTuples = true;
+                    if (id_idea * 1 === 1) this.endTuples = true;
                 });
                 this.request.last_tuple = Math.min(...this.tupleNumber);
                 this.addListPage();
@@ -57,29 +61,38 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         };
         renderIdea(idea) {
+            const {
+                id_users,
+                id_idea,
+                pkt_mod,
+                date_added,
+                before_value,
+                after_value,
+                date_implementation
+            } = idea;
             return `
         <div class="tr" style="background-color: ${this.status.back};">
-            <span class="th">${(idea.id_users.length > 1) ? 'Pomysłodawcy' : 'Pomysłodawca'}</span>
+            <span class="th">${(id_users.length > 1) ? 'Pomysłodawcy' : 'Pomysłodawca'}</span>
             <span class="th">Status: ${this.status.status}</span>
-            <span class="th">Przyznane punkty: ${(idea.pkt_mod) ? idea.pkt_mod : 0}</span>
-            <span class="th">Data dodania: ${(idea.date_added).slice(0,10)}</span>
+            <span class="th">Przyznane punkty: ${(pkt_mod) ? pkt_mod : 0}</span>
+            <span class="th">Data dodania: ${(date_added).slice(0,10)}</span>
         </div>
         <div class="tr">
             <div class="td idea_authors">
                 <ol>
-                    ${idea.id_users.map(name =>`<li>${name}</li>`).join('')}
+                    ${id_users.map(name =>`<li>${name}</li>`).join('')}
                 </ol>
             </div>
             <div class="td idea_value">
                 <span class="th"> Opis stanu obecnego </span>
-                <p class="td"> ${idea.before_value} </p>
+                <p class="td"> ${before_value} </p>
                 <span class="th"> Propozycja usprawnienia </span>
-                <p class="td"> ${idea.after_value} </p>
+                <p class="td"> ${after_value} </p>
             </div>
         </div>
         <div class="tr">
-            <span class="th">Numer propozycji: ${idea.id_idea}</span>
-            <span class="th idea_date_add">${this.renderDataAdd(idea.date_implementation)}</span>
+            <span class="th">Numer propozycji: ${id_idea}</span>
+            <span class="th idea_date_add">${this.renderDataAdd(date_implementation)}</span>
         </div>
         `;
         };

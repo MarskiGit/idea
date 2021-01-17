@@ -147,10 +147,16 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         renderList(listUser) {
             listUser.forEach(user => {
+                const {
+                    name,
+                    row,
+                    id_user,
+                    id_area
+                } = user;
                 this.li = document.createElement('li');
-                this.li.setAttribute('class', `${(user.row)? 'view_li' : 'view_li creator_li'}`)
-                this.li.setAttribute('data-user', `[${user.id_user},${user.id_area}]`);
-                this.li.innerText = user.name;
+                this.li.setAttribute('class', `${(row)? 'view_li' : 'view_li creator_li'}`)
+                this.li.setAttribute('data-user', `[${id_user},${id_area}]`);
+                this.li.innerText = name;
                 this.listUser.appendChild(this.li);
             })
             this.addListPage();
