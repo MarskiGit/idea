@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>IDEA</title>
+    <title>IDEA | Program pomysłów</title>
     <meta http-equiv="X-Ua-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -15,26 +15,26 @@
     <meta name="copyright" content="Copyright owner">
     <meta name="robots" content="noindex, nofollow">
     <link rel="shortcut icon" href="public/img/idea.png" type="image/x-icon" sizes="16x16">
-    <link rel="stylesheet" href="public/style/layout.css" type="text/css" media="all">
+    <link rel="stylesheet" href="public/style/layout.min.css" type="text/css" media="all">
     <script defer type="module" src="public/script/idea.js"></script>
     <?php switch ($params['action']):
         case 'listIdea': ?>
-            <link rel="stylesheet" href="public/style/list.css" type="text/css" media="all">
+            <link rel="stylesheet" href="public/style/list.min.css" type="text/css" media="all">
             <script defer type="module" src="public/script/list.js"></script>
             <?php break; ?>
         <?php
         case 'writeIdea': ?>
-            <link rel="stylesheet" href="public/style/write.css" type="text/css" media="all">
+            <link rel="stylesheet" href="public/style/write.min.css" type="text/css" media="all">
             <script defer type="module" src="public/script/write.js"></script>
             <?php break; ?>
         <?php
         case 'loginIdea': ?>
-            <link rel="stylesheet" href="public/style/login.css" type="text/css" media="all">
+            <link rel="stylesheet" href="public/style/login.min.css" type="text/css" media="all">
             <script defer type="module" src="public/script/login.js"></script>
             <?php break; ?>
         <?php
         default: ?>
-            <link rel="stylesheet" href="public/style/statistics.css" type="text/css" media="all">
+            <link rel="stylesheet" href="public/style/home.min.css" type="text/css" media="all">
             <!-- <script defer type="module" src="public/script/statistics.js"></script> -->
             <?php break; ?>
     <?php endswitch; ?>

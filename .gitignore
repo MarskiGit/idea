@@ -1,3 +1,4 @@
-trasch/
-temp/
+/trasch/
+/temp/
+/public/sass
 workspace.code-idea.code-workspace
