@@ -16,11 +16,19 @@ const handleError = err => {
     );
     return resp;
 };
+const dviException = ({
+    type,
+    exception
+}) => {
+    const div = document.createElement('div');
+    div.classList.add('exception');
+    div.innerHTML = `<p>${type} Błąd Aplikacji - Ajax</p><p>${exception}</p><div class="exception_img"></div>`;
+    return div;
+};
 
 const displayException = data => {
     const mainContainer = document.querySelector('[data-page="main"]');
-    mainContainer.style.justifyContent = 'center';
-    mainContainer.innerHTML = `<div class="exception"><p>${data.type} Błąd Aplikacji - Ajax</p> <p>${data.exception}</p><div class="exception_img"></div></div>`;
+    mainContainer.appendChild(dviException(data));
     console.warn(data.file, data.line);
 }
 

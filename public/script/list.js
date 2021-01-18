@@ -22,10 +22,10 @@ document.addEventListener('DOMContentLoaded', function () {
             this.start();
         };
         start() {
-            this.getIdeaList();
-            eventWindowScroll(this.throttled(this.getIdeaList.bind(this), 950));
+            this.sendRequest();
+            eventWindowScroll(this.throttled(this.sendRequest.bind(this), 950));
         };
-        getIdeaList() {
+        sendRequest() {
             if (!this.endTuples) {
                 pageLoadingStatus(1);
                 dataFetch('ajax.php', this.request)
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         status,
                         id_idea
                     } = idea;
-                    this.status = this.state(status * 1);
+                    this.status = this.statusInformation(status * 1);
                     this.tupleNumber.push(id_idea);
                     this.div = document.createElement('div');
                     this.div.className = 'idea';
@@ -60,20 +60,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 this.ideaContainer.innerHTML = '<div class=IdeaList"><h4 class="empty_idea">Brak elementów do wyświetlenia.</h4></div>';
             }
         };
-        renderIdea(idea) {
-            const {
-                id_users,
-                id_idea,
-                pkt_mod,
-                date_added,
-                before_value,
-                after_value,
-                date_implementation
-            } = idea;
-            return `
-        <div class="tr" style="background-color: ${this.status.back};">
+        renderIdea({
+            id_users,
+            id_idea,
+            pkt_mod,
+            date_added,
+            before_value,
+            after_value,
+            date_implementation
+        }) {
+            return (`
+        <div class="tr" style="background-color: ${this.statusInformation.back};">
             <span class="th">${(id_users.length > 1) ? 'Pomysłodawcy' : 'Pomysłodawca'}</span>
-            <span class="th">Status: ${this.status.status}</span>
+            <span class="th">Status: ${this.statusInformation.status}</span>
             <span class="th">Przyznane punkty: ${(pkt_mod) ? pkt_mod : 0}</span>
             <span class="th">Data dodania: ${(date_added).slice(0,10)}</span>
         </div>
@@ -92,17 +91,17 @@ document.addEventListener('DOMContentLoaded', function () {
         </div>
         <div class="tr">
             <span class="th">Numer propozycji: ${id_idea}</span>
-            <span class="th idea_date_add">${this.renderDataAdd(date_implementation)}</span>
+            ${this.renderDataAdd(date_implementation)}
         </div>
-        `;
+        `);
         };
         renderDataAdd(date) {
-            return (date) ? `Data wdrożenia: ${date}` : '';
+            return (date) ? `<span class="th idea_date_add">Data wdrożenia: ${date}</span>` : '';
         };
         addListPage() {
             this.ideaContainer.appendChild(this.list);
         };
-        state(st) {
+        statusInformation(st) {
             switch (st) {
                 case 0:
                     return {

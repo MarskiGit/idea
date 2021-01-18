@@ -1,6 +1,7 @@
 'use strict';
 import {
     dataFetch,
+    displayException,
     pageLoadingStatus
 } from './abstract.js';
 document.addEventListener('DOMContentLoaded', function () {
@@ -26,9 +27,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 clearTimeout(l), l = setTimeout(() => f.apply(c, a), t)
             };
         };
-        setingListUser(display) {
+        viewListUser(display) {
             this.viewCreator.innerText = '';
             this.viewCreator.style.display = `${display}`;
+        };
+        filterNumber(select) {
+            return parseInt(select.value.replace(/\D/g, ''));
+        };
+        verificationSymbol(char) {
+            return /[^A-Z-ŚŁŻŹĆa-z-ęóąśłżźćń\s0-9]/gi.test(char);
         };
     };
 
@@ -66,9 +73,6 @@ document.addEventListener('DOMContentLoaded', function () {
         sumPoints() {
             this.ratingIdea = this.pointsIdea.filter(el => parseInt(el)).reduce((a, b) => a + b);
         };
-        filterNumber(select) {
-            return parseInt(select.value.replace(/\D/g, ''));
-        };
         displayPoints() {
             this.viewPoints.innerText = `${this.ratingIdea}`;
         };
@@ -84,9 +88,9 @@ document.addEventListener('DOMContentLoaded', function () {
             this.start();
         }
         start() {
-            this.textAreas.forEach(textArea => textArea.addEventListener('keyup', this.countCharacters.bind(this)));
+            this.textAreas.forEach(textArea => textArea.addEventListener('keyup', this.calculateNumberCharacters.bind(this)));
         };
-        countCharacters(event) {
+        calculateNumberCharacters(event) {
             this.viewCount = event.target.nextElementSibling;
             this.maxCharacters = event.target.maxLength;
             this.textLenght = event.target.textLength;
@@ -116,9 +120,6 @@ document.addEventListener('DOMContentLoaded', function () {
         search(event) {
             (this.verificationSymbol(event.target.value)) ? this.errorSymbol(1): this.checkSearch(event.target.value);
         };
-        verificationSymbol(char) {
-            return /[^A-Z-ŚŁŻŹĆa-z-ęóąśłżźćń\s0-9]/gi.test(char);
-        };
         errorSymbol(bool) {
             if (bool) {
                 this.inputSearch.labels[0].style.color = 'red';
@@ -132,17 +133,17 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         checkSearch(inputText) {
             this.errorSymbol(0);
-            (inputText.length >= 3) ? this.selectType(inputText): this.setingListUser('none');
+            (inputText.length >= 3) ? this.typeValueSought(inputText): this.viewListUser('none');
         };
-        selectType(inputText) {
+        typeValueSought(inputText) {
             (inputText * 1) ? this.request.select = 'pass_number': this.request.select = 'name';
             this.request.name = inputText;
-            this.getUser();
+            this.sendRequest();
         };
-        getUser() {
+        sendRequest() {
             pageLoadingStatus(1);
             dataFetch('ajax.php', this.request).then(listUser => {
-                this.renderList(listUser);
+                (listUser.exception) ? displayException(listUser): this.renderList(listUser);
             }).finally(pageLoadingStatus(0));
         };
         renderList(listUser) {
@@ -162,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function () {
             this.addListPage();
         };
         addListPage() {
-            this.setingListUser('block');
+            this.viewListUser('block');
             this.viewCreator.appendChild(this.listUser);
         };
     };
