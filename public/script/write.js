@@ -117,8 +117,10 @@ document.addEventListener('DOMContentLoaded', function () {
         start() {
             this.inputSearch.addEventListener('input', this.debounced(this.search.bind(this), 500));
         };
-        search(event) {
-            (this.verificationSymbol(event.target.value)) ? this.errorSymbol(1): this.checkSearch(event.target.value);
+        search({
+            target
+        }) {
+            (this.verificationSymbol(target.value)) ? this.errorSymbol(1): this.checkSearch(target.value);
         };
         errorSymbol(bool) {
             if (bool) {

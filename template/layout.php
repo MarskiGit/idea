@@ -15,6 +15,7 @@
     <meta name="copyright" content="Copyright owner">
     <meta name="robots" content="noindex, nofollow">
     <link rel="shortcut icon" href="public/img/idea.png" type="image/x-icon" sizes="16x16">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
     <link rel="stylesheet" href="public/style/layout.min.css" type="text/css" media="all">
     <script defer type="module" src="public/script/idea.js"></script>
     <?php switch ($params['action']):
