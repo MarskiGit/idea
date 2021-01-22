@@ -3,39 +3,33 @@ export {
     dataFetch,
     eventWindowScroll,
     displayException,
+    catchException,
     pageLoadingStatus
 };
+const catchException = err => {
+    return (err) ? true : false
+}
 /////// FETCH \\\\\\\ 
-const handleError = err => {
-    console.warn(err);
-    let resp = new Response(
-        JSON.stringify({
-            code: 400,
-            message: 'Utrata połączenia. Spróbuj ponownie za parę chwil.'
-        })
-    );
-    return resp;
-};
 const dviException = ({
     type,
     exception
 }) => {
     const div = document.createElement('div');
     div.classList.add('exception');
-    div.innerHTML = `<p>${type} Błąd Aplikacji - Ajax</p><p>${exception}</p><div class="exception_img"></div>`;
+    div.innerHTML = `<p>Błąd Aplikacji ${type}</p><p>${exception}</p><div class="exception_img"></div>`;
     return div;
 };
 
 const displayException = data => {
     const mainContainer = document.querySelector('[data-page="main"]');
     mainContainer.appendChild(dviException(data));
-    console.warn(data.file, data.line);
+    console.warn((data.file) ? `${data.file, data.line}` : data.code);
 }
 
 const dataFetch = async (url = '', data = {}) => {
     const exception = {
         type: 'Ajax',
-        exception: 'Utrata połączenia. Spróbuj ponownie za parę chwil.'
+        exception: 'Utrata połączenia. <p>Spróbuj ponownie za parę chwil.</p>'
     };
     const opt = {
         method: 'POST',
@@ -50,11 +44,15 @@ const dataFetch = async (url = '', data = {}) => {
         body: JSON.stringify(data)
     };
 
-    const response = await fetch(url, opt).catch(handleError);
+    const response = await fetch(url, opt)
     const res = await response;
 
-    return response.code && response.code == 400 ? displayException(exception) : res.json();
-
+    if (response.ok) {
+        return res.json();
+    } else {
+        exception.code = `Error: ${response.status}`;
+        displayException(exception);
+    };
 };
 
 const eventWindowScroll = fn => {

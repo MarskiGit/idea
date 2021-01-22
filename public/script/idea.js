@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
             this.navPposition = this.nav.getClientRects()[0];
             this.pageUp = document.querySelector('[data-page="page_up"]');
             this.main = document.querySelector('[data-page="main"]');
-
+            this.main.style.paddingTop = `${this.navPposition.bottom.toFixed()}px`;
             eventWindowScroll(this.sticky.bind(this));
         }
         sticky() {
@@ -18,12 +18,10 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         on() {
             this.nav.classList.add('sticky');
-            this.main.style.paddingTop = `${this.navPposition.bottom.toFixed()}px`;
             this.pageUp.style.display = "block";
         };
         off() {
             this.nav.classList.remove('sticky');
-            this.main.style.paddingTop = '0px';
             this.pageUp.style.display = "none";
         };
     };
