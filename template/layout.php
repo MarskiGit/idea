@@ -36,7 +36,7 @@
         <?php
         default: ?>
             <link rel="stylesheet" href="public/style/home.min.css" type="text/css" media="all">
-            <!-- <script defer type="module" src="public/script/statistics.js"></script> -->
+            <!-- <script defer type="module" src="public/script/home.js"></script> -->
             <?php break; ?>
     <?php endswitch; ?>
 </head>

@@ -15,14 +15,14 @@ class ListIdeaModel extends AjaxAbstractModel
     private function getListNames($id_users): array
     {
         try {
-            $stmt = $this->DB->query("SELECT name FROM user WHERE id_user IN (" . $id_users . ")");
+            $stmt = $this->DB->query("SELECT user_name FROM account WHERE id_user IN (" . $id_users . ")");
             $stmt->execute();
         } catch (PDOException $e) {
             throw new AjaxException('Błąd Name IdeaModel');
         }
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $name[] = $row['name'];
+                $name[] = $row['user_name'];
             }
             return $name;
         } else {
@@ -71,7 +71,7 @@ class ListIdeaModel extends AjaxAbstractModel
         }
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $row['id_users'] = $this->getListNames($row['id_users']);
+                $row['creators'] = $this->getListNames($row['id_users']);
                 $row['id_area'] = $this->getArea($row['id_area']);
                 $result[] = $row;
             }

@@ -109,8 +109,7 @@ document.addEventListener('DOMContentLoaded', function () {
             this.li = null;
             this.request = {
                 action: 'creatorSearch',
-                select: 'name',
-                name: null
+                user_name: null
             };
             this.start();
         }
@@ -138,8 +137,8 @@ document.addEventListener('DOMContentLoaded', function () {
             (inputText.length >= 3) ? this.typeValueSought(inputText): this.viewListUser('none');
         };
         typeValueSought(inputText) {
-            (inputText * 1) ? this.request.select = 'pass_number': this.request.select = 'name';
-            this.request.name = inputText;
+            (inputText * 1) ? this.request.select = 'user_number': this.request.select = 'user_name';
+            this.request.user_name = inputText;
             this.sendRequest();
         };
         sendRequest() {
@@ -151,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function () {
         renderList(listUser) {
             listUser.forEach(user => {
                 const {
-                    name,
+                    user_name,
                     row,
                     id_user,
                     id_area
@@ -159,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 this.li = document.createElement('li');
                 this.li.setAttribute('class', `${(row)? 'view_li' : 'view_li creator_li'}`)
                 this.li.setAttribute('data-user', `[${id_user},${id_area}]`);
-                this.li.innerText = name;
+                this.li.innerText = user_name;
                 this.listUser.appendChild(this.li);
             })
             this.addListPage();

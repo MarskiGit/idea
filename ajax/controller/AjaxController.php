@@ -9,6 +9,7 @@ use Ajax\view\AjaxView;
 use Ajax\view\PhpInput;
 use Ajax\model\ListIdeaModel;
 use Ajax\model\CreatorSearchModel;
+use Ajax\model\AccountModel;
 
 class AjaxController
 {
@@ -23,19 +24,23 @@ class AjaxController
         $this->PhpInput = $PhpInput;
         $this->AjaxView = $AjaxView;
 
+
         $this->run();
     }
     private function run(): void
     {
         if ($this->PhpInput->hasPhpInput()) {
-
             $this->requestParam = $this->PhpInput->getParam_PhpInput();
-            $action = $this->requestParam['action'] . 'Ajax';
-            if (!method_exists($this, $action)) {
-                $action = self::DEFAULT_ACTION_AJAX . 'Ajax';
-            } else {
-                $this->$action();
-            }
+            $this->runMetod();
+        }
+    }
+    private function runMetod(): void
+    {
+        $action = $this->requestParam['action'] . 'Ajax';
+        if (!method_exists($this, $action)) {
+            $action = self::DEFAULT_ACTION_AJAX . 'Ajax';
+        } else {
+            $this->$action();
         }
     }
     private function listIdeaAjax(): void
@@ -47,5 +52,10 @@ class AjaxController
     {
         $userSearch = new CreatorSearchModel($this->requestParam);
         $this->AjaxView->renderJSON($userSearch->get());
+    }
+    private function loginUserAjax()
+    {
+        $account = new AccountModel($this->requestParam);
+        $this->AjaxView->renderJSON($account->login());
     }
 }

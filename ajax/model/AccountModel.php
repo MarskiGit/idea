@@ -11,16 +11,6 @@ use PDOException;
 
 class AccountModel extends AjaxAbstractModel
 {
-
-    private array $request;
-    private array $notification;
-    private ?int $id;
-    private ?int $rang;
-    private ?string $name;
-    private bool $authenticated;
-    public function __construct()
-    {
-    }
     public function addAccount(): array
     {
         if (!$this->isNameValid()) {
@@ -35,8 +25,8 @@ class AccountModel extends AjaxAbstractModel
             return $this->notification(3);
         }
 
-        $hash_2 = $this->hash($this->request['password']);
-        $values = [':name' => $this->request['username'], ':passwd' => $hash_2, ':account_rang' => $this->request['rang']];
+        $hash_2 = $this->hash($this->requestParam['password']);
+        $values = [':name' => $this->requestParam['user_name'], ':passwd' => $hash_2, ':account_rang' => $this->requestParam['rang']];
 
         try {
             $stmt = $this->DB->prepare('INSERT INTO accounts (account_name, account_passwd, account_rang) VALUES (:name, :passwd, :account_rang)');
@@ -48,10 +38,10 @@ class AccountModel extends AjaxAbstractModel
         $id = intval($this->DB->lastInsertId());
         return $this->notification($id);
     }
-    public function login($request): array
+    public function login(): array
     {
-        $this->request = $request;
-        if (!$this->isNameValid($request)) {
+
+        if (!$this->isNameValid($this->requestParam)) {
             return  $this->notification(0);
         }
         if (!$this->isPasswdValid()) {
@@ -59,8 +49,8 @@ class AccountModel extends AjaxAbstractModel
         }
 
         try {
-            $stmt = $this->DB->prepare('SELECT * FROM accounts WHERE (account_name = :name) AND (account_enabled = 1)');
-            $stmt->bindValue(':name', $request['username'], PDO::PARAM_STR);
+            $stmt = $this->DB->prepare('SELECT * FROM account WHERE (user_name = :name) AND (account_enabled = 1)');
+            $stmt->bindValue(':name', $this->requestParam['user_name'], PDO::PARAM_STR);
             $stmt->execute();
         } catch (PDOException $e) {
             throw new AjaxException('Błąd Login AccountModel');
@@ -68,16 +58,16 @@ class AccountModel extends AjaxAbstractModel
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if (is_array($row)) {
-            if (password_verify($this->request['password'], $row['account_passwd'])) {
+            if (password_verify($this->requestParam['password'], $row['account_passwd'])) {
                 session_start();
                 $id = intval($row['account_id'], 10);
-                $name = $this->request['username'];
+                $name = $this->requestParam['user_name'];
                 $authenticated = true;
                 $rang = (int) $row['account_rang'];
                 // pusz to araay sesion
                 $user = [
                     'rang' => $row['account_rang'],
-                    'name' => $this->request['username'],
+                    'name' => $this->requestParam['user_name'],
                     'id' => $row['account_id']
                 ];
                 $_SESSION['account'] = $user;
@@ -97,7 +87,7 @@ class AccountModel extends AjaxAbstractModel
     private function isNameValid(): bool
     {
         $valid = true;
-        $len = mb_strlen($this->request['username']);
+        $len = mb_strlen($this->requestParam['user_name']);
         if (($len < 8) || ($len > 16)) {
             $valid = false;
         }
@@ -106,7 +96,7 @@ class AccountModel extends AjaxAbstractModel
     private function isPasswdValid(): bool
     {
         $valid = true;
-        $len = mb_strlen($this->request['password']);
+        $len = mb_strlen($this->requestParam['password']);
         if (($len < 8) || ($len > 16)) {
             $valid = false;
         }
@@ -117,7 +107,7 @@ class AccountModel extends AjaxAbstractModel
         $id = null;
         try {
             $stmt = $this->DB->prepare('SELECT account_id FROM accounts WHERE (account_name = :name)');
-            $stmt->bindValue(':name', $this->request['username'], PDO::PARAM_STR);
+            $stmt->bindValue(':name', $this->requestParam['user_name'], PDO::PARAM_STR);
             $stmt->execute();
         } catch (PDOException $e) {
             throw new AjaxException('Błąd ID AccountModel');

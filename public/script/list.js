@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         };
         renderIdea({
-            id_users,
+            creators,
             id_idea,
             pkt_mod,
             date_added,
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }) {
             return (`
         <div class="tr" style="background-color: ${this.statusInformation.back};">
-            <span class="th">${(id_users.length > 1) ? 'Pomysłodawcy' : 'Pomysłodawca'}</span>
+            <span class="th">${(creators.length > 1) ? 'Pomysłodawcy' : 'Pomysłodawca'}</span>
             <span class="th">Status: ${this.statusInformation.status}</span>
             <span class="th">Przyznane punkty: ${(pkt_mod) ? pkt_mod : 0}</span>
             <span class="th">Data dodania: ${(date_added).slice(0,10)}</span>
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function () {
         <div class="tr">
             <div class="td idea_authors">
                 <ol>
-                    ${id_users.map(name =>`<li>${name}</li>`).join('')}
+                    ${creators.map(name =>`<li>${name}</li>`).join('')}
                 </ol>
             </div>
             <div class="td idea_value">
