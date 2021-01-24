@@ -11,31 +11,25 @@ document.addEventListener('DOMContentLoaded', function () {
             this.viewPoints = document.querySelector('[data-write="view_points"]');
             this.viewCreator = document.querySelector('[data-write="view_creator"]');
             this.inputSearch = document.querySelector('[data-write="input_search"]');
+            this.olCreators = document.querySelector('[data-write="view_creator"]');
+            this.chosenOnes = document.querySelector('[data-write="chosen_ones"]');
+            this.messages = document.querySelector('[data-write="messages"]');
             this.textAreas = document.querySelectorAll('textarea');
+            this.idUser = [];
+            this.idArea = [];
             this.errors = [];
         };
-        takePoints() {
-            return parseInt(this.viewPoints.textContent);
-        };
-        checkError() {
-            return (this.errors.length) ? true : false;
-        };
+        takePoints = () => parseInt(this.viewPoints.textContent);
+        checkError = () => (this.errors.length) ? true : false;
+        filterNumber = select => parseInt(select.value.replace(/\D/g, ''));
+        verificationSymbol = char => /[^A-Z-ŚŁŻŹĆa-z-ęóąśłżźćń\s0-9]/gi.test(char);
+        getParamData = (li, index) => JSON.parse(li.getAttribute('data-user'))[index];
         debounced(f, t) {
             let l;
             return (...a) => {
                 const c = this;
                 clearTimeout(l), l = setTimeout(() => f.apply(c, a), t)
             };
-        };
-        viewListUser(display) {
-            this.viewCreator.innerText = '';
-            this.viewCreator.style.display = `${display}`;
-        };
-        filterNumber(select) {
-            return parseInt(select.value.replace(/\D/g, ''));
-        };
-        verificationSymbol(char) {
-            return /[^A-Z-ŚŁŻŹĆa-z-ęóąśłżźćń\s0-9]/gi.test(char);
         };
     };
 
@@ -134,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         checkSearch(inputText) {
             this.errorSymbol(0);
-            (inputText.length >= 3) ? this.typeValueSought(inputText): this.viewListUser('none');
+            (inputText.length >= 3) ? this.typeValueSought(inputText): this.viewCreator.classList.remove('on')
         };
         typeValueSought(inputText) {
             (inputText * 1) ? this.request.select = 'user_number': this.request.select = 'user_name';
@@ -148,27 +142,56 @@ document.addEventListener('DOMContentLoaded', function () {
             }).finally(pageLoadingStatus(0));
         };
         renderList(listUser) {
-            listUser.forEach(user => {
-                const {
-                    user_name,
-                    row,
-                    id_user,
-                    id_area
-                } = user;
-                this.li = document.createElement('li');
-                this.li.setAttribute('class', `${(row)? 'view_li' : 'view_li creator_li'}`)
-                this.li.setAttribute('data-user', `[${id_user},${id_area}]`);
-                this.li.innerText = user_name;
-                this.listUser.appendChild(this.li);
+            listUser.forEach(({
+                user_name,
+                row,
+                id_user,
+                id_area
+            }) => {
+                let li = document.createElement('li');
+                li.setAttribute('class', `${(row)? 'view_li' : 'view_li creator_li'}`)
+                li.setAttribute('data-user', `[${id_user},${id_area}]`);
+                li.innerText = user_name;
+                this.listUser.appendChild(li);
             })
             this.addListPage();
         };
         addListPage() {
-            this.viewListUser('block');
+            this.viewCreator.innerText = '';
+            this.viewCreator.classList.add('on')
             this.viewCreator.appendChild(this.listUser);
         };
     };
 
+    class AddCreator extends WriteAbstract {
+        constructor() {
+            super();
+            this.start();
+        };
+        start() {
+            this.olCreators.addEventListener('click', this.select.bind(this));
+        };
+        select(event) {
+            const id = this.getParamData(event.originalTarget, 0);
+            if (event.originalTarget.tagName === 'LI' && this.noRepeating(id)) {
+                this.idUser.push(id);
+                const cloneLi = event.originalTarget.cloneNode(true);
+                this.transfer(cloneLi);
+            } else {
+                this.olCreators.nextElementSibling.classList.add('span_error');
+                setTimeout(() => this.olCreators.nextElementSibling.classList.remove('span_error'), 2000);
+            };
+        };
+        transfer(cloneLi) {
+            this.chosenOnes.appendChild(cloneLi);
+            this.chosenOnes.classList.add('on')
+        };
+        noRepeating = id => (this.idUser.includes(id)) ? false : true;
+    };
+
+
+
+    const ADDCREATOR = new AddCreator();
     const SEARCHUSER = new CreatorSearch();
     const SIGN = new NumberCharacters();
     const RATINGIDEA = new CalculatePoints();

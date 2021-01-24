@@ -49,10 +49,12 @@
                     <label for="input_search" class="list_label">Wyszukaj i kliknij: </label>
                     <input id="input_search" class="input_search" data-write="input_search" type="search" autocomplete="off" placeholder="Nazwisko">
                     <ol class="view_creator" data-write="view_creator"></ol>
+                    <span>Ten pomysłodawca jest na liście:</span>
                 </div>
                 <div class="chosen_ones">
                     <label for="select_name" class="list_label">Lista pomysłodawców: </label>
-                    <ol id="select_name" data-write="chosen_ones"></ol>
+                    <ol class="ones_creator" data-write="chosen_ones"></ol>
+
                 </div>
             </div>
         </fieldset>
@@ -68,9 +70,5 @@
         <select class="area" data-write="area">
         </select>
         <button class="btn_area" data-write="btnArea">Akceptuj</button>
-    </div>
-    <div class="repeat popup" data-user="repeatUser">
-        <p>Ten pomysłodawca już jest na liście</p>
-        <button type="submit" class="repeat_ok" data-user="OK">OK</button>
     </div>
 </main>
