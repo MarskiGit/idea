@@ -1,13 +1,12 @@
-Projekt i wykonawca:
+Projekt, wykonawca i prawa autorskie:
 
 Mariusz Kępski
+marski.pl
 
 
 https://github.com/MarskiGit/idea.git
 
 Ambitny projekt do szuflady.
-
-Wzorzec projektowy MVC.
 
 Zasady projektu:
 
@@ -20,11 +19,16 @@ Zasady projektu:
 
 Założenia:
 
-Asynchroniczne ładowanie treści w poszczególnych zakładkach wykonywane tylko za pomocą Ajax.
-Akcje zmiany zakładek obsługiwane za pomocą żądania w url.
+=> Konwencje <=
 
-Obsługa logowania użytkowników za pomocą AJAX.
+1) nazewnictwo
+Kod:
+- HTM, CSS, MySql - snake_case
+- JavaScript, PHP - camelCase
 
-BRAK OBSŁUGI POST PO STRONIE SERWERA TYM ZAJMUJE SIĘ AJAX.
+2) serwer (forma tylko JSON)
+Żądania:
+- Akcja: action: ...
 
-Wzapytania musi być okreslona wartość w obiekcie {action: }.
+Odpowiedź:
+- Błędy: exception: ...

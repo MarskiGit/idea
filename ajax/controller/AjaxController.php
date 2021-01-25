@@ -9,6 +9,7 @@ use Ajax\view\AjaxView;
 use Ajax\view\PhpInput;
 use Ajax\model\ListIdeaModel;
 use Ajax\model\CreatorSearchModel;
+use Ajax\model\AreaSearchModel;
 use Ajax\model\AccountModel;
 
 class AjaxController
@@ -52,6 +53,11 @@ class AjaxController
     {
         $userSearch = new CreatorSearchModel($this->requestParam);
         $this->AjaxView->renderJSON($userSearch->get());
+    }
+    private function areaSearchAjax(): void
+    {
+        $areaSearch = new AreaSearchModel($this->requestParam);
+        $this->AjaxView->renderJSON($areaSearch->get());
     }
     private function loginUserAjax()
     {

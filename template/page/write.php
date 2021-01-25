@@ -38,37 +38,43 @@
                 ?>
                 <div class="number_rating"> <span>Suma punktów:&nbsp;</span><span class="pktnum" data-write="view_points">10</span><span>&nbsp;pkt.</span></div>
             </div>
-            <span class="sign_number" data-write=""></span>
+            <span class="sign_number"></span>
         </fieldset>
-
 
         <fieldset>
             <legend>Pomysłodawcy</legend>
             <div class="creator">
-                <div class="creator_search">
-                    <label for="input_search" class="list_label">Wyszukaj i kliknij: </label>
-                    <input id="input_search" class="input_search" data-write="input_search" type="search" autocomplete="off" placeholder="Nazwisko">
-                    <ol class="view_creator" data-write="view_creator"></ol>
+                <div class="container_search">
+                    <label for="creator_search" class="list_label">Wyszukaj i kliknij:</label>
+                    <input id="creator_search" class="input_search" data-write="creator_search" type="search" autocomplete="off" placeholder="Nazwisko">
+                    <ol class="view_ol" data-write="view_creator"></ol>
                     <span>Ten pomysłodawca jest na liście:</span>
                 </div>
                 <div class="chosen_ones">
-                    <label for="select_name" class="list_label">Lista pomysłodawców: </label>
+                    <label for="select_name" class="list_label">Lista pomysłodawców:</label>
                     <ol class="ones_creator" data-write="chosen_ones"></ol>
-
                 </div>
             </div>
+            <span class="sign_number"></span>
+        </fieldset>
+
+        <fieldset>
+            <legend>Obszar</legend>
+            <div class="creator">
+                <div class="container_search">
+                    <label for="area_search" class="list_label">Wyszukaj i kliknij:</label>
+                    <input id="area_search" class="input_search" data-write="area_search" type="search" autocomplete="off" placeholder="Obszar">
+                    <ol class="view_ol" data-write="view_area"></ol>
+                    <span>Ten pomysłodawca jest na liście:</span>
+                </div>
+                <div class="chosen_ones">
+                    <label for="select_name" class="list_label">Wybrany Obszar:</label>
+                    <ol class="ones_creator" data-write="chosen_ones_area"></ol>
+                </div>
+            </div>
+            <span class="sign_number"></span>
         </fieldset>
         <button class="add_idea" data-write="add">Wyślij</button>
     </form>
 
-
-    <div class="messages" data-write="messages">
-        <p> </p>
-    </div>
-    <div class="area_list popup" data-write="popupArea">
-        <p>Wybierz obszar dla pomysłu</p>
-        <select class="area" data-write="area">
-        </select>
-        <button class="btn_area" data-write="btnArea">Akceptuj</button>
-    </div>
 </main>

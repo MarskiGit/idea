@@ -10,7 +10,8 @@ document.addEventListener('DOMContentLoaded', function () {
             this.form = document.querySelector('[data-write="form"]');
             this.viewPoints = document.querySelector('[data-write="view_points"]');
             this.viewCreator = document.querySelector('[data-write="view_creator"]');
-            this.inputSearch = document.querySelector('[data-write="input_search"]');
+            this.creatorSearch = document.querySelector('[data-write="creator_search"]');
+            this.areaSearch = document.querySelector('[data-write="area_search"]');
             this.olCreators = document.querySelector('[data-write="view_creator"]');
             this.chosenOnes = document.querySelector('[data-write="chosen_ones"]');
             this.messages = document.querySelector('[data-write="messages"]');
@@ -108,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function () {
             this.start();
         }
         start() {
-            this.inputSearch.addEventListener('input', this.debounced(this.search.bind(this), 500));
+            this.creatorSearch.addEventListener('input', this.debounced(this.search.bind(this), 500));
         };
         search({
             target
@@ -117,13 +118,13 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         errorSymbol(bool) {
             if (bool) {
-                this.inputSearch.labels[0].style.color = 'red';
-                this.inputSearch.labels[0].textContent = 'Tylko znaki alfabetu i cyfry';
-                this.inputSearch.classList.add('errorSearch');
+                this.creatorSearch.labels[0].style.color = 'red';
+                this.creatorSearch.labels[0].textContent = 'Tylko znaki alfabetu i cyfry';
+                this.creatorSearch.classList.add('errorSearch');
             } else {
-                this.inputSearch.labels[0].style.color = '';
-                this.inputSearch.labels[0].textContent = 'Wyszukaj i kliknij:';
-                this.inputSearch.classList.remove('errorSearch');
+                this.creatorSearch.labels[0].style.color = '';
+                this.creatorSearch.labels[0].textContent = 'Wyszukaj i kliknij:';
+                this.creatorSearch.classList.remove('errorSearch');
             };
         };
         checkSearch(inputText) {
@@ -163,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
     };
 
-    class AddCreator extends WriteAbstract {
+    class ChosenOnesCreator extends WriteAbstract {
         constructor() {
             super();
             this.start();
@@ -191,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-    const ADDCREATOR = new AddCreator();
+    const ADDCREATOR = new ChosenOnesCreator();
     const SEARCHUSER = new CreatorSearch();
     const SIGN = new NumberCharacters();
     const RATINGIDEA = new CalculatePoints();
