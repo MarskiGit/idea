@@ -1,6 +1,8 @@
 <?php
 
 declare(strict_types=1);
+session_start();
+
 require_once("utils/debug.php");
 require_once('config/config.php');
 spl_autoload_register(function (string $classNamespace) {
@@ -14,6 +16,7 @@ use Idea\controller\PageController;
 use Idea\view\View;
 use Idea\view\Request;
 
+dump($_SESSION);
 try {
     $request = [
         'get' => $_GET,

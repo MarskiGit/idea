@@ -38,13 +38,6 @@ class Request
     }
     public function getParam_SESSION(): array
     {
-        if ($this->is_SESSION()) {
-            $session = $_SESSION;
-            $session['set'] = 1;
-            return $session;
-        } else {
-            $session['set'] = 0;
-            return $session;
-        }
+        return (isset($_SESSION['account'])) ? $_SESSION['account'] : $_SESSION;
     }
 }

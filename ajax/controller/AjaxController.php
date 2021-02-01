@@ -64,4 +64,14 @@ class AjaxController
         $account = new AccountModel($this->requestParam);
         $this->AjaxView->renderJSON($account->login());
     }
+    private function logoutUserAjax()
+    {
+        $account = new AccountModel($this->requestParam);
+        $this->AjaxView->renderJSON($account->logout());
+    }
+    private function addUserAjax()
+    {
+        $account = new AccountModel($this->requestParam);
+        $this->AjaxView->renderJSON($account->addAccount());
+    }
 }

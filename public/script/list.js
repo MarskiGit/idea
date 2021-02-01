@@ -46,12 +46,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     } = idea;
                     this.status = this.statusInformation(status * 1);
                     this.tupleNumber.push(id_idea);
-                    this.div = document.createElement('div');
-                    this.div.className = 'idea';
-                    this.div.setAttribute('data-id_idea', `${id_idea}`);
-                    this.div.style.setProperty('--color', `${this.status.border}`);
-                    this.div.innerHTML = this.renderIdea(idea);
-                    this.list.appendChild(this.div);
+                    const div = document.createElement('div');
+                    div.className = 'idea';
+                    div.setAttribute('data-id_idea', `${id_idea}`);
+                    div.style.setProperty('--color', `${this.status.border}`);
+                    div.innerHTML = this.renderIdea(idea);
+                    this.list.appendChild(div);
                     if (id_idea * 1 === 1) this.endTuples = true;
                 });
                 this.request.last_tuple = Math.min(...this.tupleNumber);
@@ -70,9 +70,9 @@ document.addEventListener('DOMContentLoaded', function () {
             date_implementation
         }) {
             return (`
-        <div class="tr" style="background-color: ${this.statusInformation.back};">
+        <div class="tr" style="background-color: ${this.status.back};">
             <span class="th">${(creators.length > 1) ? 'Pomysłodawcy' : 'Pomysłodawca'}</span>
-            <span class="th">Status: ${this.statusInformation.status}</span>
+            <span class="th">Status: ${this.status.status}</span>
             <span class="th">Przyznane punkty: ${(pkt_mod) ? pkt_mod : 0}</span>
             <span class="th">Data dodania: ${(date_added).slice(0,10)}</span>
         </div>

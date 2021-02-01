@@ -33,6 +33,19 @@ abstract class AbstractController
             }
         }
         $this->View->layout($this->params());
+
+        switch (intval($this->SessionParam['rang'] ?? 0)) {
+            case 0:
+
+                break;
+            case 1:
+
+                break;
+            case 2:
+                $this->admin();
+                break;
+        };
+
         $this->$action();
         $this->View->footer();
     }

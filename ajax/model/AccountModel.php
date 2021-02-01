@@ -14,45 +14,52 @@ class AccountModel extends AjaxAbstractModel
     public function addAccount(): array
     {
         if (!$this->isNameValid()) {
-            return $this->notification(1);
+            return $this->notification([
+                'account' => 'Minimum 3 znaki',
+                'valid' => 'name'
+            ]);
         }
 
         if (!$this->isPasswdValid()) {
-            return $this->notification(2);
+            return $this->notification([
+                'account' => 'Minimum 8 znaków',
+                'valid' => 'passwd'
+            ]);
         }
 
         if (!is_null($this->getIdFromName())) {
-            return $this->notification(3);
+            return $this->notification([
+                'account' => 'Użytkownik istnieje',
+                'valid' => 'idName'
+            ]);
         }
-
         $hash_2 = $this->hash($this->requestParam['password']);
-        $values = [':name' => $this->requestParam['user_name'], ':passwd' => $hash_2, ':account_rang' => $this->requestParam['rang']];
-
+        // id_area ustawione tymczasowo musi być przypisuwane do kontaa podczas tworzenia - do rozwiązania
+        $temp = 1;
         try {
-            $stmt = $this->DB->prepare('INSERT INTO accounts (account_name, account_passwd, account_rang) VALUES (:name, :passwd, :account_rang)');
-            $stmt->execute($values);
+            $stmt = $this->DB->prepare('INSERT INTO account (id_area, user_name, account_passwd, account_rang) VALUES (:id_area, :user_name, :account_passwd, :account_rang)');
+            $stmt->bindParam(':id_area', $temp, PDO::PARAM_INT);
+            $stmt->bindParam(':user_name', $this->requestParam['user_name'], PDO::PARAM_STR);
+            $stmt->bindParam(':account_rang', $this->requestParam['rang'], PDO::PARAM_INT);
+            $stmt->bindParam(':account_passwd', $hash_2);
+            $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Błąd Add AccountModel');
+            echo $e->getMessage();
         }
 
         $id = intval($this->DB->lastInsertId());
-        return $this->notification($id);
+        return $this->notification([
+            'account' => $id,
+            'valid' => 'ok'
+        ]);
     }
     public function login(): array
     {
-
-        if (!$this->isNameValid($this->requestParam)) {
-            return  $this->notification(0);
-        }
-        if (!$this->isPasswdValid()) {
-            return  $this->notification(0);
-        }
-
         try {
             $stmt = $this->DB->prepare('SELECT * FROM account WHERE (user_name = :name) AND (account_enabled = 1)');
             $stmt->bindValue(':name', $this->requestParam['user_name'], PDO::PARAM_STR);
             $stmt->execute();
-        } catch (PDOException $e) {
+        } catch (PDOException) {
             throw new AjaxException('Błąd Login AccountModel');
         }
 
@@ -60,22 +67,17 @@ class AccountModel extends AjaxAbstractModel
         if (is_array($row)) {
             if (password_verify($this->requestParam['password'], $row['account_passwd'])) {
                 session_start();
-                $id = intval($row['account_id'], 10);
-                $name = $this->requestParam['user_name'];
-                $authenticated = true;
-                $rang = (int) $row['account_rang'];
-                // pusz to araay sesion
                 $user = [
                     'rang' => $row['account_rang'],
                     'name' => $this->requestParam['user_name'],
-                    'id' => $row['account_id']
+                    'id' => $row['id_user']
                 ];
                 $_SESSION['account'] = $user;
 
-                return $this->notification(1);
+                return $this->notification(['account' => '1']);
             }
         }
-        return $this->notification(0);
+        return $this->notification(['account' => '0']);
     }
     public function logout()
     {
@@ -88,7 +90,7 @@ class AccountModel extends AjaxAbstractModel
     {
         $valid = true;
         $len = mb_strlen($this->requestParam['user_name']);
-        if (($len < 8) || ($len > 16)) {
+        if (($len < 3) || ($len > 16)) {
             $valid = false;
         }
         return $valid;
@@ -106,7 +108,7 @@ class AccountModel extends AjaxAbstractModel
     {
         $id = null;
         try {
-            $stmt = $this->DB->prepare('SELECT account_id FROM accounts WHERE (account_name = :name)');
+            $stmt = $this->DB->prepare('SELECT id_user FROM account WHERE (user_name = :name)');
             $stmt->bindValue(':name', $this->requestParam['user_name'], PDO::PARAM_STR);
             $stmt->execute();
         } catch (PDOException $e) {
@@ -114,18 +116,12 @@ class AccountModel extends AjaxAbstractModel
         }
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if (is_array($row)) {
-            $id = intval($row['account_id'], 10);
+            $id = intval($row['id_user'], 10);
         }
         return $id;
     }
     private function hash(string $value): string
     {
-        $bytes = random_bytes(22);
-        $options  = [
-            'cost' => 11,
-            'salt' => bin2hex($bytes),
-        ];
-        $hash_2 = password_hash($value, PASSWORD_BCRYPT, $options);
-        return $hash_2;
+        return password_hash($value, PASSWORD_BCRYPT);
     }
 }

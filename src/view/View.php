@@ -50,4 +50,12 @@ class View
     {
         $this->renderHTML('login', 'page/');
     }
+    public function account(): void
+    {
+        $this->renderHTML('account', 'page/');
+    }
+    public function admin(): void
+    {
+        $this->renderHTML('admin', 'page/');
+    }
 }

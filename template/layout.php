@@ -34,6 +34,11 @@
             <script defer type="module" src="public/script/login.js"></script>
             <?php break; ?>
         <?php
+        case 'accountIdea': ?>
+            <link rel="stylesheet" href="public/style/account.min.css" type="text/css" media="all">
+            <script defer type="module" src="public/script/account.js"></script>
+            <?php break; ?>
+        <?php
         default: ?>
             <link rel="stylesheet" href="public/style/home.min.css" type="text/css" media="all">
             <!-- <script defer type="module" src="public/script/home.js"></script> -->
@@ -43,9 +48,6 @@
 
 <body>
     <scroll-page id="top_page"></scroll-page>
-    <header>
-
-    </header>
     <nav class="menu" data-page="nav">
         <a href="http://h.localhost/01_MOJE/01_GIT/idea/" class="home_nav hover_img"><img src="public/img/home_icon.svg"><img src="public/img/border_icon.svg" class="load" data-page="status_indicator"></a>
         <a href="?action=list" class="a_btn">Lista pomysłów</a>
