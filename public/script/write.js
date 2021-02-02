@@ -1,12 +1,11 @@
 'use strict';
 import {
-    dataFetch,
-    displayException,
-    pageLoadingStatus
+    FetchAbstract
 } from './abstract.js';
 document.addEventListener('DOMContentLoaded', function () {
-    class WriteAbstract {
+    class WriteAbstract extends FetchAbstract {
         constructor() {
+            super();
             this.form = document.querySelector('[data-write="form"]');
             this.viewPoints = document.querySelector('[data-write="view_points"]');
             this.viewCreator = document.querySelector('[data-write="view_creator"]');
@@ -134,16 +133,10 @@ document.addEventListener('DOMContentLoaded', function () {
         typeValueSought(inputText) {
             (inputText * 1) ? this.request.select = 'user_number': this.request.select = 'user_name';
             this.request.user_name = inputText;
-            this.sendRequest();
+            this.send();
         };
-        sendRequest() {
-            pageLoadingStatus(1);
-            dataFetch('ajax.php', this.request).then(listUser => {
-                (listUser.exception) ? displayException(listUser): this.renderList(listUser);
-            }).finally(pageLoadingStatus(0));
-        };
-        renderList(listUser) {
-            listUser.forEach(({
+        answer(data) {
+            data.forEach(({
                 user_name,
                 row,
                 id_user,
@@ -156,6 +149,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 this.listUser.appendChild(li);
             })
             this.addListPage();
+
         };
         addListPage() {
             this.viewCreator.innerText = '';

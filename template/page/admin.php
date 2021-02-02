@@ -16,7 +16,7 @@
                     </fieldset>
                     <fieldset>
                         <div class="label"><img src="public/img/id_card.svg" alt="Id Card"></div>
-                        <input type="number" name="user_number" placeholder="Identyfikator" min="0" step="0.1"><span class="validity"></span>
+                        <input type="number" name="user_number" placeholder="Identyfikator" min="0" step="1"><span class="validity"></span>
                     </fieldset>
                     <fieldset>
                         <div class="label"><img src="public/img/user.svg" alt="User"></div>

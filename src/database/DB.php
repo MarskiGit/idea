@@ -32,7 +32,7 @@ class DB
                 self::$DB->exec('set names utf8');
                 self::$DB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 define('DB_CONNECTED', true);
-            } catch (PDOException $e) {
+            } catch (PDOException) {
                 throw new Exception('Connecting error');
             }
             return self::$DB;

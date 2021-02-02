@@ -19,7 +19,7 @@ class CreatorSearchModel extends AjaxAbstractModel
             $stmt = $this->DB->prepare("SELECT id_user, id_area, user_name FROM account WHERE " . $this->requestParam['select'] . " LIKE :name LIMIT 3");
             $stmt->bindValue(':name', $search, PDO::PARAM_STR);
             $stmt->execute();
-        } catch (PDOException $e) {
+        } catch (PDOException) {
             throw new AjaxException('Błąd User Search IdeaModel');
         }
         if ($stmt->rowCount() > 0) {
@@ -28,7 +28,8 @@ class CreatorSearchModel extends AjaxAbstractModel
             }
             return $result;
         } else {
-            return $this->notification(['user_name' => 'Nie odnaleziono', 'row' => 'empty']);
+            $result[] = ['user_name' => 'Nie odnaleziono', 'row' => 'empty'];
+            return $this->notification($result);
         }
     }
 }

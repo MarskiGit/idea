@@ -17,7 +17,7 @@ class RatingSettingsIdeaModel extends AbstractModel
         try {
             $stmt = $this->DB->query('SELECT * FROM rating_setting');
             $stmt->execute();
-        } catch (PDOException $e) {
+        } catch (PDOException) {
             throw new IdeaException('Błąd Ustawień Oceny');
         }
 

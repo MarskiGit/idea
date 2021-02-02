@@ -21,7 +21,7 @@ class View
             } else {
                 throw new IdeaException('Błąd otwarcia szablonu' . $name . ' in: ' . $path);
             }
-        } catch (Exception $e) {
+        } catch (Exception) {
             throw new IdeaException('Błąd Renderowania Strony');
         }
     }

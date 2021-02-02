@@ -51,8 +51,8 @@ class AccountModel extends AjaxAbstractModel
             $stmt->bindParam(':account_rang', $this->requestParam['rang'], PDO::PARAM_INT);
             $stmt->bindParam(':account_passwd', $hash_2);
             $stmt->execute();
-        } catch (PDOException $e) {
-            echo $e->getMessage();
+        } catch (PDOException) {
+            throw new AjaxException('Błąd Add AccountModel');
         }
 
         $id = intval($this->DB->lastInsertId());
@@ -119,7 +119,7 @@ class AccountModel extends AjaxAbstractModel
             $stmt = $this->DB->prepare("SELECT  {$tuple} FROM account WHERE ({$tuple}= :value)");
             $stmt->bindValue(':value', $value, PDO::PARAM_STR);
             $stmt->execute();
-        } catch (PDOException $e) {
+        } catch (PDOException) {
             throw new AjaxException('Błąd ID Card AccountModel');
         }
         $row = $stmt->fetch(PDO::FETCH_ASSOC);

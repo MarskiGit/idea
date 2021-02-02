@@ -1,14 +1,13 @@
 'use strict';
 import {
-    dataFetch,
     eventWindowScroll,
-    displayException,
-    pageLoadingStatus
+    FetchAbstract
 } from './abstract.js';
 document.addEventListener('DOMContentLoaded', function () {
 
-    class ListIdea {
+    class ListIdea extends FetchAbstract {
         constructor() {
+            super();
             this.ideaContainer = document.querySelector('[data-idea="idea_container"]');
             this.endTuples = false;
             this.request = {
@@ -22,24 +21,12 @@ document.addEventListener('DOMContentLoaded', function () {
             this.start();
         };
         start() {
-            this.sendRequest();
-            eventWindowScroll(this.throttled(this.sendRequest.bind(this), 950));
+            this.send();
+            eventWindowScroll(this.throttled(this.send.bind(this), 950));
         };
-        sendRequest() {
-            if (!this.endTuples) {
-                pageLoadingStatus(1);
-                dataFetch('ajax.php', this.request)
-                    .then(listIdea => {
-                        (listIdea.exception) ? displayException(listIdea): this.renderList(listIdea);
-                    })
-                    .finally(() => {
-                        pageLoadingStatus(0);
-                    });
-            };
-        };
-        renderList(listIdea) {
-            if (listIdea.length) {
-                listIdea.forEach(idea => {
+        answer(data) {
+            if (data.length) {
+                data.forEach(idea => {
                     const {
                         status,
                         id_idea
@@ -56,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
                 this.request.last_tuple = Math.min(...this.tupleNumber);
                 this.addListPage();
-            } else {
+            } else if (this.request.last_tuple === 0) {
                 this.ideaContainer.innerHTML = '<div class=IdeaList"><h4 class="empty_idea">Brak elementów do wyświetlenia.</h4></div>';
             }
         };

@@ -66,7 +66,7 @@ class ListIdeaModel extends AjaxAbstractModel
         try {
             $stmt = $this->DB->query("SELECT id_idea, id_area, id_users, before_value, after_value, date_added, date_implementation, pkt_mod, status FROM idea WHERE id_idea < " . $this->limitTuples($this->requestParam['last_tuple']) . " ORDER BY id_idea DESC LIMIT 6");
             $stmt->execute();
-        } catch (PDOException $e) {
+        } catch (PDOException) {
             throw new AjaxException('Błąd Get IdeaModel');
         }
         if ($stmt->rowCount() > 0) {

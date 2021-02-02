@@ -19,7 +19,7 @@ class AreaSearchModel extends AjaxAbstractModel
         try {
             $stmt = $this->DB->prepare("SELECT area_name, id_area FROM area WHERE id_area IN (" . $comma_separated . ") LIMIT 3");
             $stmt->execute();
-        } catch (PDOException $e) {
+        } catch (PDOException) {
             throw new AjaxException('Błąd Area Search IdeaModel');
         }
         if ($stmt->rowCount() > 0) {

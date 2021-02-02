@@ -21,6 +21,6 @@ abstract class AjaxAbstractModel
     }
     protected function notification($message): array
     {
-        return [$message];
+        return is_array($message) ? $message : [$message];
     }
 }

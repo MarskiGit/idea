@@ -1,14 +1,13 @@
 'use strict';
 import {
-    dataFetch,
-    displayException,
-    pageLoadingStatus
+    FetchAbstract
 } from './abstract.js';
 document.addEventListener('DOMContentLoaded', function () {
 
 
-    class Login {
+    class Login extends FetchAbstract {
         constructor() {
+            super();
             this.form = document.querySelector('[data-form="form"]');
             this.message = this.form.children[1];
             this.request = {
@@ -32,16 +31,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 this.message.innerText = 'Uzupełnij wszystkie pola';
             };
         };
-        send() {
-            pageLoadingStatus(1)
-            dataFetch('ajax.php', this.request).then(res => {
-                if (res[0].account * 1 === 1) {
-                    location.replace('http://h.localhost/01_MOJE/01_GIT/idea/')
-                } else {
-                    this.message.innerHTML = 'Błędny login lub hasło';
-                };
-            }).finally(pageLoadingStatus(0));
-
+        answer({
+            account
+        }) {
+            console.log(account)
+            if (account * 1 === 1) {
+                location.replace('http://h.localhost/01_MOJE/01_GIT/idea/');
+            } else {
+                this.message.innerHTML = 'Błędny login lub hasło';
+            };
         };
         isFormValid(elements) {
             return 2 === elements.filter(e => e !== '').length ? 1 : 0;

@@ -1,14 +1,13 @@
 'use strict';
 import {
-    dataFetch,
-    displayException,
-    pageLoadingStatus
+    FetchAbstract
 } from './abstract.js';
 document.addEventListener('DOMContentLoaded', function () {
 
 
-    class AddUser {
+    class AddUser extends FetchAbstract {
         constructor() {
+            super();
             this.form = document.querySelector('[data-form="form"]');
             this.inputs = [...this.form].filter(el => el.tagName === 'INPUT');
             this.select = [...this.form].filter(el => el.tagName === 'SELECT');
@@ -33,26 +32,25 @@ document.addEventListener('DOMContentLoaded', function () {
                 this.message.innerText = 'Uzupełnij wszystkie pola';
             };
         };
-        send() {
-            pageLoadingStatus(1)
-            dataFetch('ajax.php', this.request).then(res => {
-                if (Number.isInteger(res[0].account * 1)) {
-                    this.message.innerHTML = `Utworzono konto o numerze ID: ${res[0].account}`;
-                    this.inputs.forEach(inp => inp.value = '');
-                    this.select[0].selectedIndex = 0;
-                } else {
-                    this.message.innerHTML = `${res[0].account}`;
-                };
-            }).finally(pageLoadingStatus(0));
-
+        answer({
+            account
+        }) {
+            if (Number.isInteger(account * 1)) {
+                this.message.innerHTML = `Utworzono konto o numerze ID: ${account}`;
+                this.inputs.forEach(inp => inp.value = '');
+                this.select[0].selectedIndex = 0;
+            } else {
+                this.message.innerHTML = `${account}`;
+            };
         };
         isFormValid(elements) {
             return 4 === elements.filter(e => e !== '').length ? 1 : 0;
         };
     };
 
-    class LogOut {
+    class LogOut extends FetchAbstract {
         constructor() {
+            super();
             this.btn = document.querySelector('[data-admin="logOut"]');
             this.request = {
                 action: 'logoutUser'
@@ -60,17 +58,15 @@ document.addEventListener('DOMContentLoaded', function () {
             this.start();
         }
         start() {
-            this.btn.addEventListener('click', this.out.bind(this))
+            this.btn.addEventListener('click', this.send.bind(this))
         };
-        out() {
-            pageLoadingStatus(1)
-            dataFetch('ajax.php', this.request).then(res => {
-                if (res[0].account * 1 === 1) {
-                    location.replace('http://h.localhost/01_MOJE/01_GIT/idea/')
-                }
-            }).finally(pageLoadingStatus(0));
+        answer({
+            account
+        }) {
+            if (account * 1 === 1) {
+                location.replace('http://h.localhost/01_MOJE/01_GIT/idea/')
+            };
         };
-
     };
 
 
