@@ -16,7 +16,6 @@ use Idea\controller\PageController;
 use Idea\view\View;
 use Idea\view\Request;
 
-dump($_SESSION);
 try {
     $request = [
         'get' => $_GET,

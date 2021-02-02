@@ -9,6 +9,7 @@ use Ajax\database\DB;
 
 use PDO;
 
+session_start();
 abstract class AjaxAbstractModel
 {
     protected ?PDO $DB;

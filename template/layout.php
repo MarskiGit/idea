@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pl">
+<!-- <?php dump($_SESSION); ?> -->
 
 <head>
     <meta charset="utf-8">
@@ -15,7 +16,7 @@
     <meta name="copyright" content="Copyright owner">
     <meta name="robots" content="noindex, nofollow">
     <link rel="shortcut icon" href="public/img/idea.png" type="image/x-icon" sizes="16x16">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
+
     <link rel="stylesheet" href="public/style/layout.min.css" type="text/css" media="all">
     <script defer type="module" src="public/script/idea.js"></script>
     <?php switch ($params['action']):
@@ -34,9 +35,16 @@
             <script defer type="module" src="public/script/login.js"></script>
             <?php break; ?>
         <?php
-        case 'accountIdea': ?>
-            <link rel="stylesheet" href="public/style/account.min.css" type="text/css" media="all">
-            <script defer type="module" src="public/script/account.js"></script>
+        case 'adminIdea': ?>
+            <?php if (intval($_SESSION['account']['rang'] ?? 0) === 2) : ?>
+                <link rel="stylesheet" href="public/style/admin.min.css" type="text/css" media="all">
+                <script defer type="module" src="public/script/admin.js"></script>
+            <?php endif; ?>
+            <?php break; ?>
+        <?php
+        case 'modIdea': ?>
+            <link rel="stylesheet" href="public/style/admin.min.css" type="text/css" media="all">
+            <script defer type="module" src="public/script/admin.js"></script>
             <?php break; ?>
         <?php
         default: ?>
@@ -54,4 +62,6 @@
         <a href="?action=write" class="a_btn">Napisz pomysł</a>
         <a href="#top_page" class="page_up hover_img" data-page="page_up"><img src="public/img/page_up.svg"></a>
         <a href="?action=login" class="logo_idea"><img src="public/img/idea.png" alt="Idea"></a>
+        <?php if (intval($params['account']['rang'] ?? 0) === 2) : ?> <a href="?action=admin" class="a_btn">Admin</a> <?php endif; ?>
+        <?php if (intval($params['account']['rang'] ?? 0) === 1) : ?> <a href="?action=admin" class="a_btn">Mod</a> <?php endif; ?>
     </nav>

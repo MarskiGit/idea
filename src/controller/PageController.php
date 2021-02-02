@@ -29,7 +29,7 @@ class PageController extends AbstractController
     {
         $this->View->account();
     }
-    protected function admin(): void
+    protected function adminIdea(): void
     {
         $this->View->admin();
     }

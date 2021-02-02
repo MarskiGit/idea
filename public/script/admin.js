@@ -7,16 +7,14 @@ import {
 document.addEventListener('DOMContentLoaded', function () {
 
 
-    class Login {
+    class AddUser {
         constructor() {
             this.form = document.querySelector('[data-form="form"]');
             this.inputs = [...this.form].filter(el => el.tagName === 'INPUT');
             this.select = [...this.form].filter(el => el.tagName === 'SELECT');
-            console.log(this.select)
             this.message = this.form.children[1];
             this.request = {
-                action: 'addUser',
-
+                action: 'addUser'
             };
             this.start();
         };
@@ -32,7 +30,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 };
                 this.send();
             } else {
-                console.log(this.select)
                 this.message.innerText = 'Uzupełnij wszystkie pola';
             };
         };
@@ -50,9 +47,33 @@ document.addEventListener('DOMContentLoaded', function () {
 
         };
         isFormValid(elements) {
-            return 3 === elements.filter(e => e !== '').length ? 1 : 0;
+            return 4 === elements.filter(e => e !== '').length ? 1 : 0;
         };
     };
 
-    const LOGIN = new Login();
+    class LogOut {
+        constructor() {
+            this.btn = document.querySelector('[data-admin="logOut"]');
+            this.request = {
+                action: 'logoutUser'
+            };
+            this.start();
+        }
+        start() {
+            this.btn.addEventListener('click', this.out.bind(this))
+        };
+        out() {
+            pageLoadingStatus(1)
+            dataFetch('ajax.php', this.request).then(res => {
+                if (res[0].account * 1 === 1) {
+                    location.replace('http://h.localhost/01_MOJE/01_GIT/idea/')
+                }
+            }).finally(pageLoadingStatus(0));
+        };
+
+    };
+
+
+    const LOGOUT = new LogOut()
+    const ADDUSER = new AddUser();
 })

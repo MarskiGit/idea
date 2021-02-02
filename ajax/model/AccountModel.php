@@ -27,12 +27,20 @@ class AccountModel extends AjaxAbstractModel
             ]);
         }
 
-        if (!is_null($this->getIdFromName())) {
+        if ($this->checkUser('user_name', $this->requestParam['user_name'])) {
             return $this->notification([
                 'account' => 'Użytkownik istnieje',
                 'valid' => 'idName'
             ]);
         }
+
+        if ($this->checkUser('user_number', $this->requestParam['user_number'])) {
+            return $this->notification([
+                'account' => 'Numer Identyfikacyjny istnieje',
+                'valid' => 'idCard'
+            ]);
+        }
+
         $hash_2 = $this->hash($this->requestParam['password']);
         // id_area ustawione tymczasowo musi być przypisuwane do kontaa podczas tworzenia - do rozwiązania
         $temp = 1;
@@ -66,7 +74,7 @@ class AccountModel extends AjaxAbstractModel
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if (is_array($row)) {
             if (password_verify($this->requestParam['password'], $row['account_passwd'])) {
-                session_start();
+
                 $user = [
                     'rang' => $row['account_rang'],
                     'name' => $this->requestParam['user_name'],
@@ -79,11 +87,11 @@ class AccountModel extends AjaxAbstractModel
         }
         return $this->notification(['account' => '0']);
     }
-    public function logout()
+    public function logout(): array
     {
         if (session_status() == PHP_SESSION_ACTIVE) {
             unset($_SESSION['account']);
-            return $this->notification(0);
+            return $this->notification(['account' => '1']);
         }
     }
     private function isNameValid(): bool
@@ -104,19 +112,19 @@ class AccountModel extends AjaxAbstractModel
         }
         return $valid;
     }
-    private function getIdFromName(): ?int
+    private function checkUser(string $tuple, $value): bool
     {
-        $id = null;
+        $id = false;
         try {
-            $stmt = $this->DB->prepare('SELECT id_user FROM account WHERE (user_name = :name)');
-            $stmt->bindValue(':name', $this->requestParam['user_name'], PDO::PARAM_STR);
+            $stmt = $this->DB->prepare("SELECT  {$tuple} FROM account WHERE ({$tuple}= :value)");
+            $stmt->bindValue(':value', $value, PDO::PARAM_STR);
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Błąd ID AccountModel');
+            throw new AjaxException('Błąd ID Card AccountModel');
         }
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if (is_array($row)) {
-            $id = intval($row['id_user'], 10);
+            $id = true;
         }
         return $id;
     }

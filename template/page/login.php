@@ -3,11 +3,11 @@
         <h1>Witam</h1>
         <span></span>
         <fieldset>
-            <div class="label"><i class="fas fa-sign-in-alt"></i></div>
+            <div class="label"><img src="public/img/login_arrow.svg" alt="Login Arrow"></div>
             <input type="text" name="user_name" placeholder="Login">
         </fieldset>
         <fieldset>
-            <div class="label"><i class="fas fa-key"></i></div>
+            <div class="label"><img src="public/img/key.svg" alt="Key"></div>
             <input type="password" name="password" placeholder="Hasło">
         </fieldset>
         <button type="submit" class="login_btn">Zaloguj się</button>

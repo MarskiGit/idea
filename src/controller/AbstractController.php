@@ -24,6 +24,13 @@ abstract class AbstractController
         $this->action = $this->Request->getParam_GET('action', self::DEFAULT_ACTION_HTML) . 'Idea';
         $this->runPage();
     }
+    protected function params(): array
+    {
+        return [
+            'action' => $this->action,
+            'account' => $this->SessionParam,
+        ];
+    }
     private function runPage(): void
     {
         if ($this->Request->is_Get()) {
@@ -34,26 +41,8 @@ abstract class AbstractController
         }
         $this->View->layout($this->params());
 
-        switch (intval($this->SessionParam['rang'] ?? 0)) {
-            case 0:
-
-                break;
-            case 1:
-
-                break;
-            case 2:
-                $this->admin();
-                break;
-        };
-
         $this->$action();
+
         $this->View->footer();
-    }
-    protected function params(): array
-    {
-        return [
-            'action' => $this->action,
-            'session' => $this->SessionParam,
-        ];
     }
 }
