@@ -2,35 +2,25 @@
 import {
     FetchAbstract
 } from './abstract.js';
+import {
+    LiveSearch,
+
+} from './liveSearch.js';
 document.addEventListener('DOMContentLoaded', function () {
     class WriteAbstract extends FetchAbstract {
         constructor() {
             super();
             this.form = document.querySelector('[data-write="form"]');
             this.viewPoints = document.querySelector('[data-write="view_points"]');
-            this.viewCreator = document.querySelector('[data-write="view_creator"]');
-            this.creatorSearch = document.querySelector('[data-write="creator_search"]');
-            this.areaSearch = document.querySelector('[data-write="area_search"]');
-            this.olCreators = document.querySelector('[data-write="view_creator"]');
-            this.chosenOnes = document.querySelector('[data-write="chosen_ones"]');
             this.messages = document.querySelector('[data-write="messages"]');
             this.textAreas = document.querySelectorAll('textarea');
-            this.idUser = [];
+
             this.idArea = [];
             this.errors = [];
         };
         takePoints = () => parseInt(this.viewPoints.textContent);
         checkError = () => (this.errors.length) ? true : false;
         filterNumber = select => parseInt(select.value.replace(/\D/g, ''));
-        verificationSymbol = char => /[^A-Z-ŚŁŻŹĆa-z-ęóąśłżźćń\s0-9]/gi.test(char);
-        getParamData = (li, index) => JSON.parse(li.getAttribute('data-user'))[index];
-        debounced(f, t) {
-            let l;
-            return (...a) => {
-                const c = this;
-                clearTimeout(l), l = setTimeout(() => f.apply(c, a), t)
-            };
-        };
     };
 
     class Validation extends WriteAbstract {
@@ -96,85 +86,22 @@ document.addEventListener('DOMContentLoaded', function () {
         };
     };
 
-    class CreatorSearch extends WriteAbstract {
-        constructor() {
-            super();
-            this.listUser = document.createDocumentFragment();
-            this.li = null;
-            this.request = {
-                action: 'creatorSearch',
-                user_name: null
-            };
-            this.start();
-        }
-        start() {
-            this.creatorSearch.addEventListener('input', this.debounced(this.search.bind(this), 500));
-        };
-        search({
-            target
-        }) {
-            (this.verificationSymbol(target.value)) ? this.errorSymbol(1): this.checkSearch(target.value);
-        };
-        errorSymbol(bool) {
-            if (bool) {
-                this.creatorSearch.labels[0].style.color = 'red';
-                this.creatorSearch.labels[0].textContent = 'Tylko znaki alfabetu i cyfry';
-                this.creatorSearch.classList.add('errorSearch');
-            } else {
-                this.creatorSearch.labels[0].style.color = '';
-                this.creatorSearch.labels[0].textContent = 'Wyszukaj i kliknij:';
-                this.creatorSearch.classList.remove('errorSearch');
-            };
-        };
-        checkSearch(inputText) {
-            this.errorSymbol(0);
-            (inputText.length >= 3) ? this.typeValueSought(inputText): this.viewCreator.classList.remove('on')
-        };
-        typeValueSought(inputText) {
-            (inputText * 1) ? this.request.select = 'user_number': this.request.select = 'user_name';
-            this.request.user_name = inputText;
-            this.send();
-        };
-        answer(data) {
-            data.forEach(({
-                user_name,
-                row,
-                id_user,
-                id_area
-            }) => {
-                let li = document.createElement('li');
-                li.setAttribute('class', `${(row)? 'view_li' : 'view_li creator_li'}`)
-                li.setAttribute('data-user', `[${id_user},${id_area}]`);
-                li.innerText = user_name;
-                this.listUser.appendChild(li);
-            })
-            this.addListPage();
-
-        };
-        addListPage() {
-            this.viewCreator.innerText = '';
-            this.viewCreator.classList.add('on')
-            this.viewCreator.appendChild(this.listUser);
-        };
-    };
-
-    class ChosenOnesCreator extends WriteAbstract {
-        constructor() {
-            super();
-            this.start();
+    class ChosenOnes extends LiveSearch {
+        constructor(search) {
+            super(search);
         };
         start() {
-            this.olCreators.addEventListener('click', this.select.bind(this));
+            this.viewCreator.addEventListener('click', this.select.bind(this));
         };
         select(event) {
-            const id = this.getParamData(event.originalTarget, 0);
+            const id = event.originalTarget.getAttribute('data-id');
             if (event.originalTarget.tagName === 'LI' && this.noRepeating(id)) {
                 this.idUser.push(id);
                 const cloneLi = event.originalTarget.cloneNode(true);
                 this.transfer(cloneLi);
             } else {
-                this.olCreators.nextElementSibling.classList.add('span_error');
-                setTimeout(() => this.olCreators.nextElementSibling.classList.remove('span_error'), 2000);
+                this.viewCreator.nextElementSibling.classList.add('span_error');
+                setTimeout(() => this.viewCreator.nextElementSibling.classList.remove('span_error'), 2000);
             };
         };
         transfer(cloneLi) {
@@ -184,10 +111,14 @@ document.addEventListener('DOMContentLoaded', function () {
         noRepeating = id => (this.idUser.includes(id)) ? false : true;
     };
 
+    const userSearch = ['[data-write="view_creator"]', '[data-write="chosen_ones"]', '[data-write="creator_search"]', 'creatorSearch'];
+    const SEARCHUSER = new LiveSearch(userSearch);
+    const ADDCREATOR = new ChosenOnes(userSearch);
 
+    const areaSearch = ['[data-write="view_area"]', '[data-write="chosen_ones_area"]', '[data-write="area_search"]', 'areaSearch'];
+    const SEARCHAREA = new LiveSearch(areaSearch);
+    const ADDAREA = new ChosenOnes(areaSearch);
 
-    const ADDCREATOR = new ChosenOnesCreator();
-    const SEARCHUSER = new CreatorSearch();
     const SIGN = new NumberCharacters();
     const RATINGIDEA = new CalculatePoints();
     const WRITEIDEA = new Validation();

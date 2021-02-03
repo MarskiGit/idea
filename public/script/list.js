@@ -21,10 +21,10 @@ document.addEventListener('DOMContentLoaded', function () {
             this.start();
         };
         start() {
-            this.send();
-            eventWindowScroll(this.throttled(this.send.bind(this), 950));
+            this.sendRequest();
+            eventWindowScroll(this.throttled(this.sendRequest.bind(this), 950));
         };
-        answer(data) {
+        answerFetch(data) {
             if (data.length) {
                 data.forEach(idea => {
                     const {

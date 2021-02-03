@@ -26,12 +26,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 for (var pair of form.entries()) {
                     this.request[pair[0]] = pair[1]
                 };
-                this.send();
+                this.sendRequest();
             } else {
                 this.message.innerText = 'Uzupełnij wszystkie pola';
             };
         };
-        answer({
+        answerFetch({
             account
         }) {
             console.log(account)

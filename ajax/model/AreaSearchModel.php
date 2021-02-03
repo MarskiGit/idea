@@ -14,13 +14,14 @@ class AreaSearchModel extends AjaxAbstractModel
 {
     public function get(): array
     {
-        $comma_separated = implode(",", $this->requestParam['area_name']);
+        $search = "%" . $this->requestParam['area_name'] . "%";
 
         try {
-            $stmt = $this->DB->prepare("SELECT area_name, id_area FROM area WHERE id_area IN (" . $comma_separated . ") LIMIT 3");
+            $stmt = $this->DB->prepare('SELECT area_name, id_area FROM area WHERE area_name LIKE :name LIMIT 3');
+            $stmt->bindValue(':name', $search, PDO::PARAM_STR);
             $stmt->execute();
-        } catch (PDOException) {
-            throw new AjaxException('Błąd Area Search IdeaModel');
+        } catch (PDOException $e) {
+            echo $e->getMessage();
         }
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -28,7 +29,8 @@ class AreaSearchModel extends AjaxAbstractModel
             }
             return $result;
         } else {
-            return $this->notification(['area_name' => 'Nie odnaleziono', 'row' => 'empty']);
+            $result[] = ['area_name' => 'Nie odnaleziono', 'row' => 'empty'];
+            return $this->notification($result);
         }
     }
 }

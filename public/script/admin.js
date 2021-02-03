@@ -27,12 +27,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 for (var pair of form.entries()) {
                     this.request[pair[0]] = pair[1]
                 };
-                this.send();
+                this.sendRequest();
             } else {
                 this.message.innerText = 'Uzupełnij wszystkie pola';
             };
         };
-        answer({
+        answerFetch({
             account
         }) {
             if (Number.isInteger(account * 1)) {
@@ -58,9 +58,9 @@ document.addEventListener('DOMContentLoaded', function () {
             this.start();
         }
         start() {
-            this.btn.addEventListener('click', this.send.bind(this))
+            this.btn.addEventListener('click', this.sendRequest.bind(this))
         };
-        answer({
+        answerFetch({
             account
         }) {
             if (account * 1 === 1) {

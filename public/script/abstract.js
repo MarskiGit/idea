@@ -15,13 +15,7 @@ class FetchAbstract {
         this.div = document.createElement('div');
         this.mainContainer = document.querySelector('[data-page="main"]');
     };
-    send() {
-        this.pageLoadingStatus(1);
-        this.dataFetch('ajax.php', this.request).then(data => {
-            (data.exception) ? this.displayException(data): this.answer(data);
-        }).finally(this.pageLoadingStatus(0));
-    };
-    async dataFetch(url = '', data = {}) {
+    async dataFetch(url = '', request = {}) {
         const exception = {
             type: 'Ajax',
             exception: 'Utrata połączenia. <p>Spróbuj ponownie za parę chwil.</p>'
@@ -36,7 +30,7 @@ class FetchAbstract {
             },
             redirect: 'follow',
             referrerPolicy: 'no-referrer',
-            body: JSON.stringify(data)
+            body: JSON.stringify(request)
         };
 
         const response = await fetch(url, opt)
@@ -62,7 +56,13 @@ class FetchAbstract {
         this.mainContainer.appendChild(this.dviException(data));
         console.warn((data.file) ? `${data.file} ${data.line}` : data.code);
     };
-    pageLoadingStatus(bool) {
+    dataLoadingStatus(bool) {
         (bool) ? this.statusIndicator.classList.remove('load'): this.statusIndicator.classList.add('load');
+    };
+    sendRequest() {
+        this.dataLoadingStatus(1);
+        this.dataFetch('ajax.php', this.request).then(data => {
+            (data.exception) ? this.displayException(data): this.answerFetch(data);
+        }).finally(this.dataLoadingStatus(0));
     };
 };

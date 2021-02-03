@@ -65,7 +65,7 @@
                     <label for="area_search" class="list_label">Wyszukaj i kliknij:</label>
                     <input id="area_search" class="input_search" data-write="area_search" type="search" autocomplete="off" placeholder="Obszar">
                     <ol class="view_ol" data-write="view_area"></ol>
-                    <span>Ten pomysłodawca jest na liście:</span>
+                    <span>Ten obszar jest na liście:</span>
                 </div>
                 <div class="chosen_ones">
                     <label for="select_name" class="list_label">Wybrany Obszar:</label>
