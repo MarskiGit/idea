@@ -1,7 +1,7 @@
 'use strict';
 import {
     FetchAbstract
-} from './abstract.js';
+} from './FetchAbstract.js';
 export {
     LiveSearch,
 };

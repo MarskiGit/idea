@@ -1,7 +1,7 @@
 'use strict';
 import {
     FetchAbstract
-} from './abstract.js';
+} from './mod/FetchAbstract.js';
 document.addEventListener('DOMContentLoaded', function () {
 
 

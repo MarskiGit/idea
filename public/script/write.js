@@ -1,11 +1,10 @@
 'use strict';
 import {
     FetchAbstract
-} from './abstract.js';
+} from './mod/FetchAbstract.js';
 import {
     LiveSearch,
-
-} from './liveSearch.js';
+} from './mod/LiveSearch.js';
 document.addEventListener('DOMContentLoaded', function () {
     class WriteAbstract extends FetchAbstract {
         constructor() {

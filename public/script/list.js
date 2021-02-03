@@ -1,8 +1,10 @@
 'use strict';
 import {
     eventWindowScroll,
-    FetchAbstract
 } from './abstract.js';
+import {
+    FetchAbstract
+} from './mod/FetchAbstract.js';
 document.addEventListener('DOMContentLoaded', function () {
 
     class ListIdea extends FetchAbstract {
