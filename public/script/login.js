@@ -1,7 +1,5 @@
 'use strict';
-import {
-    FetchAbstract
-} from './mod/FetchAbstract.js';
+import FetchAbstract from './mod/FetchAbstract.js';
 document.addEventListener('DOMContentLoaded', function () {
 
 
@@ -11,8 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
             this.form = document.querySelector('[data-form="form"]');
             this.message = this.form.children[1];
             this.request = {
-                action: 'loginUser',
-
+                action: 'loginUser'
             };
             this.start();
         };
@@ -24,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const form = new FormData(event.target);
             if (this.isFormValid([...form.values()])) {
                 for (var pair of form.entries()) {
-                    this.request[pair[0]] = pair[1]
+                    this.request[pair[0]] = pair[1];
                 };
                 this.sendRequest();
             } else {
@@ -34,7 +31,6 @@ document.addEventListener('DOMContentLoaded', function () {
         answerFetch({
             account
         }) {
-            console.log(account)
             if (account * 1 === 1) {
                 location.replace('http://h.localhost/01_MOJE/01_GIT/idea/');
             } else {

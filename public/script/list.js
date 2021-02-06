@@ -2,9 +2,7 @@
 import {
     eventWindowScroll,
 } from './abstract.js';
-import {
-    FetchAbstract
-} from './mod/FetchAbstract.js';
+import FetchAbstract from './mod/FetchAbstract.js';
 document.addEventListener('DOMContentLoaded', function () {
 
     class ListIdea extends FetchAbstract {
@@ -47,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 this.addListPage();
             } else if (this.request.last_tuple === 0) {
                 this.ideaContainer.innerHTML = '<div class=IdeaList"><h4 class="empty_idea">Brak elementów do wyświetlenia.</h4></div>';
-            }
+            };
         };
         renderIdea({
             creators,
@@ -84,9 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
         </div>
         `);
         };
-        renderDataAdd(date) {
-            return (date) ? `<span class="th idea_date_add">Data wdrożenia: ${date}</span>` : '';
-        };
+        renderDataAdd = date => (date) ? `<span class="th idea_date_add">Data wdrożenia: ${date}</span>` : '';
         addListPage() {
             this.ideaContainer.appendChild(this.list);
         };
@@ -121,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function () {
         throttled(f, t) {
             let l = Date.now();
             return function () {
-                l + t - Date.now() < 0 && (f(), l = Date.now())
+                l + t - Date.now() < 0 && (f(), l = Date.now());
             };
         };
     };

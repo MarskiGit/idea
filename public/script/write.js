@@ -1,10 +1,6 @@
 'use strict';
-import {
-    FetchAbstract
-} from './mod/FetchAbstract.js';
-import {
-    LiveSearch,
-} from './mod/LiveSearch.js';
+import FetchAbstract from './mod/FetchAbstract.js';
+import LiveSearch from './mod/LiveSearch.js';
 document.addEventListener('DOMContentLoaded', function () {
     class WriteAbstract extends FetchAbstract {
         constructor() {
@@ -105,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         transfer(cloneLi) {
             this.chosenOnes.appendChild(cloneLi);
-            this.chosenOnes.classList.add('on')
+            this.chosenOnes.classList.add('on');
         };
         noRepeating = id => (this.idUser.includes(id)) ? false : true;
     };
