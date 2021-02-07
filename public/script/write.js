@@ -67,9 +67,9 @@ document.addEventListener('DOMContentLoaded', function () {
             this.start();
         }
         start() {
-            this.textAreas.forEach(textArea => textArea.addEventListener('keyup', this.calculateNumberCharacters.bind(this)));
+            this.textAreas.forEach(textArea => textArea.addEventListener('keyup', this.calculateNumberCharacters));
         };
-        calculateNumberCharacters(event) {
+        calculateNumberCharacters = event => {
             this.viewCount = event.target.nextElementSibling;
             this.maxCharacters = event.target.maxLength;
             this.textLenght = event.target.textLength;

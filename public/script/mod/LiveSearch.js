@@ -19,11 +19,11 @@ export default class LiveSearch extends FetchAbstract {
         this.start();
     }
     start() {
-        this.inputSearch.addEventListener('input', this.debounced(this.search.bind(this), 500));
+        this.inputSearch.addEventListener('input', this.debounced(this.search, 500));
     };
-    search({
+    search = ({
         target
-    }) {
+    }) => {
         (this.verificationSymbol(target.value)) ? this.errorSymbol(1): this.checkSearch(target);
     };
     errorSymbol(bool) {

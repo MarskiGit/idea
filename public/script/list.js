@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         start() {
             this.sendRequest();
-            eventWindowScroll(this.throttled(this.sendRequest.bind(this), 950));
+            eventWindowScroll(this.throttled(this.sendRequest, 950));
         };
         answerFetch(data) {
             if (data.length) {
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     div.className = 'idea';
                     div.setAttribute('data-id_idea', `${id_idea}`);
                     div.style.setProperty('--color', `${this.status.border}`);
-                    div.innerHTML = this.renderIdea(idea);
+                    div.insertAdjacentHTML('afterbegin', this.renderIdea(idea));
                     this.list.appendChild(div);
                     if (id_idea * 1 === 1) this.endTuples = true;
                 });

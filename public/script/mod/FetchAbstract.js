@@ -21,7 +21,7 @@ export default class FetchAbstract {
         };
         this.url = 'ajax.php';
     };
-    sendRequest() {
+    sendRequest = () => {
         this.dataLoadingStatus(1);
         this.dataFetch().then(data => {
             (data.exception) ? this.displayException(data): this.answerFetch(data);
