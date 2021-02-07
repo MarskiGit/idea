@@ -1,13 +1,16 @@
 'use strict';
 import FetchAbstract from './FetchAbstract.js';
 export default class LiveSearch extends FetchAbstract {
-    constructor(search) {
+    constructor({
+        view,
+        chosenOnes,
+        inputSearch,
+        request
+    }) {
         super();
-        const [view, chosen, input, request] = search;
-        this.input = input;
-        this.viewCreator = document.querySelector(`${view}`);
-        this.chosenOnes = document.querySelector(`${chosen}`);
-        this.creatorSearch = document.querySelector(`${input}`);
+        this.view = view;
+        this.chosenOnes = chosenOnes;
+        this.inputSearch = inputSearch;
         this.listUser = document.createDocumentFragment();
         this.idUser = [];
         this.request = {
@@ -16,7 +19,7 @@ export default class LiveSearch extends FetchAbstract {
         this.start();
     }
     start() {
-        this.creatorSearch.addEventListener('input', this.debounced(this.search.bind(this), 500));
+        this.inputSearch.addEventListener('input', this.debounced(this.search.bind(this), 500));
     };
     search({
         target
@@ -25,18 +28,18 @@ export default class LiveSearch extends FetchAbstract {
     };
     errorSymbol(bool) {
         if (bool) {
-            this.creatorSearch.labels[0].style.color = 'red';
-            this.creatorSearch.labels[0].textContent = 'Tylko znaki alfabetu i cyfry';
-            this.creatorSearch.classList.add('errorSearch');
+            this.inputSearch.labels[0].style.color = 'red';
+            this.inputSearch.labels[0].textContent = 'Tylko znaki alfabetu i cyfry';
+            this.inputSearch.classList.add('errorSearch');
         } else {
-            this.creatorSearch.labels[0].style.color = '';
-            this.creatorSearch.labels[0].textContent = 'Wyszukaj i kliknij:';
-            this.creatorSearch.classList.remove('errorSearch');
+            this.inputSearch.labels[0].style.color = '';
+            this.inputSearch.labels[0].textContent = 'Wyszukaj i kliknij:';
+            this.inputSearch.classList.remove('errorSearch');
         };
     };
     checkSearch(target) {
         this.errorSymbol(0);
-        (target.value.length >= 3) ? this.typeValueSought(target): this.viewCreator.classList.remove('on')
+        (target.value.length >= 3) ? this.typeValueSought(target): this.view.classList.remove('on')
     };
     typeValueSought(target) {
         if (target.dataset.write === 'creator_search') {
@@ -67,9 +70,9 @@ export default class LiveSearch extends FetchAbstract {
         this.listUser.appendChild(li);
     }
     addListPage() {
-        this.viewCreator.innerText = '';
-        this.viewCreator.classList.add('on');
-        this.viewCreator.appendChild(this.listUser);
+        this.view.innerText = '';
+        this.view.classList.add('on');
+        this.view.appendChild(this.listUser);
     };
     verificationSymbol = char => /[^A-Z-ŚŁŻŹĆa-z-ęóąśłżźćń\s0-9]/gi.test(char);
     debounced(f, t) {

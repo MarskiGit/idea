@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
             super(search);
         };
         start() {
-            this.viewCreator.addEventListener('click', this.select.bind(this));
+            this.view.addEventListener('click', this.select.bind(this));
         };
         select(event) {
             const id = event.originalTarget.getAttribute('data-id');
@@ -95,8 +95,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 const cloneLi = event.originalTarget.cloneNode(true);
                 this.transfer(cloneLi);
             } else {
-                this.viewCreator.nextElementSibling.classList.add('span_error');
-                setTimeout(() => this.viewCreator.nextElementSibling.classList.remove('span_error'), 2000);
+                this.view.nextElementSibling.classList.add('span_error');
+                setTimeout(() => this.view.nextElementSibling.classList.remove('span_error'), 2000);
             };
         };
         transfer(cloneLi) {
@@ -106,11 +106,22 @@ document.addEventListener('DOMContentLoaded', function () {
         noRepeating = id => (this.idUser.includes(id)) ? false : true;
     };
 
-    const userSearch = ['[data-write="view_creator"]', '[data-write="chosen_ones"]', '[data-write="creator_search"]', 'creatorSearch'];
+    const userSearch = {
+        view: document.querySelector('[data-write="view_creator"]'),
+        chosenOnes: document.querySelector('[data-write="chosen_ones"]'),
+        inputSearch: document.querySelector('[data-write="creator_search"]'),
+        request: 'creatorSearch'
+    };
+    const areaSearch = {
+        view: document.querySelector('[data-write="view_area"]'),
+        chosenOnes: document.querySelector('[data-write="chosen_ones_area"]'),
+        inputSearch: document.querySelector('[data-write="area_search"]'),
+        request: 'areaSearch'
+    };
     const SEARCHUSER = new LiveSearch(userSearch);
     const ADDCREATOR = new ChosenOnes(userSearch);
 
-    const areaSearch = ['[data-write="view_area"]', '[data-write="chosen_ones_area"]', '[data-write="area_search"]', 'areaSearch'];
+
     const SEARCHAREA = new LiveSearch(areaSearch);
     const ADDAREA = new ChosenOnes(areaSearch);
 
