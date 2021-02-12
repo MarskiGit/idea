@@ -1,7 +1,4 @@
 'use strict';
-import {
-    eventWindowScroll
-} from './abstract.js';
 document.addEventListener('DOMContentLoaded', function () {
 
     class NavAnimation {
@@ -11,9 +8,9 @@ document.addEventListener('DOMContentLoaded', function () {
             this.pageUp = document.querySelector('[data-page="page_up"]');
             this.main = document.querySelector('[data-page="main"]');
             this.main.style.paddingTop = `${this.navPposition.bottom.toFixed()}px`;
-            eventWindowScroll(this.sticky);
+            window.addEventListener('scroll', this.throttled(this.sticky.bind(this), 90));
         }
-        sticky = () => {
+        sticky() {
             (window.pageYOffset > this.navPposition.top.toFixed()) ? this.on(): this.off();
         };
         on() {
@@ -23,6 +20,12 @@ document.addEventListener('DOMContentLoaded', function () {
         off() {
             this.nav.classList.remove('sticky');
             this.pageUp.style.display = "none";
+        };
+        throttled(f, t) {
+            let l = Date.now();
+            return () => {
+                l + t - Date.now() < 0 && (f(), l = Date.now());
+            };
         };
     };
 

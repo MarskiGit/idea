@@ -21,11 +21,13 @@ export default class FetchAbstract {
         };
         this.url = 'ajax.php';
     };
-    sendRequest = () => {
-        this.dataLoadingStatus(1);
-        this.dataFetch().then(data => {
-            (data.exception) ? this.displayException(data): this.answerFetch(data);
-        }).finally(this.dataLoadingStatus(0));
+    sendRequest() {
+        if (!this.endTuples) {
+            this.dataLoadingStatus(1);
+            this.dataFetch().then(data => {
+                (data.exception) ? this.displayException(data): this.answerFetch(data);
+            }).finally(this.dataLoadingStatus(0));
+        }
     };
     async dataFetch() {
         this.opt.body = JSON.stringify(this.request);

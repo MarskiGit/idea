@@ -1,7 +1,4 @@
 'use strict';
-import {
-    eventWindowScroll,
-} from './abstract.js';
 import FetchAbstract from './mod/FetchAbstract.js';
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -22,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         start() {
             this.sendRequest();
-            eventWindowScroll(this.throttled(this.sendRequest, 950));
+            window.addEventListener('scroll', this.throttled(this.sendRequest.bind(this), 950, !this.endTuples));
         };
         answerFetch(data) {
             if (data.length) {

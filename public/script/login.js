@@ -14,9 +14,9 @@ document.addEventListener('DOMContentLoaded', function () {
             this.start();
         };
         start() {
-            this.form.addEventListener('submit', this.validationForm)
+            this.form.addEventListener('submit', event => this.validationForm(event))
         };
-        validationForm = event => {
+        validationForm(event) {
             event.preventDefault();
             const form = new FormData(event.target);
             if (this.isFormValid([...form.values()])) {
