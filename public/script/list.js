@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         throttled(f, t) {
             let l = Date.now();
-            return function () {
+            return () => {
                 l + t - Date.now() < 0 && (f(), l = Date.now());
             };
         };
