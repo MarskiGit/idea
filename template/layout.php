@@ -3,7 +3,8 @@
 <!-- <?php dump($_SESSION); ?> -->
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>IDEA | Program pomysłów</title>
     <meta http-equiv="X-Ua-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,7 +19,7 @@
     <link rel="shortcut icon" href="public/img/idea.png" type="image/x-icon" sizes="16x16">
 
     <link rel="stylesheet" href="public/style/layout.min.css" type="text/css" media="all">
-    <script defer type="module" src="public/script/idea.esm.js"></script>
+    <script defer type="module" src="./public/script/layout.esm.js"></script>
     <?php switch ($params['action']):
         case 'listIdea': ?>
             <link rel="stylesheet" href="public/style/list.min.css" type="text/css" media="all">
