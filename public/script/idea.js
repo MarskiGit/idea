@@ -1,6 +1,5 @@
 'use strict';
 document.addEventListener('DOMContentLoaded', function () {
-
     class NavAnimation {
         constructor() {
             this.nav = document.querySelector('[data-page="nav"]');
@@ -11,23 +10,23 @@ document.addEventListener('DOMContentLoaded', function () {
             window.addEventListener('scroll', this.throttled(this.sticky.bind(this), 90));
         }
         sticky() {
-            (window.pageYOffset > this.navPposition.top.toFixed()) ? this.on(): this.off();
-        };
+            window.pageYOffset > this.navPposition.top.toFixed() ? this.on() : this.off();
+        }
         on() {
             this.nav.classList.add('sticky');
-            this.pageUp.style.display = "block";
-        };
+            this.pageUp.style.display = 'block';
+        }
         off() {
             this.nav.classList.remove('sticky');
-            this.pageUp.style.display = "none";
-        };
+            this.pageUp.style.display = 'none';
+        }
         throttled(f, t) {
             let l = Date.now();
             return () => {
-                l + t - Date.now() < 0 && (f(), l = Date.now());
+                l + t - Date.now() < 0 && (f(), (l = Date.now()));
             };
-        };
-    };
+        }
+    }
 
     const NAV = new NavAnimation();
 });

@@ -12,50 +12,52 @@ document.addEventListener('DOMContentLoaded', function () {
 
             this.idArea = [];
             this.errors = [];
-        };
+        }
         takePoints = () => parseInt(this.viewPoints.textContent);
-        checkError = () => (this.errors.length) ? true : false;
-        filterNumber = select => parseInt(select.value.replace(/\D/g, ''));
-    };
+        checkError = () => (this.errors.length ? true : false);
+        filterNumber = (select) => parseInt(select.value.replace(/\D/g, ''));
+    }
 
     class Validation extends WriteAbstract {
         constructor() {
             super();
             this.start();
-        };
+        }
         start() {
-            this.form.addEventListener('submit', event => {
+            this.form.addEventListener('submit', (event) => {
                 event.preventDefault();
-                console.log(this.form)
-            })
-        };
-    };
+                console.log(this.form);
+            });
+        }
+    }
 
     class CalculatePoints extends WriteAbstract {
         constructor() {
-            super()
-            this.formSelect = [...this.form.elements].filter(el => el.type === 'select-one');
+            super();
+            this.formSelect = [...this.form.elements].filter((el) => el.type === 'select-one');
             this.pointsIdea = null;
             this.ratingIdea = null;
             this.start();
-        };
+        }
         start() {
-            this.formSelect.forEach(se => se.addEventListener('mouseup', () => {
-                this.downloadPoints();
-                this.sumPoints();
-                this.displayPoints();
-            }));
-        };
+            this.formSelect.forEach((se) =>
+                se.addEventListener('mouseup', () => {
+                    this.downloadPoints();
+                    this.sumPoints();
+                    this.displayPoints();
+                })
+            );
+        }
         downloadPoints() {
             this.pointsIdea = [...this.formSelect].map(this.filterNumber);
-        };
+        }
         sumPoints() {
-            this.ratingIdea = this.pointsIdea.filter(el => parseInt(el)).reduce((a, b) => a + b);
-        };
+            this.ratingIdea = this.pointsIdea.filter((el) => parseInt(el)).reduce((a, b) => a + b);
+        }
         displayPoints() {
             this.viewPoints.innerText = `${this.ratingIdea}`;
-        };
-    };
+        }
+    }
 
     class NumberCharacters extends WriteAbstract {
         constructor() {
@@ -67,60 +69,59 @@ document.addEventListener('DOMContentLoaded', function () {
             this.start();
         }
         start() {
-            this.textAreas.forEach(textArea => textArea.addEventListener('keyup', event => this.calculateNumberCharacters(event)));
-        };
+            this.textAreas.forEach((textArea) => textArea.addEventListener('keyup', (event) => this.calculateNumberCharacters(event)));
+        }
         calculateNumberCharacters(event) {
             this.viewCount = event.target.nextElementSibling;
             this.maxCharacters = event.target.maxLength;
             this.textLenght = event.target.textLength;
             this.numberSign = this.maxCharacters - event.target.textLength;
             this.displayCount();
-        };
+        }
         displayCount() {
-            this.viewCount.innerHTML = (this.textLenght) ? `${this.numberSign}  &#8725;  ${this.maxCharacters}` : this.viewCount.innerHTML = '';
-        };
-    };
+            this.viewCount.innerHTML = this.textLenght ? `${this.numberSign}  &#8725;  ${this.maxCharacters}` : (this.viewCount.innerHTML = '');
+        }
+    }
 
     class ChosenOnes extends LiveSearch {
         constructor(search) {
             super(search);
-        };
+        }
         start() {
-            this.view.addEventListener('click', event => this.select(event));
-        };
+            this.view.addEventListener('click', (event) => this.select(event));
+        }
         select(event) {
-            const id = event.originalTarget.getAttribute('data-id');
-            if (event.originalTarget.tagName === 'LI' && this.noRepeating(id)) {
+            const id = event.target.getAttributeNode('data-id');
+            if (event.target.tagName === 'LI' && this.noRepeating(id)) {
                 this.idUser.push(id);
-                const cloneLi = event.originalTarget.cloneNode(true);
+                const cloneLi = event.target.cloneNode(true);
                 this.transfer(cloneLi);
             } else {
                 this.view.nextElementSibling.classList.add('span_error');
                 setTimeout(() => this.view.nextElementSibling.classList.remove('span_error'), 2000);
-            };
-        };
+            }
+        }
         transfer(cloneLi) {
             this.chosenOnes.appendChild(cloneLi);
             this.chosenOnes.classList.add('on');
-        };
-        noRepeating = id => (this.idUser.includes(id)) ? false : true;
-    };
+        }
+        noRepeating = (id) => (this.idUser.includes(id) ? false : true);
+    }
 
     const userSearch = {
         view: document.querySelector('[data-write="view_creator"]'),
         chosenOnes: document.querySelector('[data-write="chosen_ones"]'),
         inputSearch: document.querySelector('[data-write="creator_search"]'),
-        request: 'creatorSearch'
+        request: 'creatorSearch',
     };
     const areaSearch = {
         view: document.querySelector('[data-write="view_area"]'),
         chosenOnes: document.querySelector('[data-write="chosen_ones_area"]'),
         inputSearch: document.querySelector('[data-write="area_search"]'),
-        request: 'areaSearch'
+        request: 'areaSearch',
     };
     const SEARCHUSER = new LiveSearch(userSearch);
     const ADDCREATOR = new ChosenOnes(userSearch);
-
 
     const SEARCHAREA = new LiveSearch(areaSearch);
     const ADDAREA = new ChosenOnes(areaSearch);
