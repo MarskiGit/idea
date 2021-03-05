@@ -18,33 +18,33 @@
     <link rel="shortcut icon" href="public/img/idea.png" type="image/x-icon" sizes="16x16">
 
     <link rel="stylesheet" href="public/style/layout.min.css" type="text/css" media="all">
-    <script defer type="module" src="public/script/idea.js"></script>
+    <script defer type="module" src="public/script/idea.esm.js"></script>
     <?php switch ($params['action']):
         case 'listIdea': ?>
             <link rel="stylesheet" href="public/style/list.min.css" type="text/css" media="all">
-            <script defer type="module" src="public/script/list.js"></script>
+            <script defer type="module" src="public/script/list.esm.js"></script>
             <?php break; ?>
         <?php
         case 'writeIdea': ?>
             <link rel="stylesheet" href="public/style/write.min.css" type="text/css" media="all">
-            <script defer type="module" src="public/script/write.js"></script>
+            <script defer type="module" src="public/script/write.esm.js"></script>
             <?php break; ?>
         <?php
         case 'loginIdea': ?>
             <link rel="stylesheet" href="public/style/login.min.css" type="text/css" media="all">
-            <script defer type="module" src="public/script/login.js"></script>
+            <script defer type="module" src="public/script/login.esm.js"></script>
             <?php break; ?>
         <?php
         case 'adminIdea': ?>
             <?php if (intval($_SESSION['account']['rang'] ?? 0) === 2) : ?>
                 <link rel="stylesheet" href="public/style/admin.min.css" type="text/css" media="all">
-                <script defer type="module" src="public/script/admin.js"></script>
+                <script defer type="module" src="public/script/admin.esm.js"></script>
             <?php endif; ?>
             <?php break; ?>
         <?php
         case 'modIdea': ?>
             <link rel="stylesheet" href="public/style/admin.min.css" type="text/css" media="all">
-            <script defer type="module" src="public/script/admin.js"></script>
+            <script defer type="module" src="public/script/admin.esm.js"></script>
             <?php break; ?>
         <?php
         default: ?>
