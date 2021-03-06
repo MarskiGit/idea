@@ -9,7 +9,6 @@ class MainPage {
             pageUp: document.querySelector('[data-page="page_up"]'),
             main: document.querySelector('[data-page="main"]'),
         };
-        console.log(this.domObjects);
         this.navSticky = new NavSticky(this.domObjects);
         this.smooth = new SmoothTop(this.domObjects.topPage);
     }

@@ -23,7 +23,7 @@
     <?php switch ($params['action']):
         case 'listIdea': ?>
             <link rel="stylesheet" href="public/style/list.min.css" type="text/css" media="all">
-            <script defer type="module" src="public/script/list.esm.js"></script>
+            <script defer type="module" src="public/script/listIdea.esm.js"></script>
             <?php break; ?>
         <?php
         case 'writeIdea': ?>

@@ -1,9 +1,9 @@
 'use strict';
-import ViewList from './list/ViewList.esm.js';
+import RenderList from './listIdea/RenderList.esm.js';
 import Exception from './mod/Exception.esm.js';
 import Request from './mod/Request.esm.js';
 
-class Idea {
+class ListIdea {
     #request = {
         action: 'listIdea',
     };
@@ -24,7 +24,7 @@ class Idea {
         };
         this.exception = new Exception();
         this.ajax = new Request(this.#optionRequest);
-        this.list = new ViewList(this.domObjects);
+        this.list = new RenderList(this.domObjects);
     }
     init() {
         this.#request.last_tuple = this.list.lastTuple;
@@ -51,6 +51,6 @@ class Idea {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    const IDEA = new Idea();
-    IDEA.init();
+    const LIST_IDEA = new ListIdea();
+    LIST_IDEA.init();
 });
