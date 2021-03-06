@@ -1,5 +1,6 @@
 'use strict';
-import NavAnimation from './layout/NavAnimation.esm.js';
+import NavSticky from './layout/NavSticky.esm.js';
+import SmoothTop from './layout/SmoothTop.esm.js';
 
 class MainPage {
     constructor() {
@@ -8,10 +9,16 @@ class MainPage {
             pageUp: document.querySelector('[data-page="page_up"]'),
             main: document.querySelector('[data-page="main"]'),
         };
-        this.navAnimation = new NavAnimation(this.domObjects);
+        console.log(this.domObjects);
+        this.navSticky = new NavSticky(this.domObjects);
+        this.smooth = new SmoothTop(this.domObjects.topPage);
     }
     init() {
-        this.navAnimation.init();
+        this.navSticky.init();
+        this.#eventListeners();
+    }
+    #eventListeners() {
+        this.domObjects.pageUp.addEventListener('click', () => this.smooth.run());
     }
 }
 

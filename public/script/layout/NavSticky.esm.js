@@ -1,17 +1,20 @@
 'use strict';
-export default class NavAnimation {
+export default class NavSticky {
     constructor({ nav, pageUp, main }) {
         this.nav = nav;
         this.pageUp = pageUp;
         this.main = main;
-        this.navPposition = this.nav.getClientRects()[0];
-        this.main.style.paddingTop = `${this.navPposition.bottom.toFixed()}px`;
     }
     init() {
+        this.navPosition = this.nav.getClientRects()[0];
+        this.main.style.paddingTop = `${this.navPosition.bottom.toFixed()}px`;
+        this.#eventListeners();
+    }
+    #eventListeners() {
         window.addEventListener('scroll', this.#throttled(this.#sticky.bind(this), 90));
     }
     #sticky() {
-        window.pageYOffset > this.navPposition.top.toFixed() ? this.#on() : this.#off();
+        window.pageYOffset > this.navPosition.top.toFixed() ? this.#on() : this.#off();
     }
     #on() {
         this.nav.classList.add('sticky');

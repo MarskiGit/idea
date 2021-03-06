@@ -6,7 +6,6 @@ import Request from './mod/Request.esm.js';
 class Idea {
     #request = {
         action: 'listIdea',
-        last_tuple: 0,
     };
     #optionRequest = {
         method: 'POST',
@@ -28,10 +27,11 @@ class Idea {
         this.list = new ViewList(this.domObjects);
     }
     init() {
+        this.#request.last_tuple = this.list.lastTuple;
         this.#sendRequest();
-        this.#addEventListeners();
+        this.#eventListeners();
     }
-    #addEventListeners() {
+    #eventListeners() {
         window.addEventListener('scroll', this.#throttled(this.#sendRequest.bind(this), 950));
     }
     #sendRequest() {
