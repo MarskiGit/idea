@@ -1,5 +1,5 @@
 'use strict';
-export class NavAnimation {
+export default class NavAnimation {
     constructor({ nav, pageUp, main }) {
         this.nav = nav;
         this.pageUp = pageUp;
