@@ -18,7 +18,7 @@ class ListIdeaModel extends AjaxAbstractModel
             $stmt = $this->DB->query("SELECT user_name FROM account WHERE id_user IN (" . $id_users . ")");
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Błąd Name IdeaModel');
+            throw new AjaxException('Error: Name IdeaModel');
         }
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -35,7 +35,7 @@ class ListIdeaModel extends AjaxAbstractModel
             $stmt = $this->DB->query("SELECT area_name FROM area WHERE id_area = $id_area");
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Błąd Area IdeaModel');
+            throw new AjaxException('Error: Area IdeaModel');
         }
         if ($stmt->rowCount() > 0) {
             return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -50,7 +50,7 @@ class ListIdeaModel extends AjaxAbstractModel
             $stmt->execute();
             return intval($stmt->fetchColumn());
         } catch (PDOException $e) {
-            throw new AjaxException('Błąd Number Tuples IdeaModel');
+            throw new AjaxException('Error: Number Tuples IdeaModel');
         }
     }
     private function limitTuples(int $num): int
@@ -67,7 +67,7 @@ class ListIdeaModel extends AjaxAbstractModel
             $stmt = $this->DB->query("SELECT id_idea, id_area, id_users, before_value, after_value, date_added, date_implementation, pkt_mod, status FROM idea WHERE id_idea < " . $this->limitTuples($this->requestParam['last_tuple']) . " ORDER BY id_idea DESC LIMIT 6");
             $stmt->execute();
         } catch (PDOException) {
-            throw new AjaxException('Błąd Get IdeaModel');
+            throw new AjaxException('Error: Get List IdeaModel');
         }
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {

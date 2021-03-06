@@ -8,21 +8,24 @@ class ListIdea {
         action: 'listIdea',
     };
     #optionRequest = {
-        method: 'POST',
-        mode: 'cors',
-        cache: 'default',
-        credentials: 'same-origin',
-        headers: {
-            'Content-Type': 'application/json',
+        ajax: {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'default',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
         },
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer',
+        url: 'ajax.php',
     };
     constructor() {
         this.domObjects = {
             listContainer: document.querySelector('[data-idea="idea_container"]'),
         };
-        this.exception = new Exception();
+        this.exception = new Exception(this.domObjects.listContainer);
         this.ajax = new Request(this.#optionRequest);
         this.list = new RenderList(this.domObjects);
     }
@@ -38,7 +41,11 @@ class ListIdea {
         if (!this.list.endTuples) {
             this.#request.last_tuple = this.list.lastTuple;
             this.ajax.dataJson(this.#request).then((data) => {
-                data.exception ? this.exception.view(data) : this.list.createList(data);
+                typeof data !== 'undefined'
+                    ? data.statusText
+                        ? this.exception.view(data)
+                        : this.list.createList(data)
+                    : this.domObjects.listContainer.remove();
             });
         }
     }
