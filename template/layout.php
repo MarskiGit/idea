@@ -57,7 +57,7 @@
 
 <body>
     <nav class="menu" data-page="nav">
-        <a href="http://h.localhost/01_MOJE/01_GIT/idea/" class="home_nav hover_img"><img src="public/img/home_icon.svg"><img src="public/img/border_icon.svg" class="load" data-page="status_indicator"></a>
+        <a href="http://h.localhost/01_MOJE/01_GIT/idea/" class="home_nav hover_img" data-page="home_nav"><img src="public/img/home_icon.svg"><img src="public/img/border_icon.svg" class="load" data-page="status_indicator"></a>
         <a href="?action=list" class="a_btn">Lista pomysłów</a>
         <a href="?action=write" class="a_btn">Napisz pomysł</a>
         <a href="#" class="page_up hover_img" data-page="page_up"><img src="public/img/page_up.svg"></a>

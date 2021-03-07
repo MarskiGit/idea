@@ -4,6 +4,7 @@ import SmoothTop from './layout/SmoothTop.esm.js';
 
 class MainPage {
     #domObjects = {
+        home: document.querySelector('[data-page="home_nav"]'),
         nav: document.querySelector('[data-page="nav"]'),
         pageUp: document.querySelector('[data-page="page_up"]'),
         main: document.querySelector('[data-page="main"]'),
@@ -17,7 +18,7 @@ class MainPage {
         this.#eventListeners();
     }
     #eventListeners() {
-        this.domObjects.pageUp.addEventListener('click', () => this.smooth.run());
+        this.#domObjects.pageUp.addEventListener('click', () => this.smooth.run());
     }
 }
 
