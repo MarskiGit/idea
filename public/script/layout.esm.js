@@ -2,7 +2,7 @@
 import NavSticky from './layout/NavSticky.esm.js';
 import SmoothTop from './layout/SmoothTop.esm.js';
 
-class MainPage {
+class Layout {
     #domObjects = {
         home: document.querySelector('[data-page="home_nav"]'),
         nav: document.querySelector('[data-page="nav"]'),
@@ -23,6 +23,6 @@ class MainPage {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    const MAIN_PAGE = new MainPage();
+    const MAIN_PAGE = new Layout();
     MAIN_PAGE.init();
 });

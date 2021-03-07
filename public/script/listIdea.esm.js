@@ -8,7 +8,7 @@ class ListIdea {
         action: 'listIdea',
         last_tuple: 0,
     };
-    #tuple = { lastTuple: 0, endTuples: false };
+    #tuple = { lastTuple: null, endTuples: false };
     #optionRequest = {
         ajax: {
             method: 'POST',
@@ -39,23 +39,29 @@ class ListIdea {
     }
     #sendRequest() {
         if (!this.#tuple.endTuples) {
-            this.#request.last_tuple = this.#tuple.lastTuple;
-            this.ajax.dataJson(this.#request).then((data) => {
-                if (typeof data !== 'undefined') {
-                    if (data.statusText) {
-                        this.exception.view(data);
-                    } else {
-                        this.#addListPage(new RenderList(data));
-                    }
-                } else {
-                    this.domObjects.listContainer.remove();
-                }
-            });
+            document.body.style.cursor = 'progress';
+            this.ajax
+                .dataJson(this.#request)
+                .then((data) => this.#checkData(data))
+                .finally((document.body.style.cursor = 'default'));
+        }
+    }
+    #checkData(data) {
+        if (typeof data !== 'undefined') {
+            if (data.statusText) {
+                this.exception.view(data);
+            } else {
+                const listIdea = new RenderList(data);
+                this.#addListPage(listIdea.add());
+                this.#tuple = listIdea.tuple();
+                this.#request.last_tuple = this.#tuple.lastTuple;
+            }
+        } else {
+            this.domObjects.listContainer.remove();
         }
     }
     #addListPage(list) {
-        this.#tuple = list.tuple();
-        this.domObjects.listContainer.appendChild(list.add());
+        this.domObjects.listContainer.appendChild(list);
     }
     #throttled(f, t) {
         let l = Date.now();
