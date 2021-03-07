@@ -6,7 +6,9 @@ import Request from './mod/Request.esm.js';
 class ListIdea {
     #request = {
         action: 'listIdea',
+        last_tuple: 0,
     };
+    #tuple = { lastTuple: 0, endTuples: false };
     #optionRequest = {
         ajax: {
             method: 'POST',
@@ -27,10 +29,8 @@ class ListIdea {
         };
         this.exception = new Exception(this.domObjects.listContainer);
         this.ajax = new Request(this.#optionRequest);
-        this.list = new RenderList(this.domObjects);
     }
     init() {
-        this.#request.last_tuple = this.list.lastTuple;
         this.#sendRequest();
         this.#eventListeners();
     }
@@ -38,16 +38,24 @@ class ListIdea {
         window.addEventListener('scroll', this.#throttled(this.#sendRequest.bind(this), 950));
     }
     #sendRequest() {
-        if (!this.list.endTuples) {
-            this.#request.last_tuple = this.list.lastTuple;
+        if (!this.#tuple.endTuples) {
+            this.#request.last_tuple = this.#tuple.lastTuple;
             this.ajax.dataJson(this.#request).then((data) => {
-                typeof data !== 'undefined'
-                    ? data.statusText
-                        ? this.exception.view(data)
-                        : this.list.createList(data)
-                    : this.domObjects.listContainer.remove();
+                if (typeof data !== 'undefined') {
+                    if (data.statusText) {
+                        this.exception.view(data);
+                    } else {
+                        this.#addListPage(new RenderList(data));
+                    }
+                } else {
+                    this.domObjects.listContainer.remove();
+                }
             });
         }
+    }
+    #addListPage(list) {
+        this.#tuple = list.tuple();
+        this.domObjects.listContainer.appendChild(list.add());
     }
     #throttled(f, t) {
         let l = Date.now();

@@ -10,7 +10,7 @@ export default class Idea {
         this.idea = idea;
         this.#init();
     }
-    create() {
+    getIdea() {
         return this.#div;
     }
     #init() {

@@ -3,14 +3,14 @@ import NavSticky from './layout/NavSticky.esm.js';
 import SmoothTop from './layout/SmoothTop.esm.js';
 
 class MainPage {
+    #domObjects = {
+        nav: document.querySelector('[data-page="nav"]'),
+        pageUp: document.querySelector('[data-page="page_up"]'),
+        main: document.querySelector('[data-page="main"]'),
+    };
     constructor() {
-        this.domObjects = {
-            nav: document.querySelector('[data-page="nav"]'),
-            pageUp: document.querySelector('[data-page="page_up"]'),
-            main: document.querySelector('[data-page="main"]'),
-        };
-        this.navSticky = new NavSticky(this.domObjects);
-        this.smooth = new SmoothTop(this.domObjects.topPage);
+        this.navSticky = new NavSticky(this.#domObjects);
+        this.smooth = new SmoothTop(this.#domObjects.topPage);
     }
     init() {
         this.navSticky.init();
