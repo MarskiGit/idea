@@ -1,14 +1,9 @@
 'use strict';
-import RenderList from './listIdea/RenderList.esm.js';
+import Idea from './listIdea/Idea.esm.js';
 import Exception from './mod/Exception.esm.js';
 import Request from './mod/Request.esm.js';
 
 class ListIdea {
-    #request = {
-        action: 'listIdea',
-        last_tuple: 0,
-    };
-    #tuple = { lastTuple: null, endTuples: false };
     #optionRequest = {
         ajax: {
             method: 'POST',
@@ -23,11 +18,18 @@ class ListIdea {
         },
         url: 'ajax.php',
     };
+    #request = {
+        action: 'listIdea',
+        last_tuple: 0,
+    };
+    #domObjects = {
+        listContainer: document.querySelector('[data-idea="idea_container"]'),
+    };
+    #fragmentList = document.createDocumentFragment();
+    #tupleNumbers = [];
+    #endTuples = false;
     constructor() {
-        this.domObjects = {
-            listContainer: document.querySelector('[data-idea="idea_container"]'),
-        };
-        this.exception = new Exception(this.domObjects.listContainer);
+        this.exception = new Exception(this.#domObjects.listContainer);
         this.ajax = new Request(this.#optionRequest);
     }
     init() {
@@ -38,30 +40,44 @@ class ListIdea {
         window.addEventListener('scroll', this.#throttled(this.#sendRequest.bind(this), 950));
     }
     #sendRequest() {
-        if (!this.#tuple.endTuples) {
+        if (!this.#endTuples) {
             document.body.style.cursor = 'progress';
             this.ajax
                 .dataJson(this.#request)
-                .then((data) => this.#checkData(data))
+                .then((data) => this.#check(data))
                 .finally((document.body.style.cursor = 'default'));
         }
     }
-    #checkData(data) {
-        if (typeof data !== 'undefined') {
-            if (data.statusText) {
-                this.exception.view(data);
-            } else {
-                const listIdea = new RenderList(data);
-                this.#addListPage(listIdea.add());
-                this.#tuple = listIdea.tuple();
-                this.#request.last_tuple = this.#tuple.lastTuple;
-            }
+    #check(data) {
+        const check = data[0];
+        if (check.ok) {
+            data.shift();
+            data.length ? this.#renderList(data) : this.#emptyList();
         } else {
-            this.domObjects.listContainer.remove();
+            this.#domObjects.listContainer.remove();
+            this.exception.view(check);
         }
     }
-    #addListPage(list) {
-        this.domObjects.listContainer.appendChild(list);
+    #renderList(data) {
+        for (const idea of data) {
+            this.#fragmentList.appendChild(new Idea(idea).render());
+            this.#tupleNumbers.push(idea.id_idea);
+        }
+        this.#lastTuple();
+        this.#addListPage();
+    }
+    #lastTuple() {
+        if (this.#tupleNumbers.find((number) => parseInt(number, 10) === 1)) this.#endTuples = true;
+        this.#request.last_tuple = Math.min(...this.#tupleNumbers);
+    }
+    #addListPage() {
+        this.#domObjects.listContainer.appendChild(this.#fragmentList);
+    }
+    #emptyList() {
+        const div = document.createElement('div');
+        div.classList.add('IdeaList');
+        div.innerHTML = '<h4 class="empty_idea">Brak elementów do wyświetlenia.</h4>';
+        this.#domObjects.listContainer.appendChild(div);
     }
     #throttled(f, t) {
         let l = Date.now();

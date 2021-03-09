@@ -17,7 +17,7 @@ class ListIdeaModel extends AjaxAbstractModel
         try {
             $stmt = $this->DB->query("SELECT user_name FROM account WHERE id_user IN (" . $id_users . ")");
             $stmt->execute();
-        } catch (PDOException $e) {
+        } catch (PDOException) {
             throw new AjaxException('Error: Name IdeaModel');
         }
         if ($stmt->rowCount() > 0) {
@@ -34,7 +34,7 @@ class ListIdeaModel extends AjaxAbstractModel
         try {
             $stmt = $this->DB->query("SELECT area_name FROM area WHERE id_area = $id_area");
             $stmt->execute();
-        } catch (PDOException $e) {
+        } catch (PDOException) {
             throw new AjaxException('Error: Area IdeaModel');
         }
         if ($stmt->rowCount() > 0) {
@@ -49,7 +49,7 @@ class ListIdeaModel extends AjaxAbstractModel
             $stmt = $this->DB->query("SELECT COUNT(id_idea) FROM idea");
             $stmt->execute();
             return intval($stmt->fetchColumn());
-        } catch (PDOException $e) {
+        } catch (PDOException) {
             throw new AjaxException('Error: Number Tuples IdeaModel');
         }
     }
@@ -73,8 +73,11 @@ class ListIdeaModel extends AjaxAbstractModel
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $row['creators'] = $this->getListNames($row['id_users']);
                 $row['id_area'] = $this->getArea($row['id_area']);
+
                 $result[] = $row;
             }
+            $ok['ok'] = true;
+            array_unshift($result, $ok);
             return $result;
         } else {
             return [];

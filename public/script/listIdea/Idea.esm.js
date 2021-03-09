@@ -6,46 +6,53 @@ export default class Idea {
         status: 'Oczekuje',
     };
     #div = document.createElement('div');
-    constructor(idea) {
-        this.idea = idea;
+    constructor({ status, id_idea, creators, pkt_mod, date_added, before_value, after_value, date_implementation }) {
+        this.status = status;
+        this.id = id_idea;
+        this.creators = creators;
+        this.pkt_mod = pkt_mod;
+        this.date_added = date_added.slice(0, 10);
+        this.before_value = before_value;
+        this.after_value = after_value;
+        this.date_implementation = date_implementation;
         this.#init();
     }
-    getIdea() {
+    render() {
         return this.#div;
     }
     #init() {
-        this.#status = this.#statusInformation(parseInt(this.idea.status, 10));
+        this.#status = this.#statusInformation(parseInt(this.status, 10));
         this.#createElement();
     }
     #createElement() {
         this.#div.classList.add('idea', `${this.#status.class}`);
-        this.#div.setAttribute('data-id_idea', `${this.idea.id_idea}`);
-        this.#div.insertAdjacentHTML('afterbegin', this.#render());
+        this.#div.setAttribute('data-id_idea', `${this.id}`);
+        this.#div.insertAdjacentHTML('afterbegin', this.#renderHTML());
     }
-    #render() {
+    #renderHTML() {
         return `
         <div class="tr ${this.#status.back}">
-            <span class="th">${this.idea.creators.length > 1 ? 'Pomysłodawcy' : 'Pomysłodawca'}</span>
+            <span class="th">${this.creators.length > 1 ? 'Pomysłodawcy' : 'Pomysłodawca'}</span>
             <span class="th">Status: ${this.#status.status}</span>
-            <span class="th">Przyznane punkty: ${this.idea.pkt_mod ? this.idea.pkt_mod : 0}</span>
-            <span class="th">Data dodania: ${this.idea.date_added.slice(0, 10)}</span>
+            <span class="th">Przyznane punkty: ${this.pkt_mod ? this.pkt_mod : 0}</span>
+            <span class="th">Data dodania: ${this.date_added}</span>
         </div>
         <div class="tr">
             <div class="td idea_authors">
                 <ol>
-                    ${this.idea.creators.map((name) => `<li>${name}</li>`).join('')}
+                    ${this.creators.map((name) => `<li>${name}</li>`).join('')}
                 </ol>
             </div>
             <div class="td idea_value">
                 <span class="th"> Opis stanu obecnego </span>
-                <p class="td"> ${this.idea.before_value} </p>
+                <p class="td"> ${this.before_value} </p>
                 <span class="th"> Propozycja usprawnienia </span>
-                <p class="td"> ${this.idea.after_value} </p>
+                <p class="td"> ${this.after_value} </p>
             </div>
         </div>
         <div class="tr">
-            <span class="th">Numer propozycji: ${this.idea.id_idea}</span>
-            ${this.#dataAdded(this.idea.date_implementation)}
+            <span class="th">Numer propozycji: ${this.id}</span>
+            ${this.#dataAdded(this.date_implementation)}
         </div>
         `;
     }
