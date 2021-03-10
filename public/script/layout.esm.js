@@ -18,7 +18,7 @@ class Layout {
         this.#eventListeners();
     }
     #eventListeners() {
-        this.#domObjects.pageUp.addEventListener('click', () => this.smooth.run());
+        this.#domObjects.pageUp.addEventListener('click', () => this.smooth.init());
     }
 }
 

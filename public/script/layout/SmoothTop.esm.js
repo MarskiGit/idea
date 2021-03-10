@@ -1,26 +1,27 @@
 'use strict';
 export default class SmoothTop {
-    run() {
-        const targetPosition = 0;
-        const startPosition = window.pageYOffset;
-        const distance = targetPosition - startPosition;
-        const duration = 750;
-        let start = null;
+    #targetPosition = 0;
+    #duration = 750;
+    init() {
+        this.startPosition = window.pageYOffset;
+        this.distance = this.#targetPosition - this.startPosition;
+        this.start = null;
 
-        window.requestAnimationFrame(step);
-
-        function step(timestamp) {
-            if (!start) start = timestamp;
-            const progress = timestamp - start;
-            window.scrollTo(0, easeInOutCubic(progress, startPosition, distance, duration));
-            if (progress < duration) window.requestAnimationFrame(step);
-        }
-
-        function easeInOutCubic(t, b, c, d) {
-            t /= d / 2;
-            if (t < 1) return (c / 2) * t * t * t + b;
-            t -= 2;
-            return (c / 2) * (t * t * t + 2) + b;
-        }
+        requestAnimationFrame(this.#step);
+    }
+    #step = (timestamp) => {
+        if (!this.start) this.start = timestamp;
+        const progress = timestamp - this.start;
+        this.#toUp(progress);
+        if (progress < this.#duration) requestAnimationFrame(this.#step);
+    };
+    #toUp(progress) {
+        window.scrollTo(0, this.#easeInOutCubic(progress, this.startPosition, this.distance, this.#duration));
+    }
+    #easeInOutCubic(t, b, c, d) {
+        t /= d / 2;
+        if (t < 1) return (c / 2) * t * t * t + b;
+        t -= 2;
+        return (c / 2) * (t * t * t + 2) + b;
     }
 }
