@@ -21,16 +21,16 @@ class PageController extends AbstractController
     {
         $this->View->home();
     }
-    protected function loginIdea(): void
+    protected function signInIdea(): void
     {
-        $this->View->login();
+        $this->View->signIn();
     }
     protected function accountIdea(): void
     {
         $this->View->account();
     }
-    protected function adminIdea(): void
+    protected function registrationIdea(): void
     {
-        $this->View->admin();
+        $this->View->registration();
     }
 }

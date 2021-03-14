@@ -46,16 +46,16 @@ class View
     {
         $this->renderHTML('list', 'page/');
     }
-    public function login(): void
+    public function signIn(): void
     {
-        $this->renderHTML('login', 'page/');
+        $this->renderHTML('signIn', 'page/');
     }
     public function account(): void
     {
         $this->renderHTML('account', 'page/');
     }
-    public function admin(): void
+    public function registration(): void
     {
-        $this->renderHTML('admin', 'page/');
+        $this->renderHTML('registration', 'page/');
     }
 }

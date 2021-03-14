@@ -54,7 +54,7 @@ class ListIdea {
             data.shift();
             data.length ? this.#renderList(data) : this.#emptyList();
         } else {
-            this.#domObjects.listContainer.remove();
+            this.#domObjects.listContainer.classList.remove('idea_container');
             this.exception.view(check);
         }
     }
