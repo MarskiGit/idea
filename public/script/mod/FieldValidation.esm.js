@@ -1,8 +1,7 @@
 'use strict';
 export default class FieldValidation {
     #fieldsValue;
-    #enteris;
-    #fieldsLenght;
+    #data;
     #params = {};
     #strength = {
         empty: 'Wpisz hasło &#128533;',
@@ -11,50 +10,90 @@ export default class FieldValidation {
         medium: 'Średnie &#128532;',
         strong: 'Silne &#128512;',
     };
-    constructor({ form, strengthMeter, strengthMesage }) {
+    /**
+     *  Walidacja pól formularza
+     */
+    constructor({ form, strengthMeter = 0, strengthMessage = 0 }) {
         this.form = form;
         this.strengthMeter = strengthMeter;
-        this.strengthMesage = strengthMesage;
+        this.strengthMessage = strengthMessage;
         this.passInpute = [...this.form].filter((el) => el.name === 'password');
-
-        // this.formData = new FormData(form);
-        // this.#fieldsValue = [...this.form.values()];
-        // this.#enteris = this.form.entries();
-        // this.#fieldsLenght = this.#fieldsValue.length;
+        this.strengthPass = 0;
     }
     init() {
         this.#eventListeners();
     }
-
-    emptyFields = () => (this.#fieldsLenght === this.#fieldsValue.filter((e) => e !== '').length ? true : false);
-    #eventListeners() {
-        this.passInpute[0].addEventListener('input', this.#passwordChanged.bind(this));
+    getValue() {
+        for (const pair of this.#data.entries()) {
+            this.#params[pair[0]] = pair[1];
+        }
+        return this.#params;
     }
-    #passwordChanged(event) {
+    emptyFields = () => (this.#formData() === this.#fieldsValue.filter((e) => e !== '').length ? true : false);
+    #eventListeners() {
+        if (this.strengthMeter) {
+            this.passInpute[0].addEventListener('input', this.#checkPasswordStrength.bind(this));
+        }
+    }
+    #checkPasswordStrength(event) {
         let pwd = event.target.value;
 
         if (pwd.length == 0) {
-            this.#passwordStatus('strong_0');
-            this.strengthMesage.innerHTML = this.#strength.empty;
+            this.#passwordStatus(0);
+            this.strengthPass = 0;
+            this.strengthMessage.innerHTML = this.#strength.empty;
         } else if (false === this.#enoughRegex(pwd)) {
-            this.#passwordStatus('strong_25');
-            this.strengthMesage.innerHTML = this.#strength.worst;
+            this.#passwordStatus(25);
+            this.strengthPass = 0;
+            this.strengthMessage.innerHTML = this.#strength.worst;
         } else if (this.#strongRegex(pwd)) {
-            this.#passwordStatus('strong_100');
-            this.strengthMesage.innerHTML = this.#strength.strong;
+            this.#passwordStatus(100);
+            this.strengthPass = 3;
+            this.strengthMessage.innerHTML = this.#strength.strong;
         } else if (this.#mediumRegex(pwd)) {
-            this.#passwordStatus('strong_75');
-            this.strengthMesage.innerHTML = this.#strength.medium;
+            this.#passwordStatus(75);
+            this.strengthPass = 2;
+            this.strengthMessage.innerHTML = this.#strength.medium;
         } else {
-            this.#passwordStatus('strong_50');
-            this.strengthMesage.innerHTML = this.#strength.weak;
+            this.#passwordStatus(50);
+            this.strengthPass = 1;
+            this.strengthMessage.innerHTML = this.#strength.weak;
         }
     }
-    #passwordStatus(clasa) {
-        this.strengthMeter.className = '';
-        this.strengthMeter.classList.add('strength', `${clasa}`);
+    #passwordStatus(status) {
+        switch (status) {
+            case 0:
+                this.strengthMeter.className = '';
+                this.strengthMeter.classList.add('strength', 'strong_0');
+                break;
+            case 25:
+                this.strengthMeter.className = '';
+                this.strengthMeter.classList.add('strength', 'strong_25');
+                break;
+            case 50:
+                this.strengthMeter.className = '';
+                this.strengthMeter.classList.add('strength', 'strong_50');
+                break;
+            case 75:
+                this.strengthMeter.className = '';
+                this.strengthMeter.classList.add('strength', 'strong_75');
+                break;
+            case 100:
+                this.strengthMeter.className = '';
+                this.strengthMeter.classList.add('strength', 'strong_100');
+                break;
+        }
     }
     #strongRegex = (t) => new RegExp('^(?=.{14,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$', 'g').test(t);
     #mediumRegex = (t) => new RegExp('^(?=.{10,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$', 'g').test(t);
     #enoughRegex = (t) => new RegExp('(?=.{8,}).*', 'g').test(t);
+    #emailChar = (t) =>
+        new RegExp(
+            /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        ).test(String(t).toLowerCase());
+    #formData() {
+        this.#data = new FormData(this.form);
+        this.#fieldsValue = [...this.#data.values()];
+        return this.#fieldsValue.length;
+    }
 }

@@ -21,9 +21,9 @@ class PageController extends AbstractController
     {
         $this->View->home();
     }
-    protected function signInIdea(): void
+    protected function signinIdea(): void
     {
-        $this->View->signIn();
+        $this->View->signin();
     }
     protected function accountIdea(): void
     {

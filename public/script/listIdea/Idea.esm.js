@@ -17,7 +17,7 @@ export default class Idea {
         this.date_implementation = date_implementation;
         this.#init();
     }
-    render() {
+    getIdea() {
         return this.#div;
     }
     #init() {

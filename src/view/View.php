@@ -46,9 +46,9 @@ class View
     {
         $this->renderHTML('list', 'page/');
     }
-    public function signIn(): void
+    public function signin(): void
     {
-        $this->renderHTML('signIn', 'page/');
+        $this->renderHTML('signin', 'page/');
     }
     public function account(): void
     {

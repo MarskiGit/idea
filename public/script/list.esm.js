@@ -3,7 +3,7 @@ import Idea from './listIdea/Idea.esm.js';
 import Exception from './mod/Exception.esm.js';
 import Request from './mod/Request.esm.js';
 
-class ListIdea {
+class List {
     #optionRequest = {
         ajax: {
             method: 'POST',
@@ -23,7 +23,7 @@ class ListIdea {
         last_tuple: 0,
     };
     #domObjects = {
-        listContainer: document.querySelector('[data-idea="idea_container"]'),
+        listContainer: document.querySelector('[data-list="list_container"]'),
     };
     #fragmentList = document.createDocumentFragment();
     #tupleNumbers = [];
@@ -37,9 +37,9 @@ class ListIdea {
         this.#eventListeners();
     }
     #eventListeners() {
-        window.addEventListener('scroll', this.#throttled(this.#sendRequest.bind(this), 950));
+        window.addEventListener('scroll', this.#throttled(this.#sendRequest, 950));
     }
-    #sendRequest() {
+    #sendRequest = () => {
         if (!this.#endTuples) {
             document.body.style.cursor = 'progress';
             this.ajax
@@ -47,7 +47,7 @@ class ListIdea {
                 .then((data) => this.#check(data))
                 .finally((document.body.style.cursor = 'default'));
         }
-    }
+    };
     #check(data) {
         const check = data[0];
         if (check.ok) {
@@ -60,7 +60,7 @@ class ListIdea {
     }
     #renderList(data) {
         for (const idea of data) {
-            this.#fragmentList.appendChild(new Idea(idea).render());
+            this.#fragmentList.appendChild(new Idea(idea).getIdea());
             this.#tupleNumbers.push(idea.id_idea);
         }
         this.#lastTuple();
@@ -88,6 +88,6 @@ class ListIdea {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    const LIST_IDEA = new ListIdea();
-    LIST_IDEA.init();
+    const LIST = new List();
+    LIST.init();
 });

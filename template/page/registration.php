@@ -1,7 +1,7 @@
 <main data-page="main">
-    <form data-form="registration" class="align_center" novalidate>
+    <form data-registration="form" class="align_center" novalidate>
         <h1>Rejestracja</h1>
-        <span></span>
+        <span data-registration="form_error"></span>
         <fieldset>
             <div class="label"><img src="public/img/login_arrow.svg" alt="Login Arrow"></div>
             <input type="text" name="user_name" placeholder="Nazwa użytkownika">
@@ -11,12 +11,12 @@
             <input type="password" name="password" placeholder="Hasło">
         </fieldset>
         <div class="meter">
-            <span class="strength" data-form="strength-meter"></span>
+            <span class="strength" data-registration="strength-meter"></span>
         </div>
-        <p class="strength-mesage" data-form="strength-mesage"></p>
+        <p class="strength-message" data-registration="strength-message"></p>
         <fieldset>
             <div class="label"><img src="public/img/id_card.svg" alt="Id Card"></div>
-            <input type="number" name="user_number" placeholder="Identyfikator" min="0" step="1" maxlength="4">
+            <input type="number" name="user_identifier" placeholder="Identyfikator" min="0" step="1" maxlength="4">
         </fieldset>
         <fieldset>
             <div class="label"><img src="public/img/user.svg" alt="User"></div>

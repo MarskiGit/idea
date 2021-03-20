@@ -23,7 +23,7 @@
     <?php switch ($params['action']):
         case 'listIdea': ?>
             <link rel="stylesheet" href="public/style/list.min.css" type="text/css" media="all">
-            <script defer type="module" src="public/script/listIdea.esm.js"></script>
+            <script defer type="module" src="public/script/list.esm.js"></script>
             <?php break; ?>
         <?php
         case 'writeIdea': ?>
@@ -31,7 +31,7 @@
             <script defer type="module" src="public/script/write.esm.js"></script>
             <?php break; ?>
         <?php
-        case 'signInIdea': ?>
+        case 'signinIdea': ?>
             <link rel="stylesheet" href="public/style/signIn.min.css" type="text/css" media="all">
             <script defer type="module" src="public/script/signIn.esm.js"></script>
             <?php break; ?>
@@ -66,7 +66,7 @@
         <a href="?action=list" class="a_btn">Lista pomysłów</a>
         <a href="?action=write" class="a_btn">Napisz pomysł</a>
         <a href="#" class="page_up hover_img" data-page="page_up"><img src="public/img/page_up.svg"></a>
-        <a href="?action=signIn" class="logo_idea"><img src="public/img/idea.png" alt="Idea"></a>
+        <a href="?action=signin" class="logo_idea"><img src="public/img/idea.png" alt="Idea"></a>
         <?php if (intval($params['account']['rang'] ?? 0) === 2) : ?> <a href="?action=admin" class="a_btn">Admin</a> <?php endif; ?>
         <?php if (intval($params['account']['rang'] ?? 0) === 1) : ?> <a href="?action=admin" class="a_btn">Mod</a> <?php endif; ?>
     </nav>

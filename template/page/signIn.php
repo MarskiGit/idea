@@ -1,7 +1,7 @@
 <main data-page="main">
-    <form data-form="signIn" class="align_center" novalidate>
+    <form data-signin="form" class="align_center" novalidate>
         <h1>Witam</h1>
-        <span data-form="error"></span>
+        <span data-signin="form_error"></span>
         <fieldset>
             <div class="label"><img src="public/img/login_arrow.svg" alt="Login Arrow"></div>
             <input type="text" name="user_name" placeholder="Login">

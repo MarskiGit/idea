@@ -1,36 +1,57 @@
 'use strict';
 import FieldValidation from './mod/FieldValidation.esm.js';
+import Request from './mod/Request.esm.js';
 
 class Registration {
-    #domObjects = {
-        form: document.querySelector('[data-form="registration"]'),
-        errorMessage: document.querySelector('[data-form="error"]'),
-        strengthMeter: document.querySelector('[data-form="strength-meter"]'),
-        strengthMesage: document.querySelector('[data-form="strength-mesage"]'),
+    #optionRequest = {
+        ajax: {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+        },
+        url: 'ajax.php',
     };
+    #formParams = {};
+    #domObjects = {
+        form: document.querySelector('[data-registration="form"]'),
+        errorMessage: document.querySelector('[data-registration="form_error"]'),
+        strengthMeter: document.querySelector('[data-registration="strength-meter"]'),
+        strengthMessage: document.querySelector('[data-registration="strength-message"]'),
+    };
+    /**
+     * Obsługa fomularza rejestracji
+     */
     constructor() {
-        this.FORM = new FieldValidation(this.#domObjects);
+        this.Filed = new FieldValidation(this.#domObjects);
+        this.Request = new Request(this.#optionRequest);
     }
     init() {
-        this.FORM.init();
+        this.Filed.init();
         this.#eventListeners();
-
-        // console.log(this.pass);
     }
     #eventListeners() {
-        this.#domObjects.form.addEventListener('submit', this.#formSubmit.bind(this));
+        this.#domObjects.form.addEventListener('submit', this.#formValidation.bind(this));
     }
-    #formSubmit(event) {
+    #formValidation(event) {
         event.preventDefault();
-        this.FORM = new FieldValidation(this.#domObjects);
 
-        if (this.FORM.emptyFields()) {
-            this.FORM.getValue();
-
-            console.log(this.FORM.getValue());
+        if (this.Filed.emptyFields()) {
+            this.#formError(false);
+            this.#formParams = this.Filed.getValue();
+            if (this.Filed.strengthPass !== 3) this.#domObjects.errorMessage.textContent = `Zastosuj silne hasło`;
+            console.log(this.#formParams);
         } else {
-            this.#domObjects.errorMessage.textContent = 'Uzupełnij wszystie pola';
+            this.#formError(true);
         }
+    }
+    #formError(flag) {
+        this.#domObjects.errorMessage.textContent = flag ? 'Uzupełnij wszystie pola' : '';
     }
 }
 
