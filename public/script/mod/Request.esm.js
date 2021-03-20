@@ -7,7 +7,7 @@ export default class Request {
     async dataJson(request) {
         this.opt.body = JSON.stringify(request);
 
-        const response = await fetch(this.url, this.opt).catch(this.#handleError());
+        const response = await fetch(this.url, this.opt).catch(this.#handleError);
         const res = await response;
 
         if (response.ok) {

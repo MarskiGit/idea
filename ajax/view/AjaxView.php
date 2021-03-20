@@ -11,7 +11,6 @@ class AjaxView
     }
     public function renderJSON($answer): void
     {
-        header('Content-Type: application/json; charset=utf-8');
         echo json_encode($answer);
         exit;
     }

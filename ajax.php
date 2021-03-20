@@ -1,7 +1,8 @@
 <?php
 
 declare(strict_types=1);
-header('Content-Type: application/json; charset=utf-8');
+header('Content-Type: text/html; charset=utf-8');
+
 $secure = file_get_contents('php://input');
 require_once("utils/debug.php");
 spl_autoload_register(function (string $classNamespace) {

@@ -7,7 +7,7 @@ class Registration {
         ajax: {
             method: 'POST',
             mode: 'cors',
-            cache: 'no-cache',
+            cache: 'no-store',
             credentials: 'same-origin',
             headers: {
                 'Content-Type': 'application/json',

@@ -1,6 +1,8 @@
 <?php
 
 declare(strict_types=1);
+header('Content-Type: text/html; charset=utf-8');
+
 session_start();
 
 require_once("utils/debug.php");
