@@ -1,34 +1,25 @@
 'use strict';
+import PasswordStrength from './PasswordStrength.esm.js';
 export default class FieldValidation {
     #fieldsValue;
     #data;
     #params = {};
-    #strength = {
-        empty: 'Wpisz hasło &#128533;',
-        worst: 'Więcej znaków &#128530;',
-        weak: 'Słabe &#128517;',
-        medium: 'Średnie &#128532;',
-        strong: 'Silne &#128512;',
-    };
     /**
-     * Walidacja pól formularza
-     * @param {!object} param0 Zestaw obiektów DOM {formularz, wskaźnik siły hasła = 0, komunikat o sile hasła = 0}.
+     * Walidacja pól formularza.
+     * @param {!object} formObjects Obiekt z danymi do obsługi formularza.
      */
-    constructor({ form, strengthMeter = 0, strengthMessage = 0 }) {
-        this.form = form;
-        this.strengthMeter = strengthMeter;
-        this.strengthMessage = strengthMessage;
-        this.passInpute = [...this.form].filter((el) => el.name === 'password');
-        this.strengthPass = 0;
+    constructor(formObjects) {
+        this.formObjects = formObjects;
+        this.form = this.formObjects.form;
+        this.registration = this.formObjects.registration;
     }
-    /**
-     * Metoda inicjująca.
-     */
     init() {
-        this.#eventListeners();
+        if (this.registration) {
+            this.Pass = new PasswordStrength(this.formObjects.passInput, this.formObjects.strengthMessage, this.formObjects.strengthMeter);
+            this.Pass.init();
+        }
     }
     /**
-     *
      * @returns Pobierz dane wpisane w formularzu.
      */
     getValue() {
@@ -38,67 +29,15 @@ export default class FieldValidation {
         return this.#params;
     }
     /**
-     *
+     * @returns Pobierz aktualną siłę hasła.
+     */
+    getStrenght() {
+        return this.Pass.strengthPass;
+    }
+    /**
      * @returns Sprawdź, czy pola są puste. Zwraca wartość bool.
      */
     emptyFields = () => (this.#formData() === this.#fieldsValue.filter((e) => e !== '').length ? true : false);
-    #eventListeners() {
-        if (this.strengthMeter) {
-            this.passInpute[0].addEventListener('input', this.#checkPasswordStrength.bind(this));
-        }
-    }
-    #checkPasswordStrength(event) {
-        let pwd = event.target.value;
-
-        if (pwd.length == 0) {
-            this.#passwordStatus(0);
-            this.strengthPass = 0;
-            this.strengthMessage.innerHTML = this.#strength.empty;
-        } else if (false === this.#enoughRegex(pwd)) {
-            this.#passwordStatus(25);
-            this.strengthPass = 0;
-            this.strengthMessage.innerHTML = this.#strength.worst;
-        } else if (this.#strongRegex(pwd)) {
-            this.#passwordStatus(100);
-            this.strengthPass = 3;
-            this.strengthMessage.innerHTML = this.#strength.strong;
-        } else if (this.#mediumRegex(pwd)) {
-            this.#passwordStatus(75);
-            this.strengthPass = 2;
-            this.strengthMessage.innerHTML = this.#strength.medium;
-        } else {
-            this.#passwordStatus(50);
-            this.strengthPass = 1;
-            this.strengthMessage.innerHTML = this.#strength.weak;
-        }
-    }
-    #passwordStatus(status) {
-        switch (status) {
-            case 0:
-                this.strengthMeter.className = '';
-                this.strengthMeter.classList.add('strength', 'strong_0');
-                break;
-            case 25:
-                this.strengthMeter.className = '';
-                this.strengthMeter.classList.add('strength', 'strong_25');
-                break;
-            case 50:
-                this.strengthMeter.className = '';
-                this.strengthMeter.classList.add('strength', 'strong_50');
-                break;
-            case 75:
-                this.strengthMeter.className = '';
-                this.strengthMeter.classList.add('strength', 'strong_75');
-                break;
-            case 100:
-                this.strengthMeter.className = '';
-                this.strengthMeter.classList.add('strength', 'strong_100');
-                break;
-        }
-    }
-    #strongRegex = (t) => new RegExp('^(?=.{14,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$', 'g').test(t);
-    #mediumRegex = (t) => new RegExp('^(?=.{10,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$', 'g').test(t);
-    #enoughRegex = (t) => new RegExp('(?=.{8,}).*', 'g').test(t);
     #emailChar = (t) =>
         new RegExp(
             /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/

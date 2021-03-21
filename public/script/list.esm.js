@@ -4,7 +4,7 @@ import Exception from './mod/Exception.esm.js';
 import Request from './mod/Request.esm.js';
 
 class List {
-    #optionRequest = {
+    #setingRequest = {
         ajax: {
             method: 'POST',
             mode: 'cors',
@@ -33,7 +33,7 @@ class List {
      */
     constructor() {
         this.exception = new Exception();
-        this.ajax = new Request(this.#optionRequest);
+        this.ajax = new Request(this.#setingRequest);
     }
     init() {
         this.#sendRequest();

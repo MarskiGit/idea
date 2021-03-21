@@ -2,21 +2,20 @@
 export default class Request {
     /**
      * Klasa obsługująca żądania Ajax.
-     * @param {!object} seting Ustawienia Ajax wraz ze ścieżką do pliku.
+     * @param {!object} ssetingRequest Ustawienia Ajax wraz ze ścieżką do pliku.
      */
-    constructor(seting) {
-        this.opt = seting.ajax;
-        this.url = seting.url;
+    constructor(setingRequest) {
+        this.seting = setingRequest.ajax;
+        this.url = setingRequest.url;
     }
     /**
-     *
      * @param {!object} request Parametry żądania dla serwera.
      * @returns Wyślij żądanie do serwera i zwróć wynik JSON.
      */
     async getJson(request) {
-        this.opt.body = JSON.stringify(request);
+        this.seting.body = JSON.stringify(request);
 
-        const response = await fetch(this.url, this.opt).catch(this.#handleError);
+        const response = await fetch(this.url, this.seting).catch(this.#handleError);
         const res = await response;
 
         if (response.ok) {

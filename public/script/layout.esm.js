@@ -13,15 +13,15 @@ class Layout {
      * Fabryka zarządzająca wyglądem strony.
      */
     constructor() {
-        this.navSticky = new NavSticky(this.#domObjects);
-        this.smooth = new SmoothTop();
+        this.NavSticky = new NavSticky(this.#domObjects);
+        this.Smooth = new SmoothTop();
     }
     init() {
-        this.navSticky.init();
+        this.NavSticky.init();
         this.#eventListeners();
     }
     #eventListeners() {
-        this.#domObjects.pageUp.addEventListener('click', () => this.smooth.animation());
+        this.#domObjects.pageUp.addEventListener('click', () => this.Smooth.animation());
     }
 }
 

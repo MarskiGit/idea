@@ -1,61 +1,41 @@
 'use strict';
-import FieldValidation from './mod/FieldValidation.esm.js';
-import Request from './mod/Request.esm.js';
+import AbstractForm from './abstract/AbstractForm.esm.js';
 
-class Registration {
-    #optionRequest = {
-        ajax: {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-store',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            redirect: 'follow',
-            referrerPolicy: 'no-referrer',
-        },
-        url: 'ajax.php',
+class Registration extends AbstractForm {
+    /**
+     * Obsługa formularza rejestracji.
+     * @param {!object} formObjects Obiekt z elementami DOM formularza.
+     */
+    constructor(formObjects) {
+        super(formObjects);
+    }
+    formValidation = (event) => {
+        event.preventDefault();
+        if (this.Filed.emptyFields()) {
+            this.formError(false);
+            if (this.Filed.getStrenght() !== 3) {
+                this.formObjects.errorMessage.textContent = `Zastosuj silne hasło`;
+            } else {
+                this.formParams = this.Filed.getValue();
+                this.clearField();
+                console.log(this.formParams);
+            }
+        } else {
+            this.formError(true);
+        }
     };
-    #formParams = {};
-    #domObjects = {
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const formObjects = {
+        registration: true,
         form: document.querySelector('[data-registration="form"]'),
         errorMessage: document.querySelector('[data-registration="form_error"]'),
         strengthMeter: document.querySelector('[data-registration="strength-meter"]'),
         strengthMessage: document.querySelector('[data-registration="strength-message"]'),
+        passInput: document.querySelector('[data-registration="password"]'),
     };
-    /**
-     * Obsługa fomularza rejestracji
-     */
-    constructor() {
-        this.Filed = new FieldValidation(this.#domObjects);
-        this.Request = new Request(this.#optionRequest);
-    }
-    init() {
-        this.Filed.init();
-        this.#eventListeners();
-    }
-    #eventListeners() {
-        this.#domObjects.form.addEventListener('submit', this.#formValidation.bind(this));
-    }
-    #formValidation(event) {
-        event.preventDefault();
 
-        if (this.Filed.emptyFields()) {
-            this.#formError(false);
-            this.#formParams = this.Filed.getValue();
-            if (this.Filed.strengthPass !== 3) this.#domObjects.errorMessage.textContent = `Zastosuj silne hasło`;
-            console.log(this.#formParams);
-        } else {
-            this.#formError(true);
-        }
-    }
-    #formError(flag) {
-        this.#domObjects.errorMessage.textContent = flag ? 'Uzupełnij wszystie pola' : '';
-    }
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-    const REG = new Registration();
+    const REG = new Registration(formObjects);
     REG.init();
 });

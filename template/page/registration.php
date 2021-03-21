@@ -8,7 +8,7 @@
         </fieldset>
         <fieldset>
             <div class="label"><img src="public/img/key.svg" alt="Key"></div>
-            <input type="password" name="password" placeholder="Hasło">
+            <input type="password" name="password" placeholder="Hasło" data-registration="password">
         </fieldset>
         <div class="meter">
             <span class="strength" data-registration="strength-meter"></span>
