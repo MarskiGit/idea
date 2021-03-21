@@ -12,6 +12,28 @@ use PDOException;
 
 class ListIdeaModel extends AjaxAbstractModel
 {
+    public function get(): array
+    {
+        try {
+            $stmt = $this->DB->query("SELECT id_idea, id_area, id_users, before_value, after_value, date_added, date_implementation, pkt_mod, status FROM idea WHERE id_idea < " . $this->limitTuples($this->requestParam['last_tuple']) . " ORDER BY id_idea DESC LIMIT 6");
+            $stmt->execute();
+        } catch (PDOException) {
+            throw new AjaxException('Error: Get List IdeaModel');
+        }
+        if ($stmt->rowCount() > 0) {
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $row['creators'] = $this->getListNames($row['id_users']);
+                $row['id_area'] = $this->getArea($row['id_area']);
+
+                $result[] = $row;
+            }
+            $ok['ok'] = true;
+            array_unshift($result, $ok);
+            return $result;
+        } else {
+            return [];
+        }
+    }
     private function getListNames($id_users): array
     {
         try {
@@ -59,28 +81,6 @@ class ListIdeaModel extends AjaxAbstractModel
             return $this->getNumberTuples() + 1;
         } else {
             return $num;
-        }
-    }
-    public function get(): array
-    {
-        try {
-            $stmt = $this->DB->query("SELECT id_idea, id_area, id_users, before_value, after_value, date_added, date_implementation, pkt_mod, status FROM idea WHERE id_idea < " . $this->limitTuples($this->requestParam['last_tuple']) . " ORDER BY id_idea DESC LIMIT 6");
-            $stmt->execute();
-        } catch (PDOException) {
-            throw new AjaxException('Error: Get List IdeaModel');
-        }
-        if ($stmt->rowCount() > 0) {
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $row['creators'] = $this->getListNames($row['id_users']);
-                $row['id_area'] = $this->getArea($row['id_area']);
-
-                $result[] = $row;
-            }
-            $ok['ok'] = true;
-            array_unshift($result, $ok);
-            return $result;
-        } else {
-            return [];
         }
     }
 }

@@ -1,11 +1,18 @@
 'use strict';
 export default class NavSticky {
+    /**
+     * Klasa animacji menu.
+     * @param {!object} param0  Zestaw obiektów DOM — destukturyzacja
+     */
     constructor({ home, nav, pageUp, main }) {
         this.homeImg = [...home.children];
         this.nav = nav;
         this.pageUp = pageUp;
         this.main = main;
     }
+    /**
+     * Metoda inicjująca.
+     */
     init() {
         this.navPosition = this.nav.getClientRects()[0];
         this.main.style.paddingTop = `${this.navPosition.bottom.toFixed()}px`;

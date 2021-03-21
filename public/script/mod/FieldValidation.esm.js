@@ -11,7 +11,8 @@ export default class FieldValidation {
         strong: 'Silne &#128512;',
     };
     /**
-     *  Walidacja pól formularza
+     * Walidacja pól formularza
+     * @param {!object} param0 Zestaw obiektów DOM {formularz, wskaźnik siły hasła = 0, komunikat o sile hasła = 0}.
      */
     constructor({ form, strengthMeter = 0, strengthMessage = 0 }) {
         this.form = form;
@@ -20,15 +21,26 @@ export default class FieldValidation {
         this.passInpute = [...this.form].filter((el) => el.name === 'password');
         this.strengthPass = 0;
     }
+    /**
+     * Metoda inicjująca.
+     */
     init() {
         this.#eventListeners();
     }
+    /**
+     *
+     * @returns Pobierz dane wpisane w formularzu.
+     */
     getValue() {
         for (const pair of this.#data.entries()) {
             this.#params[pair[0]] = pair[1];
         }
         return this.#params;
     }
+    /**
+     *
+     * @returns Sprawdź, czy pola są puste. Zwraca wartość bool.
+     */
     emptyFields = () => (this.#formData() === this.#fieldsValue.filter((e) => e !== '').length ? true : false);
     #eventListeners() {
         if (this.strengthMeter) {

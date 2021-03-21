@@ -9,16 +9,19 @@ class Layout {
         pageUp: document.querySelector('[data-page="page_up"]'),
         main: document.querySelector('[data-page="main"]'),
     };
+    /**
+     * Fabryka zarządzająca wyglądem strony.
+     */
     constructor() {
         this.navSticky = new NavSticky(this.#domObjects);
-        this.smooth = new SmoothTop(this.#domObjects.topPage);
+        this.smooth = new SmoothTop();
     }
     init() {
         this.navSticky.init();
         this.#eventListeners();
     }
     #eventListeners() {
-        this.#domObjects.pageUp.addEventListener('click', () => this.smooth.init());
+        this.#domObjects.pageUp.addEventListener('click', () => this.smooth.animation());
     }
 }
 

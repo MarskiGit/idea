@@ -1,7 +1,14 @@
 'use strict';
 export default class Exception {
     #domElement = document.createElement('div');
-
+    /**
+     * Klasa obsługująca i wyświetlająca komunikaty o błędach.
+     */
+    constructor() {}
+    /**
+     * Dodaj obiekt DOM do body z komunikatem o błędzie.
+     * @param {!objekt} data Zestaw informacji o błędzie.
+     */
     view(data) {
         document.body.appendChild(this.#div(data));
         if (typeof data.file !== 'undefined') console.error(data.file ? `${data.file} ${data.line}` : data.code);

@@ -1,10 +1,19 @@
 'use strict';
 export default class Request {
-    constructor(option) {
-        this.opt = option.ajax;
-        this.url = option.url;
+    /**
+     * Klasa obsługująca żądania Ajax.
+     * @param {!object} seting Ustawienia Ajax wraz ze ścieżką do pliku.
+     */
+    constructor(seting) {
+        this.opt = seting.ajax;
+        this.url = seting.url;
     }
-    async dataJson(request) {
+    /**
+     *
+     * @param {!object} request Parametry żądania dla serwera.
+     * @returns Wyślij żądanie do serwera i zwróć wynik JSON.
+     */
+    async getJson(request) {
         this.opt.body = JSON.stringify(request);
 
         const response = await fetch(this.url, this.opt).catch(this.#handleError);

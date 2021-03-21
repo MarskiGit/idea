@@ -6,6 +6,10 @@ export default class Idea {
         status: 'Oczekuje',
     };
     #div = document.createElement('div');
+    /**
+     *  Klasa renderująca pomysł w HTML.
+     * @param {!objekt} param0 Obiekt zawierający zestaw informacji potrzebny do wy renderowania pomysłu w HTML - destukturyzacja.
+     */
     constructor({ status, id_idea, creators, pkt_mod, date_added, before_value, after_value, date_implementation }) {
         this.status = status;
         this.id = id_idea;
@@ -17,6 +21,10 @@ export default class Idea {
         this.date_implementation = date_implementation;
         this.#init();
     }
+    /**
+     *
+     * @returns Pobierz wy renderowany obiekt DOM.
+     */
     getIdea() {
         return this.#div;
     }

@@ -28,8 +28,11 @@ class List {
     #fragmentList = document.createDocumentFragment();
     #tupleNumbers = [];
     #endTuples = false;
+    /**
+     *  Klasa renderująca i obsługująca listę pomysłów w HTML.
+     */
     constructor() {
-        this.exception = new Exception(this.#domObjects.listContainer);
+        this.exception = new Exception();
         this.ajax = new Request(this.#optionRequest);
     }
     init() {
@@ -43,7 +46,7 @@ class List {
         if (!this.#endTuples) {
             document.body.style.cursor = 'progress';
             this.ajax
-                .dataJson(this.#request)
+                .getJson(this.#request)
                 .then((data) => this.#check(data))
                 .finally((document.body.style.cursor = 'default'));
         }

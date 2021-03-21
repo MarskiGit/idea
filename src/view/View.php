@@ -12,19 +12,6 @@ class View
     public function __construct()
     {
     }
-    private function renderHTML(string $name, string $path = '', $params = null): void
-    {
-        $path = DIR_TEMPLATE . $path . $name . '.php';
-        try {
-            if (is_file($path)) {
-                require $path;
-            } else {
-                throw new IdeaException('Błąd otwarcia szablonu' . $name . ' in: ' . $path);
-            }
-        } catch (Exception) {
-            throw new IdeaException('Błąd Renderowania Strony');
-        }
-    }
     public function layout($params): void
     {
         header('Content-type: text/html; charset=utf-8');
@@ -57,5 +44,18 @@ class View
     public function registration(): void
     {
         $this->renderHTML('registration', 'page/');
+    }
+    private function renderHTML(string $name, string $path = '', $params = null): void
+    {
+        $path = DIR_TEMPLATE . $path . $name . '.php';
+        try {
+            if (is_file($path)) {
+                require $path;
+            } else {
+                throw new IdeaException('Błąd otwarcia szablonu' . $name . ' in: ' . $path);
+            }
+        } catch (Exception) {
+            throw new IdeaException('Błąd Renderowania Strony');
+        }
     }
 }

@@ -2,7 +2,14 @@
 export default class SmoothTop {
     #targetPosition = 0;
     #duration = 750;
-    init() {
+    /**
+     *  Klasa odpowiedzialna za płynne przewijanie strony.
+     */
+    constructor() {}
+    /**
+     * Metoda inicjująca animacje przewijania.
+     */
+    animation() {
         this.startPosition = window.pageYOffset;
         this.distance = this.#targetPosition - this.startPosition;
         this.start = null;
