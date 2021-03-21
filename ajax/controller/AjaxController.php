@@ -11,6 +11,7 @@ use Ajax\model\ListIdeaModel;
 use Ajax\model\CreatorSearchModel;
 use Ajax\model\AreaSearchModel;
 use Ajax\model\AccountModel;
+use Ajax\model\IdeaWrite;
 
 class AjaxController
 {
@@ -73,5 +74,10 @@ class AjaxController
     {
         $account = new AccountModel($this->requestParam);
         $this->AjaxView->renderJSON($account->addAccount());
+    }
+    private function ideaWriteAjax()
+    {
+        $idea = new IdeaWrite($this->requestParam);
+        $this->AjaxView->renderJSON($idea->add());
     }
 }

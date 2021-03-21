@@ -38,7 +38,7 @@ export default class ChosenOnes {
     }
     #noRepeating = (id) => (this.#id.includes(id) ? false : true);
     /**
-     * @returns Sprawdź czy lista jest uzupełniona.
+     * @returns Sprawdź czy lista jest uzupełniona zwraca bool.
      */
     whetherListCompleted = () => (this.#id.length ? true : false);
 }

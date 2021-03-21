@@ -40,7 +40,7 @@ export default class LiveSearch {
      */
     closeList() {
         this.ulList.classList.remove('on');
-        [...this.ulList.children].forEach((li) => li.remove());
+        this.#removeLI();
     }
     #validation = ({ target }) => {
         this.#validationSign(target.value) ? this.#badSign(1) : this.#searchInit(target);
@@ -73,10 +73,10 @@ export default class LiveSearch {
         document.body.style.cursor = 'progress';
         this.ajax
             .getJson(this.#request)
-            .then((data) => this.#createLi(data))
+            .then((data) => this.#renderLI(data))
             .finally((document.body.style.cursor = 'default'));
     }
-    #createLi(data) {
+    #renderLI(data) {
         for (let key in data) {
             const li = document.createElement('li');
             li.setAttribute('class', `${data[key].row ? 'view_li' : 'view_li creator_li'}`);
@@ -87,9 +87,12 @@ export default class LiveSearch {
         this.#addListPage();
     }
     #addListPage() {
-        this.ulList.innerText = '';
-        this.ulList.classList.add('on');
+        this.#removeLI();
         this.ulList.appendChild(this.#listUser);
+        this.ulList.classList.add('on');
+    }
+    #removeLI() {
+        [...this.ulList.children].forEach((li) => li.remove());
     }
     #validationSign = (char) => new RegExp(/[^A-Z-ŚŁŻŹĆa-z-ęóąśłżźćń\s0-9]/gi).test(char);
     #debounced(f, t) {

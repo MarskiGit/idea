@@ -6,6 +6,9 @@ import LiveSearch from './write/LiveSearch.esm.js';
 import NumberCharacters from './write/NumberCharacters.esm.js';
 
 class Write extends AbstractForm {
+    #params = {
+        action: 'ideaWrite',
+    };
     constructor(formObjects, userSearch, areaSearch) {
         super(formObjects);
         this.UserSearch = new LiveSearch(userSearch.ulList, userSearch.inputSearch, userSearch.request);
