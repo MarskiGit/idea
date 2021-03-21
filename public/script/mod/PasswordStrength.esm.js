@@ -76,7 +76,7 @@ export default class PasswordStrength {
                 break;
         }
     }
-    #strongRegex = (t) => new RegExp('^(?=.{14,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$', 'g').test(t);
-    #mediumRegex = (t) => new RegExp('^(?=.{10,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$', 'g').test(t);
-    #enoughRegex = (t) => new RegExp('(?=.{8,}).*', 'g').test(t);
+    #strongRegex = (char) => new RegExp('^(?=.{14,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$', 'g').test(char);
+    #mediumRegex = (char) => new RegExp('^(?=.{10,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$', 'g').test(char);
+    #enoughRegex = (char) => new RegExp('(?=.{8,}).*', 'g').test(char);
 }

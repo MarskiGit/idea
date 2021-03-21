@@ -74,6 +74,7 @@
             </div>
             <span class="sign_number"></span>
         </fieldset>
+        <span data-write="form_error"></span>
         <button class="add_idea" data-write="add">Wyślij</button>
     </form>
 
