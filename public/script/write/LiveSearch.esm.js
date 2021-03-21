@@ -20,21 +20,27 @@ export default class LiveSearch {
     #request = {};
     /**
      * Klasa odpowiedzialna za wyszukiwanie na żywo.
-     * @param {!object} view Obiekt DOM w którym wyświetlane są wyniki szukania.
+     * @param {!object} ulList Obiekt DOM w którym wyświetlane są wyniki szukania.
      * @param {!object} inputSearch Obiekt DOM input.
      * @param {!object} request Obiekt z typem żądania.
      */
-    constructor(view, inputSearch, request) {
-        this.view = view;
+    constructor(ulList, inputSearch, request) {
+        this.ulList = ulList;
         this.inputSearch = inputSearch;
         this.#request = {
             action: request,
         };
-
         this.ajax = new Request(this.#setingRequest);
     }
     init() {
         this.inputSearch.addEventListener('input', this.#debounced(this.#validation, 500));
+    }
+    /**
+     * Czyści i zamyka listę wyszukanych elementów.
+     */
+    closeList() {
+        this.ulList.classList.remove('on');
+        [...this.ulList.children].forEach((li) => li.remove());
     }
     #validation = ({ target }) => {
         this.#validationSign(target.value) ? this.#badSign(1) : this.#searchInit(target);
@@ -52,7 +58,7 @@ export default class LiveSearch {
     }
     #searchInit(target) {
         this.#badSign(0);
-        target.value.length >= 3 ? this.#valueSought(target) : this.view.classList.remove('on');
+        target.value.length >= 3 ? this.#valueSought(target) : this.closeList();
     }
     #valueSought(target) {
         if (target.dataset.write === 'creator_search') {
@@ -67,10 +73,10 @@ export default class LiveSearch {
         document.body.style.cursor = 'progress';
         this.ajax
             .getJson(this.#request)
-            .then((data) => this.createLi(data))
+            .then((data) => this.#createLi(data))
             .finally((document.body.style.cursor = 'default'));
     }
-    createLi(data) {
+    #createLi(data) {
         for (let key in data) {
             const li = document.createElement('li');
             li.setAttribute('class', `${data[key].row ? 'view_li' : 'view_li creator_li'}`);
@@ -81,9 +87,9 @@ export default class LiveSearch {
         this.#addListPage();
     }
     #addListPage() {
-        this.view.innerText = '';
-        this.view.classList.add('on');
-        this.view.appendChild(this.#listUser);
+        this.ulList.innerText = '';
+        this.ulList.classList.add('on');
+        this.ulList.appendChild(this.#listUser);
     }
     #validationSign = (char) => new RegExp(/[^A-Z-ŚŁŻŹĆa-z-ęóąśłżźćń\s0-9]/gi).test(char);
     #debounced(f, t) {

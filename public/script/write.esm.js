@@ -8,10 +8,10 @@ import NumberCharacters from './write/NumberCharacters.esm.js';
 class Write extends AbstractForm {
     constructor(formObjects, userSearch, areaSearch) {
         super(formObjects);
-        this.UserSearch = new LiveSearch(userSearch.view, userSearch.inputSearch, userSearch.request);
-        this.AreaSearch = new LiveSearch(areaSearch.view, areaSearch.inputSearch, areaSearch.request);
-        this.UserOnes = new ChosenOnes(userSearch.view, userSearch.chosenOnes);
-        this.AreaOnes = new ChosenOnes(areaSearch.view, areaSearch.chosenOnes);
+        this.UserSearch = new LiveSearch(userSearch.ulList, userSearch.inputSearch, userSearch.request);
+        this.AreaSearch = new LiveSearch(areaSearch.ulList, areaSearch.inputSearch, areaSearch.request);
+        this.UserOnes = new ChosenOnes(userSearch.ulList, userSearch.chosenOnes);
+        this.AreaOnes = new ChosenOnes(areaSearch.ulList, areaSearch.chosenOnes);
         this.NumberLenght = new NumberCharacters(formObjects.textAreas);
         this.Calculatepoints = new CalculatePoints(formObjects.form, formObjects.viewPoints);
     }
@@ -25,18 +25,29 @@ class Write extends AbstractForm {
         this.Calculatepoints.init();
         this.#eventListeners();
     }
-    #eventListeners() {}
     formValidation = (event) => {
         event.preventDefault();
-        if (this.Filed.emptyFields()) {
+
+        if (this.#emptyForm()) {
             this.formError(false);
-            this.formParams = this.Filed.getValue();
-            this.clearField();
-            console.log(this.formParams);
+            this.#getParamsForm();
+            this.#clearForm();
         } else {
             this.formError(true);
         }
     };
+    #eventListeners() {}
+    #clearForm() {
+        this.clearField();
+        this.UserSearch.closeList();
+        this.AreaSearch.closeList();
+        this.UserOnes.closeSelectedList();
+        this.AreaOnes.closeSelectedList();
+    }
+    #getParamsForm() {
+        this.formParams = this.Filed.getValue();
+    }
+    #emptyForm = () => (this.Filed.emptyFields() && this.UserOnes.whetherListCompleted() && this.AreaOnes.whetherListCompleted() ? true : false);
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -48,13 +59,13 @@ document.addEventListener('DOMContentLoaded', function () {
         viewPoints: document.querySelector('[data-write="view_points"]'),
     };
     const userSearch = {
-        view: document.querySelector('[data-write="view_creator"]'),
+        ulList: document.querySelector('[data-write="ul_creator"]'),
         chosenOnes: document.querySelector('[data-write="chosen_ones"]'),
         inputSearch: document.querySelector('[data-write="creator_search"]'),
         request: 'creatorSearch',
     };
     const areaSearch = {
-        view: document.querySelector('[data-write="view_area"]'),
+        ulList: document.querySelector('[data-write="ul_area"]'),
         chosenOnes: document.querySelector('[data-write="chosen_ones_area"]'),
         inputSearch: document.querySelector('[data-write="area_search"]'),
         request: 'areaSearch',

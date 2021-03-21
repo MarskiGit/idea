@@ -47,12 +47,12 @@
                 <div class="container_search">
                     <label for="creator_search" class="list_label">Wyszukaj i kliknij:</label>
                     <input id="creator_search" class="input_search" data-write="creator_search" type="search" autocomplete="off" placeholder="Nazwisko">
-                    <ol class="view_ol" data-write="view_creator"></ol>
+                    <ul class="view_ul" data-write="ul_creator"></ul>
                     <span>Ten pomysłodawca jest na liście:</span>
                 </div>
                 <div class="chosen_ones">
                     <label for="select_name" class="list_label">Lista pomysłodawców:</label>
-                    <ol class="ones_creator" data-write="chosen_ones"></ol>
+                    <ul class="chosen_list" data-write="chosen_ones"></ul>
                 </div>
             </div>
             <span class="sign_number"></span>
@@ -64,12 +64,12 @@
                 <div class="container_search">
                     <label for="area_search" class="list_label">Wyszukaj i kliknij:</label>
                     <input id="area_search" class="input_search" data-write="area_search" type="search" autocomplete="off" placeholder="Obszar">
-                    <ol class="view_ol" data-write="view_area"></ol>
+                    <ul class="view_ul" data-write="ul_area"></ul>
                     <span>Ten obszar jest na liście:</span>
                 </div>
                 <div class="chosen_ones">
                     <label for="select_name" class="list_label">Wybrany Obszar:</label>
-                    <ol class="ones_creator" data-write="chosen_ones_area"></ol>
+                    <ul class="chosen_list" data-write="chosen_ones_area"></ul>
                 </div>
             </div>
             <span class="sign_number"></span>

@@ -1,32 +1,44 @@
 'use strict';
 export default class ChosenOnes {
+    #id = [];
     /**
      * Klasa odpowiedzialna za selekcjonowanie odnalezionych elementów.
-     * @param {!object} view Obiekt DOM w którym wyświetlane są wyniki szukania.
+     * @param {!object} ulList Obiekt DOM w którym wyświetlane są wyniki szukania.
      * @param {!object} chosenOnes Obiekt DOM w którym wyświetlane są wybrane elementy.
      */
-    constructor(view, chosenOnes) {
+    constructor(ulList, chosenOnes) {
         this.chosenOnes = chosenOnes;
-        this.view = view;
-        this.id = [];
+        this.ulList = ulList;
     }
     init() {
-        this.view.addEventListener('click', (event) => this.select(event));
+        this.ulList.addEventListener('click', (event) => this.#select(event));
     }
-    select(event) {
+    /**
+     * Czyści i zamyka listę wybranych elementów.
+     */
+    closeSelectedList() {
+        this.chosenOnes.classList.remove('on');
+        [...this.chosenOnes.children].forEach((li) => li.remove());
+        this.#id.length = 0;
+    }
+    #select(event) {
         const id = event.target.getAttributeNode('data-id');
-        if (event.target.tagName === 'LI' && this.noRepeating(id)) {
-            this.id.push(id);
+        if (event.target.tagName === 'LI' && this.#noRepeating(id)) {
+            this.#id.push(id);
             const cloneLi = event.target.cloneNode(true);
-            this.transfer(cloneLi);
+            this.#transfer(cloneLi);
         } else {
-            this.view.nextElementSibling.classList.add('span_error');
-            setTimeout(() => this.view.nextElementSibling.classList.remove('span_error'), 2000);
+            this.ulList.nextElementSibling.classList.add('span_error');
+            setTimeout(() => this.ulList.nextElementSibling.classList.remove('span_error'), 2000);
         }
     }
-    transfer(cloneLi) {
+    #transfer(cloneLi) {
         this.chosenOnes.appendChild(cloneLi);
         this.chosenOnes.classList.add('on');
     }
-    noRepeating = (id) => (this.id.includes(id) ? false : true);
+    #noRepeating = (id) => (this.#id.includes(id) ? false : true);
+    /**
+     * @returns Sprawdź czy lista jest uzupełniona.
+     */
+    whetherListCompleted = () => (this.#id.length ? true : false);
 }

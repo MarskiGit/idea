@@ -1,6 +1,6 @@
+<!-- <?php dump($_SESSION); ?> -->
 <!DOCTYPE html>
 <html lang="pl">
-<!-- <?php dump($_SESSION); ?> -->
 
 <head>
     <meta charset="utf-8">
