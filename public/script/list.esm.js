@@ -52,13 +52,13 @@ class List {
         }
     };
     #check(data) {
-        const check = data[0];
-        if (check.ok) {
+        const status = data[0];
+        if (status.ok) {
             data.shift();
             data.length ? this.#renderList(data) : this.#emptyList();
         } else {
             this.#domObjects.listContainer.classList.remove('idea_container');
-            this.exception.view(check);
+            this.exception.view(status);
         }
     }
     #renderList(data) {

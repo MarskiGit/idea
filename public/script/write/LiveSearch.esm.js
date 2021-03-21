@@ -77,11 +77,20 @@ export default class LiveSearch {
             .finally((document.body.style.cursor = 'default'));
     }
     #renderLI(data) {
-        for (let key in data) {
+        const status = data[0];
+        if (status.ok) {
+            data.shift();
+            for (let key in data) {
+                const li = document.createElement('li');
+                li.setAttribute('class', 'view_li creator_li');
+                li.setAttribute('data-id', `${data[key].id_user ? data[key].id_user : data[key].id_area}`);
+                li.innerText = `${data[key].user_name ? data[key].user_name : data[key].area_name}`;
+                this.#listUser.appendChild(li);
+            }
+        } else {
             const li = document.createElement('li');
-            li.setAttribute('class', `${data[key].row ? 'view_li' : 'view_li creator_li'}`);
-            li.setAttribute('data-id', `${data[key].id_user ? data[key].id_user : data[key].id_area}`);
-            li.innerText = `${data[key].user_name ? data[key].user_name : data[key].area_name}`;
+            li.setAttribute('class', 'view_li');
+            li.innerText = `${data[0].user_name ? data[0].user_name : data[0].area_name}`;
             this.#listUser.appendChild(li);
         }
         this.#addListPage();

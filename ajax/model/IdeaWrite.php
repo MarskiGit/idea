@@ -27,6 +27,6 @@ class IdeaWrite extends AjaxAbstractModel
         } catch (PDOException) {
             throw new AjaxException('Error: Dodawanie pomysłu');
         }
-        return $this->notification(['writeIdea' => '1']);
+        return $this->notification(['ok' => true]);
     }
 }

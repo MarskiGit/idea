@@ -26,9 +26,11 @@ class CreatorSearchModel extends AjaxAbstractModel
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $result[] = $row;
             }
+            $ok['ok'] = true;
+            array_unshift($result, $ok);
             return $result;
         } else {
-            $result[] = ['user_name' => 'Nie odnaleziono', 'row' => 'empty'];
+            $result[] = ['user_name' => 'Nie odnaleziono', 'ok' => false];
             return $this->notification($result);
         }
     }

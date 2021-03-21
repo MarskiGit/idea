@@ -31,7 +31,9 @@ class ListIdeaModel extends AjaxAbstractModel
             array_unshift($result, $ok);
             return $result;
         } else {
-            return [];
+            $ok['ok'] = false;
+            $result[] = $ok;
+            return $result;
         }
     }
     private function getListNames($id_users): array

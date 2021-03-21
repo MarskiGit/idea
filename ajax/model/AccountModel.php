@@ -15,6 +15,7 @@ class AccountModel extends AjaxAbstractModel
     {
         if (!$this->isNameValid()) {
             return $this->notification([
+                'ok' => false,
                 'account' => 'Minimum 3 znaki',
                 'valid' => 'name'
             ]);
@@ -22,6 +23,7 @@ class AccountModel extends AjaxAbstractModel
 
         if (!$this->isPasswdValid()) {
             return $this->notification([
+                'ok' => false,
                 'account' => 'Minimum 8 znaków',
                 'valid' => 'passwd'
             ]);
@@ -29,6 +31,7 @@ class AccountModel extends AjaxAbstractModel
 
         if ($this->checkUser('user_name', $this->requestParam['user_name'])) {
             return $this->notification([
+                'ok' => false,
                 'account' => 'Użytkownik istnieje',
                 'valid' => 'idName'
             ]);
@@ -36,6 +39,7 @@ class AccountModel extends AjaxAbstractModel
 
         if ($this->checkUser('user_number', $this->requestParam['user_number'])) {
             return $this->notification([
+                'ok' => false,
                 'account' => 'Numer Identyfikacyjny istnieje',
                 'valid' => 'idCard'
             ]);
@@ -57,8 +61,8 @@ class AccountModel extends AjaxAbstractModel
 
         $id = intval($this->DB->lastInsertId());
         return $this->notification([
+            'ok' => true,
             'account' => $id,
-            'valid' => 'ok'
         ]);
     }
     public function login(): array
@@ -82,7 +86,7 @@ class AccountModel extends AjaxAbstractModel
                 ];
                 $_SESSION['account'] = $user;
 
-                return $this->notification(['account' => '1']);
+                return $this->notification(['ok' => true]);
             }
         }
         return $this->notification(['account' => '0']);
@@ -91,7 +95,7 @@ class AccountModel extends AjaxAbstractModel
     {
         if (session_status() == PHP_SESSION_ACTIVE) {
             unset($_SESSION['account']);
-            return $this->notification(['account' => '1']);
+            return $this->notification(['ok' => true]);
         }
     }
     private function isNameValid(): bool
