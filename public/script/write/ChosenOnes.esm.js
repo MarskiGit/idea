@@ -21,8 +21,16 @@ export default class ChosenOnes {
         [...this.chosenOnes.children].forEach((li) => li.remove());
         this.#id.length = 0;
     }
+    /**
+     * @returns Sprawdź czy lista jest uzupełniona, zwraca bool.
+     */
+    whetherListCompleted = () => (this.#id.length ? true : false);
+    /**
+     * @returns Zwraca tablicę z wartościami id z listy.
+     */
+    takeChosenOnes = () => this.#id;
     #select(event) {
-        const id = event.target.getAttributeNode('data-id');
+        const id = event.target.getAttributeNode('data-id').value;
         if (event.target.tagName === 'LI' && this.#noRepeating(id)) {
             this.#id.push(id);
             const cloneLi = event.target.cloneNode(true);
@@ -37,8 +45,4 @@ export default class ChosenOnes {
         this.chosenOnes.classList.add('on');
     }
     #noRepeating = (id) => (this.#id.includes(id) ? false : true);
-    /**
-     * @returns Sprawdź czy lista jest uzupełniona zwraca bool.
-     */
-    whetherListCompleted = () => (this.#id.length ? true : false);
 }

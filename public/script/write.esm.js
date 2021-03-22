@@ -1,6 +1,6 @@
 'use strict';
 import AbstractForm from './abstract/AbstractForm.esm.js';
-import CalculatePoints from './write/CalculatePoints.esm.js';
+import Rating from './write/Rating.esm.js';
 import ChosenOnes from './write/ChosenOnes.esm.js';
 import LiveSearch from './write/LiveSearch.esm.js';
 import NumberCharacters from './write/NumberCharacters.esm.js';
@@ -16,7 +16,7 @@ class Write extends AbstractForm {
         this.UserOnes = new ChosenOnes(userSearch.ulList, userSearch.chosenOnes);
         this.AreaOnes = new ChosenOnes(areaSearch.ulList, areaSearch.chosenOnes);
         this.NumberLenght = new NumberCharacters(formObjects.textAreas);
-        this.Calculatepoints = new CalculatePoints(formObjects.form, formObjects.viewPoints);
+        this.Rating = new Rating(formObjects.form, formObjects.viewPoints);
     }
     init() {
         super.init();
@@ -25,7 +25,7 @@ class Write extends AbstractForm {
         this.UserOnes.init();
         this.AreaOnes.init();
         this.NumberLenght.init();
-        this.Calculatepoints.init();
+        this.Rating.init();
         this.#eventListeners();
     }
     formValidation = (event) => {
@@ -48,7 +48,15 @@ class Write extends AbstractForm {
         this.AreaOnes.closeSelectedList();
     }
     #getParamsForm() {
-        this.formParams = this.Filed.getValue();
+        const { before, after } = this.Filed.getValue();
+        this.#params.before = before;
+        this.#params.after = after;
+        this.#params.area = this.AreaOnes.takeChosenOnes();
+        this.#params.user = this.UserOnes.takeChosenOnes();
+        this.#params.pint = this.Rating.getPoints();
+        this.#params.saving = this.Rating.getValueString();
+
+        console.log(this.#params, this.AreaOnes.takeChosenOnes());
     }
     #emptyForm = () => (this.Filed.emptyFields() && this.UserOnes.whetherListCompleted() && this.AreaOnes.whetherListCompleted() ? true : false);
 }
