@@ -51,9 +51,9 @@ export default class Idea {
                 </ol>
             </div>
             <div class="td idea_value">
-                <span class="th"> Opis stanu obecnego </span>
+                <span class="th"><em>Opis stanu obecnego</em></span>
                 <p class="td"> ${this.before_value} </p>
-                <span class="th"> Propozycja usprawnienia </span>
+                <span class="th"><em>Propozycja usprawnienia</em></span>
                 <p class="td"> ${this.after_value} </p>
             </div>
         </div>

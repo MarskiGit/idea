@@ -28,6 +28,5 @@ document.addEventListener('DOMContentLoaded', function () {
         errorMessage: document.querySelector('[data-signin="form_error"]'),
     };
 
-    const SIGN_IN = new SignIn(formObjects);
-    SIGN_IN.init();
+    new SignIn(formObjects).init();
 });

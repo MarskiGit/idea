@@ -91,6 +91,5 @@ class List {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    const LIST = new List();
-    LIST.init();
+    new List().init();
 });

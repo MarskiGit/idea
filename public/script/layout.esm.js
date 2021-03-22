@@ -26,6 +26,5 @@ class Layout {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    const MAIN_PAGE = new Layout();
-    MAIN_PAGE.init();
+    new Layout().init();
 });

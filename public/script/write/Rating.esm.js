@@ -30,9 +30,7 @@ export default class Rating {
      */
     getValueString = () => this.#allOptions.filter(this.#filterString);
     #filterString = (value) => {
-        if (value.toLowerCase() === 'tak' || value.toLowerCase() === 'nie') {
-            return value;
-        }
+        if (value.toLowerCase() === 'tak' || value.toLowerCase() === 'nie') return value;
     };
     #getAllSelectedOptions() {
         this.#allOptions = this.formSelect.map((select) => select.value);

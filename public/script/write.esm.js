@@ -63,7 +63,7 @@ class Write extends AbstractForm {
 
         console.log(this.#params);
     }
-    #emptyForm = () => (this.Filed.emptyFields() && this.UserOnes.whetherListCompleted() && this.AreaOnes.whetherListCompleted() ? true : false);
+    #emptyForm = () => !!(this.Filed.emptyFields() && this.UserOnes.whetherListCompleted() && this.AreaOnes.whetherListCompleted());
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -86,6 +86,6 @@ document.addEventListener('DOMContentLoaded', function () {
         inputSearch: document.querySelector('[data-write="area_search"]'),
         request: 'areaSearch',
     };
-    const WRITE = new Write(formObjects, userSearch, areaSearch);
-    WRITE.init();
+
+    new Write(formObjects, userSearch, areaSearch).init();
 });

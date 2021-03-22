@@ -24,7 +24,7 @@ export default class ChosenOnes {
     /**
      * @returns Sprawdź czy lista jest uzupełniona, Zwraca wartość bool.
      */
-    whetherListCompleted = () => (this.#id.length ? true : false);
+    whetherListCompleted = () => !!this.#id.length;
     /**
      * @returns Zwraca tablicę z wartościami id z listy.
      */
@@ -44,5 +44,5 @@ export default class ChosenOnes {
         this.chosenOnes.appendChild(cloneLi);
         this.chosenOnes.classList.add('on');
     }
-    #noRepeating = (id) => (this.#id.includes(id) ? false : true);
+    #noRepeating = (id) => !this.#id.includes(id);
 }

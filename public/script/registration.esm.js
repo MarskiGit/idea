@@ -37,6 +37,5 @@ document.addEventListener('DOMContentLoaded', function () {
         passInput: document.querySelector('[data-registration="password"]'),
     };
 
-    const REG = new Registration(formObjects);
-    REG.init();
+    new Registration(formObjects).init();
 });
