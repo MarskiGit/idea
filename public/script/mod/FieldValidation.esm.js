@@ -20,7 +20,7 @@ export default class FieldValidation {
         }
     }
     /**
-     * @returns Pobierz dane wpisane w formularzu.
+     * @returns Zwraca dane wpisane w formularzu.
      */
     getValue() {
         for (const pair of this.#data.entries()) {
@@ -29,7 +29,7 @@ export default class FieldValidation {
         return this.#params;
     }
     /**
-     * @returns Pobierz aktualną siłę hasła.
+     * @returns Zwraca aktualną siłę hasła.
      */
     getStrenght() {
         return this.Pass.strengthPass;

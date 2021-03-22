@@ -12,12 +12,11 @@ class SignIn extends AbstractForm {
     formValidation = (event) => {
         event.preventDefault();
         if (this.Filed.emptyFields()) {
-            this.formError(false);
             this.formParams = this.Filed.getValue();
             this.clearField();
             console.log(this.formParams);
         } else {
-            this.formError(true);
+            this.formError();
         }
     };
 }

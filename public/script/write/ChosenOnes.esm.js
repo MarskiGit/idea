@@ -22,7 +22,7 @@ export default class ChosenOnes {
         this.#id.length = 0;
     }
     /**
-     * @returns Sprawdź czy lista jest uzupełniona, zwraca bool.
+     * @returns Sprawdź czy lista jest uzupełniona, Zwraca wartość bool.
      */
     whetherListCompleted = () => (this.#id.length ? true : false);
     /**

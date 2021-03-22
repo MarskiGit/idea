@@ -12,16 +12,17 @@ class Registration extends AbstractForm {
     formValidation = (event) => {
         event.preventDefault();
         if (this.Filed.emptyFields()) {
-            this.formError(false);
             if (this.Filed.getStrenght() !== 3) {
-                this.formObjects.errorMessage.textContent = `Zastosuj silne hasło`;
+                this.formError();
+                this.formObjects.errorMessage.textContent = 'Zastosuj silne hasło.';
             } else {
                 this.formParams = this.Filed.getValue();
                 this.clearField();
                 console.log(this.formParams);
             }
         } else {
-            this.formError(true);
+            this.formObjects.errorMessage.textContent = 'Uzupełnij wszystkie pola.';
+            this.formError();
         }
     };
 }

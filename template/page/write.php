@@ -74,7 +74,7 @@
             </div>
             <span class="sign_number"></span>
         </fieldset>
-        <span data-write="form_error"></span>
+        <span class="write_error massage_error" data-write="form_error">Uzupełnij wszystkie pola.</span>
         <button class="add_idea" data-write="add">Wyślij</button>
     </form>
 

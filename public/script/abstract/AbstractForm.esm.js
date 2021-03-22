@@ -31,8 +31,9 @@ export default class AbstractForm {
         this.Filed.init();
         this.eventListeners();
     }
-    formError(flag) {
-        this.formObjects.errorMessage.textContent = flag ? 'Uzupełnij wszystie pola' : '';
+    formError() {
+        this.formObjects.errorMessage.classList.add('span_error');
+        setTimeout(() => this.formObjects.errorMessage.classList.remove('span_error'), 2000);
     }
     eventListeners() {
         this.formObjects.form.addEventListener('submit', this.formValidation);

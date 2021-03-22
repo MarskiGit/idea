@@ -1,7 +1,7 @@
 <main data-page="main">
     <form data-registration="form" class="align_center" novalidate>
         <h1>Rejestracja</h1>
-        <span data-registration="form_error"></span>
+        <span class="massage_error" data-registration="form_error">Uzupełnij wszystkie pola.</span>
         <fieldset>
             <div class="label"><img src="public/img/login_arrow.svg" alt="Login Arrow"></div>
             <input type="text" name="user_name" placeholder="Nazwa użytkownika">

@@ -9,6 +9,12 @@ class Write extends AbstractForm {
     #params = {
         action: 'ideaWrite',
     };
+    /**
+     * Fabryka odpowiedzialna za formularz IDEA.
+     * @param {!object} formObjects Obiekt z elementami formularza.
+     * @param {!object} userSearch Obiekt z elementami DOM wyszukiwania Live użytkowników.
+     * @param {!object} areaSearch Obiekt z elementami DOM wyszukiwania Live obszarów.
+     */
     constructor(formObjects, userSearch, areaSearch) {
         super(formObjects);
         this.UserSearch = new LiveSearch(userSearch.ulList, userSearch.inputSearch, userSearch.request);
@@ -32,11 +38,10 @@ class Write extends AbstractForm {
         event.preventDefault();
 
         if (this.#emptyForm()) {
-            this.formError(false);
             this.#getParamsForm();
             this.#clearForm();
         } else {
-            this.formError(true);
+            this.formError();
         }
     };
     #eventListeners() {}
@@ -56,7 +61,7 @@ class Write extends AbstractForm {
         this.#params.pint = this.Rating.getPoints();
         this.#params.saving = this.Rating.getValueString();
 
-        console.log(this.#params, this.AreaOnes.takeChosenOnes());
+        console.log(this.#params);
     }
     #emptyForm = () => (this.Filed.emptyFields() && this.UserOnes.whetherListCompleted() && this.AreaOnes.whetherListCompleted() ? true : false);
 }

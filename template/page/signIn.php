@@ -1,7 +1,7 @@
 <main data-page="main">
     <form data-signin="form" class="align_center" novalidate>
         <h1>Witam</h1>
-        <span data-signin="form_error"></span>
+        <span class="massage_error" data-signin="form_error">Uzupełnij wszystkie pola.</span>
         <fieldset>
             <div class="label"><img src="public/img/login_arrow.svg" alt="Login Arrow"></div>
             <input type="text" name="user_name" placeholder="Login">
