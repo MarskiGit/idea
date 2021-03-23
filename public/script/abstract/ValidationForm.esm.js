@@ -8,7 +8,7 @@ export default class ValidationForm {
     #params = {};
     /**
      * Klasa abstrakcyjna do obsługi formularzy.
-     * Instancjie FieldValidation i Request.
+     * Instancjie Request.
      * @param {!object} formObjects
      */
     constructor(formObjects) {
@@ -30,17 +30,13 @@ export default class ValidationForm {
         this.form = formObjects.form;
         this.registration = formObjects.registration;
         this.formParams = {};
-        this.Request = new Request(this.setingRequest);
     }
     /**
      * Metoda inicjująca.
      */
     init() {
+        this.#factory();
         this.eventListeners();
-        if (this.registration) {
-            this.Pass = new PasswordStrength(this.formObjects.passInput, this.formObjects.strengthMessage, this.formObjects.strengthMeter);
-            this.Pass.init();
-        }
     }
     eventListeners() {
         this.formObjects.form.addEventListener('submit', this.formValidation);
@@ -69,22 +65,33 @@ export default class ValidationForm {
         return this.#params;
     }
     /**
-     * @returns Zwraca aktualną siłę hasła.
+     * @returns Zwraca siłę hasła | Number.
      */
-    getStrenght() {
-        return this.Pass.strengthPass;
+    getStrenghtPass() {
+        return this.Pass.getStrength();
     }
     /**
-     * @returns Sprawdź, czy pola są puste. Zwraca wartość bool.
+     * @returns Sprawdź, czy pola są puste | Boolean.
      */
     emptyFields = () => (this.#formData() === this.#fieldsValue.filter((e) => e !== '').length ? true : false);
-    #emailChar = (t) =>
-        new RegExp(
-            /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        ).test(String(t).toLowerCase());
+    /**
+     * Fabryka obiektów.
+     */
+    #factory() {
+        this.Request = new Request(this.setingRequest);
+        if (this.registration) {
+            this.Pass = new PasswordStrength(this.formObjects.passInput, this.formObjects.strengthMessage, this.formObjects.strengthMeter);
+            this.Pass.init();
+        }
+    }
     #formData() {
         this.#data = new FormData(this.form);
         this.#fieldsValue = [...this.#data.values()];
         return this.#fieldsValue.length;
     }
 }
+
+// #emailChar = (t) =>
+// new RegExp(
+//     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+// ).test(String(t).toLowerCase());

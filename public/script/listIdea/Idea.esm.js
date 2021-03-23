@@ -22,7 +22,7 @@ export default class Idea {
         this.#init();
     }
     /**
-     * @returns Zwraca wy renderowany obiekt DOM z informacjami idea.
+     * @returns Zwraca wy renderowany obiekt DOM z informacjami idea | Obiekt DOM.
      */
     getIdea() {
         return this.#div;

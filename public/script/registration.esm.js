@@ -2,6 +2,9 @@
 import ValidationForm from './abstract/ValidationForm.esm.js';
 
 class Registration extends ValidationForm {
+    #request = {
+        action: 'registration',
+    };
     /**
      * Obsługa formularza rejestracji.
      * Dziedziczy z ValidationForm.
@@ -17,7 +20,7 @@ class Registration extends ValidationForm {
     formValidation = (event) => {
         event.preventDefault();
         if (this.emptyFields()) {
-            if (this.getStrenght() !== 3) {
+            if (this.getStrenghtPass() !== 3) {
                 this.formError();
                 this.formObjects.errorMessage.textContent = 'Zastosuj silne hasło.';
             } else {

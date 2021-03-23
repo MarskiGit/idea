@@ -10,7 +10,7 @@ export default class Request {
     }
     /**
      * @param {!object} request Parametry żądania dla serwera.
-     * @returns Wyślij żądanie do serwera i zwróć wynik JSON.
+     * @returns Zwraca odpowiedź z serwera | JSON.
      */
     async getJson(request) {
         this.seting.body = JSON.stringify(request);

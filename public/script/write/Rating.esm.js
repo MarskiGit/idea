@@ -26,7 +26,7 @@ export default class Rating {
      */
     getPoints = () => parseInt(this.viewPoints.textContent);
     /**
-     * @returns Zwraca tablicę z zanaczonym wyborem string.
+     * @returns Zwraca tablicę z zanaczonym wyborem string | Array.
      */
     getValueString = () => this.#allOptions.filter(this.#filterString);
     #filterString = (value) => {

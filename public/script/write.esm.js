@@ -6,7 +6,7 @@ import LiveSearch from './write/LiveSearch.esm.js';
 import NumberCharacters from './write/NumberCharacters.esm.js';
 
 class Write extends ValidationForm {
-    #params = {
+    #request = {
         action: 'ideaWrite',
     };
     /**
@@ -46,7 +46,7 @@ class Write extends ValidationForm {
         event.preventDefault();
 
         if (this.#emptyForm()) {
-            this.#getParamsForm();
+            this.#getrequestForm();
             this.#clearForm();
         } else {
             this.formError();
@@ -66,16 +66,16 @@ class Write extends ValidationForm {
     /**
      * Pobiera dane z formularza.
      */
-    #getParamsForm() {
+    #getrequestForm() {
         const { before, after } = this.getValue();
-        this.#params.before = before;
-        this.#params.after = after;
-        this.#params.area = this.AreaOnes.takeChosenOnes();
-        this.#params.user = this.UserOnes.takeChosenOnes();
-        this.#params.pint = this.Rating.getPoints();
-        this.#params.saving = this.Rating.getValueString();
+        this.#request.before = before;
+        this.#request.after = after;
+        this.#request.area = this.AreaOnes.takeChosenOnes();
+        this.#request.user = this.UserOnes.takeChosenOnes();
+        this.#request.pint = this.Rating.getPoints();
+        this.#request.saving = this.Rating.getValueString();
 
-        console.log(this.#params);
+        console.log(this.#request);
     }
     /**
      *

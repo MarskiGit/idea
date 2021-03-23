@@ -22,11 +22,11 @@ export default class ChosenOnes {
         this.#id.length = 0;
     }
     /**
-     * @returns Sprawdź czy lista jest uzupełniona, Zwraca wartość bool.
+     * @returns Sprawdź czy lista jest uzupełniona | Boolean.
      */
     whetherListCompleted = () => !!this.#id.length;
     /**
-     * @returns Zwraca tablicę z wartościami id z listy.
+     * @returns Zwraca tablicę z wartościami id z listy | Array.
      */
     takeChosenOnes = () => this.#id;
     #select(event) {

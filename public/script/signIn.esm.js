@@ -2,6 +2,9 @@
 import ValidationForm from './abstract/ValidationForm.esm.js';
 
 class SignIn extends ValidationForm {
+    #request = {
+        action: 'signIn',
+    };
     /**
      * Obsługa formularza logowania.
      * Dziedziczy z ValidationForm.

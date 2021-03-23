@@ -8,6 +8,10 @@ export default class PasswordStrength {
         strong: 'Silne &#128512;',
     };
     /**
+     * Siła hasła.
+     */
+    #strengthPass = 0;
+    /**
      * Klasa sprawdzająca siłę hasła.
      * @param {!object} passInpute Obiekt DOM input hasła.
      * @param {!object} strengthMessage Obiekt DOM span komunikatu tekstowego.
@@ -15,7 +19,6 @@ export default class PasswordStrength {
      */
     constructor(passInpute, strengthMessage, strengthMeter) {
         this.passInpute = passInpute;
-        this.strengthPass = 0;
         this.strengthMessage = strengthMessage;
         this.strengthMeter = strengthMeter;
     }
@@ -25,6 +28,11 @@ export default class PasswordStrength {
     init() {
         this.#eventListeners();
     }
+    /**
+     *
+     * @returns Zwraca siłę hasła | Number.
+     */
+    getStrength = () => this.#strengthPass;
     #eventListeners() {
         if (this.strengthMeter) {
             this.passInpute.addEventListener('input', this.#checkPasswordStrength);
@@ -35,23 +43,23 @@ export default class PasswordStrength {
 
         if (pwd.length == 0) {
             this.#passwordStatus(0);
-            this.strengthPass = 0;
+            this.#strengthPass = 0;
             this.strengthMessage.innerHTML = this.#strength.empty;
         } else if (false === this.#enoughRegex(pwd)) {
             this.#passwordStatus(25);
-            this.strengthPass = 0;
+            this.#strengthPass = 0;
             this.strengthMessage.innerHTML = this.#strength.worst;
         } else if (this.#strongRegex(pwd)) {
             this.#passwordStatus(100);
-            this.strengthPass = 3;
+            this.#strengthPass = 3;
             this.strengthMessage.innerHTML = this.#strength.strong;
         } else if (this.#mediumRegex(pwd)) {
             this.#passwordStatus(75);
-            this.strengthPass = 2;
+            this.#strengthPass = 2;
             this.strengthMessage.innerHTML = this.#strength.medium;
         } else {
             this.#passwordStatus(50);
-            this.strengthPass = 1;
+            this.#strengthPass = 1;
             this.strengthMessage.innerHTML = this.#strength.weak;
         }
     };
