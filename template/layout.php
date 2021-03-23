@@ -60,11 +60,11 @@
 
 <body>
     <nav class="menu" data-page="nav">
-        <a href="http://h.localhost/01_MOJE/01_GIT/idea/" class="home_nav hover_img" data-page="home_nav"><img src="public/img/home_icon.svg"><img src="public/img/border_icon.svg" class="load" data-page="status_indicator"></a>
-        <a href="?action=list" class="a_btn">Lista pomysłów</a>
-        <a href="?action=write" class="a_btn">Napisz pomysł</a>
-        <a href="#" class="page_up hover_img" data-page="page_up"><img src="public/img/page_up.svg"></a>
-        <a href="?action=signin" class="logo_idea"><img src="public/img/idea.png" alt="Idea"></a>
-        <?php if (intval($params['account']['rang'] ?? 0) === 2) : ?> <a href="?action=admin" class="a_btn">Admin</a> <?php endif; ?>
-        <?php if (intval($params['account']['rang'] ?? 0) === 1) : ?> <a href="?action=admin" class="a_btn">Mod</a> <?php endif; ?>
+        <a rel="home start" href="http://h.localhost/01_MOJE/01_GIT/idea/" class="home_nav hover_img" data-page="home_nav"><img src="public/img/home_icon.svg" alt="Strona główna"><img src="public/img/border_icon.svg" class="load" data-page="status_indicator" alt=""></a>
+        <a rel="list section" href="?action=list" class="a_btn">Lista pomysłów</a>
+        <a rel="write section" href="?action=write" class="a_btn">Napisz pomysł</a>
+        <div class="page_up hover_img" data-page="page_up"><img src="public/img/page_up.svg" alt="góra strony"></div>
+        <a rel="signin appendix" href="?action=signin" class="logo_idea"><img src="public/img/idea.png" alt="Idea"></a>
+        <?php if (intval($params['account']['rang'] ?? 0) === 2) : ?> <a rel="admin subsection" href="?action=admin" class="a_btn">Admin</a> <?php endif; ?>
+        <?php if (intval($params['account']['rang'] ?? 0) === 1) : ?> <a rel="admin subsection" href="?action=mod" class="a_btn">Mod</a> <?php endif; ?>
     </nav>

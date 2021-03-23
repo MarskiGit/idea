@@ -19,6 +19,9 @@ export default class PasswordStrength {
         this.strengthMessage = strengthMessage;
         this.strengthMeter = strengthMeter;
     }
+    /**
+     * Metoda inicjująca.
+     */
     init() {
         this.#eventListeners();
     }

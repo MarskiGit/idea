@@ -1,18 +1,23 @@
 'use strict';
-import AbstractForm from './abstract/AbstractForm.esm.js';
+import ValidationForm from './abstract/ValidationForm.esm.js';
 
-class SignIn extends AbstractForm {
+class SignIn extends ValidationForm {
     /**
      * Obsługa formularza logowania.
+     * Dziedziczy z ValidationForm.
      * @param {!object} formObjects Obiekt z elementami DOM formularza.
      */
     constructor(formObjects) {
         super(formObjects);
     }
+    /**
+     * Walidacja formularza.
+     * @param {!object} event Obiekt zdarzenia submit.
+     */
     formValidation = (event) => {
         event.preventDefault();
-        if (this.Filed.emptyFields()) {
-            this.formParams = this.Filed.getValue();
+        if (this.emptyFields()) {
+            this.formParams = this.getValue();
             this.clearField();
             console.log(this.formParams);
         } else {

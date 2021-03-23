@@ -35,6 +35,9 @@ class List {
         this.exception = new Exception();
         this.ajax = new Request(this.#setingRequest);
     }
+    /**
+     * Metoda inicjująca.
+     */
     init() {
         this.#sendRequest();
         this.#eventListeners();

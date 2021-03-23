@@ -1,22 +1,27 @@
 'use strict';
-import AbstractForm from './abstract/AbstractForm.esm.js';
+import ValidationForm from './abstract/ValidationForm.esm.js';
 
-class Registration extends AbstractForm {
+class Registration extends ValidationForm {
     /**
      * Obsługa formularza rejestracji.
+     * Dziedziczy z ValidationForm.
      * @param {!object} formObjects Obiekt z elementami DOM formularza.
      */
     constructor(formObjects) {
         super(formObjects);
     }
+    /**
+     * Walidacja formularza.
+     * @param {!object} event Obiekt zdarzenia submit.
+     */
     formValidation = (event) => {
         event.preventDefault();
-        if (this.Filed.emptyFields()) {
-            if (this.Filed.getStrenght() !== 3) {
+        if (this.emptyFields()) {
+            if (this.getStrenght() !== 3) {
                 this.formError();
                 this.formObjects.errorMessage.textContent = 'Zastosuj silne hasło.';
             } else {
-                this.formParams = this.Filed.getValue();
+                this.formParams = this.getValue();
                 this.clearField();
                 console.log(this.formParams);
             }

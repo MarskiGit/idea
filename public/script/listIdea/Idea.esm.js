@@ -22,11 +22,14 @@ export default class Idea {
         this.#init();
     }
     /**
-     * @returns Pobierz wy renderowany obiekt DOM.
+     * @returns Zwraca wy renderowany obiekt DOM z informacjami idea.
      */
     getIdea() {
         return this.#div;
     }
+    /**
+     * Metoda inicjująca.
+     */
     #init() {
         this.#status = this.#statusInformation(parseInt(this.status, 10));
         this.#createElement();

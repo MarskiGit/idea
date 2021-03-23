@@ -16,6 +16,9 @@ class Layout {
         this.NavSticky = new NavSticky(this.#domObjects);
         this.Smooth = new SmoothTop();
     }
+    /**
+     * Metoda inicjująca.
+     */
     init() {
         this.NavSticky.init();
         this.#eventListeners();

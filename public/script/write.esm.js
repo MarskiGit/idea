@@ -1,16 +1,17 @@
 'use strict';
-import AbstractForm from './abstract/AbstractForm.esm.js';
+import ValidationForm from './abstract/ValidationForm.esm.js';
 import Rating from './write/Rating.esm.js';
 import ChosenOnes from './write/ChosenOnes.esm.js';
 import LiveSearch from './write/LiveSearch.esm.js';
 import NumberCharacters from './write/NumberCharacters.esm.js';
 
-class Write extends AbstractForm {
+class Write extends ValidationForm {
     #params = {
         action: 'ideaWrite',
     };
     /**
      * Fabryka odpowiedzialna za formularz IDEA.
+     * Dziedziczy z ValidationForm.
      * @param {!object} formObjects Obiekt z elementami formularza.
      * @param {!object} userSearch Obiekt z elementami DOM wyszukiwania Live użytkowników.
      * @param {!object} areaSearch Obiekt z elementami DOM wyszukiwania Live obszarów.
@@ -24,6 +25,9 @@ class Write extends AbstractForm {
         this.NumberLenght = new NumberCharacters(formObjects.textAreas);
         this.Rating = new Rating(formObjects.form, formObjects.viewPoints);
     }
+    /**
+     * Metoda inicjująca.
+     */
     init() {
         super.init();
         this.UserSearch.init();
@@ -34,6 +38,10 @@ class Write extends AbstractForm {
         this.Rating.init();
         this.#eventListeners();
     }
+    /**
+     * Walidacja formularza.
+     * @param {!object} event Obiekt zdarzenia submit.
+     */
     formValidation = (event) => {
         event.preventDefault();
 
@@ -45,6 +53,9 @@ class Write extends AbstractForm {
         }
     };
     #eventListeners() {}
+    /**
+     * Czyści wejścia w formularzu.
+     */
     #clearForm() {
         this.clearField();
         this.UserSearch.closeList();
@@ -52,8 +63,11 @@ class Write extends AbstractForm {
         this.UserOnes.closeSelectedList();
         this.AreaOnes.closeSelectedList();
     }
+    /**
+     * Pobiera dane z formularza.
+     */
     #getParamsForm() {
-        const { before, after } = this.Filed.getValue();
+        const { before, after } = this.getValue();
         this.#params.before = before;
         this.#params.after = after;
         this.#params.area = this.AreaOnes.takeChosenOnes();
@@ -63,7 +77,11 @@ class Write extends AbstractForm {
 
         console.log(this.#params);
     }
-    #emptyForm = () => !!(this.Filed.emptyFields() && this.UserOnes.whetherListCompleted() && this.AreaOnes.whetherListCompleted());
+    /**
+     *
+     * @returns Zwraca informację czy pola formularza są wypełnione.
+     */
+    #emptyForm = () => !!(this.emptyFields() && this.UserOnes.whetherListCompleted() && this.AreaOnes.whetherListCompleted());
 }
 
 document.addEventListener('DOMContentLoaded', function () {
