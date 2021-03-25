@@ -2,31 +2,39 @@
     <form data-registration="form" class="align_center" novalidate>
         <h1>Rejestracja</h1>
         <span class="massage_error" data-registration="form_error">Uzupełnij wszystkie pola.</span>
-        <fieldset>
-            <div class="label"><img src="public/img/login_arrow.svg" alt="Login Arrow"></div>
-            <input type="text" name="user_name" placeholder="Nazwa użytkownika">
+        <fieldset class="wrap-input_my">
+            <input class="input_my" type="text" name="user_name">
+            <span class="focus-input_my"></span>
+            <span class="label-input_my">Login</span>
         </fieldset>
-        <fieldset>
-            <div class="label"><img src="public/img/key.svg" alt="Key"></div>
-            <input type="password" name="password" placeholder="Hasło" data-registration="password">
-        </fieldset>
+        <p class="strength_message" data-registration="strength_message"></p>
         <div class="meter">
-            <span class="strength" data-registration="strength-meter"></span>
+            <span class="strength" data-registration="strength_meter"></span>
         </div>
-        <p class="strength-message" data-registration="strength-message"></p>
-        <fieldset>
-            <div class="label"><img src="public/img/id_card.svg" alt="Id Card"></div>
-            <input type="number" name="user_identifier" placeholder="Identyfikator" min="0" step="1" maxlength="4">
+        <fieldset class="wrap-input_my">
+            <input class="input_my" type="password" name="password" data-registration="password">
+            <span class="focus-input_my"></span>
+            <span class="label-input_my">Hasło</span>
         </fieldset>
-        <fieldset>
-            <div class="label"><img src="public/img/user.svg" alt="User"></div>
-            <div class="option">
+        <fieldset class="wrap-input_my">
+            <input class="input_my" type="password" name="repeat_password" data-registration="repeat_password">
+            <span class="focus-input_my"></span>
+            <span class="label-input_my">Powtórz hasło</span>
+        </fieldset>
+        <fieldset class="wrap-input_my">
+            <input class="input_my" type="number" name="user_identifier" min="0" step="1" maxlength="4">
+            <span class="focus-input_my"></span>
+            <span class="label-input_my">Identyfikator</span>
+        </fieldset>
+        <fieldset class="wrap-input_my">
+            <div class=" option">
                 <select name="rang" data-select="number">
                     <option value="0">Użytkownik</option>
                     <option value="1">Moderator</option>
                     <option value="2">Administrator</option>
                 </select>
             </div>
+
         </fieldset>
         <button type="submit" class="btn_add">Dodaj</button>
     </form>

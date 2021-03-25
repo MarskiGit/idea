@@ -12,6 +12,7 @@ class SignIn extends ValidationForm {
      */
     constructor(formObjects) {
         super(formObjects);
+        this.onBlur();
     }
     /**
      * Walidacja formularza.
@@ -27,6 +28,12 @@ class SignIn extends ValidationForm {
             this.formError();
         }
     };
+    onBlur() {
+        this.getInputCollection().forEach((i) => i.addEventListener('blur', this.#inputOnBlur));
+    }
+    #inputOnBlur(event) {
+        event.target.value ? this.classList.add('has-val') : this.classList.remove('has-val');
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function () {

@@ -2,16 +2,18 @@
     <form data-signin="form" class="align_center" novalidate>
         <h1>Witam</h1>
         <span class="massage_error" data-signin="form_error">Uzupełnij wszystkie pola.</span>
-        <fieldset>
-            <div class="label"><img src="public/img/login_arrow.svg" alt="Login Arrow"></div>
-            <input type="text" name="user_name" placeholder="Login">
+        <fieldset class="wrap-input_my">
+            <input class="input_my" type="text" name="user_name">
+            <span class="focus-input_my"></span>
+            <span class="label-input_my">Login</span>
         </fieldset>
-        <fieldset>
-            <div class="label"><img src="public/img/key.svg" alt="Key"></div>
-            <input type="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" placeholder="Hasło">
+        <fieldset class="wrap-input_my">
+            <input class="input_my" type="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
+            <span class="focus-input_my"></span>
+            <span class="label-input_my">Hasło</span>
         </fieldset>
 
-        <button type="submit" class="login_btn">Zaloguj się</button>
+        <button type="submit" class="btn_login">Zaloguj się</button>
     </form>
     <a href="?action=registration" class="r_btn">Rejestracja</a>
 </main>

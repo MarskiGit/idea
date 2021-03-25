@@ -3,6 +3,7 @@ import PasswordStrength from '../mod/PasswordStrength.esm.js';
 import Request from '../mod/Request.esm.js';
 
 export default class ValidationForm {
+    #inputCollection;
     #fieldsValue;
     #data;
     #params = {};
@@ -74,6 +75,15 @@ export default class ValidationForm {
      * @returns Sprawdź, czy pola są puste | Boolean.
      */
     emptyFields = () => (this.#formData() === this.#fieldsValue.filter((e) => e !== '').length ? true : false);
+    /**
+     * Dodaje efekt Css inputów formularza
+     */
+    getInputCollection() {
+        this.#inputCollection = [...this.formObjects.form].filter((e) => {
+            if ('INPUT' === e.nodeName) return e;
+        });
+        return this.#inputCollection;
+    }
     /**
      * Fabryka obiektów.
      */

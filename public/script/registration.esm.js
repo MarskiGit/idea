@@ -12,6 +12,7 @@ class Registration extends ValidationForm {
      */
     constructor(formObjects) {
         super(formObjects);
+        this.onBlur();
     }
     /**
      * Walidacja formularza.
@@ -33,6 +34,12 @@ class Registration extends ValidationForm {
             this.formError();
         }
     };
+    onBlur() {
+        this.getInputCollection().forEach((i) => i.addEventListener('blur', this.#inputOnBlur));
+    }
+    #inputOnBlur(event) {
+        event.target.value ? this.classList.add('has-val') : this.classList.remove('has-val');
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -40,8 +47,8 @@ document.addEventListener('DOMContentLoaded', function () {
         registration: true,
         form: document.querySelector('[data-registration="form"]'),
         errorMessage: document.querySelector('[data-registration="form_error"]'),
-        strengthMeter: document.querySelector('[data-registration="strength-meter"]'),
-        strengthMessage: document.querySelector('[data-registration="strength-message"]'),
+        strengthMeter: document.querySelector('[data-registration="strength_meter"]'),
+        strengthMessage: document.querySelector('[data-registration="strength_message"]'),
         passInput: document.querySelector('[data-registration="password"]'),
     };
 
