@@ -5,7 +5,7 @@ export default class Idea {
         back: 'waiting_back',
         status: 'Oczekuje',
     };
-    #div = document.createElement('div');
+    #div = document.createElement('article');
     /**
      *  Klasa renderująca pomysł w HTML.
      * @param {!object} param0 Obiekt zawierający zestaw informacji potrzebny do wy renderowania pomysłu w HTML - destukturyzacja.

@@ -25,12 +25,12 @@ export default class NavSticky {
         window.pageYOffset > this.navPosition.top.toFixed() ? this.#on() : this.#off();
     }
     #on() {
-        this.nav.classList.add('sticky');
+        this.nav.classList.add('nav_sticky');
         this.homeImg.forEach((img) => img.classList.add('filter'));
         this.pageUp.style.display = 'block';
     }
     #off() {
-        this.nav.classList.remove('sticky');
+        this.nav.classList.remove('nav_sticky');
         this.homeImg.forEach((img) => img.classList.remove('filter'));
         this.pageUp.style.display = 'none';
     }

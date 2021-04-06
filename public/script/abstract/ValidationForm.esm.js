@@ -8,7 +8,7 @@ export default class ValidationForm {
     #data;
     #params = {};
     /**
-     * Klasa abstrakcyjna do obsługi formularzy.
+     * Klasa abstrakcyjna do obsługi formularzy. 
      * Instancjie Request.
      * @param {!object} formObjects
      */
@@ -30,7 +30,6 @@ export default class ValidationForm {
         this.formObjects = formObjects;
         this.form = formObjects.form;
         this.registration = formObjects.registration;
-        this.formParams = {};
     }
     /**
      * Metoda inicjująca.

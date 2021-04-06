@@ -9,13 +9,14 @@ use Exception;
 
 class View
 {
+    public array $globalParams;
     public function __construct()
     {
     }
-    public function layout($params): void
+    public function layout(): void
     {
         header('Content-type: text/html; charset=utf-8');
-        $this->renderHTML('layout', '', $params);
+        $this->renderHTML('layout', '');
     }
     public function home(): void
     {
@@ -25,9 +26,9 @@ class View
     {
         $this->renderHTML('footer', 'page/');
     }
-    public function create($params): void
+    public function create($pageParams): void
     {
-        $this->renderHTML('write', 'page/', $params);
+        $this->renderHTML('write', 'page/', $pageParams);
     }
     public function list(): void
     {
@@ -45,11 +46,12 @@ class View
     {
         $this->renderHTML('registration', 'page/');
     }
-    private function renderHTML(string $name, string $path = '', $params = null): void
+    private function renderHTML(string $name, string $path = '', $pageParams = null): void
     {
         $path = DIR_TEMPLATE . $path . $name . '.php';
         try {
             if (is_file($path)) {
+                $globalParams = $this->globalParams;
                 require $path;
             } else {
                 throw new IdeaException('Błąd otwarcia szablonu' . $name . ' in: ' . $path);

@@ -39,7 +39,8 @@ abstract class AbstractController
                 $action = self::DEFAULT_ACTION_HTML . 'Idea';
             }
         }
-        $this->View->layout($this->params());
+        $this->View->globalParams = $this->params();
+        $this->View->layout();
 
         $this->$action();
 

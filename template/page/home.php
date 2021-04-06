@@ -1,3 +1,8 @@
 <main data-page="main">
-    <h1>Home</h1>
+
+    <section class="section_container">
+        <h1>Home</h1>
+
+
+    </section>
 </main>
