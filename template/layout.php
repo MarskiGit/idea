@@ -60,7 +60,7 @@
 
 <body>
     <nav class="menu" data-page="nav">
-        <a rel="home start" href="http://h.localhost/01_MOJE/01_GIT/idea/" class="link_home hover_img" data-page="home_nav"><img src="public/img/home_icon.svg" alt="Strona główna"><img src="public/img/border_icon.svg" class="load" data-page="status_indicator" alt=""></a>
+        <a rel="home start" href="<?php echo HTTP_SERVER ?>" class="link_home hover_img" data-page="home_nav"><img src="public/img/home_icon.svg" alt="Strona główna"><img src="public/img/border_icon.svg" class="load" data-page="status_indicator" alt=""></a>
         <a rel="list section" href="?action=list" class="link_button">Lista pomysłów</a>
         <a rel="write section" href="?action=write" class="link_button">Napisz pomysł</a>
         <div class="page_up hover_img" data-page="page_up"><img src="public/img/page_up.svg" alt="góra strony"></div>
