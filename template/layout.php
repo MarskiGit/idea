@@ -11,7 +11,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="description" content="Pracowniczy prgoram pomysłów">
-    <meta name="author" content="Mariusz Kępski">
+    <meta name="author" content="marski.pl | Mariusz Kępski">
     <meta name="copyright" content="Copyright owner">
     <meta name="robots" content="noindex, nofollow">
     <link rel="shortcut icon" href="public/img/idea.png" type="image/x-icon" sizes="16x16">

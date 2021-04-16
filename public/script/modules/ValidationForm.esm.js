@@ -1,6 +1,6 @@
 'use strict';
-import PasswordStrength from '../mod/PasswordStrength.esm.js';
-import Request from '../mod/Request.esm.js';
+import PasswordStrength from './PasswordStrength.esm.js';
+import Request from './Request.esm.js';
 
 export default class ValidationForm {
     #inputCollection;
@@ -8,7 +8,7 @@ export default class ValidationForm {
     #data;
     #params = {};
     /**
-     * Klasa abstrakcyjna do obsługi formularzy. 
+     * Klasa abstrakcyjna do obsługi formularzy.
      * Instancjie Request.
      * @param {!object} formObjects
      */

@@ -1,5 +1,5 @@
 'use strict';
-import ValidationForm from './abstract/ValidationForm.esm.js';
+import ValidationForm from './modules/ValidationForm.esm.js';
 
 class SignIn extends ValidationForm {
     #request = {

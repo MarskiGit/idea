@@ -1,7 +1,7 @@
 'use strict';
-import Idea from './listIdea/Idea.esm.js';
-import Exception from './mod/Exception.esm.js';
-import Request from './mod/Request.esm.js';
+import Idea from './modules/listIdea/Idea.esm.js';
+import Exception from './modules//Exception.esm.js';
+import Request from './modules//Request.esm.js';
 
 class List {
     #setingRequest = {
@@ -32,8 +32,8 @@ class List {
      *  Klasa renderująca i obsługująca listę pomysłów w HTML.
      */
     constructor() {
-        this.exception = new Exception();
-        this.ajax = new Request(this.#setingRequest);
+        this.Exception = new Exception();
+        this.Ajax = new Request(this.#setingRequest);
     }
     /**
      * Metoda inicjująca.
@@ -48,8 +48,7 @@ class List {
     #sendRequest = () => {
         if (!this.#endTuples) {
             document.body.style.cursor = 'progress';
-            this.ajax
-                .getJson(this.#request)
+            this.Ajax.getJson(this.#request)
                 .then((data) => this.#check(data))
                 .finally((document.body.style.cursor = 'default'));
         }
@@ -61,19 +60,19 @@ class List {
             data.length ? this.#renderList(data) : this.#emptyList();
         } else {
             this.#domObjects.listContainer.classList.remove('idea_container');
-            this.exception.view(status);
+            this.Exception.view(status);
         }
     }
     #renderList(data) {
         for (const idea of data) {
             this.#fragmentList.appendChild(new Idea(idea).getIdea());
-            this.#tupleNumbers.push(idea.id_idea);
+            this.#tupleNumbers.push(parseInt(idea.id_idea, 10));
         }
-        this.#lastTuple();
+        this.#findLastTuple();
         this.#addListPage();
     }
-    #lastTuple() {
-        if (this.#tupleNumbers.find((number) => parseInt(number, 10) === 1)) this.#endTuples = true;
+    #findLastTuple() {
+        if (this.#tupleNumbers.find((number) => number === 1)) this.#endTuples = true;
         this.#request.last_tuple = Math.min(...this.#tupleNumbers);
     }
     #addListPage() {

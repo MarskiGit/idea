@@ -1,5 +1,5 @@
 'use strict';
-import Request from '../mod/Request.esm.js';
+import Request from '../Request.esm.js';
 
 export default class LiveSearch {
     #setingRequest = {

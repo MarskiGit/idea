@@ -1,9 +1,9 @@
 'use strict';
-import ValidationForm from './abstract/ValidationForm.esm.js';
-import Rating from './write/Rating.esm.js';
-import ChosenOnes from './write/ChosenOnes.esm.js';
-import LiveSearch from './write/LiveSearch.esm.js';
-import NumberCharacters from './write/NumberCharacters.esm.js';
+import ValidationForm from './modules/ValidationForm.esm.js';
+import Rating from './modules/write/Rating.esm.js';
+import ChosenOnes from './modules/write/ChosenOnes.esm.js';
+import LiveSearch from './modules/write/LiveSearch.esm.js';
+import NumberCharacters from './modules/write/NumberCharacters.esm.js';
 
 class Write extends ValidationForm {
     #request = {

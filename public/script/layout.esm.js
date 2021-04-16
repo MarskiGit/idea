@@ -1,6 +1,6 @@
 'use strict';
-import NavSticky from './layout/NavSticky.esm.js';
-import SmoothTop from './layout/SmoothTop.esm.js';
+import NavSticky from './modules/layout/NavSticky.esm.js';
+import SmoothTop from './modules/layout/SmoothTop.esm.js';
 
 class Layout {
     #domObjects = {
