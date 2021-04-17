@@ -1,9 +1,9 @@
 'use strict';
 export default class CountCharacters {
-    #viewCount = null;
-    #maxCharacters = null;
-    #numberSign = null;
-    #textLenght = null;
+    #viewCount;
+    #maxCharacters;
+    #numberSign;
+    #textLenght;
     #textAreas;
     #signNumber;
     /**

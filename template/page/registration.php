@@ -39,7 +39,7 @@
                 </div>
 
             </fieldset>
-            <button type="submit" class="btn_add">Dodaj</button>
+            <button type="submit" class="button_subbmit">Dodaj</button>
         </form>
     </section>
 </main>

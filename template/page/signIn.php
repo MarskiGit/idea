@@ -16,7 +16,7 @@
                 <span class="label-input_my">Hasło</span>
             </fieldset>
 
-            <button type="submit" class="btn_login">Zaloguj się</button>
+            <button type="submit" class="button_subbmit">Zaloguj się</button>
         </form>
 
     </section>

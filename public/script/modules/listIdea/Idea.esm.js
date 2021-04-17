@@ -6,32 +6,38 @@ export default class Idea {
         status: 'Oczekuje',
     };
     #div = document.createElement('article');
+    #id;
+    #creators;
+    #pkt_mod;
+    #date_added;
+    #before_value;
+    #after_value;
+    #date_implementation;
+
     /**
      *  Klasa renderująca pomysł w HTML.
      * @param {!object} param0 Obiekt zawierający zestaw informacji potrzebny do wy renderowania pomysłu w HTML - destukturyzacja.
      */
     constructor({ status, id_idea, creators, pkt_mod, date_added, before_value, after_value, date_implementation }) {
-        this.status = status;
-        this.id = id_idea;
-        this.creators = creators;
-        this.pkt_mod = pkt_mod;
-        this.date_added = date_added.slice(0, 10);
-        this.before_value = before_value;
-        this.after_value = after_value;
-        this.date_implementation = date_implementation;
+        this.#status = status;
+        this.#id = id_idea;
+        this.#creators = creators;
+        this.#pkt_mod = pkt_mod;
+        this.#date_added = date_added.slice(0, 10);
+        this.#before_value = before_value;
+        this.#after_value = after_value;
+        this.#date_implementation = date_implementation;
         this.#init();
     }
     /**
      * @returns Zwraca wy renderowany obiekt DOM z informacjami idea | Obiekt DOM.
      */
-    getIdea() {
-        return this.#div;
-    }
+    getIdea = () => this.#div;
     /**
      * Metoda inicjująca.
      */
     #init() {
-        this.#status = this.#statusInformation(parseInt(this.status, 10));
+        this.#status = this.#statusInformation(parseInt(this.#status, 10));
         this.#createElement();
     }
     #createElement() {
@@ -42,27 +48,27 @@ export default class Idea {
     #renderHTML() {
         return `
         <div class="tr ${this.#status.back}">
-            <span class="th">${this.creators.length > 1 ? 'Pomysłodawcy' : 'Pomysłodawca'}</span>
+            <span class="th">${this.#creators.length > 1 ? 'Pomysłodawcy' : 'Pomysłodawca'}</span>
             <span class="th">Status: ${this.#status.status}</span>
-            <span class="th">Przyznane punkty: ${this.pkt_mod ? this.pkt_mod : 0}</span>
-            <span class="th">Data dodania: ${this.date_added}</span>
+            <span class="th">Przyznane punkty: ${this.pkt_mod ? this.#pkt_mod : 0}</span>
+            <span class="th">Data dodania: ${this.#date_added}</span>
         </div>
         <div class="tr">
             <div class="td idea_authors">
                 <ol>
-                    ${this.creators.map((name) => `<li>${name}</li>`).join('')}
+                    ${this.#creators.map((name) => `<li>${name}</li>`).join('')}
                 </ol>
             </div>
             <div class="td idea_value">
                 <span class="th"><em>Opis stanu obecnego</em></span>
-                <p class="td"> ${this.before_value} </p>
+                <p class="td"> ${this.#before_value} </p>
                 <span class="th"><em>Propozycja usprawnienia</em></span>
-                <p class="td"> ${this.after_value} </p>
+                <p class="td"> ${this.#after_value} </p>
             </div>
         </div>
         <div class="tr">
-            <span class="th">Numer propozycji: ${this.id}</span>
-            ${this.#dataAdded(this.date_implementation)}
+            <span class="th">Numer propozycji: ${this.#id}</span>
+            ${this.#dataAdded(this.#date_implementation)}
         </div>
         `;
     }

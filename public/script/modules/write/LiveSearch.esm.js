@@ -1,9 +1,11 @@
 'use strict';
 import Request from '../Request.esm.js';
 import Choose from './Choose.esm.js';
+import RenderLi from './RenderLi.esm.js';
 
 export default class LiveSearch {
     #Request;
+    #Choose;
     #setingRequest = {
         ajax: {
             method: 'POST',
@@ -18,11 +20,10 @@ export default class LiveSearch {
         },
         url: 'ajax.php',
     };
-    #listUser = document.createDocumentFragment();
     #request = {};
     #inputSearch;
     #listResults;
-    #Choose;
+    #fragmentList = document.createDocumentFragment();
 
     /**
      * Klasa odpowiedzialna za wyszukiwanie na żywo.
@@ -37,16 +38,15 @@ export default class LiveSearch {
             action: searchObjects.request,
         };
         this.#Request = new Request(this.#setingRequest);
-        this.#Choose = new Choose(searchObjects);
+        this.#Choose = new Choose(searchObjects.selectedList);
     }
     init() {
-        this.#Choose.init();
         this.#eventListeners();
     }
     /**
      * @returns Sprawdza, czy lista jest uzupełniona. | Boolean.
      */
-    whetherListCompleted = () => !!this.#Choose.selectedId.length;
+    whetherListCompleted = () => !!this.getSelectedId().length;
     /**
      * @returns Zwraca listę wybranych id. | Array
      */
@@ -64,27 +64,42 @@ export default class LiveSearch {
     clearChosen() {
         this.#Choose.closeSelectedList();
     }
-
     #eventListeners() {
+        this.#listResults.addEventListener('click', this.#selected);
         this.#inputSearch.addEventListener('input', this.#debounced(this.#validation, 500));
     }
+    #selected = (event) => {
+        const id = parseInt(event.target.getAttributeNode('data-id').value, 10);
+        if (id) {
+            const transferred = this.#Choose.selected(id, event);
+            if (transferred) {
+                this.closeList();
+                this.#inputSearch.value = '';
+            } else {
+                this.#listResults.nextElementSibling.classList.add('span_error');
+                setTimeout(() => this.#listResults.nextElementSibling.classList.remove('span_error'), 2000);
+            }
+        }
+    };
     #validation = ({ target }) => {
         this.#validationSign(target.value) ? this.#badSign(1) : this.#searchInit(target);
     };
-    #badSign(bool) {
-        if (bool) {
-            this.#inputSearch.labels[0].style.color = 'red';
-            this.#inputSearch.labels[0].textContent = 'Tylko znaki alfabetu i cyfry';
-            this.#inputSearch.classList.add('errorSearch');
-        } else {
-            this.#inputSearch.labels[0].style.color = '';
-            this.#inputSearch.labels[0].textContent = 'Wyszukaj i kliknij:';
-            this.#inputSearch.classList.remove('errorSearch');
-        }
-    }
     #searchInit(target) {
         this.#badSign(0);
         target.value.length >= 3 ? this.#valueSought(target) : this.closeList();
+    }
+    #badSign(bool) {
+        if (bool) {
+            this.#userMessage('Tylko znaki alfabetu i cyfry', 'red');
+            this.#inputSearch.classList.add('errorSearch');
+        } else {
+            this.#userMessage('Wyszukaj i kliknij:');
+            this.#inputSearch.classList.remove('errorSearch');
+        }
+    }
+    #userMessage(text, color = '') {
+        this.#inputSearch.labels[0].style.color = color;
+        this.#inputSearch.labels[0].textContent = text;
     }
     #valueSought(target) {
         if (target.dataset.write === 'creator_search') {
@@ -99,31 +114,27 @@ export default class LiveSearch {
         document.body.style.cursor = 'progress';
         this.#Request
             .getJson(this.#request)
-            .then((data) => this.#renderLI(data))
+            .then((data) => this.#check(data))
             .finally((document.body.style.cursor = 'default'));
     }
-    #renderLI(data) {
+    #check(data) {
         const status = data[0];
         if (status.ok) {
             data.shift();
-            for (let key in data) {
-                const li = document.createElement('li');
-                li.setAttribute('class', 'view_li creator_li');
-                li.setAttribute('data-id', `${data[key].id_user ? data[key].id_user : data[key].id_area}`);
-                li.innerText = `${data[key].user_name ? data[key].user_name : data[key].area_name}`;
-                this.#listUser.appendChild(li);
-            }
+            this.#renderList(data);
         } else {
-            const li = document.createElement('li');
-            li.setAttribute('class', 'view_li');
-            li.innerText = `${data[0].user_name ? data[0].user_name : data[0].area_name}`;
-            this.#listUser.appendChild(li);
+            this.#renderList(data);
+        }
+    }
+    #renderList(data) {
+        for (const li of data) {
+            this.#fragmentList.appendChild(new RenderLi(li).getLi());
         }
         this.#addListPage();
     }
     #addListPage() {
         this.#removeLI();
-        this.#listResults.appendChild(this.#listUser);
+        this.#listResults.appendChild(this.#fragmentList);
         this.#listResults.classList.add('on');
     }
     #removeLI() {

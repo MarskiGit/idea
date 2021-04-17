@@ -1,20 +1,14 @@
 'use strict';
 export default class Choose {
-    #listResults;
     #selectedList;
-    #selectedId;
+    #selectedId = [];
     /**
      * Klasa odpowiedzialna za selekcjonowanie odnalezionych elementów.
      * @param {!object} listResults Obiekt DOM w którym wyświetlane są wyniki szukania.
      * @param {!object} selectedList  Obiekt DOM w którym wyświetlane są wybrane elementy.
      */
-    constructor({ listResults, selectedList }) {
-        this.#listResults = listResults;
+    constructor(selectedList) {
         this.#selectedList = selectedList;
-        this.#selectedId = [];
-    }
-    init() {
-        this.#listResults.addEventListener('click', (event) => this.#selected(event));
     }
     /**
      * Czyści i zamyka listę wybranych elementów.
@@ -28,22 +22,19 @@ export default class Choose {
      * @returns Zwraca kolekcje numerów ID | Array
      */
     getID = () => this.#selectedId;
-    #selected(event) {
-        const id = event.target.getAttributeNode('data-id').value;
+    selected(id, event) {
         if (event.target.tagName === 'LI' && this.#noRepeating(id)) {
             this.#selectedId.push(id);
             const cloneSelected = event.target.cloneNode(true);
             this.#transfer(cloneSelected);
+            return true;
         } else {
-            this.#listResults.nextElementSibling.classList.add('span_error');
-            setTimeout(() => this.#listResults.nextElementSibling.classList.remove('span_error'), 2000);
+            return false;
         }
     }
     #transfer(cloneSelected) {
         this.#selectedList.appendChild(cloneSelected);
         this.#selectedList.classList.add('on');
-
-        this.#listResults.classList.remove('on');
     }
     #noRepeating = (id) => !this.#selectedId.includes(id);
 }

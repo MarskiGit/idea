@@ -3,7 +3,7 @@ export default class Rating {
     #viewPoints;
     #defaultPoint;
     #selectCollection;
-    #allOptions = null;
+    #allOptions;
     /**
      * Zlicza punkty w formularzu.
      * @param {!object} selectCollection Kolekcja list rozwijanych.
