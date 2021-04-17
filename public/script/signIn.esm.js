@@ -1,35 +1,64 @@
 'use strict';
-import ValidationForm from './modules/ValidationForm.esm.js';
+import FormHandling from './modules/FormHandling.esm.js';
+import Request from './modules/Request.esm.js';
 
-class SignIn extends ValidationForm {
+class SignIn {
+    #Request;
+    #inputList;
     #request = {
         action: 'signIn',
     };
+    #setingRequest = {
+        ajax: {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-store',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+        },
+        url: 'ajax.php',
+    };
     /**
      * Obsługa formularza logowania.
-     * Dziedziczy z ValidationForm.
      * @param {!object} formObjects Obiekt z elementami DOM formularza.
      */
     constructor(formObjects) {
-        super(formObjects);
-        this.onBlur();
+        this.FormHandling = new FormHandling(formObjects);
+
+        this.#Request = new Request(this.#setingRequest);
+        this.#inputList = this.FormHandling.getInputs(['INPUT']);
+    }
+    /**
+     * Metoda inicjująca.
+     */
+    init() {
+        this.FormHandling.init();
+        this.#onBlur();
+        this.#eventListeners();
+    }
+    #eventListeners() {
+        this.FormHandling.form.addEventListener('submit', this.#formValidation);
     }
     /**
      * Walidacja formularza.
      * @param {!object} event Obiekt zdarzenia submit.
      */
-    formValidation = (event) => {
+    #formValidation = (event) => {
         event.preventDefault();
-        if (this.emptyFields()) {
-            this.formParams = this.getValue();
-            this.clearField();
+        if (this.FormHandling.emptyFields()) {
+            this.formParams = this.FormHandling.getValue();
+            this.FormHandling.clearField();
             console.log(this.formParams);
         } else {
-            this.formError();
+            this.FormHandling.formError();
         }
     };
-    onBlur() {
-        this.getInputCollection().forEach((i) => i.addEventListener('blur', this.#inputOnBlur));
+    #onBlur() {
+        this.#inputList.forEach((i) => i.addEventListener('blur', this.#inputOnBlur));
     }
     #inputOnBlur(event) {
         event.target.value ? this.classList.add('has-val') : this.classList.remove('has-val');

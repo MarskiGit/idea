@@ -1,22 +1,25 @@
 'use strict';
 export default class Rating {
+    #viewPoints;
+    #defaultPoint;
+    #selectCollection;
     #allOptions = null;
     /**
      * Zlicza punkty w formularzu.
-     * @param {!object} form Formularz.
+     * @param {!object} selectCollection Kolekcja list rozwijanych.
      * @param {!object} viewPoints Element DOM wyświetlania punktów.
      */
-    constructor(form, viewPoints) {
-        this.form = form;
-        this.viewPoints = viewPoints;
-        this.formSelect = [...this.form.elements].filter((el) => el.type === 'select-one');
+    constructor(selectCollection, viewPoints) {
+        this.#viewPoints = viewPoints;
+        this.#selectCollection = selectCollection;
+        this.#defaultPoint = this.getPoints();
     }
     init() {
-        this.#getAllSelectedOptions();
+        this.#getAllSelectedValue();
 
-        this.formSelect.forEach((se) =>
+        this.#selectCollection.forEach((se) =>
             se.addEventListener('mouseup', () => {
-                this.#getAllSelectedOptions();
+                this.#getAllSelectedValue();
                 this.#displayPoints();
             })
         );
@@ -24,19 +27,23 @@ export default class Rating {
     /**
      * @returns Zwaraca sumę punktów.
      */
-    getPoints = () => parseInt(this.viewPoints.textContent);
+    getPoints = () => parseInt(this.#viewPoints.textContent);
     /**
      * @returns Zwraca tablicę z zanaczonym wyborem string | Array.
      */
     getValueString = () => this.#allOptions.filter(this.#filterString);
+    setDefault() {
+        this.#selectCollection.forEach((op) => (op.selectedIndex = 0));
+        this.#viewPoints.innerText = this.#defaultPoint;
+    }
     #filterString = (value) => {
         if (value.toLowerCase() === 'tak' || value.toLowerCase() === 'nie') return value;
     };
-    #getAllSelectedOptions() {
-        this.#allOptions = this.formSelect.map((select) => select.value);
+    #getAllSelectedValue() {
+        this.#allOptions = this.#selectCollection.map((select) => select.value);
     }
     #displayPoints() {
-        this.viewPoints.innerText = `${this.#sumPoints()}`;
+        this.#viewPoints.innerText = `${this.#sumPoints()}`;
     }
     #sumPoints = () =>
         this.#allOptions

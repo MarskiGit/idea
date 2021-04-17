@@ -8,13 +8,13 @@
             <fieldset>
                 <legend>Opis stanu obecnego</legend>
                 <textarea maxlength="2000" rows="15" placeholder="Proszę wypełnić to pole" name="before" id="before" data-write="before" require></textarea>
-                <span class="sign_number" data-write="sign_before"></span>
+                <span class="sign_number" data-write="sign_number"></span>
             </fieldset>
 
             <fieldset>
                 <legend>Propozycja usprawnienia</legend>
                 <textarea maxlength="2000" rows="15" placeholder="Proszę wypełnić to pole" name="after" id="after" data-write="after" require></textarea>
-                <span class="sign_number" data-write="sign_after"></span>
+                <span class="sign_number" data-write="sign_number"></span>
             </fieldset>
 
             <fieldset>
@@ -49,7 +49,7 @@
                 <div class="creator">
                     <div class="container_search">
                         <label for="creator_search" class="list_label">Wyszukaj i kliknij:</label>
-                        <input id="creator_search" class="input_search" data-write="creator_search" type="search" autocomplete="off" placeholder="Nazwisko">
+                        <input id="creator_search" type="search" class="input_search" data-write="creator_search" type="search" autocomplete="off" placeholder="Nazwisko">
                         <ul class="view_ul" data-write="ul_creator"></ul>
                         <span>Ten pomysłodawca jest na liście:</span>
                     </div>
@@ -66,7 +66,7 @@
                 <div class="creator">
                     <div class="container_search">
                         <label for="area_search" class="list_label">Wyszukaj i kliknij:</label>
-                        <input id="area_search" class="input_search" data-write="area_search" type="search" autocomplete="off" placeholder="Obszar">
+                        <input id="area_search" type="search" class="input_search" data-write="area_search" type="search" autocomplete="off" placeholder="Obszar">
                         <ul class="view_ul" data-write="ul_area"></ul>
                         <span>Ten obszar jest na liście:</span>
                     </div>

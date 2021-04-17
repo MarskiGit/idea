@@ -1,41 +1,72 @@
 'use strict';
-import ValidationForm from './modules/ValidationForm.esm.js';
+import FormHandling from './modules/FormHandling.esm.js';
+import Request from './modules/Request.esm.js';
 
-class Registration extends ValidationForm {
+class Registration {
+    #Request;
+    #inputList;
     #request = {
         action: 'registration',
     };
+    #setingRequest = {
+        ajax: {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-store',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+        },
+        url: 'ajax.php',
+    };
     /**
      * Obsługa formularza rejestracji.
-     * Dziedziczy z ValidationForm.
+     * Dziedziczy z FormHandling.
      * @param {!object} formObjects Obiekt z elementami DOM formularza.
      */
     constructor(formObjects) {
-        super(formObjects);
-        this.onBlur();
+        this.FormHandling = new FormHandling(formObjects);
+        this.errorMessage = formObjects.errorMessage;
+
+        this.#Request = new Request(this.#setingRequest);
+        this.#inputList = this.FormHandling.getInputs(['INPUT']);
+    }
+    /**
+     * Metoda inicjująca.
+     */
+    init() {
+        this.FormHandling.init();
+        this.#onBlur();
+        this.#eventListeners();
+    }
+    #eventListeners() {
+        this.FormHandling.form.addEventListener('submit', this.#formValidation);
     }
     /**
      * Walidacja formularza.
      * @param {!object} event Obiekt zdarzenia submit.
      */
-    formValidation = (event) => {
+    #formValidation = (event) => {
         event.preventDefault();
-        if (this.emptyFields()) {
-            if (this.getStrenghtPass() !== 3) {
-                this.formError();
-                this.formObjects.errorMessage.textContent = 'Zastosuj silne hasło.';
+        if (this.FormHandling.emptyFields()) {
+            if (this.FormHandling.getStrenghtPass() !== 3) {
+                this.errorMessage.textContent = 'Zastosuj silne hasło.';
+                this.FormHandling.formError();
             } else {
-                this.formParams = this.getValue();
-                this.clearField();
+                this.formParams = this.FormHandling.getValue();
+                this.FormHandling.clearField();
                 console.log(this.formParams);
             }
         } else {
-            this.formObjects.errorMessage.textContent = 'Uzupełnij wszystkie pola.';
-            this.formError();
+            this.errorMessage.textContent = 'Uzupełnij wszystkie pola.';
+            this.FormHandling.formError();
         }
     };
-    onBlur() {
-        this.getInputCollection().forEach((i) => i.addEventListener('blur', this.#inputOnBlur));
+    #onBlur() {
+        this.#inputList.forEach((i) => i.addEventListener('blur', this.#inputOnBlur));
     }
     #inputOnBlur(event) {
         event.target.value ? this.classList.add('has-val') : this.classList.remove('has-val');
@@ -49,7 +80,6 @@ document.addEventListener('DOMContentLoaded', function () {
         errorMessage: document.querySelector('[data-registration="form_error"]'),
         strengthMeter: document.querySelector('[data-registration="strength_meter"]'),
         strengthMessage: document.querySelector('[data-registration="strength_message"]'),
-        passInput: document.querySelector('[data-registration="password"]'),
     };
 
     new Registration(formObjects).init();

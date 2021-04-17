@@ -1,7 +1,9 @@
 'use strict';
 import Request from '../Request.esm.js';
+import Choose from './Choose.esm.js';
 
 export default class LiveSearch {
+    #Request;
     #setingRequest = {
         ajax: {
             method: 'POST',
@@ -18,42 +20,66 @@ export default class LiveSearch {
     };
     #listUser = document.createDocumentFragment();
     #request = {};
+    #inputSearch;
+    #listResults;
+    #Choose;
+
     /**
      * Klasa odpowiedzialna za wyszukiwanie na żywo.
-     * @param {!object} ulList Obiekt DOM w którym wyświetlane są wyniki szukania.
+     * @param {!object} listResults Obiekt DOM w którym wyświetlane są wyniki szukania.
      * @param {!object} inputSearch Obiekt DOM input.
      * @param {!object} request Obiekt z typem żądania.
      */
-    constructor(ulList, inputSearch, request) {
-        this.ulList = ulList;
-        this.inputSearch = inputSearch;
+    constructor(inputSearch, searchObjects) {
+        this.#listResults = searchObjects.listResults;
+        this.#inputSearch = inputSearch;
         this.#request = {
-            action: request,
+            action: searchObjects.request,
         };
-        this.ajax = new Request(this.#setingRequest);
+        this.#Request = new Request(this.#setingRequest);
+        this.#Choose = new Choose(searchObjects);
     }
     init() {
-        this.inputSearch.addEventListener('input', this.#debounced(this.#validation, 500));
+        this.#Choose.init();
+        this.#eventListeners();
     }
+    /**
+     * @returns Sprawdza, czy lista jest uzupełniona. | Boolean.
+     */
+    whetherListCompleted = () => !!this.#Choose.selectedId.length;
+    /**
+     * @returns Zwraca listę wybranych id. | Array
+     */
+    getSelectedId = () => this.#Choose.getID();
     /**
      * Czyści i zamyka listę wyszukanych elementów.
      */
     closeList() {
-        this.ulList.classList.remove('on');
+        this.#listResults.classList.remove('on');
         this.#removeLI();
+    }
+    /**
+     * Czyści listę wybranych elementów
+     */
+    clearChosen() {
+        this.#Choose.closeSelectedList();
+    }
+
+    #eventListeners() {
+        this.#inputSearch.addEventListener('input', this.#debounced(this.#validation, 500));
     }
     #validation = ({ target }) => {
         this.#validationSign(target.value) ? this.#badSign(1) : this.#searchInit(target);
     };
     #badSign(bool) {
         if (bool) {
-            this.inputSearch.labels[0].style.color = 'red';
-            this.inputSearch.labels[0].textContent = 'Tylko znaki alfabetu i cyfry';
-            this.inputSearch.classList.add('errorSearch');
+            this.#inputSearch.labels[0].style.color = 'red';
+            this.#inputSearch.labels[0].textContent = 'Tylko znaki alfabetu i cyfry';
+            this.#inputSearch.classList.add('errorSearch');
         } else {
-            this.inputSearch.labels[0].style.color = '';
-            this.inputSearch.labels[0].textContent = 'Wyszukaj i kliknij:';
-            this.inputSearch.classList.remove('errorSearch');
+            this.#inputSearch.labels[0].style.color = '';
+            this.#inputSearch.labels[0].textContent = 'Wyszukaj i kliknij:';
+            this.#inputSearch.classList.remove('errorSearch');
         }
     }
     #searchInit(target) {
@@ -71,7 +97,7 @@ export default class LiveSearch {
     }
     #sendRequest() {
         document.body.style.cursor = 'progress';
-        this.ajax
+        this.#Request
             .getJson(this.#request)
             .then((data) => this.#renderLI(data))
             .finally((document.body.style.cursor = 'default'));
@@ -97,11 +123,11 @@ export default class LiveSearch {
     }
     #addListPage() {
         this.#removeLI();
-        this.ulList.appendChild(this.#listUser);
-        this.ulList.classList.add('on');
+        this.#listResults.appendChild(this.#listUser);
+        this.#listResults.classList.add('on');
     }
     #removeLI() {
-        [...this.ulList.children].forEach((li) => li.remove());
+        [...this.#listResults.children].forEach((li) => li.remove());
     }
     #validationSign = (char) => new RegExp(/[^A-Z-ŚŁŻŹĆa-z-ęóąśłżźćń\s0-9]/gi).test(char);
     #debounced(f, t) {

@@ -1,20 +1,26 @@
 'use strict';
-export default class NumberCharacters {
+export default class CountCharacters {
     #viewCount = null;
     #maxCharacters = null;
     #numberSign = null;
     #textLenght = null;
+    #textAreas;
+    #signNumber;
     /**
      * Klasa, zliczając liczbę wpisanych znaków w obszarze tekstowym.
      * @param {!object} textAreas Tablicą z obiektami DOM typu textarea.
      */
-    constructor(textAreas) {
-        this.textAreas = textAreas;
+    constructor(textAreas, signNumber) {
+        this.#textAreas = textAreas;
+        this.#signNumber = signNumber;
     }
     init() {
-        this.textAreas.forEach((textArea) => textArea.addEventListener('keyup', (event) => this.#calculateNumberCharacters(event)));
+        this.#textAreas.forEach((textArea) => textArea.addEventListener('keyup', (event) => this.#calculaterCharacters(event)));
     }
-    #calculateNumberCharacters(event) {
+    clearLenghtCharacters() {
+        this.#signNumber.forEach((sign) => (sign.innerHTML = ''));
+    }
+    #calculaterCharacters(event) {
         this.#viewCount = event.target.nextElementSibling;
         this.#maxCharacters = event.target.maxLength;
         this.#textLenght = event.target.textLength;
