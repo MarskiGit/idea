@@ -50,9 +50,7 @@ export default class FormHandling {
     /**
      * @returns Zwraca siłę hasła | Number.
      */
-    getStrenghtPass() {
-        return this.Pass.getStrength();
-    }
+    getStrenghtPass = () => this.#PasswordCheck.getStrength();
     /**
      * @returns Sprawdź, czy pola są puste | Boolean.
      */

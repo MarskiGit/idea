@@ -17,13 +17,14 @@ class Write {
             cache: 'no-store',
             credentials: 'same-origin',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json; charset=utf-8',
             },
             redirect: 'follow',
             referrerPolicy: 'no-referrer',
         },
         url: 'ajax.php',
     };
+    #inputSearch;
     /**
      * Fabryka odpowiedzialna za formularz IDEA.
      * @param {!object} formObjects Obiekt z elementami formularza.
@@ -33,8 +34,10 @@ class Write {
     constructor(formObjects, userSearch, areaSearch) {
         this.FormHandling = new FormHandling(formObjects);
 
-        this.UserSearch = new LiveSearch(this.FormHandling.getInputs(['INPUT'], 'search')[0], userSearch);
-        this.AreaSearch = new LiveSearch(this.FormHandling.getInputs(['INPUT'], 'search')[1], areaSearch);
+        this.#inputSearch = this.FormHandling.getInputs(['INPUT'], 'search');
+
+        this.UserSearch = new LiveSearch(this.#inputSearch[0], userSearch);
+        this.AreaSearch = new LiveSearch(this.#inputSearch[1], areaSearch);
 
         this.CountCharacters = new CountCharacters(this.FormHandling.getInputs(['TEXTAREA']), formObjects.signNumber);
         this.Rating = new Rating(this.FormHandling.getInputs(['SELECT']), formObjects.viewPoints);

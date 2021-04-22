@@ -11,7 +11,7 @@ class List {
             cache: 'default',
             credentials: 'same-origin',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json; charset=utf-8',
             },
             redirect: 'follow',
             referrerPolicy: 'no-referrer',
