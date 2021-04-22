@@ -8,7 +8,7 @@ import Request from './modules/Request.esm.js';
 class Write {
     #Request;
     #request = {
-        action: 'ideaWrite',
+        request: 'ideaWrite',
     };
     #setingRequest = {
         ajax: {
@@ -22,7 +22,7 @@ class Write {
             redirect: 'follow',
             referrerPolicy: 'no-referrer',
         },
-        url: 'ajax.php',
+        url: 'index.php',
     };
     #inputSearch;
     /**

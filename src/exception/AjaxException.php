@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ajax\exception;
+namespace Idea\exception;
 
 use Exception;
 

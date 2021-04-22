@@ -18,7 +18,7 @@ export default class LiveSearch {
             redirect: 'follow',
             referrerPolicy: 'no-referrer',
         },
-        url: 'ajax.php',
+        url: 'index.php',
     };
     #request = {};
     #inputSearch;
@@ -35,7 +35,7 @@ export default class LiveSearch {
         this.#listResults = searchObjects.listResults;
         this.#inputSearch = inputSearch;
         this.#request = {
-            action: searchObjects.request,
+            request: searchObjects.request,
         };
         this.#Request = new Request(this.#setingRequest);
         this.#Choose = new Choose(searchObjects.selectedList);

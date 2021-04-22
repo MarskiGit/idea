@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Ajax\model;
+namespace Idea\model;
 
-use Ajax\model\AjaxAbstractModel;
-use Ajax\exception\AjaxException;
+use Idea\model\AbstractModel;
+use Idea\exception\AjaxException;
 use PDO;
 use PDOException;
 
 
-class ListIdeaModel extends AjaxAbstractModel
+class ListIdeaModel extends AbstractModel
 {
     public function get(): array
     {

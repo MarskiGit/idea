@@ -6,7 +6,7 @@ class Registration {
     #Request;
     #inputList;
     #request = {
-        action: 'registration',
+        request: 'registration',
     };
     #setingRequest = {
         ajax: {
@@ -20,7 +20,7 @@ class Registration {
             redirect: 'follow',
             referrerPolicy: 'no-referrer',
         },
-        url: 'ajax.php',
+        url: 'index.php',
     };
     /**
      * Obsługa formularza rejestracji.

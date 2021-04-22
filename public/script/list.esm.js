@@ -16,10 +16,10 @@ class List {
             redirect: 'follow',
             referrerPolicy: 'no-referrer',
         },
-        url: 'ajax.php',
+        url: 'index.php',
     };
     #request = {
-        action: 'listIdea',
+        request: 'listIdea',
         last_tuple: 0,
     };
     #domObjects = {

@@ -6,7 +6,7 @@ class SignIn {
     #Request;
     #inputList;
     #request = {
-        action: 'signIn',
+        request: 'signIn',
     };
     #setingRequest = {
         ajax: {
@@ -20,7 +20,7 @@ class SignIn {
             redirect: 'follow',
             referrerPolicy: 'no-referrer',
         },
-        url: 'ajax.php',
+        url: 'index.php',
     };
     /**
      * Obsługa formularza logowania.

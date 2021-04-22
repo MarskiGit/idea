@@ -46,6 +46,11 @@ class View
     {
         $this->renderHTML('registration', 'page/');
     }
+    public function renderJSON(array $answer): void
+    {
+        echo json_encode($answer);
+        exit;
+    }
     private function renderHTML(string $name, string $path = '', $pageParams = null): void
     {
         $path = DIR_TEMPLATE . $path . $name . '.php';
