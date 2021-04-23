@@ -15,7 +15,6 @@ class View
     }
     public function layout(): void
     {
-        header('Content-type: text/html; charset=utf-8');
         $this->renderHTML('layout', '');
     }
     public function home(): void

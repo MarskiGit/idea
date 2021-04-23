@@ -30,13 +30,13 @@
                 <span class="label-input_my">Identyfikator</span>
             </fieldset>
             <fieldset class="wrap-input_my">
-                <div class=" option">
-                    <select name="rang" data-select="number">
-                        <option value="0">Użytkownik</option>
-                        <option value="1">Moderator</option>
-                        <option value="2">Administrator</option>
-                    </select>
-                </div>
+                <select class="input_my has-val" name="rang" data-select="number">
+                    <option value="0">Użytkownik</option>
+                    <option value="1">Moderator</option>
+                    <option value="2">Administrator</option>
+                </select>
+                <span class="focus-input_my"></span>
+                <span class="label-input_my">Ranga</span>
 
             </fieldset>
             <button type="submit" class="button_subbmit">Dodaj</button>

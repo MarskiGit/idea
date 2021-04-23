@@ -39,6 +39,7 @@ class List {
      * Metoda inicjująca.
      */
     init() {
+        this.LastTuple = this.#findLastTuple();
         this.#sendRequest();
         this.#eventListeners();
     }
@@ -68,12 +69,20 @@ class List {
             this.#fragmentList.appendChild(new Idea(idea).getIdea());
             this.#tupleNumbers.push(parseInt(idea.id_idea, 10));
         }
-        this.#findLastTuple();
+
+        const { end, last } = this.LastTuple();
+        this.#endTuples = end;
+        this.#request.last_tuple = last;
+
         this.#addListPage();
     }
     #findLastTuple() {
-        if (this.#tupleNumbers.find((number) => number === 1)) this.#endTuples = true;
-        this.#request.last_tuple = Math.min(...this.#tupleNumbers);
+        const arrayTupleId = this.#tupleNumbers;
+
+        return () => ({
+            end: arrayTupleId.includes(1),
+            last: Math.min(...arrayTupleId),
+        });
     }
     #addListPage() {
         this.#domObjects.listContainer.appendChild(this.#fragmentList);

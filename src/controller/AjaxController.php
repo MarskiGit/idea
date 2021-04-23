@@ -50,7 +50,6 @@ class AjaxController extends AbstractController
     }
     protected function exitIdea(): void
     {
-
         exit();
     }
 }
