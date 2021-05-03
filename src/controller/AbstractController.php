@@ -34,8 +34,8 @@ abstract class AbstractController
 
         if ($this->is_Get && !$this->is_PHPInput) {
             $this->action_GET = $this->Request->getParam_GET(DEFAULT_GET, self::DEFAULT_ACTION_HTML);
-            dump($this->action_GET);
-            $this->runPage();
+            $this->View->globalParams = $this->globalParams();
+            $this->renderPage();
         }
 
         if ($this->is_PHPInput) {
@@ -44,15 +44,12 @@ abstract class AbstractController
             $this->runAjax();
         }
     }
-    private function runPage(): void
+    private function renderPage(): void
     {
-
         $method = $this->existsMethod($this->action_GET, self::DEFAULT_ACTION_HTML);
-        $this->View->globalParams = $this->globalParams();
+
         $this->View->layout();
-
         $this->$method();
-
         $this->View->footer();
     }
     private function runAjax(): void

@@ -1,4 +1,3 @@
- <!-- <?php dump($globalParams); ?> -->
  <!DOCTYPE html>
  <html lang="pl">
 
@@ -14,10 +13,10 @@
      <meta name="author" content="marski.pl | Mariusz Kępski">
      <meta name="copyright" content="Copyright owner">
      <meta name="robots" content="noindex, nofollow">
-     <link rel="apple-touch-icon" sizes="180x180" href="public/style/img/favicon/apple-touch-icon.png">
-     <link rel="icon" type="image/png" sizes="32x32" href="public/style/img/favicon/favicon-32x32.png">
-     <link rel="icon" type="image/png" sizes="16x16" href="public/style/img/favicon/favicon-16x16.png">
-     <link rel="manifest" href="public/style/img/favicon/site.webmanifest">
+     <link rel="apple-touch-icon" sizes="180x180" href="public/img/favicon/apple-touch-icon.png">
+     <link rel="icon" type="image/png" sizes="32x32" href="public/img/favicon/favicon-32x32.png">
+     <link rel="icon" type="image/png" sizes="16x16" href="public/img/favicon/favicon-16x16.png">
+     <link rel="manifest" href="public/img/favicon/site.webmanifest">
      <meta name="msapplication-TileColor" content="#da532c">
      <meta name="theme-color" content="#ffffff">
 
