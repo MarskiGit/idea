@@ -2,6 +2,14 @@
 import FormHandling from './modules/FormHandling.esm.js';
 import Request from './modules/Request.esm.js';
 
+const formObjects = {
+    registration: true,
+    form: document.querySelector('[data-registration="form"]'),
+    errorMessage: document.querySelector('[data-registration="form_error"]'),
+    strengthMeter: document.querySelector('[data-registration="strength_meter"]'),
+    strengthMessage: document.querySelector('[data-registration="strength_message"]'),
+};
+
 class Registration {
     #Request;
     #inputList;
@@ -73,14 +81,4 @@ class Registration {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    const formObjects = {
-        registration: true,
-        form: document.querySelector('[data-registration="form"]'),
-        errorMessage: document.querySelector('[data-registration="form_error"]'),
-        strengthMeter: document.querySelector('[data-registration="strength_meter"]'),
-        strengthMessage: document.querySelector('[data-registration="strength_message"]'),
-    };
-
-    new Registration(formObjects).init();
-});
+new Registration(formObjects).init();

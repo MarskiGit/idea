@@ -2,6 +2,12 @@
 import FormHandling from './modules/FormHandling.esm.js';
 import Request from './modules/Request.esm.js';
 
+const formObjects = {
+    registration: false,
+    form: document.querySelector('[data-signin="form"]'),
+    errorMessage: document.querySelector('[data-signin="form_error"]'),
+};
+
 class SignIn {
     #Request;
     #inputList;
@@ -65,12 +71,4 @@ class SignIn {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    const formObjects = {
-        registration: false,
-        form: document.querySelector('[data-signin="form"]'),
-        errorMessage: document.querySelector('[data-signin="form_error"]'),
-    };
-
-    new SignIn(formObjects).init();
-});
+new SignIn(formObjects).init();

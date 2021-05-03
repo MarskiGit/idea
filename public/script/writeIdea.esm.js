@@ -5,25 +5,45 @@ import LiveSearch from './modules/write/LiveSearch.esm.js';
 import CountCharacters from './modules/write/CountCharacters.esm.js';
 import Request from './modules/Request.esm.js';
 
-class Write {
+const setingRequest = {
+    ajax: {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-store',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+    },
+    url: 'index.php',
+};
+
+const formObjects = {
+    registration: false,
+    form: document.querySelector('[data-write="form"]'),
+    errorMessage: document.querySelector('[data-write="form_error"]'),
+    viewPoints: document.querySelector('[data-write="view_points"]'),
+    signNumber: document.querySelectorAll('[data-write="sign_number"]'),
+};
+const userSearch = {
+    listResults: document.querySelector('[data-write="ul_creator"]'),
+    selectedList: document.querySelector('[data-write="chosen_ones"]'),
+    request: 'creatorSearch',
+};
+const areaSearch = {
+    listResults: document.querySelector('[data-write="ul_area"]'),
+    selectedList: document.querySelector('[data-write="chosen_ones_area"]'),
+    request: 'areaSearch',
+};
+
+class WriteIdea {
     #Request;
     #request = {
         request: 'ideaWrite',
     };
-    #setingRequest = {
-        ajax: {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-store',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json; charset=utf-8',
-            },
-            redirect: 'follow',
-            referrerPolicy: 'no-referrer',
-        },
-        url: 'index.php',
-    };
+
     #inputSearch;
     /**
      * Fabryka odpowiedzialna za formularz IDEA.
@@ -31,8 +51,9 @@ class Write {
      * @param {!object} userSearch Obiekt z elementami DOM wyszukiwania Live użytkowników.
      * @param {!object} areaSearch Obiekt z elementami DOM wyszukiwania Live obszarów.
      */
-    constructor(formObjects, userSearch, areaSearch) {
+    constructor(formObjects, userSearch, areaSearch, setingRequest) {
         this.FormHandling = new FormHandling(formObjects);
+        this.#Request = new Request(setingRequest);
 
         this.#inputSearch = this.FormHandling.getInputs(['INPUT'], 'search');
 
@@ -41,8 +62,6 @@ class Write {
 
         this.CountCharacters = new CountCharacters(this.FormHandling.getInputs(['TEXTAREA']), formObjects.signNumber);
         this.Rating = new Rating(this.FormHandling.getInputs(['SELECT']), formObjects.viewPoints);
-
-        this.#Request = new Request(this.#setingRequest);
     }
     /**
      * Metoda inicjująca.
@@ -105,24 +124,4 @@ class Write {
     #emptyForm = () => !!(this.FormHandling.emptyFields() && this.UserSearch.whetherListCompleted() && this.AreaSearch.whetherListCompleted());
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    const formObjects = {
-        registration: false,
-        form: document.querySelector('[data-write="form"]'),
-        errorMessage: document.querySelector('[data-write="form_error"]'),
-        viewPoints: document.querySelector('[data-write="view_points"]'),
-        signNumber: document.querySelectorAll('[data-write="sign_number"]'),
-    };
-    const userSearch = {
-        listResults: document.querySelector('[data-write="ul_creator"]'),
-        selectedList: document.querySelector('[data-write="chosen_ones"]'),
-        request: 'creatorSearch',
-    };
-    const areaSearch = {
-        listResults: document.querySelector('[data-write="ul_area"]'),
-        selectedList: document.querySelector('[data-write="chosen_ones_area"]'),
-        request: 'areaSearch',
-    };
-
-    new Write(formObjects, userSearch, areaSearch).init();
-});
+new WriteIdea(formObjects, userSearch, areaSearch, setingRequest).init();

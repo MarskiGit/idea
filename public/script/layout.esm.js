@@ -28,6 +28,4 @@ class Layout {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    new Layout().init();
-});
+new Layout().init();

@@ -32,7 +32,7 @@
          <?php
             case 'write': ?>
              <link rel="stylesheet" href="./public/style/write.min.css" type="text/css" media="all">
-             <script type="module" src="./public/script/write.esm.js"></script>
+             <script type="module" src="./public/script/writeIdea.esm.js"></script>
              <?php break; ?>
          <?php
             case 'signin': ?>

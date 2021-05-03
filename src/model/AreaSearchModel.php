@@ -20,8 +20,8 @@ class AreaSearchModel extends AbstractModel
             $stmt = $this->DB->prepare('SELECT area_name, id_area FROM area WHERE area_name LIKE :name LIMIT 3');
             $stmt->bindValue(':name', $search, PDO::PARAM_STR);
             $stmt->execute();
-        } catch (PDOException $e) {
-            echo $e->getMessage();
+        } catch (PDOException) {
+            throw new AjaxException('Błąd Area Search IdeaModel');
         }
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
