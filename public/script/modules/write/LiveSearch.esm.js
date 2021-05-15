@@ -1,0 +1,151 @@
+'use strict';
+import Request from '../Request.esm.js';
+import Choose from './Choose.esm.js';
+import RenderLi from './RenderLi.esm.js';
+
+export default class LiveSearch {
+    #Request;
+    #Choose;
+    #setingRequest = {
+        ajax: {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'default',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+        },
+        url: 'index.php',
+    };
+    #request = {};
+    #inputSearch;
+    #listResults;
+    #fragmentList = document.createDocumentFragment();
+
+    /**
+     * Klasa odpowiedzialna za wyszukiwanie na żywo.
+     * @param {!object} listResults Obiekt DOM w którym wyświetlane są wyniki szukania.
+     * @param {!object} inputSearch Obiekt DOM input.
+     * @param {!object} request Obiekt z typem żądania.
+     */
+    constructor(inputSearch, searchObjects) {
+        this.#listResults = searchObjects.listResults;
+        this.#inputSearch = inputSearch;
+        this.#request = {
+            request: searchObjects.request,
+        };
+        this.#Request = new Request(this.#setingRequest);
+        this.#Choose = new Choose(searchObjects.selectedList);
+    }
+    init() {
+        this.#eventListeners();
+    }
+    /**
+     * @returns Sprawdza, czy lista jest uzupełniona. | Boolean.
+     */
+    whetherListCompleted = () => !!this.getSelectedId().length;
+    /**
+     * @returns Zwraca listę wybranych id. | Array
+     */
+    getSelectedId = () => this.#Choose.getID();
+    /**
+     * Czyści i zamyka listę wyszukanych elementów.
+     */
+    closeList() {
+        this.#listResults.classList.remove('on');
+        this.#removeLI();
+    }
+    /**
+     * Czyści listę wybranych elementów
+     */
+    clearChosen() {
+        this.#Choose.closeSelectedList();
+    }
+    #eventListeners() {
+        this.#listResults.addEventListener('click', this.#selected);
+        this.#inputSearch.addEventListener('input', this.#debounced(this.#validation, 500));
+    }
+    #selected = (event) => {
+        const id = parseInt(event.target.getAttributeNode('data-id').value, 10);
+        if (id) {
+            const transferred = this.#Choose.selected(id, event);
+            if (transferred) {
+                this.closeList();
+                this.#inputSearch.value = '';
+            } else {
+                this.#listResults.nextElementSibling.classList.add('span_error');
+                setTimeout(() => this.#listResults.nextElementSibling.classList.remove('span_error'), 2000);
+            }
+        }
+    };
+    #validation = ({ target }) => {
+        this.#validationSign(target.value) ? this.#badSign(1) : this.#searchInit(target);
+    };
+    #searchInit(target) {
+        this.#badSign(0);
+        target.value.length >= 3 ? this.#valueSought(target) : this.closeList();
+    }
+    #badSign(bool) {
+        if (bool) {
+            this.#userMessage('Tylko znaki alfabetu i cyfry', 'red');
+            this.#inputSearch.classList.add('errorSearch');
+        } else {
+            this.#userMessage('Wyszukaj i kliknij:');
+            this.#inputSearch.classList.remove('errorSearch');
+        }
+    }
+    #userMessage(text, color = '') {
+        this.#inputSearch.labels[0].style.color = color;
+        this.#inputSearch.labels[0].textContent = text;
+    }
+    #valueSought(target) {
+        if (target.dataset.write === 'creator_search') {
+            Number(target.value) ? (this.#request.select = 'user_number') : (this.#request.select = 'user_name');
+            this.#request.user_name = target.value;
+        } else {
+            this.#request.area_name = target.value;
+        }
+        this.#sendRequest();
+    }
+    #sendRequest() {
+        document.body.style.cursor = 'progress';
+        this.#Request
+            .getJson(this.#request)
+            .then((data) => this.#check(data))
+            .finally((document.body.style.cursor = 'default'));
+    }
+    #check(data) {
+        const status = data[0];
+        if (status.ok) {
+            data.shift();
+            this.#renderList(data);
+        } else {
+            this.#renderList(data);
+        }
+    }
+    #renderList(data) {
+        for (const li of data) {
+            this.#fragmentList.appendChild(new RenderLi(li).getLi());
+        }
+        this.#addListPage();
+    }
+    #addListPage() {
+        this.#removeLI();
+        this.#listResults.appendChild(this.#fragmentList);
+        this.#listResults.classList.add('on');
+    }
+    #removeLI() {
+        [...this.#listResults.children].forEach((li) => li.remove());
+    }
+    #validationSign = (char) => new RegExp(/[^A-Z-ŚŁŻŹĆa-z-ęóąśłżźćń\s0-9]/gi).test(char);
+    #debounced(f, t) {
+        let l;
+        return (...a) => {
+            const c = this;
+            clearTimeout(l), (l = setTimeout(() => f.apply(c, a), t));
+        };
+    }
+}

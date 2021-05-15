@@ -9,26 +9,13 @@ use Exception;
 
 class View
 {
+    public array $globalParams;
     public function __construct()
     {
     }
-    private function renderHTML(string $name, string $path = '', $params = null): void
+    public function layout(): void
     {
-        $path = DIR_TEMPLATE . $path . $name . '.php';
-        try {
-            if (is_file($path)) {
-                require $path;
-            } else {
-                throw new IdeaException('Błąd otwarcia szablonu' . $name . ' in: ' . $path);
-            }
-        } catch (Exception) {
-            throw new IdeaException('Błąd Renderowania Strony');
-        }
-    }
-    public function layout($params): void
-    {
-        header('Content-type: text/html; charset=utf-8');
-        $this->renderHTML('layout', '', $params);
+        $this->renderHTML('layout', '');
     }
     public function home(): void
     {
@@ -38,24 +25,43 @@ class View
     {
         $this->renderHTML('footer', 'page/');
     }
-    public function create($params): void
+    public function create($pageParams): void
     {
-        $this->renderHTML('write', 'page/', $params);
+        $this->renderHTML('write', 'page/', $pageParams);
     }
     public function list(): void
     {
         $this->renderHTML('list', 'page/');
     }
-    public function login(): void
+    public function signin(): void
     {
-        $this->renderHTML('login', 'page/');
+        $this->renderHTML('signin', 'page/');
     }
     public function account(): void
     {
         $this->renderHTML('account', 'page/');
     }
-    public function admin(): void
+    public function registration(): void
     {
-        $this->renderHTML('admin', 'page/');
+        $this->renderHTML('registration', 'page/');
+    }
+    public function renderJSON(array $answer): void
+    {
+        echo json_encode($answer);
+        exit;
+    }
+    private function renderHTML(string $name, string $path = '', $pageParams = null): void
+    {
+        $path = DIR_TEMPLATE . $path . $name . '.php';
+        try {
+            if (is_file($path)) {
+                $globalParams = $this->globalParams;
+                require $path;
+            } else {
+                throw new IdeaException('Błąd otwarcia szablonu' . $name . ' in: ' . $path);
+            }
+        } catch (Exception) {
+            throw new IdeaException('Błąd Renderowania Strony');
+        }
     }
 }
