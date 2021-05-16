@@ -15,10 +15,10 @@ class RatingSettingsIdeaModel extends AbstractModel
     public function get()
     {
         try {
-            $stmt = $this->DB->query('SELECT * FROM rating_setting');
+            $stmt = $this->DB->query('SELECT * FROM form_options');
             $stmt->execute();
         } catch (PDOException) {
-            throw new IdeaException('Błąd Ustawień Oceny');
+            throw new IdeaException('Błąd Pobierania ustawień');
         }
 
         if ($stmt->rowCount() > 0) {

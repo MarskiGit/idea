@@ -27,7 +27,7 @@ class View
     }
     public function create($pageParams): void
     {
-        $this->renderHTML('write', 'page/', $pageParams);
+        $this->renderHTML('form', 'page/', $pageParams);
     }
     public function list(): void
     {

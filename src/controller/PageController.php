@@ -8,7 +8,7 @@ use Idea\model\RatingSettingsIdeaModel;
 
 class PageController extends AbstractController
 {
-    protected function writeIdea(): void
+    protected function formIdea(): void
     {
         $ideaRating = new RatingSettingsIdeaModel();
         $this->View->create($ideaRating->get());

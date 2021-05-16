@@ -29,7 +29,7 @@
              <script defer type="module" src="./public/script/list.esm.js"></script>
              <?php break; ?>
          <?php
-            case 'write': ?>
+            case 'form': ?>
              <link rel="stylesheet" href="./public/style/write.min.css" type="text/css" media="all">
              <script type="module" src="./public/script/writeIdea.esm.js"></script>
              <?php break; ?>
@@ -67,7 +67,7 @@
      <nav class="menu" data-page="nav">
          <a rel="home start" href="<?php echo HTTP_SERVER ?>" class="link_home hover_img" data-page="home_nav"><img src="public/img/home_icon.svg" alt="Strona główna"><img src="public/img/border_icon.svg" class="load" data-page="status_indicator" alt=""></a>
          <a rel="list section" href="?action=list" class="link_button">Lista pomysłów</a>
-         <a rel="write section" href="?action=write" class="link_button">Napisz pomysł</a>
+         <a rel="write section" href="?action=form" class="link_button">Napisz pomysł</a>
          <div class="page_up hover_img" data-page="page_up"><img src="public/img/page_up.svg" alt="góra strony"></div>
          <a rel="signin appendix" href="?action=signin" class="logo_idea"><img src="public/img/idea.png" alt="Idea"></a>
          <?php if (intval($params['action_GET']['rang'] ?? 0) === 2) : ?> <a rel="admin subsection" href="?action=admin" class="link_button">Admin</a> <?php endif; ?>
