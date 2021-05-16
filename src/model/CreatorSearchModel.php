@@ -19,7 +19,7 @@ class CreatorSearchModel extends AbstractModel
             $stmt = $this->DB->prepare("SELECT id_user, id_area, user_name FROM account WHERE " . $this->requestParam['select'] . " LIKE :name LIMIT 3");
             $stmt->bindValue(':name', $search, PDO::PARAM_STR);
             $stmt->execute();
-        } catch (PDOException) {
+        } catch (PDOException $e) {
             throw new AjaxException('Błąd User Search IdeaModel');
         }
         if ($stmt->rowCount() > 0) {

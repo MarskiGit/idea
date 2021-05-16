@@ -1,5 +1,9 @@
  <!DOCTYPE html>
  <html lang="pl">
+ <?php
+    $account_rang = intval($_SESSION['account']['rang'] ?? 0);
+
+    ?>
 
  <head>
      <meta charset="utf-8">
@@ -23,37 +27,28 @@
 
      <link rel="stylesheet" href="./public/style/layout.min.css" type="text/css" media="all">
      <script type="module" src="./public/script/layout.esm.js"></script>
+
      <?php switch ($globalParams['action_GET']):
             case 'list': ?>
              <link rel="stylesheet" href="./public/style/list.min.css" type="text/css" media="all">
-             <script defer type="module" src="./public/script/list.esm.js"></script>
              <?php break; ?>
          <?php
             case 'form': ?>
              <link rel="stylesheet" href="./public/style/write.min.css" type="text/css" media="all">
-             <script type="module" src="./public/script/writeIdea.esm.js"></script>
              <?php break; ?>
          <?php
-            case 'signin': ?>
-             <link rel="stylesheet" href="./public/style/signIn.min.css" type="text/css" media="all">
-             <script type="module" src="./public/script/signIn.esm.js"></script>
+            case 'login': ?>
+             <link rel="stylesheet" href="./public/style/login.min.css" type="text/css" media="all">
              <?php break; ?>
          <?php
             case 'admin': ?>
-             <?php if (intval($_SESSION['account']['rang'] ?? 0) === 2) : ?>
+             <?php if ($account_rang === 2) : ?>
                  <link rel="stylesheet" href="./public/style/admin.min.css" type="text/css" media="all">
-                 <script type="module" src="./public/script/admin.esm.js"></script>
              <?php endif; ?>
              <?php break; ?>
          <?php
             case 'mod': ?>
-             <link rel="stylesheet" href="./public/style/admin.min.css" type="text/css" media="all">
-             <script type="module" src="./public/script/admin.esm.js"></script>
-             <?php break; ?>
-         <?php
-            case 'registration': ?>
-             <link rel="stylesheet" href="./public/style/registration.min.css" type="text/css" media="all">
-             <script type="module" src="./public/script/registration.esm.js"></script>
+             <link rel="stylesheet" href="./public/style/mod.min.css" type="text/css" media="all">
              <?php break; ?>
          <?php
             default: ?>
@@ -69,7 +64,20 @@
          <a rel="list section" href="?action=list" class="link_button">Lista pomysłów</a>
          <a rel="write section" href="?action=form" class="link_button">Napisz pomysł</a>
          <div class="page_up hover_img" data-page="page_up"><img src="public/img/page_up.svg" alt="góra strony"></div>
-         <a rel="signin appendix" href="?action=signin" class="logo_idea"><img src="public/img/idea.png" alt="Idea"></a>
-         <?php if (intval($params['action_GET']['rang'] ?? 0) === 2) : ?> <a rel="admin subsection" href="?action=admin" class="link_button">Admin</a> <?php endif; ?>
-         <?php if (intval($params['action_GET']['rang'] ?? 0) === 1) : ?> <a rel="admin subsection" href="?action=mod" class="link_button">Mod</a> <?php endif; ?>
+
+         <?php switch ($account_rang):
+                case 1: ?>
+                 <a rel="signin appendix" href="?action=logout" class="logo_idea"><img src="public/img/idea.png" alt="Idea"></a>
+                 <a rel="admin subsection" href="?action=mod" class="link_button">Mod</a>
+                 <?php break; ?>
+             <?php
+                case 2: ?>
+                 <a rel="signin appendix" href="?action=logout" class="logo_idea"><img src="public/img/idea.png" alt="Idea"></a>
+                 <a rel="admin subsection" href="?action=admin" class="link_button">Admin</a>
+                 <?php break; ?>
+             <?php
+                default: ?>
+                 <a rel="signin appendix" href="?action=login" class="logo_idea"><img src="public/img/idea.png" alt="Idea"></a>
+                 <?php break; ?>
+         <?php endswitch; ?>
      </nav>

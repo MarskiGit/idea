@@ -17,7 +17,7 @@ class RatingSettingsIdeaModel extends AbstractModel
         try {
             $stmt = $this->DB->query('SELECT * FROM form_options');
             $stmt->execute();
-        } catch (PDOException) {
+        } catch (PDOException $e) {
             throw new IdeaException('Błąd Pobierania ustawień');
         }
 

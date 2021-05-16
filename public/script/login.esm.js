@@ -9,7 +9,7 @@ const formObjects = {
 };
 
 class SignIn {
-    #Request;
+    #Ajax;
     #inputList;
     #request = {
         request: 'signIn',
@@ -34,8 +34,9 @@ class SignIn {
      */
     constructor(formObjects) {
         this.FormHandling = new FormHandling(formObjects);
+        this.errorMessage = formObjects.errorMessage;
 
-        this.#Request = new Request(this.#setingRequest);
+        this.#Ajax = new Request(this.#setingRequest);
         this.#inputList = this.FormHandling.getInputs(['INPUT']);
     }
     /**
@@ -57,8 +58,23 @@ class SignIn {
         event.preventDefault();
         if (this.FormHandling.emptyFields()) {
             this.formParams = this.FormHandling.getValue();
-            this.FormHandling.clearField();
-            console.log(this.formParams);
+            this.#request = {
+                request: 'login',
+                ...this.formParams,
+            };
+
+            document.body.style.cursor = 'progress';
+            this.#Ajax
+                .getJson(this.#request)
+                .then((data) => {
+                    if (data.ok === true) {
+                        location.replace('http://h.localhost/01_MOJE/01_CURRENT/idea/');
+                    } else {
+                        this.errorMessage.textContent = 'Podano błędne dane logowania';
+                        this.FormHandling.formError();
+                    }
+                })
+                .finally((document.body.style.cursor = 'default'));
         } else {
             this.FormHandling.formError();
         }

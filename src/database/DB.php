@@ -12,7 +12,7 @@ class DB
 {
     private static string $host = 'localhost';
     private static string $userName = 'new_idea';
-    private static string $password = DB_PASSWORD;
+    private static string $password = 'K93TooVTiWK4YZtK';
     private static string $dbName = 'new_idea';
     private static string $dbType = 'mysql';
     private static string $encoding = 'utf-8';
@@ -32,7 +32,7 @@ class DB
                 self::$DB->exec('set names utf8');
                 self::$DB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 define('DB_CONNECTED', true);
-            } catch (PDOException) {
+            } catch (PDOException $e) {
                 throw new Exception('Connecting error');
             }
             return self::$DB;

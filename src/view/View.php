@@ -33,17 +33,17 @@ class View
     {
         $this->renderHTML('list', 'page/');
     }
-    public function signin(): void
+    public function login(): void
     {
-        $this->renderHTML('signin', 'page/');
+        $this->renderHTML('login', 'page/');
     }
-    public function account(): void
+    public function admin(): void
     {
-        $this->renderHTML('account', 'page/');
+        $this->renderHTML('admin', 'admin/');
     }
-    public function registration(): void
+    public function mod(): void
     {
-        $this->renderHTML('registration', 'page/');
+        $this->renderHTML('mod', 'mod/');
     }
     public function renderJSON(array $answer): void
     {
@@ -60,7 +60,7 @@ class View
             } else {
                 throw new IdeaException('Błąd otwarcia szablonu' . $name . ' in: ' . $path);
             }
-        } catch (Exception) {
+        } catch (Exception $e) {
             throw new IdeaException('Błąd Renderowania Strony');
         }
     }

@@ -28,15 +28,10 @@ class AjaxController extends AbstractController
         $areaSearch = new AreaSearchModel($this->requestParam);
         $this->View->renderJSON($areaSearch->get());
     }
-    protected function loginUserIdea()
+    protected function loginIdea()
     {
         $account = new AccountModel($this->requestParam);
-        $this->AjaxView->renderJSON($account->login());
-    }
-    protected function logoutUserIdea()
-    {
-        $account = new AccountModel($this->requestParam);
-        $this->View->renderJSON($account->logout());
+        $this->View->renderJSON($account->login());
     }
     protected function addUserIdea()
     {

@@ -11,10 +11,10 @@ const formObjects = {
 };
 
 class Registration {
-    #Request;
+    #Ajax;
     #inputList;
     #request = {
-        request: 'registration',
+        request: 'addUser',
     };
     #setingRequest = {
         ajax: {
@@ -28,7 +28,7 @@ class Registration {
             redirect: 'follow',
             referrerPolicy: 'no-referrer',
         },
-        url: 'index.php',
+        url: '../../index.php',
     };
     /**
      * Obsługa formularza rejestracji.
@@ -39,7 +39,7 @@ class Registration {
         this.FormHandling = new FormHandling(formObjects);
         this.errorMessage = formObjects.errorMessage;
 
-        this.#Request = new Request(this.#setingRequest);
+        this.#Ajax = new Request(this.#setingRequest);
         this.#inputList = this.FormHandling.getInputs(['INPUT']);
     }
     /**
@@ -65,12 +65,27 @@ class Registration {
                 this.FormHandling.formError();
             } else {
                 this.formParams = this.FormHandling.getValue();
-                this.FormHandling.clearField();
-                console.log(this.formParams);
+                this.#request = {
+                    request: 'addUser',
+                    ...this.formParams,
+                };
+
+                document.body.style.cursor = 'progress';
+                this.#Ajax
+                    .getJson(this.#request)
+                    .then((data) => {
+                        if (data.ok === true) {
+                            this.FormHandling.clearField();
+                            this.$showMasage('Dodano z powodzeniem');
+                        } else {
+                            this.$showMasage(`${data.title}: ${data.account}`);
+                            console.log(data);
+                        }
+                    })
+                    .finally((document.body.style.cursor = 'default'));
             }
         } else {
-            this.errorMessage.textContent = 'Uzupełnij wszystkie pola.';
-            this.FormHandling.formError();
+            this.$showMasage('Uzupełnij wszystkie pola.');
         }
     };
     #onBlur() {
@@ -78,6 +93,10 @@ class Registration {
     }
     #inputOnBlur(event) {
         event.target.value ? this.classList.add('has-val') : this.classList.remove('has-val');
+    }
+    $showMasage(messafe) {
+        this.errorMessage.textContent = `${messafe}`;
+        this.FormHandling.formError();
     }
 }
 

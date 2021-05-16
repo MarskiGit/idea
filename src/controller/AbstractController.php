@@ -48,9 +48,15 @@ abstract class AbstractController
     {
         $method = $this->existsMethod($this->action_GET, self::DEFAULT_ACTION_HTML);
 
-        $this->View->layout();
-        $this->$method();
-        $this->View->footer();
+        if ($this->action_GET !== 'logout') {
+            $this->View->layout();
+            $this->$method();
+            $this->View->footer();
+        } else {
+            $this->$method();
+            header("location: index.php");
+            exit;
+        }
     }
     private function runAjax(): void
     {

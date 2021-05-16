@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Idea\controller;
 
+use Idea\model\AccountModel;
 use Idea\model\RatingSettingsIdeaModel;
 
 class PageController extends AbstractController
@@ -21,16 +22,17 @@ class PageController extends AbstractController
     {
         $this->View->home();
     }
-    protected function signinIdea(): void
+    protected function loginIdea(): void
     {
-        $this->View->signin();
+        $this->View->login();
     }
-    protected function accountIdea(): void
+    protected function logoutIdea(): void
     {
-        $this->View->account();
+        $account = new AccountModel();
+        $status = $account->logout();
     }
-    protected function registrationIdea(): void
+    protected function adminIdea(): void
     {
-        $this->View->registration();
+        $this->View->admin();
     }
 }
