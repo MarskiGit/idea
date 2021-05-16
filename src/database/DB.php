@@ -11,9 +11,9 @@ use PDOException;
 class DB
 {
     private static string $host = 'localhost';
-    private static string $userName = 'root';
-    private static string $password = '';
-    private static string $dbName = 'idea';
+    private static string $userName = 'new_idea';
+    private static string $password = DB_PASSWORD;
+    private static string $dbName = 'new_idea';
     private static string $dbType = 'mysql';
     private static string $encoding = 'utf-8';
     private static ?PDO $DB = null;

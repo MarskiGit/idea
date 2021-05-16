@@ -8,3 +8,4 @@ define('DEFAULT_SUFIX_APP', 'Idea');
 define('DEFAULT_SUFIX_AJAX', 'Ajax');
 define('DEFAULT_GET', 'action');
 define('DEFAULT_AJAX', 'request');
+define('DB_PASSWORD', 'K93TooVTiWK4YZtK');
