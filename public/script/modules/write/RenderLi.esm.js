@@ -8,10 +8,10 @@ export default class RenderLi {
      *  Klasa renderująca listę HTML.
      * @param {!object} data Obiekt zawierający zestaw informacji potrzebny do wy renderowania listy
      */
-    constructor({ id_user, id_area, user_name, area_name, ok = true }) {
+    constructor({ id_account, id_area, full_name, area_name, ok = true }) {
         this.#status = ok ? 'creator_li' : '';
-        this.#name = user_name || area_name;
-        this.#id = id_user || id_area;
+        this.#name = full_name || area_name;
+        this.#id = id_account || id_area;
         this.#init();
     }
     /**

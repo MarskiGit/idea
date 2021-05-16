@@ -48,7 +48,7 @@ abstract class AbstractController
     {
         $method = $this->existsMethod($this->action_GET, self::DEFAULT_ACTION_HTML);
 
-        if ($this->action_GET !== 'logout') {
+        if ($method !== 'logout' . DEFAULT_SUFIX_APP) {
             $this->View->layout();
             $this->$method();
             $this->View->footer();

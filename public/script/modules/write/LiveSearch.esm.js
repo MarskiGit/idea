@@ -103,8 +103,8 @@ export default class LiveSearch {
     }
     #valueSought(target) {
         if (target.dataset.write === 'creator_search') {
-            Number(target.value) ? (this.#request.select = 'user_number') : (this.#request.select = 'user_name');
-            this.#request.user_name = target.value;
+            Number(target.value) ? (this.#request.select = 'id_pass') : (this.#request.select = 'full_name');
+            this.#request.full_name = target.value;
         } else {
             this.#request.area_name = target.value;
         }

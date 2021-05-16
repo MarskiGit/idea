@@ -1,21 +1,12 @@
 'use strict';
-import FormHandling from './modules/FormHandling.esm.js';
-import Request from './modules/Request.esm.js';
+import FormHandling from '../FormHandling.esm.js';
+import Request from '../Request.esm.js';
 
-const formObjects = {
-    registration: true,
-    form: document.querySelector('[data-registration="form"]'),
-    errorMessage: document.querySelector('[data-registration="form_error"]'),
-    strengthMeter: document.querySelector('[data-registration="strength_meter"]'),
-    strengthMessage: document.querySelector('[data-registration="strength_message"]'),
-};
-
-class Registration {
+export default class Registration {
     #Ajax;
     #inputList;
-    #request = {
-        request: 'addUser',
-    };
+    #params;
+    #request = {};
     #setingRequest = {
         ajax: {
             method: 'POST',
@@ -28,8 +19,8 @@ class Registration {
             redirect: 'follow',
             referrerPolicy: 'no-referrer',
         },
-        url: '../../index.php',
     };
+
     /**
      * Obsługa formularza rejestracji.
      * Dziedziczy z FormHandling.
@@ -38,6 +29,9 @@ class Registration {
     constructor(formObjects) {
         this.FormHandling = new FormHandling(formObjects);
         this.errorMessage = formObjects.errorMessage;
+        this.#params = formObjects.request;
+
+        this.#setingRequest.url = formObjects.url;
 
         this.#Ajax = new Request(this.#setingRequest);
         this.#inputList = this.FormHandling.getInputs(['INPUT']);
@@ -60,30 +54,25 @@ class Registration {
     #formValidation = (event) => {
         event.preventDefault();
         if (this.FormHandling.emptyFields()) {
-            if (this.FormHandling.getStrenghtPass() !== 3) {
-                this.errorMessage.textContent = 'Zastosuj silne hasło.';
-                this.FormHandling.formError();
-            } else {
-                this.formParams = this.FormHandling.getValue();
-                this.#request = {
-                    request: 'addUser',
-                    ...this.formParams,
-                };
+            this.formParams = this.FormHandling.getValue();
+            this.#request = {
+                request: this.#params,
+                ...this.formParams,
+            };
 
-                document.body.style.cursor = 'progress';
-                this.#Ajax
-                    .getJson(this.#request)
-                    .then((data) => {
-                        if (data.ok === true) {
-                            this.FormHandling.clearField();
-                            this.$showMasage('Dodano z powodzeniem');
-                        } else {
-                            this.$showMasage(`${data.title}: ${data.account}`);
-                            console.log(data);
-                        }
-                    })
-                    .finally((document.body.style.cursor = 'default'));
-            }
+            document.body.style.cursor = 'progress';
+            this.#Ajax
+                .getJson(this.#request)
+                .then((data) => {
+                    if (data.ok === true) {
+                        this.FormHandling.clearField();
+                        this.$showMasage('Dodano z powodzeniem');
+                    } else {
+                        this.$showMasage(`${data.title}: ${data.account}`);
+                        console.log(data);
+                    }
+                })
+                .finally((document.body.style.cursor = 'default'));
         } else {
             this.$showMasage('Uzupełnij wszystkie pola.');
         }
@@ -100,4 +89,4 @@ class Registration {
     }
 }
 
-new Registration(formObjects).init();
+// new Registration(formObjects).init();

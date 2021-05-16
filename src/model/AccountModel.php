@@ -11,9 +11,9 @@ use PDOException;
 
 class AccountModel extends AbstractModel
 {
-    public function addAccount(): array
+    public function add(): array
     {
-        if (!$this->isNameValid()) {
+        if (!$this->isNameValid($this->requestParam['full_name'])) {
             return $this->notification([
                 'ok' => false,
                 'title' => 'Imię i Nazwisko',
@@ -31,7 +31,7 @@ class AccountModel extends AbstractModel
             ]);
         }
 
-        if ($this->checkUser('full_name', $this->requestParam['full_name'])) {
+        if ($this->isThere('full_name', $this->requestParam['full_name'], 'account')) {
             return $this->notification([
                 'ok' => false,
                 'title' => 'Ten',
@@ -40,7 +40,16 @@ class AccountModel extends AbstractModel
             ]);
         }
 
-        if ($this->checkUser('id_pass', $this->requestParam['id_pass'])) {
+        if ($this->isThere('id_pass', $this->requestParam['id_pass'], 'account')) {
+            return $this->notification([
+                'ok' => false,
+                'title' => 'Ten',
+                'account' => 'Login istnieje',
+                'valid' => 'idPass'
+            ]);
+        }
+
+        if ($this->isThere('account_login', $this->requestParam['login'], 'account')) {
             return $this->notification([
                 'ok' => false,
                 'title' => 'Ten',
@@ -106,15 +115,6 @@ class AccountModel extends AbstractModel
             return $this->notification(['ok' => true]);
         }
     }
-    private function isNameValid(): bool
-    {
-        $valid = true;
-        $len = mb_strlen($this->requestParam['full_name']);
-        if (($len < 3) || ($len > 16)) {
-            $valid = false;
-        }
-        return $valid;
-    }
     private function isPasswdValid(): bool
     {
         $valid = true;
@@ -123,22 +123,6 @@ class AccountModel extends AbstractModel
             $valid = false;
         }
         return $valid;
-    }
-    private function checkUser(string $tuple, $value): bool
-    {
-        $id = false;
-        try {
-            $stmt = $this->DB->prepare("SELECT  {$tuple} FROM account WHERE ({$tuple}= :value)");
-            $stmt->bindValue(':value', $value, PDO::PARAM_STR);
-            $stmt->execute();
-        } catch (PDOException $e) {
-            throw new AjaxException('Błąd ID Card AccountModel');
-        }
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if (is_array($row)) {
-            $id = true;
-        }
-        return $id;
     }
     private function hash(string $value): string
     {

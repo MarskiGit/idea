@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <title>Login z haszem</title>
     <link rel="stylesheet" href="style.css" type="text/css" media="all">
-    <script type="module" src="../../public/script/registration.esm.js"></script>
+    <script type="module" src="./account.esm.js"></script>
 
 </head>
 
