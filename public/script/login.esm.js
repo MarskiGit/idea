@@ -1,42 +1,30 @@
 'use strict';
+import { setingRequest, localhost } from './modules/seting.esm.js';
 import FormHandling from './modules/FormHandling.esm.js';
 import Request from './modules/Request.esm.js';
 
 const formObjects = {
     registration: false,
+    request: 'signIn',
     form: document.querySelector('[data-signin="form"]'),
     errorMessage: document.querySelector('[data-signin="form_error"]'),
 };
 
-class SignIn {
+class Login {
     #Ajax;
     #inputList;
-    #request = {
-        request: 'signIn',
-    };
-    #setingRequest = {
-        ajax: {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-store',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json; charset=utf-8',
-            },
-            redirect: 'follow',
-            referrerPolicy: 'no-referrer',
-        },
-        url: 'index.php',
-    };
+    #request = {};
+
     /**
      * Obsługa formularza logowania.
      * @param {!object} formObjects Obiekt z elementami DOM formularza.
      */
-    constructor(formObjects) {
+    constructor(formObjects, setingRequest) {
         this.FormHandling = new FormHandling(formObjects);
         this.errorMessage = formObjects.errorMessage;
+        this.#request.request = formObjects.request;
 
-        this.#Ajax = new Request(this.#setingRequest);
+        this.#Ajax = new Request(setingRequest);
         this.#inputList = this.FormHandling.getInputs(['INPUT']);
     }
     /**
@@ -68,7 +56,7 @@ class SignIn {
                 .getJson(this.#request)
                 .then((data) => {
                     if (data.ok === true) {
-                        location.replace('http://h.localhost/01_MOJE/01_CURRENT/idea/');
+                        location.replace(localhost);
                     } else {
                         this.errorMessage.textContent = 'Podano błędne dane logowania';
                         this.FormHandling.formError();
@@ -87,4 +75,4 @@ class SignIn {
     }
 }
 
-new SignIn(formObjects).init();
+new Login(formObjects, setingRequest).init();

@@ -119,7 +119,7 @@ class AccountModel extends AbstractModel
     {
         $valid = true;
         $len = mb_strlen($this->requestParam['password']);
-        if (($len < 8) || ($len > 16)) {
+        if ($len < 8) {
             $valid = false;
         }
         return $valid;

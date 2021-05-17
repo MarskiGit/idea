@@ -1,4 +1,5 @@
 'use strict';
+import { setingRequest } from '../seting.esm.js';
 import Request from '../Request.esm.js';
 import Choose from './Choose.esm.js';
 import RenderLi from './RenderLi.esm.js';
@@ -6,20 +7,6 @@ import RenderLi from './RenderLi.esm.js';
 export default class LiveSearch {
     #Request;
     #Choose;
-    #setingRequest = {
-        ajax: {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'default',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            redirect: 'follow',
-            referrerPolicy: 'no-referrer',
-        },
-        url: 'index.php',
-    };
     #request = {};
     #inputSearch;
     #listResults;
@@ -37,7 +24,7 @@ export default class LiveSearch {
         this.#request = {
             request: searchObjects.request,
         };
-        this.#Request = new Request(this.#setingRequest);
+        this.#Request = new Request(setingRequest);
         this.#Choose = new Choose(searchObjects.selectedList);
     }
     init() {

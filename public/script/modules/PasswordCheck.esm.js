@@ -7,22 +7,28 @@ export default class PasswordCheck {
         medium: 'Średnie &#128532;',
         strong: 'Silne &#128512;',
     };
+    #isIdentical;
+    #pwd;
     #strengthPass = 0;
     #inputPassword;
     #repetInputpassword;
     #strengthMessage;
     #strengthMeter;
+    #identicalMessage;
+    #identPwd;
+    #infoPass;
     /**
      * Klasa sprawdzająca siłę hasła.
      * @param {!object} inpute Tablica input
      * @param {!object} strengthMessage Obiekt DOM span komunikatu tekstowego.
      * @param {!object} strengthMeter Obiekt DOM wizualny wskaźnik siły hasła.
      */
-    constructor(inputs, strengthMessage, strengthMeter) {
+    constructor(inputs, strengthMessage, strengthMeter, identicalMessage) {
         this.#inputPassword = inputs[0];
         this.#repetInputpassword = inputs[1];
         this.#strengthMessage = strengthMessage;
         this.#strengthMeter = strengthMeter;
+        this.#identicalMessage = identicalMessage;
     }
     /**
      * Metoda inicjująca.
@@ -34,26 +40,36 @@ export default class PasswordCheck {
      *
      * @returns Zwraca siłę hasła | Number.
      */
-    getStrength = () => this.#strengthPass;
+    getInfo = () =>
+        (this.#infoPass = {
+            strength: this.#strengthPass,
+            identical: this.#isIdentical,
+        });
+    /**
+     *
+     * @returns Zwraca informacje czy hasła są identyczne | Boolen
+     */
     #eventListeners() {
         this.#inputPassword.addEventListener('input', this.#checkStrength);
+        this.#repetInputpassword.addEventListener('input', this.#checkIdentical);
     }
     #checkStrength = (event) => {
-        let pwd = event.target.value;
+        this.#pwd = event.target.value;
 
-        if (pwd.length == 0) {
+        this.test();
+        if (this.#pwd.length == 0) {
             this.#statusDisplay(0);
             this.#strengthPass = 0;
             this.#strengthMessage.innerHTML = this.#userMessage.empty;
-        } else if (false === this.#enoughRegex(pwd)) {
+        } else if (false === this.#enoughRegex(this.#pwd)) {
             this.#statusDisplay(25);
             this.#strengthPass = 0;
             this.#strengthMessage.innerHTML = this.#userMessage.worst;
-        } else if (this.#strongRegex(pwd)) {
+        } else if (this.#strongRegex(this.#pwd)) {
             this.#statusDisplay(100);
             this.#strengthPass = 3;
             this.#strengthMessage.innerHTML = this.#userMessage.strong;
-        } else if (this.#mediumRegex(pwd)) {
+        } else if (this.#mediumRegex(this.#pwd)) {
             this.#statusDisplay(75);
             this.#strengthPass = 2;
             this.#strengthMessage.innerHTML = this.#userMessage.medium;
@@ -87,7 +103,19 @@ export default class PasswordCheck {
                 break;
         }
     }
-    #isIdentical() {}
+    #checkIdentical = (event) => {
+        this.#identPwd = event.target.value;
+        this.test();
+    };
+    test() {
+        if (this.#pwd !== this.#identPwd) {
+            this.#identicalMessage.innerHTML = 'Hasła są różne';
+            this.#isIdentical = false;
+        } else if (this.#identPwd.length) {
+            this.#isIdentical = true;
+            this.#identicalMessage.innerHTML = 'OK';
+        }
+    }
     #strongRegex = (char) => new RegExp('^(?=.{14,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$', 'g').test(char);
     #mediumRegex = (char) => new RegExp('^(?=.{10,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$', 'g').test(char);
     #enoughRegex = (char) => new RegExp('(?=.{8,}).*', 'g').test(char);

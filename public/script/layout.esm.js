@@ -2,18 +2,21 @@
 import NavSticky from './modules/layout/NavSticky.esm.js';
 import SmoothTop from './modules/layout/SmoothTop.esm.js';
 
+const domObjects = {
+    home: document.querySelector('[data-page="home_nav"]'),
+    nav: document.querySelector('[data-page="nav"]'),
+    pageUp: document.querySelector('[data-page="page_up"]'),
+    main: document.querySelector('[data-page="main"]'),
+};
+
 class Layout {
-    #domObjects = {
-        home: document.querySelector('[data-page="home_nav"]'),
-        nav: document.querySelector('[data-page="nav"]'),
-        pageUp: document.querySelector('[data-page="page_up"]'),
-        main: document.querySelector('[data-page="main"]'),
-    };
+    #domObjects;
     /**
      * Fabryka zarządzająca wyglądem strony.
      */
-    constructor() {
-        this.NavSticky = new NavSticky(this.#domObjects);
+    constructor(domObjects) {
+        this.#domObjects = domObjects;
+        this.NavSticky = new NavSticky(domObjects);
         this.Smooth = new SmoothTop();
     }
     /**
@@ -28,4 +31,4 @@ class Layout {
     }
 }
 
-new Layout().init();
+new Layout(domObjects).init();

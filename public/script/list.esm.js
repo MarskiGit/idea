@@ -1,27 +1,18 @@
 'use strict';
+import { setingRequest } from './modules/seting.esm.js';
 import Idea from './modules/listIdea/Idea.esm.js';
 import Exception from './modules//Exception.esm.js';
 import Request from './modules//Request.esm.js';
 
+setingRequest.#Ajax.cache = 'default';
+
 const domObjects = {
     listContainer: document.querySelector('[data-list="list_container"]'),
 };
-const setingRequest = {
-    ajax: {
-        method: 'POST',
-        mode: 'cors',
-        cache: 'default',
-        credentials: 'same-origin',
-        headers: {
-            'Content-Type': 'application/json; charset=utf-8',
-        },
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer',
-    },
-    url: 'index.php',
-};
 
 class List {
+    #Exception;
+    #Ajax;
     #request = {
         request: 'listIdea',
         last_tuple: 0,
@@ -35,8 +26,8 @@ class List {
      */
     constructor(domObjects, setingRequest) {
         this.#listContainer = domObjects.listContainer;
-        this.Exception = new Exception();
-        this.Ajax = new Request(setingRequest);
+        this.#Exception = new Exception();
+        this.#Ajax = new Request(setingRequest);
     }
     /**
      * Metoda inicjująca.
@@ -52,7 +43,8 @@ class List {
     #sendRequest = () => {
         if (!this.#endTuples) {
             document.body.style.cursor = 'progress';
-            this.Ajax.getJson(this.#request)
+            this.#Ajax
+                .getJson(this.#request)
                 .then((data) => this.#check(data))
                 .finally((document.body.style.cursor = 'default'));
         }
@@ -64,7 +56,7 @@ class List {
             data.length ? this.#renderList(data) : this.#emptyList();
         } else {
             this.#listContainer.classList.remove('idea_container');
-            this.Exception.view(status);
+            this.#Exception.view(status);
         }
     }
     #renderList(data) {

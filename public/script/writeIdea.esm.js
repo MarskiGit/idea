@@ -1,27 +1,14 @@
 'use strict';
+import { setingRequest } from './modules/seting.esm.js';
 import FormHandling from './modules/FormHandling.esm.js';
 import Rating from './modules/write/Rating.esm.js';
 import LiveSearch from './modules/write/LiveSearch.esm.js';
 import CountCharacters from './modules/write/CountCharacters.esm.js';
 import Request from './modules/Request.esm.js';
 
-const setingRequest = {
-    ajax: {
-        method: 'POST',
-        mode: 'cors',
-        cache: 'no-store',
-        credentials: 'same-origin',
-        headers: {
-            'Content-Type': 'application/json; charset=utf-8',
-        },
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer',
-    },
-    url: 'index.php',
-};
-
 const formObjects = {
-    registration: false,
+    isPassword: false,
+    request: 'iaddIdea',
     form: document.querySelector('[data-write="form"]'),
     errorMessage: document.querySelector('[data-write="form_error"]'),
     viewPoints: document.querySelector('[data-write="view_points"]'),
@@ -39,11 +26,8 @@ const areaSearch = {
 };
 
 class WriteIdea {
-    #Request;
-    #request = {
-        request: 'ideaWrite',
-    };
-
+    #Ajax;
+    #request = {};
     #inputSearch;
     /**
      * Fabryka odpowiedzialna za formularz IDEA.
@@ -53,7 +37,8 @@ class WriteIdea {
      */
     constructor(formObjects, userSearch, areaSearch, setingRequest) {
         this.FormHandling = new FormHandling(formObjects);
-        this.#Request = new Request(setingRequest);
+        this.#request.request = formObjects.request;
+        this.#Ajax = new Request(setingRequest);
 
         this.#inputSearch = this.FormHandling.getInputs(['INPUT'], 'search');
 

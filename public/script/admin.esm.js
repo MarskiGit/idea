@@ -1,22 +1,22 @@
-import Registration from './modules/admin/Registration.esm.js';
+'use strict';
+import { setingRequest } from './modules/seting.esm.js';
+import Registration from './modules/Registration.esm.js';
 
 const areaObjects = {
-    registration: false,
+    isPassword: false,
     request: 'addArea',
-    url: 'index.php',
     form: document.querySelector('[data-registration="form_area"]'),
     errorMessage: document.querySelector('[data-registration="area_error"]'),
 };
 const userObjects = {
-    registration: false,
+    isPassword: false,
     request: 'addUser',
-    url: 'index.php',
     form: document.querySelector('[data-registration="form_account"]'),
     errorMessage: document.querySelector('[data-registration="account_error"]'),
 };
 
-const addArea = new Registration(areaObjects);
+const addArea = new Registration(areaObjects, setingRequest);
 
-const addUser = new Registration(userObjects);
+const addUser = new Registration(userObjects, setingRequest);
 addArea.init();
 addUser.init();

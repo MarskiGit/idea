@@ -1,4 +1,10 @@
 <?php
+// !!! Pozostawić w takiej formie - nie zmieniać !!!
+define('DEFAULT_PAPPER', 's9m2ajfPP[32^B:');
+// !!! Leave it as it is - do not change it  !!!
+
+
+
 define('DIR_TEMPLATE', 'template/');
 define('DIR_CONTROLLER', 'src/controller/');
 define('DIR_VIEW', 'src/view/');

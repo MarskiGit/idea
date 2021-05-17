@@ -32,22 +32,23 @@
                         </fieldset>
 
                         <div style="display: none">
-                            <p class="strength_message" data-registration="strength_message"></p>
-                            <div class="meter">
-                                <span class="strength" data-registration="strength_meter"></span>
-                            </div>
-                            <fieldset class="wrap-input_my">
+                            <!-- <fieldset class="wrap-input_my">
+                                <p class="strength_message" data-registration="strength_message"></p>
+                                <div class="meter">
+                                    <span class="strength" data-registration="strength_meter"></span>
+                                </div>
                                 <input class="input_my" type="password" name="password" data-registration="password">
                                 <span class="focus-input_my"></span>
                                 <span class="label-input_my">Hasło</span>
                             </fieldset>
                             <fieldset class="wrap-input_my">
+                                <p class="strength_message" data-registration="identical_message"></p>
                                 <input class="input_my" type="password" name="repeat_password" data-registration="repeat_password">
                                 <span class="focus-input_my"></span>
                                 <span class="label-input_my">Powtórz hasło</span>
-                            </fieldset>
-
+                            </fieldset> -->
                         </div>
+
                         <fieldset class="wrap-input_my">
                             <input class="input_my" type="number" name="id_pass" min="0" step="1" maxlength="4">
                             <span class="focus-input_my"></span>

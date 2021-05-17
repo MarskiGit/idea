@@ -6,7 +6,7 @@ export default class FormHandling {
     #fieldsValue;
     #data;
     #formObjects;
-    #registration;
+    #isPassword;
     #params = {};
     /**
      * Klasa abstrakcyjna do obsługi formularzy.
@@ -16,7 +16,7 @@ export default class FormHandling {
         this.form = formObjects.form;
         this.getInputs = this.#findInputs();
         this.#formObjects = formObjects;
-        this.#registration = formObjects.registration;
+        this.#isPassword = formObjects.isPassword;
     }
     /**
      * Metoda inicjująca.
@@ -48,9 +48,9 @@ export default class FormHandling {
         return this.#params;
     }
     /**
-     * @returns Zwraca siłę hasła | Number.
+     * @returns Zwraca siłę hasła gdy formularz tego wymaga | Number.
      */
-    getStrenghtPass = () => this.#PasswordCheck.getStrength();
+    getInfoPass = () => this.#isPassword && this.#PasswordCheck.getInfo();
     /**
      * @returns Sprawdź, czy pola są puste | Boolean.
      */
@@ -79,11 +79,12 @@ export default class FormHandling {
      * Fabryka obiektów.
      */
     #factory() {
-        if (this.#registration) {
+        if (this.#isPassword) {
             this.#PasswordCheck = new PasswordCheck(
                 this.getInputs(['INPUT'], 'password'),
                 this.#formObjects.strengthMessage,
-                this.#formObjects.strengthMeter
+                this.#formObjects.strengthMeter,
+                this.#formObjects.identicalMessage
             );
             this.#PasswordCheck.init();
         }
@@ -91,6 +92,7 @@ export default class FormHandling {
     #formData() {
         this.#data = new FormData(this.form);
         this.#fieldsValue = [...this.#data.values()];
+        console.log(this.#fieldsValue, this.#fieldsValue.length);
         return this.#fieldsValue.length;
     }
 }
