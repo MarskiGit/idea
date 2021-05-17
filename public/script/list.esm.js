@@ -21,17 +21,12 @@ class List {
     #listContainer;
     #tupleNumbers = [];
     #endTuples = false;
-    /**
-     *  Klasa renderująca i obsługująca listę pomysłów w HTML.
-     */
+
     constructor(domObjects, setingRequest) {
         this.#listContainer = domObjects.listContainer;
         this.#Exception = new Exception();
         this.#Ajax = new Request(setingRequest);
     }
-    /**
-     * Metoda inicjująca.
-     */
     init() {
         this.LastTuple = this.#findLastTuple();
         this.#sendRequest();

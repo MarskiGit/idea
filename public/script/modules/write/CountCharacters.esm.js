@@ -6,10 +6,6 @@ export default class CountCharacters {
     #textLenght;
     #textAreas;
     #signNumber;
-    /**
-     * Klasa, zliczając liczbę wpisanych znaków w obszarze tekstowym.
-     * @param {!object} textAreas Tablicą z obiektami DOM typu textarea.
-     */
     constructor(textAreas, signNumber) {
         this.#textAreas = textAreas;
         this.#signNumber = signNumber;

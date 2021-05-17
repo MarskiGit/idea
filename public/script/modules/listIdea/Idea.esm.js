@@ -13,11 +13,6 @@ export default class Idea {
     #before_value;
     #after_value;
     #date_implementation;
-
-    /**
-     *  Klasa renderująca pomysł w HTML.
-     * @param {!object} param0 Obiekt zawierający zestaw informacji potrzebny do wy renderowania pomysłu w HTML - destukturyzacja.
-     */
     constructor({ status, id_idea, creators, pkt_mod, date_added, before_value, after_value, date_implementation }) {
         this.#status = status;
         this.#id = id_idea;
@@ -29,13 +24,7 @@ export default class Idea {
         this.#date_implementation = date_implementation;
         this.#init();
     }
-    /**
-     * @returns Zwraca wy renderowany obiekt DOM z informacjami idea | Obiekt DOM.
-     */
     getIdea = () => this.#div;
-    /**
-     * Metoda inicjująca.
-     */
     #init() {
         this.#status = this.#statusInformation(parseInt(this.#status, 10));
         this.#createElement();

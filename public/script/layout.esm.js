@@ -11,17 +11,11 @@ const domObjects = {
 
 class Layout {
     #domObjects;
-    /**
-     * Fabryka zarządzająca wyglądem strony.
-     */
     constructor(domObjects) {
         this.#domObjects = domObjects;
         this.NavSticky = new NavSticky(domObjects);
         this.Smooth = new SmoothTop();
     }
-    /**
-     * Metoda inicjująca.
-     */
     init() {
         this.NavSticky.init();
         this.#eventListeners();

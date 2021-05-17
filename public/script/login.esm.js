@@ -14,11 +14,6 @@ class Login {
     #Ajax;
     #inputList;
     #request = {};
-
-    /**
-     * Obsługa formularza logowania.
-     * @param {!object} formObjects Obiekt z elementami DOM formularza.
-     */
     constructor(formObjects, setingRequest) {
         this.FormHandling = new FormHandling(formObjects);
         this.errorMessage = formObjects.errorMessage;
@@ -27,9 +22,7 @@ class Login {
         this.#Ajax = new Request(setingRequest);
         this.#inputList = this.FormHandling.getInputs(['INPUT']);
     }
-    /**
-     * Metoda inicjująca.
-     */
+
     init() {
         this.FormHandling.init();
         this.#onBlur();
@@ -38,10 +31,6 @@ class Login {
     #eventListeners() {
         this.FormHandling.form.addEventListener('submit', this.#formValidation);
     }
-    /**
-     * Walidacja formularza.
-     * @param {!object} event Obiekt zdarzenia submit.
-     */
     #formValidation = (event) => {
         event.preventDefault();
         if (this.FormHandling.emptyFields()) {

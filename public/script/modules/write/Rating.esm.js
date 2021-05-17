@@ -4,11 +4,6 @@ export default class Rating {
     #defaultPoint;
     #selectCollection;
     #allOptions;
-    /**
-     * Zlicza punkty w formularzu.
-     * @param {!object} selectCollection Kolekcja list rozwijanych.
-     * @param {!object} viewPoints Element DOM wyświetlania punktów.
-     */
     constructor(selectCollection, viewPoints) {
         this.#viewPoints = viewPoints;
         this.#selectCollection = selectCollection;
@@ -24,13 +19,7 @@ export default class Rating {
             })
         );
     }
-    /**
-     * @returns Zwaraca sumę punktów.
-     */
     getPoints = () => parseInt(this.#viewPoints.textContent);
-    /**
-     * @returns Zwraca tablicę z zanaczonym wyborem string | Array.
-     */
     getValueString = () => this.#allOptions.filter(this.#filterString);
     setDefault() {
         this.#selectCollection.forEach((op) => (op.selectedIndex = 0));

@@ -7,13 +7,6 @@ export default class Registration {
     #inputList;
     #params;
     #request = {};
-
-    /**
-     * Obsługa formularza rejestracji.
-     * Dziedziczy z FormHandling.
-     * @param {!object} formObjects Obiekt z elementami DOM formularza.
-     * @param {!object} setingRequest Obiekt z elementami ustawień dla Ajax.
-     */
     constructor(formObjects, setingRequest) {
         this.FormHandling = new FormHandling(formObjects);
         this.errorMessage = formObjects.errorMessage;
@@ -22,9 +15,7 @@ export default class Registration {
         this.#Ajax = new Request(setingRequest);
         this.#inputList = this.FormHandling.getInputs(['INPUT']);
     }
-    /**
-     * Metoda inicjująca.
-     */
+
     init() {
         this.FormHandling.init();
         this.#onBlur();
@@ -33,10 +24,6 @@ export default class Registration {
     #eventListeners() {
         this.FormHandling.form.addEventListener('submit', this.#formValidation);
     }
-    /**
-     * Walidacja formularza.
-     * @param {!object} event Obiekt zdarzenia submit.
-     */
     #formValidation = (event) => {
         event.preventDefault();
         if (this.FormHandling.emptyFields()) {

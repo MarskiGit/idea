@@ -17,12 +17,6 @@ export default class PasswordCheck {
     #identicalMessage;
     #identPwd;
     #infoPass;
-    /**
-     * Klasa sprawdzająca siłę hasła.
-     * @param {!object} inpute Tablica input
-     * @param {!object} strengthMessage Obiekt DOM span komunikatu tekstowego.
-     * @param {!object} strengthMeter Obiekt DOM wizualny wskaźnik siły hasła.
-     */
     constructor(inputs, strengthMessage, strengthMeter, identicalMessage) {
         this.#inputPassword = inputs[0];
         this.#repetInputpassword = inputs[1];
@@ -30,25 +24,14 @@ export default class PasswordCheck {
         this.#strengthMeter = strengthMeter;
         this.#identicalMessage = identicalMessage;
     }
-    /**
-     * Metoda inicjująca.
-     */
     init() {
         this.#eventListeners();
     }
-    /**
-     *
-     * @returns Zwraca siłę hasła | Number.
-     */
     getInfo = () =>
         (this.#infoPass = {
             strength: this.#strengthPass,
             identical: this.#isIdentical,
         });
-    /**
-     *
-     * @returns Zwraca informacje czy hasła są identyczne | Boolen
-     */
     #eventListeners() {
         this.#inputPassword.addEventListener('input', this.#checkStrength);
         this.#repetInputpassword.addEventListener('input', this.#checkIdentical);

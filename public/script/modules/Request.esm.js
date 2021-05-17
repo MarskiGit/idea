@@ -1,17 +1,9 @@
 'use strict';
 export default class Request {
-    /**
-     * Klasa obsługująca żądania Ajax.
-     * @param {!object} ssetingRequest Ustawienia Ajax wraz ze ścieżką do pliku.
-     */
     constructor(setingRequest) {
         this.seting = setingRequest.ajax;
         this.url = setingRequest.url;
     }
-    /**
-     * @param {!object} request Parametry żądania dla serwera.
-     * @returns Zwraca odpowiedź z serwera | JSON.
-     */
     async getJson(request) {
         this.seting.body = JSON.stringify(request);
 

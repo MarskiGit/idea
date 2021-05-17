@@ -8,56 +8,32 @@ export default class FormHandling {
     #formObjects;
     #isPassword;
     #params = {};
-    /**
-     * Klasa abstrakcyjna do obsługi formularzy.
-     * @param {!object} formObjects Elementy formularza.
-     */
     constructor(formObjects) {
         this.form = formObjects.form;
         this.getInputs = this.#findInputs();
         this.#formObjects = formObjects;
         this.#isPassword = formObjects.isPassword;
     }
-    /**
-     * Metoda inicjująca.
-     */
+
     init() {
         this.#factory();
     }
-    /**
-     * Wyświetla komunikat o błędzie.
-     */
+
     formError() {
         this.#formObjects.errorMessage.classList.add('span_error');
         setTimeout(() => this.#formObjects.errorMessage.classList.remove('span_error'), 2000);
     }
-    /**
-     * Czyści pola formularza.
-     */
     clearField() {
         this.getInputs(['INPUT', 'TEXTAREA']).forEach((e) => (e.value = ''));
     }
-    /**
-     *
-     * @returns Zwraca obiekt z danymi formularza.
-     */
     getValue() {
         for (const pair of this.#data.entries()) {
             this.#params[pair[0]] = pair[1];
         }
         return this.#params;
     }
-    /**
-     * @returns Zwraca siłę hasła gdy formularz tego wymaga | Number.
-     */
     getInfoPass = () => this.#isPassword && this.#PasswordCheck.getInfo();
-    /**
-     * @returns Sprawdź, czy pola są puste | Boolean.
-     */
     emptyFields = () => (this.#formData() === this.#fieldsValue.filter((e) => e !== '').length ? true : false);
-    /**
-     * Zwraca Tablice Elementów formularza
-     */
     #findInputs() {
         const collection = [...this.form];
 
@@ -75,9 +51,6 @@ export default class FormHandling {
             return find;
         };
     }
-    /**
-     * Fabryka obiektów.
-     */
     #factory() {
         if (this.#isPassword) {
             this.#PasswordCheck = new PasswordCheck(

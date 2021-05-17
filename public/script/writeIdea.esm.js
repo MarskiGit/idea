@@ -29,12 +29,6 @@ class WriteIdea {
     #Ajax;
     #request = {};
     #inputSearch;
-    /**
-     * Fabryka odpowiedzialna za formularz IDEA.
-     * @param {!object} formObjects Obiekt z elementami formularza.
-     * @param {!object} userSearch Obiekt z elementami DOM wyszukiwania Live użytkowników.
-     * @param {!object} areaSearch Obiekt z elementami DOM wyszukiwania Live obszarów.
-     */
     constructor(formObjects, userSearch, areaSearch, setingRequest) {
         this.FormHandling = new FormHandling(formObjects);
         this.#request.request = formObjects.request;
@@ -48,9 +42,6 @@ class WriteIdea {
         this.CountCharacters = new CountCharacters(this.FormHandling.getInputs(['TEXTAREA']), formObjects.signNumber);
         this.Rating = new Rating(this.FormHandling.getInputs(['SELECT']), formObjects.viewPoints);
     }
-    /**
-     * Metoda inicjująca.
-     */
     init() {
         this.FormHandling.init();
         this.UserSearch.init();
@@ -62,10 +53,6 @@ class WriteIdea {
     #eventListeners() {
         this.FormHandling.form.addEventListener('submit', this.#formValidation);
     }
-    /**
-     * Walidacja formularza.
-     * @param {!object} event Obiekt zdarzenia submit.
-     */
     #formValidation = (event) => {
         event.preventDefault();
 
@@ -76,9 +63,6 @@ class WriteIdea {
             this.FormHandling.formError();
         }
     };
-    /**
-     * Czyści wejścia w formularzu.
-     */
     #clearForm() {
         this.FormHandling.clearField();
         this.CountCharacters.clearLenghtCharacters();
@@ -88,9 +72,6 @@ class WriteIdea {
         this.AreaSearch.closeList();
         this.AreaSearch.clearChosen();
     }
-    /**
-     * Pobiera dane z formularza.
-     */
     #getrequestForm() {
         const { before, after } = this.FormHandling.getValue();
         this.#request.before = before;
@@ -102,10 +83,6 @@ class WriteIdea {
 
         console.log(this.#request);
     }
-    /**
-     *
-     * @returns Zwraca informację czy pola formularza są wypełnione.
-     */
     #emptyForm = () => !!(this.FormHandling.emptyFields() && this.UserSearch.whetherListCompleted() && this.AreaSearch.whetherListCompleted());
 }
 

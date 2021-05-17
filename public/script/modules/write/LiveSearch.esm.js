@@ -11,13 +11,6 @@ export default class LiveSearch {
     #inputSearch;
     #listResults;
     #fragmentList = document.createDocumentFragment();
-
-    /**
-     * Klasa odpowiedzialna za wyszukiwanie na żywo.
-     * @param {!object} listResults Obiekt DOM w którym wyświetlane są wyniki szukania.
-     * @param {!object} inputSearch Obiekt DOM input.
-     * @param {!object} request Obiekt z typem żądania.
-     */
     constructor(inputSearch, searchObjects) {
         this.#listResults = searchObjects.listResults;
         this.#inputSearch = inputSearch;
@@ -30,24 +23,12 @@ export default class LiveSearch {
     init() {
         this.#eventListeners();
     }
-    /**
-     * @returns Sprawdza, czy lista jest uzupełniona. | Boolean.
-     */
     whetherListCompleted = () => !!this.getSelectedId().length;
-    /**
-     * @returns Zwraca listę wybranych id. | Array
-     */
     getSelectedId = () => this.#Choose.getID();
-    /**
-     * Czyści i zamyka listę wyszukanych elementów.
-     */
     closeList() {
         this.#listResults.classList.remove('on');
         this.#removeLI();
     }
-    /**
-     * Czyści listę wybranych elementów
-     */
     clearChosen() {
         this.#Choose.closeSelectedList();
     }
