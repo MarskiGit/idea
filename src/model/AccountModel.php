@@ -83,7 +83,7 @@ class AccountModel extends AbstractModel
     public function login(): array
     {
         try {
-            $stmt = $this->DB->prepare('SELECT id_account, full_name, account_password, rang FROM account WHERE (account_login = :account_login) AND (active = 1)');
+            $stmt = $this->DB->prepare('SELECT id_account, full_name, account_password, account_login, rang FROM account WHERE (account_login = :account_login) AND (active = 1)');
             $stmt->bindValue(':account_login', $this->requestParam['login'], PDO::PARAM_STR);
             $stmt->execute();
         } catch (PDOException $e) {
@@ -92,7 +92,7 @@ class AccountModel extends AbstractModel
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if (is_array($row)) {
-            if (password_verify($this->requestParam['password'], $row['account_password'])) {
+            if (password_verify($this->requestParam['password'], $row['account_password']) && $this->requestParam['login'] === $row['account_login']) {
 
                 $user = [
                     'rang' => $row['rang'],
