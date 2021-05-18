@@ -11,18 +11,19 @@
 
 <body>
     <main>
-        <section class="section_container">
-            <h1>Super Admin</h1>
+        <section class="wrap_form">
+            <h4>Dodawanie Super Admina</h4>
             <form data-registration="form" class="align_center" novalidate>
 
                 <span class="massage_error" data-registration="form_error">Uzupełnij wszystkie pola.</span>
                 <fieldset class="wrap-input_my">
-                    <input class="input_my" type="text" name="full_name">
                     <span class="label-input_my">Imie i Nazwisko</span>
+                    <input class="input_my" type="text" name="full_name">
+
                 </fieldset>
                 <fieldset class="wrap-input_my">
-                    <input class="input_my" type="text" name="login">
                     <span class="label-input_my">Login</span>
+                    <input class="input_my" type="text" name="login">
                 </fieldset>
 
                 <fieldset class="wrap-input_my">
@@ -30,25 +31,29 @@
                     <div class="meter">
                         <span class="strength" data-registration="strength_meter"></span>
                     </div>
-                    <input class="input_my" type="password" name="password" data-registration="password">
                     <span class="label-input_my">Hasło</span>
+                    <input class="input_my" type="password" name="password" data-registration="password">
+
                 </fieldset>
                 <fieldset class="wrap-input_my">
                     <p class="strength_message" data-registration="identical_message"></p>
-                    <input class="input_my" type="password" name="repeat_password" data-registration="repeat_password">
                     <span class="label-input_my">Powtórz hasło</span>
+                    <input class="input_my" type="password" name="repeat_password" data-registration="repeat_password">
+
                 </fieldset>
 
                 <fieldset class="wrap-input_my">
-                    <input class="input_my" type="number" name="id_pass" min="0" step="1" maxlength="4">
                     <span class="label-input_my">Identyfikator</span>
+                    <input class="input_my" type="number" name="id_pass" min="0" step="1" maxlength="4">
+
                 </fieldset>
                 <fieldset class="wrap-input_my">
+                    <span class="label-input_my">Ranga</span>
                     <select class="input_my has-val" name="rang" data-select="number">
                         <option value="2">Administrator</option>
                     </select>
 
-                    <span class="label-input_my">Ranga</span>
+
 
                 </fieldset>
                 <button type="submit" class="button_subbmit">Dodaj</button>

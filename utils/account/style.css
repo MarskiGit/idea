@@ -1,16 +1,95 @@
+* {
+    vertical-align: baseline;
+    font-weight: inherit;
+    font-family: inherit;
+    font-style: inherit;
+    font-size: 100%;
+}
+*,
+*:before,
+*:after {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    vertical-align: baseline;
+    background-color: transparent;
+    box-sizing: border-box;
+}
+html {
+    font-size: calc(16px + (24 - 16) * (100vw - 400px) / (1920 - 360));
+    scroll-behavior: smooth;
+}
+
+button:active,
+button:hover,
+button:focus,
+input:active,
+input:hover,
+input:focus,
+textarea:active,
+textarea:hover,
+textarea:focus {
+    outline: 0px transparent !important;
+    outline-width: 0 !important;
+    box-shadow: none;
+}
 h1 {
     letter-spacing: 0.229rem;
     font-size: 1.3rem;
 }
-form {
+.h1 {
+    letter-spacing: 0.229rem;
+    font-size: 1.3rem;
+}
+.section_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: baseline;
+    flex-wrap: wrap;
+    background-color: #e5f4f8;
+}
+.wrap_form {
     font-family: 'Montserrat', sans-serif;
     min-width: 450px;
-    display: flex;
-    flex-direction: column;
     width: 25vw;
-    padding: 1rem;
-    border-radius: 1rem;
-    background: linear-gradient(145deg, #e5f4f8, #fff);
+    margin: 0.7rem;
+    padding: 1rem 0.5rem;
+    background-color: #e5f4f8;
+    border: 1px solid #cccccc;
+}
+.wrap-input_my {
+    width: 100%;
+    border: 1px solid #cccccc;
+    margin-bottom: 0.5rem;
+}
+.wrap-input_my .label-input_my {
+    font-size: 0.7rem;
+    color: #999;
+    pointer-events: none;
+    width: 100%;
+    padding-left: 0.3rem;
+}
+.wrap-input_my .input_my {
+    width: 100%;
+    background-color: transparent;
+    font-family: Montserrat-Regular;
+    font-size: 1rem;
+    color: #555;
+    padding: 0 0.3rem 0.3rem 0.3rem;
+}
+.wrap-input_my .input_my:focus {
+    background-color: #f2fbfd;
+}
+button {
+    padding: 0.7rem 1.7rem;
+    border: 1px solid #cccccc;
+    cursor: pointer;
+    transition: 0.3s all;
+}
+button:hover {
+    background-color: #cccccc;
 }
 .strength_message {
     font-size: 0.6rem;
@@ -63,71 +142,7 @@ form {
     width: 0;
     background-color: transparent;
 }
-.wrap-input_my {
-    position: relative;
-    display: flex;
-    flex-wrap: wrap;
-    padding: 0.2rem 0.2rem 0 0.2rem;
-    width: 100%;
-    border: 1px solid #e6e6e6;
-    border-radius: 0.3rem;
-    margin-bottom: 0.5rem;
-}
-.label-input_my {
-    display: block;
-    font-size: 1rem;
-    color: #999;
-    pointer-events: none;
-    width: 100%;
-    padding-left: 0.2rem;
-    left: 0;
-    transition: all 0.4s;
-}
-.input_my {
-    display: block;
-    width: 100%;
-    background: 0 0;
-    font-family: Montserrat-Regular;
-    font-size: 1rem;
-    color: #555;
-    padding: 0.3rem 0.6rem 0 0.6rem;
-    border: 1px solid brown;
-}
-.input_my:focus {
-    height: 2rem;
-}
-.input_my:focus + .focus-input_my {
-    visibility: visible;
-    opacity: 1;
-    transform: scale(1);
-}
-.input_my:focus + .focus-input_my + .label-input_my {
-    top: 1px;
-    font-size: 0.5rem;
-}
-input.input_my {
-    height: 2rem;
-}
 
-.has-val {
-    height: 2rem !important;
-}
-.has-val + .focus-input_my + .label-input_my {
-    top: 1px;
-    font-size: 0.5rem;
-}
-.button_subbmit {
-    touch-action: manipulation;
-    text-transform: uppercase;
-    cursor: pointer;
-    width: 50%;
-    padding: 0.5rem 0;
-    border: 1px solid #29303b;
-    border-radius: 0.2rem;
-    transition-property: all;
-    transition-duration: 0.3s;
-    transition-timing-function: ease;
-}
 .massage_error {
     opacity: 0;
     font-size: 0.7rem;
