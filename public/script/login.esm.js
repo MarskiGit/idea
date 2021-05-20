@@ -4,10 +4,10 @@ import FormValidation from './modules/FormValidation.esm.js';
 import Request from './modules/Request.esm.js';
 
 const formObjects = {
-    registration: false,
+    isPassword: false,
     request: 'signIn',
-    form: document.querySelector('[data-signin="form"]'),
-    errorMessage: document.querySelector('[data-signin="form_error"]'),
+    form: document.querySelector('[data-form="login"]'),
+    errorMessage: document.querySelector('[data-form="message"]'),
 };
 
 class Login {
@@ -47,13 +47,12 @@ class Login {
                     if (data.ok === true) {
                         location.replace(localhost);
                     } else {
-                        this.errorMessage.textContent = 'Podano błędne dane logowania';
-                        this.FormValidation.formError();
+                        this.FormValidation.showMessage('Podano błędne dane logowania');
                     }
                 })
                 .finally((document.body.style.cursor = 'default'));
         } else {
-            this.FormValidation.formError();
+            this.FormValidation.showMessage('Uzupełnij wszystkie pola');
         }
     };
     #onBlur() {

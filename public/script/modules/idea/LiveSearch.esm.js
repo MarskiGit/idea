@@ -70,7 +70,7 @@ export default class LiveSearch {
         this.#inputSearch.labels[0].textContent = text;
     }
     #valueSought(target) {
-        if (target.dataset.write === 'creator_search') {
+        if (target.dataset.search === 'creator_search') {
             Number(target.value) ? (this.#request.select = 'id_pass') : (this.#request.select = 'full_name');
             this.#request.full_name = target.value;
         } else {

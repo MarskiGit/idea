@@ -1,25 +1,22 @@
 'use strict';
 import { setingRequest } from './modules/seting.esm.js';
-import Registration from './modules/Registration.esm.js';
+import FormHandling from './modules/FormHandling.esm.js';
 
 const areaObjects = {
     isPassword: false,
     request: 'addArea',
-    form: document.querySelector('[data-registration="form_area"]'),
-    errorMessage: document.querySelector('[data-registration="area_error"]'),
+    form: document.querySelector('[data-form="area"]'),
+    errorMessage: document.querySelector('[data-form="area_message"]'),
 };
 const userObjects = {
     isPassword: false,
     request: 'addUser',
-    form: document.querySelector('[data-registration="form_account"]'),
-    errorMessage: document.querySelector('[data-registration="account_error"]'),
+    form: document.querySelector('[data-form="account"]'),
+    errorMessage: document.querySelector('[data-form="account_message"]'),
 };
 
-const addArea = new Registration(areaObjects, setingRequest);
-
-const addUser = new Registration(userObjects, setingRequest);
-addArea.init();
-addUser.init();
+const addArea = new FormHandling(areaObjects, setingRequest).init();
+const addUser = new FormHandling(userObjects, setingRequest).init();
 
 class Admin {
     constructor() {}

@@ -2,7 +2,7 @@
 import FormValidation from './FormValidation.esm.js';
 import Request from './Request.esm.js';
 
-export default class Registration {
+export default class FormHandling {
     #Ajax;
     #inputList;
     #params;
@@ -21,9 +21,9 @@ export default class Registration {
         this.#eventListeners();
     }
     #eventListeners() {
-        this.FormValidation.form.addEventListener('submit', this.#formHandling);
+        this.FormValidation.form.addEventListener('submit', this.#handling);
     }
-    #formHandling = (event) => {
+    #handling = (event) => {
         event.preventDefault();
         if (this.FormValidation.emptyFields()) {
             const { strength = 3, identical = true } = this.FormValidation.getInfoPass();
@@ -36,23 +36,19 @@ export default class Registration {
                     };
 
                     console.log(this.#request);
-                    // this.#Ajax
-                    //     .getJson(this.#request)
-                    //     .then((data) => {
-                    //         if (data.ok === true) {
-                    //             this.FormValidation.clearField();
-                    //             this.$showMasage('Dodano z powodzeniem');
-                    //         } else {
-                    //             this.$showMasage(`${data.title}: ${data.account}`);
-                    //         }
-                    //     })
-                    //     .finally((document.body.style.cursor = 'default'));
-                } else this.$showMasage('Zastosuj takie same hasła');
-            } else this.$showMasage('Hasło musi być silne');
-        } else this.$showMasage('Uzupełnij wszystkie pola.');
+                    this.#Ajax
+                        .getJson(this.#request)
+                        .then((data) => {
+                            if (data.ok === true) {
+                                this.FormValidation.clearField();
+                                this.FormValidation.showMessage('Dodano z powodzeniem');
+                            } else {
+                                this.FormValidation.showMessage(`${data.title}: ${data.account}`);
+                            }
+                        })
+                        .finally((document.body.style.cursor = 'default'));
+                } else this.FormValidation.showMessage('Zastosuj takie same hasła');
+            } else this.FormValidation.showMessage('Hasło musi być silne');
+        } else this.FormValidation.showMessage('Uzupełnij wszystkie pola.');
     };
-    $showMasage(messafe) {
-        this.errorMessage.textContent = `${messafe}`;
-        this.FormValidation.formError();
-    }
 }

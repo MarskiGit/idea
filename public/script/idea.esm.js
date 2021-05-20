@@ -1,28 +1,28 @@
 'use strict';
 import { setingRequest } from './modules/seting.esm.js';
 import FormValidation from './modules/FormValidation.esm.js';
-import Rating from './modules/write/Rating.esm.js';
-import LiveSearch from './modules/write/LiveSearch.esm.js';
-import CountCharacters from './modules/write/CountCharacters.esm.js';
+import Rating from './modules/idea/Rating.esm.js';
+import LiveSearch from './modules/idea/LiveSearch.esm.js';
+import CountCharacters from './modules/idea/CountCharacters.esm.js';
 import Request from './modules/Request.esm.js';
 
 const formObjects = {
     isPassword: false,
-    request: 'iaddIdea',
-    form: document.querySelector('[data-write="form"]'),
-    errorMessage: document.querySelector('[data-write="form_error"]'),
-    viewPoints: document.querySelector('[data-write="view_points"]'),
-    signNumber: document.querySelectorAll('[data-write="sign_number"]'),
+    request: 'addIdea',
+    form: document.querySelector('[data-form="idea"]'),
+    errorMessage: document.querySelector('[data-form="idea_message"]'),
+    viewPoints: document.querySelector('[data-form="view_points"]'),
+    signNumber: document.querySelectorAll('[data-form="sign_number"]'),
 };
 const search = {
     userSearch: {
-        listResults: document.querySelector('[data-write="ul_creator"]'),
-        selectedList: document.querySelector('[data-write="chosen_ones"]'),
+        listResults: document.querySelector('[data-search="ul_creator"]'),
+        selectedList: document.querySelector('[data-search="chosen_ones"]'),
         request: 'creatorSearch',
     },
     areaSearch: {
-        listResults: document.querySelector('[data-write="ul_area"]'),
-        selectedList: document.querySelector('[data-write="chosen_ones_area"]'),
+        listResults: document.querySelector('[data-search="ul_area"]'),
+        selectedList: document.querySelector('[data-search="chosen_ones_area"]'),
         request: 'areaSearch',
     },
 };
@@ -62,7 +62,7 @@ class Idea {
             this.#getrequestForm();
             this.#clearForm();
         } else {
-            this.FormValidation.formError();
+            this.FormValidation.showMessage('Uzupełnij wszystkie pola.');
         }
     };
     #clearForm() {
@@ -87,5 +87,4 @@ class Idea {
     }
     #emptyForm = () => !!(this.FormValidation.emptyFields() && this.UserSearch.whetherListCompleted() && this.AreaSearch.whetherListCompleted());
 }
-
 new Idea(formObjects, search, setingRequest).init();

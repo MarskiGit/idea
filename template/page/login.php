@@ -3,9 +3,9 @@
     <section class="section_container">
         <h1>Witam</h1>
 
-        <form data-signin="form" class="align_center" novalidate>
+        <form data-form="login" class="align_center" novalidate>
 
-            <span class="massage_error" data-signin="form_error">Uzupełnij wszystkie pola.</span>
+            <span class="massage_error" data-form="message"></span>
             <fieldset class="wrap-input_my">
                 <input class="input_my" type="text" name="login">
                 <span class="focus-input_my"></span>

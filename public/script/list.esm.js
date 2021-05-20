@@ -1,6 +1,6 @@
 'use strict';
 import { setingRequest } from './modules/seting.esm.js';
-import Idea from './modules/listIdea/Idea.esm.js';
+import Idea from './modules/list/Idea.esm.js';
 import Exception from './modules//Exception.esm.js';
 import Request from './modules//Request.esm.js';
 

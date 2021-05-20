@@ -1,6 +1,6 @@
 'use strict';
 import { setingRequest } from '../../public/script/modules/seting.esm.js';
-import Registration from '../../public/script/modules/Registration.esm.js';
+import FormHandling from '../../public/script/modules/FormHandling.esm.js';
 
 setingRequest.url = '../../index.php';
 
@@ -14,4 +14,4 @@ const formObjects = {
     identicalMessage: document.querySelector('[data-registration="identical_message"]'),
 };
 
-new Registration(formObjects, setingRequest).init();
+new FormHandling(formObjects, setingRequest).init();

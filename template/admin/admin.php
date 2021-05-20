@@ -8,8 +8,8 @@
         <section class="container">
             <section class="wrap_form">
                 <h4>Dodaj Obszar</h4>
-                <form data-registration="form_area" novalidate>
-                    <span class="massage_error" data-registration="area_error">Uzupełnij wszystkie pola.</span>
+                <form data-form="area" novalidate>
+                    <span class="massage_error" data-form="area_message"></span>
                     <fieldset class="wrap-input_my">
                         <span class="label-input_my">Nazwa Obszaru</span>
                         <input class="input_my" type="text" name="area_name">
@@ -19,8 +19,8 @@
             </section>
             <section class="wrap_form">
                 <h4>Dodaj Użytkownika</h4>
-                <form data-registration="form_account" novalidate>
-                    <span class="massage_error" data-registration="account_error">Uzupełnij wszystkie pola.</span>
+                <form data-form="account" novalidate>
+                    <span class="massage_error" data-form="account_message"></span>
                     <fieldset class="wrap-input_my">
                         <span class="label-input_my">Imie i Nazwisko</span>
                         <input class="input_my" type="text" name="full_name">

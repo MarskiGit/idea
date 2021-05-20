@@ -104,7 +104,10 @@ class AccountModel extends AbstractModel
                 return $this->notification(['ok' => true]);
             }
         }
-        return $this->notification(['ok' => false]);
+        return $this->notification([
+            'ok' => false,
+            'title' => 'Podano błędne dane logowania'
+        ]);
     }
     public function logout(): array
     {

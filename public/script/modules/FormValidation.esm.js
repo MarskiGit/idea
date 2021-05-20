@@ -2,6 +2,7 @@
 import PasswordCheck from './PasswordCheck.esm.js';
 
 export default class FormValidation {
+    #errorMessage;
     #PasswordCheck;
     #fieldsValue;
     #data;
@@ -13,15 +14,17 @@ export default class FormValidation {
         this.getInputs = this.#findInputs();
         this.#formObjects = formObjects;
         this.#isPassword = formObjects.isPassword;
+        this.#errorMessage = formObjects.errorMessage;
     }
 
     init() {
         this.#factory();
     }
 
-    formError() {
-        this.#formObjects.errorMessage.classList.add('span_error');
-        setTimeout(() => this.#formObjects.errorMessage.classList.remove('span_error'), 2000);
+    showMessage(messafe) {
+        this.#errorMessage.textContent = `${messafe}`;
+        this.#errorMessage.classList.add('span_error');
+        setTimeout(() => this.#errorMessage.classList.remove('span_error'), 2000);
     }
     clearField() {
         this.getInputs(['INPUT', 'TEXTAREA']).forEach((e) => (e.value = ''));
