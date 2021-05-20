@@ -2,26 +2,34 @@
     <?php if (isset($_SESSION['account'])) : ?>
         <script type="module" src="./public/script/admin.esm.js"></script>
         <section class="container">
-            <p>Witaj: <?php echo  $_SESSION['account']['name'] ?></p>
+            <h2>Witaj: <?php echo  $_SESSION['account']['name'] ?></h2>
+            <ul>
+                <li><a rel="write section" href="?action=admin&move=stat" data-link="menu" class="li_button"><span>Zarządzanie</span></a></li>
+                <li><a rel="write section" href="?action=admin&move=area" data-link="menu" class="li_button"><span>Obszar</span></a></li>
+                <li><a rel="write section" href="?action=admin&move=user" data-link="menu" class="li_button"><span>Użytkownik</span></a></li>
+                <li><a rel="write section" href="?action=admin&move=stat" data-link="menu" class="li_button"><span>Statystyki</span></a></li>
+            </ul>
         </section>
 
         <section class="container">
             <section class="wrap_form">
-                <h4>Dodaj Obszar</h4>
+
                 <form data-form="area" novalidate>
-                    <span class="massage_error" data-form="area_message"></span>
+                    <legend>Dodaj Obszar</legend>
                     <fieldset class="wrap-input_my">
+
                         <span class="label-input_my">Nazwa Obszaru</span>
                         <input class="input_my" type="text" name="area_name">
                     </fieldset>
+                    <span class="massage_error" data-form="area_message"></span>
                     <button type="submit" class="button_subbmit">Dodaj</button>
                 </form>
             </section>
             <section class="wrap_form">
-                <h4>Dodaj Użytkownika</h4>
                 <form data-form="account" novalidate>
-                    <span class="massage_error" data-form="account_message"></span>
+                    <legend>Dodaj Użytkownika</legend>
                     <fieldset class="wrap-input_my">
+
                         <span class="label-input_my">Imie i Nazwisko</span>
                         <input class="input_my" type="text" name="full_name">
                     </fieldset>
@@ -58,6 +66,7 @@
                             <option value="1">Moderator</option>
                         </select>
                     </fieldset>
+                    <span class="massage_error" data-form="account_message"></span>
                     <button type="submit" class="button_subbmit">Dodaj</button>
                 </form>
 

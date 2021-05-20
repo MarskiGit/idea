@@ -43,17 +43,9 @@ class Login {
             document.body.style.cursor = 'progress';
             this.#Ajax
                 .getJson(this.#request)
-                .then((data) => {
-                    if (data.ok === true) {
-                        location.replace(localhost);
-                    } else {
-                        this.FormValidation.showMessage('Podano błędne dane logowania');
-                    }
-                })
+                .then((data) => (data.ok === true ? location.replace(localhost) : this.FormValidation.showMessage('Podano błędne dane logowania')))
                 .finally((document.body.style.cursor = 'default'));
-        } else {
-            this.FormValidation.showMessage('Uzupełnij wszystkie pola');
-        }
+        } else this.FormValidation.showMessage('Uzupełnij wszystkie pola');
     };
     #onBlur() {
         this.#inputList.forEach((i) => i.addEventListener('blur', this.#inputOnBlur));

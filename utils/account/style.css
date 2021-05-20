@@ -20,6 +20,9 @@ html {
     font-size: calc(16px + (24 - 16) * (100vw - 400px) / (1920 - 360));
     scroll-behavior: smooth;
 }
+form {
+    position: relative;
+}
 
 button:active,
 button:hover,
@@ -144,6 +147,12 @@ button:hover {
 }
 
 .massage_error {
+    position: absolute;
+    display: block;
+    height: 1rem;
+    opacity: 0;
+    font-size: 0.7rem;
+    right: 0.6rem;
     opacity: 0;
     font-size: 0.7rem;
 }

@@ -12,10 +12,9 @@
 <body>
     <main>
         <section class="wrap_form">
-            <h4>Dodawanie Super Admina</h4>
-            <form data-registration="form" class="align_center" novalidate>
-
-                <span class="massage_error" data-registration="form_error">Uzupełnij wszystkie pola.</span>
+            <h4></h4>
+            <form data-form="admin" class="align_center" novalidate>
+                <legend>Dodawanie Super Admina</legend>
                 <fieldset class="wrap-input_my">
                     <span class="label-input_my">Imie i Nazwisko</span>
                     <input class="input_my" type="text" name="full_name">
@@ -56,6 +55,7 @@
 
 
                 </fieldset>
+                <span class="massage_error" data-form="admin_message"></span>
                 <button type="submit" class="button_subbmit">Dodaj</button>
             </form>
         </section>
