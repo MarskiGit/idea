@@ -20,3 +20,15 @@ const addArea = new Registration(areaObjects, setingRequest);
 const addUser = new Registration(userObjects, setingRequest);
 addArea.init();
 addUser.init();
+
+class Admin {
+    constructor() {}
+    init() {
+        this.#factory();
+        this.#eventListeners();
+    }
+    #eventListeners() {}
+    #factory() {}
+}
+
+new Admin().init();

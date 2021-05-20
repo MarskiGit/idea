@@ -1,5 +1,5 @@
 'use strict';
-import FormHandling from './FormHandling.esm.js';
+import FormValidation from './FormValidation.esm.js';
 import Request from './Request.esm.js';
 
 export default class Registration {
@@ -8,32 +8,31 @@ export default class Registration {
     #params;
     #request = {};
     constructor(formObjects, setingRequest) {
-        this.FormHandling = new FormHandling(formObjects);
+        this.FormValidation = new FormValidation(formObjects);
         this.errorMessage = formObjects.errorMessage;
         this.#params = formObjects.request;
 
         this.#Ajax = new Request(setingRequest);
-        this.#inputList = this.FormHandling.getInputs(['INPUT']);
+        this.#inputList = this.FormValidation.getInputs(['INPUT']);
     }
 
     init() {
-        this.FormHandling.init();
-        this.#onBlur();
+        this.FormValidation.init();
         this.#eventListeners();
     }
     #eventListeners() {
-        this.FormHandling.form.addEventListener('submit', this.#formValidation);
+        this.FormValidation.form.addEventListener('submit', this.#formHandling);
     }
-    #formValidation = (event) => {
+    #formHandling = (event) => {
         event.preventDefault();
-        if (this.FormHandling.emptyFields()) {
-            const { strength = 3, identical = true } = this.FormHandling.getInfoPass();
+        if (this.FormValidation.emptyFields()) {
+            const { strength = 3, identical = true } = this.FormValidation.getInfoPass();
             if (strength === 3) {
                 if (identical) {
                     document.body.style.cursor = 'progress';
                     this.#request = {
                         request: this.#params,
-                        ...this.FormHandling.getValue(),
+                        ...this.FormValidation.getValue(),
                     };
 
                     console.log(this.#request);
@@ -41,7 +40,7 @@ export default class Registration {
                     //     .getJson(this.#request)
                     //     .then((data) => {
                     //         if (data.ok === true) {
-                    //             this.FormHandling.clearField();
+                    //             this.FormValidation.clearField();
                     //             this.$showMasage('Dodano z powodzeniem');
                     //         } else {
                     //             this.$showMasage(`${data.title}: ${data.account}`);
@@ -52,14 +51,8 @@ export default class Registration {
             } else this.$showMasage('Hasło musi być silne');
         } else this.$showMasage('Uzupełnij wszystkie pola.');
     };
-    #onBlur() {
-        this.#inputList.forEach((i) => i.addEventListener('blur', this.#inputOnBlur));
-    }
-    #inputOnBlur(event) {
-        event.target.value ? this.classList.add('has-val') : this.classList.remove('has-val');
-    }
     $showMasage(messafe) {
         this.errorMessage.textContent = `${messafe}`;
-        this.FormHandling.formError();
+        this.FormValidation.formError();
     }
 }

@@ -1,4 +1,4 @@
-<script type="module" src="./public/script/writeIdea.esm.js"></script>
+<script type="module" src="./public/script/idea.esm.js"></script>
 <main data-page="main">
 
     <section class="section_container">

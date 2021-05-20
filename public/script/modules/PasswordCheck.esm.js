@@ -39,7 +39,7 @@ export default class PasswordCheck {
     #checkStrength = (event) => {
         this.#pwd = event.target.value;
 
-        this.test();
+        this.#testIdentical();
         if (this.#pwd.length == 0) {
             this.#statusDisplay(0);
             this.#strengthPass = 0;
@@ -88,9 +88,9 @@ export default class PasswordCheck {
     }
     #checkIdentical = (event) => {
         this.#identPwd = event.target.value;
-        this.test();
+        this.#testIdentical();
     };
-    test() {
+    #testIdentical() {
         if (this.#pwd !== this.#identPwd) {
             this.#identicalMessage.innerHTML = 'Hasła są różne';
             this.#isIdentical = false;

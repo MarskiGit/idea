@@ -1,6 +1,6 @@
 'use strict';
 import { setingRequest } from './modules/seting.esm.js';
-import FormHandling from './modules/FormHandling.esm.js';
+import FormValidation from './modules/FormValidation.esm.js';
 import Rating from './modules/write/Rating.esm.js';
 import LiveSearch from './modules/write/LiveSearch.esm.js';
 import CountCharacters from './modules/write/CountCharacters.esm.js';
@@ -14,36 +14,38 @@ const formObjects = {
     viewPoints: document.querySelector('[data-write="view_points"]'),
     signNumber: document.querySelectorAll('[data-write="sign_number"]'),
 };
-const userSearch = {
-    listResults: document.querySelector('[data-write="ul_creator"]'),
-    selectedList: document.querySelector('[data-write="chosen_ones"]'),
-    request: 'creatorSearch',
-};
-const areaSearch = {
-    listResults: document.querySelector('[data-write="ul_area"]'),
-    selectedList: document.querySelector('[data-write="chosen_ones_area"]'),
-    request: 'areaSearch',
+const search = {
+    userSearch: {
+        listResults: document.querySelector('[data-write="ul_creator"]'),
+        selectedList: document.querySelector('[data-write="chosen_ones"]'),
+        request: 'creatorSearch',
+    },
+    areaSearch: {
+        listResults: document.querySelector('[data-write="ul_area"]'),
+        selectedList: document.querySelector('[data-write="chosen_ones_area"]'),
+        request: 'areaSearch',
+    },
 };
 
-class WriteIdea {
+class Idea {
     #Ajax;
     #request = {};
     #inputSearch;
-    constructor(formObjects, userSearch, areaSearch, setingRequest) {
-        this.FormHandling = new FormHandling(formObjects);
+    constructor(formObjects, search, setingRequest) {
+        this.FormValidation = new FormValidation(formObjects);
         this.#request.request = formObjects.request;
         this.#Ajax = new Request(setingRequest);
 
-        this.#inputSearch = this.FormHandling.getInputs(['INPUT'], 'search');
+        this.#inputSearch = this.FormValidation.getInputs(['INPUT'], 'search');
 
-        this.UserSearch = new LiveSearch(this.#inputSearch[0], userSearch);
-        this.AreaSearch = new LiveSearch(this.#inputSearch[1], areaSearch);
+        this.UserSearch = new LiveSearch(this.#inputSearch[0], search.userSearch);
+        this.AreaSearch = new LiveSearch(this.#inputSearch[1], search.areaSearch);
 
-        this.CountCharacters = new CountCharacters(this.FormHandling.getInputs(['TEXTAREA']), formObjects.signNumber);
-        this.Rating = new Rating(this.FormHandling.getInputs(['SELECT']), formObjects.viewPoints);
+        this.CountCharacters = new CountCharacters(this.FormValidation.getInputs(['TEXTAREA']), formObjects.signNumber);
+        this.Rating = new Rating(this.FormValidation.getInputs(['SELECT']), formObjects.viewPoints);
     }
     init() {
-        this.FormHandling.init();
+        this.FormValidation.init();
         this.UserSearch.init();
         this.AreaSearch.init();
         this.CountCharacters.init();
@@ -51,20 +53,20 @@ class WriteIdea {
         this.#eventListeners();
     }
     #eventListeners() {
-        this.FormHandling.form.addEventListener('submit', this.#formValidation);
+        this.FormValidation.form.addEventListener('submit', this.#formHandling);
     }
-    #formValidation = (event) => {
+    #formHandling = (event) => {
         event.preventDefault();
 
         if (this.#emptyForm()) {
             this.#getrequestForm();
             this.#clearForm();
         } else {
-            this.FormHandling.formError();
+            this.FormValidation.formError();
         }
     };
     #clearForm() {
-        this.FormHandling.clearField();
+        this.FormValidation.clearField();
         this.CountCharacters.clearLenghtCharacters();
         this.Rating.setDefault();
         this.UserSearch.closeList();
@@ -73,7 +75,7 @@ class WriteIdea {
         this.AreaSearch.clearChosen();
     }
     #getrequestForm() {
-        const { before, after } = this.FormHandling.getValue();
+        const { before, after } = this.FormValidation.getValue();
         this.#request.before = before;
         this.#request.after = after;
         this.#request.area = this.UserSearch.getSelectedId();
@@ -83,7 +85,7 @@ class WriteIdea {
 
         console.log(this.#request);
     }
-    #emptyForm = () => !!(this.FormHandling.emptyFields() && this.UserSearch.whetherListCompleted() && this.AreaSearch.whetherListCompleted());
+    #emptyForm = () => !!(this.FormValidation.emptyFields() && this.UserSearch.whetherListCompleted() && this.AreaSearch.whetherListCompleted());
 }
 
-new WriteIdea(formObjects, userSearch, areaSearch, setingRequest).init();
+new Idea(formObjects, search, setingRequest).init();

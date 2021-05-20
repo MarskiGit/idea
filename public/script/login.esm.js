@@ -1,6 +1,6 @@
 'use strict';
 import { setingRequest, localhost } from './modules/seting.esm.js';
-import FormHandling from './modules/FormHandling.esm.js';
+import FormValidation from './modules/FormValidation.esm.js';
 import Request from './modules/Request.esm.js';
 
 const formObjects = {
@@ -15,26 +15,26 @@ class Login {
     #inputList;
     #request = {};
     constructor(formObjects, setingRequest) {
-        this.FormHandling = new FormHandling(formObjects);
+        this.FormValidation = new FormValidation(formObjects);
         this.errorMessage = formObjects.errorMessage;
         this.#request.request = formObjects.request;
 
         this.#Ajax = new Request(setingRequest);
-        this.#inputList = this.FormHandling.getInputs(['INPUT']);
+        this.#inputList = this.FormValidation.getInputs(['INPUT']);
     }
 
     init() {
-        this.FormHandling.init();
+        this.FormValidation.init();
         this.#onBlur();
         this.#eventListeners();
     }
     #eventListeners() {
-        this.FormHandling.form.addEventListener('submit', this.#formValidation);
+        this.FormValidation.form.addEventListener('submit', this.#formHandling);
     }
-    #formValidation = (event) => {
+    #formHandling = (event) => {
         event.preventDefault();
-        if (this.FormHandling.emptyFields()) {
-            this.formParams = this.FormHandling.getValue();
+        if (this.FormValidation.emptyFields()) {
+            this.formParams = this.FormValidation.getValue();
             this.#request = {
                 request: 'login',
                 ...this.formParams,
@@ -48,12 +48,12 @@ class Login {
                         location.replace(localhost);
                     } else {
                         this.errorMessage.textContent = 'Podano błędne dane logowania';
-                        this.FormHandling.formError();
+                        this.FormValidation.formError();
                     }
                 })
                 .finally((document.body.style.cursor = 'default'));
         } else {
-            this.FormHandling.formError();
+            this.FormValidation.formError();
         }
     };
     #onBlur() {

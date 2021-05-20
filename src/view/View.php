@@ -25,9 +25,9 @@ class View
     {
         $this->renderHTML('footer', 'page/');
     }
-    public function create($pageParams): void
+    public function addIdea($pageParams): void
     {
-        $this->renderHTML('form', 'page/', $pageParams);
+        $this->renderHTML('idea', 'page/', $pageParams);
     }
     public function list(): void
     {

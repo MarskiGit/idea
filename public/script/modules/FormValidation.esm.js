@@ -1,7 +1,7 @@
 'use strict';
 import PasswordCheck from './PasswordCheck.esm.js';
 
-export default class FormHandling {
+export default class FormValidation {
     #PasswordCheck;
     #fieldsValue;
     #data;
@@ -65,7 +65,6 @@ export default class FormHandling {
     #formData() {
         this.#data = new FormData(this.form);
         this.#fieldsValue = [...this.#data.values()];
-        console.log(this.#fieldsValue, this.#fieldsValue.length);
         return this.#fieldsValue.length;
     }
 }

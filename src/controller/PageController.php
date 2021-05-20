@@ -9,10 +9,10 @@ use Idea\model\RatingSettingsIdeaModel;
 
 class PageController extends AbstractController
 {
-    protected function formIdea(): void
+    protected function ideaIdea(): void
     {
         $ideaRating = new RatingSettingsIdeaModel();
-        $this->View->create($ideaRating->get());
+        $this->View->addIdea($ideaRating->get());
     }
     protected function listIdea(): void
     {
