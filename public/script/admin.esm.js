@@ -15,9 +15,6 @@ const userObjects = {
     errorMessage: document.querySelector('[data-form="account_message"]'),
 };
 
-const addArea = new FormHandling(areaObjects, setingRequest).init();
-const addUser = new FormHandling(userObjects, setingRequest).init();
-
 class Admin {
     constructor() {}
     init() {
@@ -25,7 +22,14 @@ class Admin {
         this.#eventListeners();
     }
     #eventListeners() {}
-    #factory() {}
+    #factory() {
+        if (areaObjects.form) {
+            new FormHandling(areaObjects, setingRequest).init();
+        }
+        if (userObjects.form) {
+            new FormHandling(userObjects, setingRequest).init();
+        }
+    }
 }
 
 new Admin().init();

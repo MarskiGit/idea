@@ -78,7 +78,7 @@
                 </div>
                 <span class="sign_number"></span>
             </fieldset>
-            <span class="massage_error" data-form="idea_message"></span>
+            <span class="massage_error idea_massage" data-form="idea_message"></span>
             <button class="btn_write" data-form="add">Wyślij</button>
         </form>
     </section>

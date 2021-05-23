@@ -15,6 +15,7 @@ abstract class AbstractController
     protected View $View;
     protected ?string $action_GET;
     protected array $requestParam;
+    protected array $account;
     private ?string $requestAJAX;
     private bool $is_PHPInput;
     private bool $is_Get;
@@ -26,7 +27,7 @@ abstract class AbstractController
         $this->View = $View;
         $this->is_PHPInput = $this->Request->is_PHPInput();
         $this->is_Get = $this->Request->is_Get();
-
+        $this->account = $this->Request->getParam_SESSION();
         $this->init();
     }
     private function init(): void
@@ -34,7 +35,10 @@ abstract class AbstractController
 
         if ($this->is_Get && !$this->is_PHPInput) {
             $this->action_GET = $this->Request->getParam_GET(DEFAULT_GET, self::DEFAULT_ACTION_HTML);
-            $this->View->globalParams = $this->globalParams();
+            $this->View->globalParams = [
+                'action_GET' => $this->action_GET,
+                'account' => $this->account,
+            ];
             $this->renderPage();
         }
 
@@ -62,12 +66,6 @@ abstract class AbstractController
     {
         $method = $this->existsMethod($this->requestAJAX, self::DEFAULT_ACTION_AJAX);
         $this->$method();
-    }
-    private function globalParams(): array
-    {
-        return [
-            'action_GET' => $this->action_GET,
-        ];
     }
     private function existsMethod(string $checkMethod, string $default): string
     {

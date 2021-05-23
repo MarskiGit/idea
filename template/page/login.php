@@ -4,8 +4,6 @@
         <h1>Witam</h1>
 
         <form data-form="login" class="align_center" novalidate>
-
-            <span class="massage_error" data-form="message"></span>
             <fieldset class="wrap-input_my">
                 <input class="input_my" type="text" name="login">
                 <span class="focus-input_my"></span>
@@ -16,6 +14,7 @@
                 <span class="focus-input_my"></span>
                 <span class="label-input_my">Hasło</span>
             </fieldset>
+            <span class="massage_error login_massage" data-form="message"></span>
             <button type="submit" class="button_subbmit">Zaloguj się</button>
         </form>
     </section>

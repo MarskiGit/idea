@@ -33,6 +33,61 @@ class PageController extends AbstractController
     }
     protected function adminIdea(): void
     {
-        $this->View->admin();
+        $admin_GET = $this->Request->getParam_GET('admin', 'home');
+
+        $adminParams = [
+            'actve_link' => $admin_GET,
+        ];
+
+        echo '<main data-page="main">';
+        $this->View->admin($adminParams);
+        if (intval($this->account['rang']) === 2) {
+
+            switch ($admin_GET) {
+                case 'home':
+                    $this->View->homeAdmin();
+                    break;
+                case 'area':
+                    $this->View->areaAdmin();
+                    break;
+                case 'user':
+                    $this->View->userAdmin();
+                    break;
+                case 'statistics':
+                    $this->View->statisticsAdmin();
+                    break;
+                default:
+                    $this->View->homeAdmin();
+                    break;
+            }
+        }
+        echo '</main>';
     }
+    // protected function modIdea(): void
+    // {
+    //     $admin_GET = $this->Request->getParam_GET('mod', self::DEFAULT_ACTION_HTML);
+    //     echo '<main data-page="main">';
+    //     $this->View->Mod();
+    //     if (intval($this->account['rang']) === 1) {
+
+    //         switch ($admin_GET) {
+    //             case 'management ':
+    //                 $this->View->managementAdmin();
+    //                 break;
+    //             case 'area':
+    //                 $this->View->areaAdmin();
+    //                 break;
+    //             case 'user':
+    //                 $this->View->userAdmin();
+    //                 break;
+    //             case 'statistics':
+    //                 $this->View->statisticsAdmin();;
+    //                 break;
+    //             default:
+    //                 $this->View->homeAdmin();
+    //                 break;
+    //         }
+    //     }
+    //     echo '</main>';
+    // }
 }

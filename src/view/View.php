@@ -37,13 +37,30 @@ class View
     {
         $this->renderHTML('login', 'page/');
     }
-    public function admin(): void
+    public function admin($admin_GET): void
     {
-        $this->renderHTML('admin', 'admin/');
+        $this->renderHTML('admin', 'admin/', $admin_GET);
     }
     public function mod(): void
     {
         $this->renderHTML('mod', 'mod/');
+    }
+    public function areaAdmin(): void
+    {
+
+        $this->renderHTML('area', 'admin/',);
+    }
+    public function userAdmin(): void
+    {
+        $this->renderHTML('user', 'admin/',);
+    }
+    public function statisticsAdmin(): void
+    {
+        $this->renderHTML('statistics', 'admin/',);
+    }
+    public function homeAdmin(): void
+    {
+        $this->renderHTML('home', 'admin/',);
     }
     public function renderJSON(array $answer): void
     {

@@ -1,81 +1,36 @@
-<main data-page="main">
-    <?php if (isset($_SESSION['account'])) : ?>
-        <script type="module" src="./public/script/admin.esm.js"></script>
-        <section class="container">
-            <h2>Witaj: <?php echo  $_SESSION['account']['name'] ?></h2>
-            <ul>
-                <li><a rel="write section" href="?action=admin&move=stat" data-link="menu" class="li_button"><span>Zarządzanie</span></a></li>
-                <li><a rel="write section" href="?action=admin&move=area" data-link="menu" class="li_button"><span>Obszar</span></a></li>
-                <li><a rel="write section" href="?action=admin&move=user" data-link="menu" class="li_button"><span>Użytkownik</span></a></li>
-                <li><a rel="write section" href="?action=admin&move=stat" data-link="menu" class="li_button"><span>Statystyki</span></a></li>
-            </ul>
-        </section>
+<?php if (isset($_SESSION['account'])) : ?>
 
-        <section class="container">
-            <section class="wrap_form">
-
-                <form data-form="area" novalidate>
-                    <legend>Dodaj Obszar</legend>
-                    <fieldset class="wrap-input_my">
-
-                        <span class="label-input_my">Nazwa Obszaru</span>
-                        <input class="input_my" type="text" name="area_name">
-                    </fieldset>
-                    <span class="massage_error" data-form="area_message"></span>
-                    <button type="submit" class="button_subbmit">Dodaj</button>
-                </form>
-            </section>
-            <section class="wrap_form">
-                <form data-form="account" novalidate>
-                    <legend>Dodaj Użytkownika</legend>
-                    <fieldset class="wrap-input_my">
-
-                        <span class="label-input_my">Imie i Nazwisko</span>
-                        <input class="input_my" type="text" name="full_name">
-                    </fieldset>
-
-                    <div style="display: none">
-                        <!-- <fieldset class="wrap-input_my">
-                                <p class="strength_message" data-registration="strength_message"></p>
-                                <div class="meter">
-                                    <span class="strength" data-registration="strength_meter"></span>
-                                </div>
-                                <span class="label-input_my">Hasło</span>
-                                <input class="input_my" type="password" name="password" data-registration="password">
-                                
-                            </fieldset>
-                            <fieldset class="wrap-input_my">
-                                <p class="strength_message" data-registration="identical_message"></p>
-                                <span class="label-input_my">Powtórz hasło</span>
-                                <input class="input_my" type="password" name="repeat_password" data-registration="repeat_password">
-                            </fieldset> -->
-                    </div>
-
-                    <fieldset class="wrap-input_my">
-                        <span class="label-input_my">Identyfikator</span>
-                        <input class="input_my" type="number" name="id_pass" min="0" step="1" maxlength="4">
-                    </fieldset>
-                    <fieldset class="wrap-input_my">
-                        <span class="label-input_my">Obszar</span>
-                        <input class="input_my" type="text" name="id_pass" min="0" step="1" maxlength="4">
-                    </fieldset>
-                    <fieldset class="wrap-input_my">
-                        <span class="label-input_my">Rola</span>
-                        <select class="input_my has-val" name="area" data-select="area">
-                            <option value="0">Użytkownik</option>
-                            <option value="1">Moderator</option>
-                        </select>
-                    </fieldset>
-                    <span class="massage_error" data-form="account_message"></span>
-                    <button type="submit" class="button_subbmit">Dodaj</button>
-                </form>
-
-            </section>
-        </section>
-
-        <section class="container"></section>
-
-    <?php else : ?>
-        <?php header("location: index.php"); ?>
-    <?php endif; ?>
-</main>
+    <script type="module" src="./public/script/admin.esm.js"></script>
+    <section class="container">
+        <h2>Witaj: <?php echo  $_SESSION['account']['name'] ?></h2>
+        <ul>
+            <li class="<?php echo $pageParams['actve_link'] === 'home' ? 'display' : 'hide' ?>">
+                <a rel="admin section" href="?action=admin&admin=home" data-link="menu" class="li_button">
+                    <img src="public/img/icon/mangament.png" alt="Zarządzanie">
+                    <span>Zarządzanie</span>
+                </a>
+            </li>
+            <li class="<?php echo $pageParams['actve_link'] === 'area' ? 'display' : 'hide' ?>">
+                <a rel="admin section" href="?action=admin&admin=area" data-link="menu" class="li_button">
+                    <img src="public/img/icon/area.png" alt="Obszar">
+                    <span>Obszar</span>
+                </a>
+            </li>
+            <li class="<?php echo $pageParams['actve_link'] === 'user' ? 'display' : 'hide' ?>">
+                <a rel="admin section" href="?action=admin&admin=user" data-link="menu" class="li_button">
+                    <img src="public/img/icon/user.png" alt="Użytkownik">
+                    <span>Użytkownik</span>
+                </a>
+            </li>
+            <li class="<?php echo $pageParams['actve_link'] === 'statistics' ? 'display' : 'hide' ?>">
+                <a rel="admin section" href="?action=admin&admin=statistics" data-link="menu" class="li_button">
+                    <img src="public/img/icon/statistics.png" alt="Statystyki">
+                    <span>Statystyki</span>
+                </a>
+            </li>
+        </ul>
+    </section>
+    <section class="container"></section>
+<?php else : ?>
+    <?php header("location: index.php"); ?>
+<?php endif; ?>
