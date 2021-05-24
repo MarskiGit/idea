@@ -82,36 +82,43 @@ class AccountModel extends AbstractModel
     }
     public function login(): array
     {
-        try {
-            $stmt = $this->DB->prepare('SELECT id_account, full_name, account_password, account_login, rang FROM account WHERE (account_login = :account_login) AND (active = 1)');
-            $stmt->bindValue(':account_login', $this->requestParam['login'], PDO::PARAM_STR);
-            $stmt->execute();
-        } catch (PDOException $e) {
-            throw new AjaxException('Błąd Login AccountModel');
-        }
-
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if (is_array($row)) {
-            if (password_verify($this->requestParam['password'], $row['account_password']) && $this->requestParam['login'] === $row['account_login']) {
-
-                $user = [
-                    'rang' => $row['rang'],
-                    'name' => $row['full_name'],
-                    'id' => $row['id_account']
-                ];
-                $_SESSION['account'] = $user;
-
-                return $this->notification(['ok' => true]);
+        if ($this->requestParam['token'] === $_SESSION['token']) {
+            try {
+                $stmt = $this->DB->prepare('SELECT id_account, full_name, account_password, account_login, rang FROM account WHERE (account_login = :account_login) AND (active = 1)');
+                $stmt->bindValue(':account_login', $this->requestParam['login'], PDO::PARAM_STR);
+                $stmt->execute();
+            } catch (PDOException $e) {
+                throw new AjaxException('Błąd Login AccountModel');
             }
+
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            if (is_array($row)) {
+                if (password_verify($this->requestParam['password'], $row['account_password']) && $this->requestParam['login'] === $row['account_login']) {
+                    $_SESSION['account'] = [
+                        'rang' => $row['rang'],
+                        'name' => $row['full_name'],
+                        'id' => $row['id_account'],
+                        'currentTime' => date("H:i:s"),
+                    ];
+                    return $this->notification(['ok' => true]);
+                }
+            } else {
+                return $this->notification([
+                    'ok' => false,
+                    'title' => 'Podano błędne dane logowania'
+                ]);
+            }
+        } else {
+            return $this->notification([
+                'ok' => false,
+                'title' => 'Błędny tken logowania'
+            ]);
         }
-        return $this->notification([
-            'ok' => false,
-            'title' => 'Podano błędne dane logowania'
-        ]);
     }
     public function logout(): array
     {
         if (session_status() == PHP_SESSION_ACTIVE) {
+            unset($_SESSION['token']);
             unset($_SESSION['account']);
             session_destroy();
 

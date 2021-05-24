@@ -39,11 +39,18 @@ class Login {
                 request: 'login',
                 ...this.formParams,
             };
-
             document.body.style.cursor = 'progress';
             this.#Ajax
                 .getJson(this.#request)
-                .then((data) => (data.ok === true ? location.replace(localhost) : this.FormValidation.showMessage('Podano błędne dane logowania')))
+                .then((data) => {
+                    if (data.ok === true) {
+                        location.replace(localhost);
+                        // localStorage.clear();
+                    } else {
+                        this.FormValidation.showMessage(`${data.title}`);
+                        // localStorage.setItem('key', 'value');
+                    }
+                })
                 .finally((document.body.style.cursor = 'default'));
         } else this.FormValidation.showMessage('Uzupełnij wszystkie pola');
     };

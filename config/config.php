@@ -14,4 +14,6 @@ define('DEFAULT_SUFIX_APP', 'Idea');
 define('DEFAULT_SUFIX_AJAX', 'Ajax');
 define('DEFAULT_GET', 'action');
 define('DEFAULT_AJAX', 'request');
+
+// do wyjebania
 define('AD_PASSWORD', 's9m2ajfPP[32^B:');

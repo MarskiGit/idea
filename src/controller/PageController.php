@@ -24,7 +24,8 @@ class PageController extends AbstractController
     }
     protected function loginIdea(): void
     {
-        $this->View->login();
+        $_SESSION['token'] = $this->token();
+        $this->View->login($_SESSION['token']);
     }
     protected function logoutIdea(): void
     {

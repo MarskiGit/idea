@@ -30,6 +30,11 @@ abstract class AbstractController
         $this->account = $this->Request->getParam_SESSION();
         $this->init();
     }
+    protected function token(): string
+    {
+        $rand_token = openssl_random_pseudo_bytes(16);
+        return bin2hex($rand_token);
+    }
     private function init(): void
     {
 

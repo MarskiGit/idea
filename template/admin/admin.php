@@ -1,5 +1,4 @@
 <?php if (isset($_SESSION['account'])) : ?>
-
     <script type="module" src="./public/script/admin.esm.js"></script>
     <section class="container">
         <h2>Witaj: <?php echo  $_SESSION['account']['name'] ?></h2>
