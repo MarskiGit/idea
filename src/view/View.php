@@ -33,9 +33,9 @@ class View
     {
         $this->renderHTML('list', 'page/');
     }
-    public function login($token): void
+    public function login($inputToken): void
     {
-        $this->renderHTML('login', 'page/', $token);
+        $this->renderHTML('login', 'page/', $inputToken);
     }
     public function admin($admin_GET): void
     {

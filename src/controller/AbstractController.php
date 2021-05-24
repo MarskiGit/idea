@@ -7,6 +7,7 @@ namespace Idea\controller;
 use Idea\view\Request;
 use Idea\view\View;
 
+
 abstract class AbstractController
 {
     protected const DEFAULT_ACTION_HTML = 'home';

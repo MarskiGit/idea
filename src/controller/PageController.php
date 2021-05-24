@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Idea\controller;
 
+use Idea\model\Csrf;
 use Idea\model\AccountModel;
 use Idea\model\RatingSettingsIdeaModel;
 
@@ -24,8 +25,11 @@ class PageController extends AbstractController
     }
     protected function loginIdea(): void
     {
-        $_SESSION['token'] = $this->token();
-        $this->View->login($_SESSION['token']);
+        Csrf::setNewToken('login');
+        $loginParams = [
+            'loginTokenInput' => Csrf::getInputToken('login'),
+        ];
+        $this->View->login($loginParams);
     }
     protected function logoutIdea(): void
     {

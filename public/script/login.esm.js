@@ -39,6 +39,7 @@ class Login {
                 request: 'login',
                 ...this.formParams,
             };
+            console.log(this.#request);
             document.body.style.cursor = 'progress';
             this.#Ajax
                 .getJson(this.#request)

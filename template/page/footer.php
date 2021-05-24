@@ -1,6 +1,10 @@
 <footer>
-    <span>&#xA9; [ Ten rok ] <a href="https://marski.pl/" target="_blank"> Mariusz Kępski</a> </span>
-    <a href="https://github.com/MarskiGit" target="_blank"><img src="public/img/github.png" alt="GitHub Marski" class="github"></a>
+    <div class="author">
+        <span>&#xA9; [ Ten rok ] <a href="https://marski.pl/" target="_blank"> Mariusz Kępski</a> </span>
+    </div>
+    <aside class="cookies">
+        <p>Informujemy, strona IDEA wykorzystuje technologię plików cookies, ale jednocześnie nie analizuje i nie gromadzi żadnych informacji.</p>
+    </aside>
 </footer>
 </body>
 

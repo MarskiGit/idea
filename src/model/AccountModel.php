@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Idea\model;
 
+use Idea\model\Csrf;
 use Idea\model\AbstractModel;
 use Idea\exception\AjaxException;
 use PDO;
@@ -82,7 +83,7 @@ class AccountModel extends AbstractModel
     }
     public function login(): array
     {
-        if ($this->requestParam['token'] === $_SESSION['token']) {
+        if (Csrf::verifyToken($this->requestParam['token'], 'login')) {
             try {
                 $stmt = $this->DB->prepare('SELECT id_account, full_name, account_password, account_login, rang FROM account WHERE (account_login = :account_login) AND (active = 1)');
                 $stmt->bindValue(':account_login', $this->requestParam['login'], PDO::PARAM_STR);
@@ -118,7 +119,8 @@ class AccountModel extends AbstractModel
     public function logout(): array
     {
         if (session_status() == PHP_SESSION_ACTIVE) {
-            unset($_SESSION['token']);
+
+            Csrf::removeTokens('login');
             unset($_SESSION['account']);
             session_destroy();
 
