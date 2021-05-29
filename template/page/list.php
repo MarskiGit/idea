@@ -3,7 +3,7 @@
 
     <section class="section_container">
         <h1>Lista Pomysłów</h1>
-        <div class="idea_container" data-list="list_container"></div>
+        <div class="idea_container" data-list="list_container" data-token="<?php echo $pageParams['listSessionToken'] ?>"></div>
 
     </section>
 </main>

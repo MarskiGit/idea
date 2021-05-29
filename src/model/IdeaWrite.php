@@ -11,15 +11,15 @@ use PDOException;
 
 class IdeaWrite extends AbstractModel
 {
-    public function addIdea()
+    public function addIdea(array $requestParam)
     {
         try {
             $stmt = $this->DB->prepare('INSERT INTO idea (id_area, after_value, before_value, number_users, pkt_user ) VALUES (:id_area, :after_value, :before_value, :number_users, :pkt_user)');
-            $stmt->bindValue(':id_area', $this->requestParam['id_area'], PDO::PARAM_INT);
-            $stmt->bindValue(':after_value', $this->requestParam['after_value'], PDO::PARAM_STR);
-            $stmt->bindValue(':before_value', $this->requestParam['before_value'], PDO::PARAM_STR);
-            $stmt->bindValue(':number_users', $this->requestParam['number_users'], PDO::PARAM_INT);
-            $stmt->bindValue(':pkt_user', $this->requestParam['pktUser'], PDO::PARAM_INT);
+            $stmt->bindValue(':id_area', $requestParam['id_area'], PDO::PARAM_INT);
+            $stmt->bindValue(':after_value', $requestParam['after_value'], PDO::PARAM_STR);
+            $stmt->bindValue(':before_value', $requestParam['before_value'], PDO::PARAM_STR);
+            $stmt->bindValue(':number_users', $requestParam['number_users'], PDO::PARAM_INT);
+            $stmt->bindValue(':pkt_user', $requestParam['pktUser'], PDO::PARAM_INT);
             $stmt->execute();
             $stmt->closeCursor();
         } catch (PDOException $e) {

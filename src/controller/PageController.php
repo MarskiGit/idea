@@ -17,10 +17,15 @@ class PageController extends AbstractController
     }
     protected function listIdea(): void
     {
-        $this->View->list();
+        Csrf::setNewToken('list');
+        $listParams = [
+            'listSessionToken' => Csrf::viewToken('list'),
+        ];
+        $this->View->list($listParams);
     }
     protected function homeIdea(): void
     {
+
         $this->View->home();
     }
     protected function loginIdea(): void
@@ -33,8 +38,8 @@ class PageController extends AbstractController
     }
     protected function logoutIdea(): void
     {
-        $account = new AccountModel();
-        $status = $account->logout();
+        AccountModel::logout();
+        header("location: index.php");
     }
     protected function adminIdea(): void
     {
@@ -68,31 +73,4 @@ class PageController extends AbstractController
         }
         echo '</main>';
     }
-    // protected function modIdea(): void
-    // {
-    //     $admin_GET = $this->Request->getParam_GET('mod', self::DEFAULT_ACTION_HTML);
-    //     echo '<main data-page="main">';
-    //     $this->View->Mod();
-    //     if (intval($this->account['rang']) === 1) {
-
-    //         switch ($admin_GET) {
-    //             case 'management ':
-    //                 $this->View->managementAdmin();
-    //                 break;
-    //             case 'area':
-    //                 $this->View->areaAdmin();
-    //                 break;
-    //             case 'user':
-    //                 $this->View->userAdmin();
-    //                 break;
-    //             case 'statistics':
-    //                 $this->View->statisticsAdmin();;
-    //                 break;
-    //             default:
-    //                 $this->View->homeAdmin();
-    //                 break;
-    //         }
-    //     }
-    //     echo '</main>';
-    // }
 }

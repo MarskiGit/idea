@@ -12,9 +12,9 @@ use PDOException;
 
 class AccountModel extends AbstractModel
 {
-    public function add(): array
+    public function add(array $requestParam): array
     {
-        if (!$this->isNameValid($this->requestParam['full_name'])) {
+        if (!$this->isNameValid($requestParam['full_name'])) {
             return $this->notification([
                 'ok' => false,
                 'title' => 'Imię i Nazwisko',
@@ -23,7 +23,7 @@ class AccountModel extends AbstractModel
             ]);
         }
 
-        if (!$this->isPasswdValid()) {
+        if (!$this->isPasswdValid($requestParam['password'])) {
             return $this->notification([
                 'ok' => false,
                 'title' => 'Hasło',
@@ -32,7 +32,7 @@ class AccountModel extends AbstractModel
             ]);
         }
 
-        if ($this->isThere('full_name', $this->requestParam['full_name'], 'account')) {
+        if ($this->isThere('full_name', $requestParam['full_name'], 'account')) {
             return $this->notification([
                 'ok' => false,
                 'title' => 'Ten',
@@ -41,7 +41,7 @@ class AccountModel extends AbstractModel
             ]);
         }
 
-        if ($this->isThere('id_pass', $this->requestParam['id_pass'], 'account')) {
+        if ($this->isThere('id_pass', $requestParam['id_pass'], 'account')) {
             return $this->notification([
                 'ok' => false,
                 'title' => 'Ten',
@@ -50,7 +50,7 @@ class AccountModel extends AbstractModel
             ]);
         }
 
-        if ($this->isThere('account_login', $this->requestParam['login'], 'account')) {
+        if ($this->isThere('account_login', $requestParam['login'], 'account')) {
             return $this->notification([
                 'ok' => false,
                 'title' => 'Ten',
@@ -59,16 +59,16 @@ class AccountModel extends AbstractModel
             ]);
         }
 
-        $hash_2 = $this->hash($this->requestParam['password']);
+        $hash_2 = $this->hash($requestParam['password']);
         // id_area ustawione tymczasowo musi być przypisuwane do kontaa podczas tworzenia - do rozwiązania
         $temp = 1;
         try {
             $stmt = $this->DB->prepare('INSERT INTO account (id_area, full_name, account_login, id_pass, rang, account_password) VALUES (:id_area, :full_name, :account_login, :id_pass, :rang, :account_password)');
             $stmt->bindParam(':id_area', $temp, PDO::PARAM_INT);
-            $stmt->bindParam(':full_name', $this->requestParam['full_name'], PDO::PARAM_STR);
-            $stmt->bindParam(':account_login', $this->requestParam['login'], PDO::PARAM_STR);
-            $stmt->bindParam(':id_pass', $this->requestParam['id_pass'], PDO::PARAM_INT);
-            $stmt->bindParam(':rang', $this->requestParam['rang'], PDO::PARAM_INT);
+            $stmt->bindParam(':full_name', $requestParam['full_name'], PDO::PARAM_STR);
+            $stmt->bindParam(':account_login', $requestParam['login'], PDO::PARAM_STR);
+            $stmt->bindParam(':id_pass', $requestParam['id_pass'], PDO::PARAM_INT);
+            $stmt->bindParam(':rang', $requestParam['rang'], PDO::PARAM_INT);
             $stmt->bindParam(':account_password', $hash_2);
             $stmt->execute();
         } catch (PDOException $e) {
@@ -81,12 +81,12 @@ class AccountModel extends AbstractModel
             'account' => $id,
         ]);
     }
-    public function login(): array
+    public function login(array $requestParam): array
     {
-        if (Csrf::verifyToken($this->requestParam['token'], 'login')) {
+        if (Csrf::verifyToken($requestParam['token'], 'login')) {
             try {
                 $stmt = $this->DB->prepare('SELECT id_account, full_name, account_password, account_login, rang FROM account WHERE (account_login = :account_login) AND (active = 1)');
-                $stmt->bindValue(':account_login', $this->requestParam['login'], PDO::PARAM_STR);
+                $stmt->bindValue(':account_login', $requestParam['login'], PDO::PARAM_STR);
                 $stmt->execute();
             } catch (PDOException $e) {
                 throw new AjaxException('Błąd Login AccountModel');
@@ -94,7 +94,7 @@ class AccountModel extends AbstractModel
 
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             if (is_array($row)) {
-                if (password_verify($this->requestParam['password'], $row['account_password']) && $this->requestParam['login'] === $row['account_login']) {
+                if (password_verify($requestParam['password'], $row['account_password']) && $requestParam['login'] === $row['account_login']) {
                     $_SESSION['account'] = [
                         'rang' => $row['rang'],
                         'name' => $row['full_name'],
@@ -112,25 +112,39 @@ class AccountModel extends AbstractModel
         } else {
             return $this->notification([
                 'ok' => false,
-                'title' => 'Błędny tken logowania'
+                'title' => 'Błędny token logowania'
             ]);
         }
     }
-    public function logout(): array
+    public function edit(array $requestParam)
+    {
+        try {
+            $stmt = $this->DB->prepare('UPDATE account SET id_area = :id_area, full_name = :full_name, account_login = :account_login, id_pass = :id_pass, rang = :rang, account_password = :account_password, active = :active WHERE id_account = :id_account');
+            $stmt->bindValue(':id_account', $requestParam['id_account'], PDO::PARAM_INT);
+            $stmt->bindValue(':id_area', $requestParam['id_area'], PDO::PARAM_INT);
+            $stmt->bindValue(':full_name', $requestParam['full_name'], PDO::PARAM_STR);
+            $stmt->bindValue(':account_login', $requestParam['account_login'], PDO::PARAM_STR);
+            $stmt->bindValue(':id_pass', $requestParam['id_pass'], PDO::PARAM_INT);
+            $stmt->bindValue(':rang', $requestParam['rang'], PDO::PARAM_INT);
+            $stmt->bindValue(':account_password', $requestParam['account_password'], PDO::PARAM_STR);
+            $stmt->bindValue(':active', $requestParam['active'], PDO::PARAM_INT);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            throw new AjaxException('Błąd Login AccountModel');
+        }
+    }
+    public static function logout(): void
     {
         if (session_status() == PHP_SESSION_ACTIVE) {
-
             Csrf::removeTokens('login');
             unset($_SESSION['account']);
             session_destroy();
-
-            return $this->notification(['ok' => true]);
         }
     }
-    private function isPasswdValid(): bool
+    private function isPasswdValid(string $password): bool
     {
         $valid = true;
-        $len = mb_strlen($this->requestParam['password']);
+        $len = mb_strlen($password);
         if ($len < 8) {
             $valid = false;
         }

@@ -9,7 +9,7 @@ use Idea\exception\AjaxException;
 use PDO;
 use PDOException;
 
-class AreaModel extends AbstractModel
+class UserModel extends AbstractModel
 {
 
     public function add(array $requestParam): array
@@ -41,28 +41,15 @@ class AreaModel extends AbstractModel
 
         return $this->notification(['ok' => true,]);
     }
-    public function eddit(array $requestParam)
-    {
-        try {
-            $stmt = $this->DB->prepare('UPDATE area  SET area_name = :area_name,  WHERE id_area = :id_area');
-            $stmt->bindValue(':id_area', $requestParam['id_area'], PDO::PARAM_INT);
-            $stmt->bindValue(':area_name', $requestParam['id_area'], PDO::PARAM_INT);
-
-            $stmt->execute();
-        } catch (PDOException $e) {
-            throw new AjaxException('Błąd Login AccountModel');
-        }
-    }
     public function getSearch(array $requestParam): array
     {
-        $search = "%" . $requestParam['area_name'] . "%";
-
+        $search = "%" . $requestParam['full_name'] . "%";
         try {
-            $stmt = $this->DB->prepare('SELECT area_name, id_area FROM area WHERE area_name LIKE :name LIMIT 3');
+            $stmt = $this->DB->prepare("SELECT id_account, id_area, full_name FROM account WHERE " . $requestParam['select'] . " LIKE :name LIMIT 3");
             $stmt->bindValue(':name', $search, PDO::PARAM_STR);
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Błąd Area Search IdeaModel');
+            throw new AjaxException('Błąd User Search IdeaModel');
         }
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -72,7 +59,7 @@ class AreaModel extends AbstractModel
             array_unshift($result, $ok);
             return $result;
         } else {
-            $result[] = ['area_name' => 'Nie odnaleziono', 'ok' => false];
+            $result[] = ['full_name' => 'Nie odnaleziono', 'ok' => false];
             return $this->notification($result);
         }
     }

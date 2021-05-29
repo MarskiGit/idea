@@ -13,11 +13,9 @@ use PDOException;
 abstract class AbstractModel
 {
     protected ?PDO $DB;
-    protected array $requestParam;
-    public function __construct(array $requestParam = ['null'])
+    public function __construct()
     {
         $this->DB = DB::conn();
-        $this->requestParam = $requestParam;
     }
     protected function notification($message): array
     {
@@ -47,5 +45,12 @@ abstract class AbstractModel
             $valid = false;
         }
         return $valid;
+    }
+    protected function testInput(string $data): string
+    {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
     }
 }

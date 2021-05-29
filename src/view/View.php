@@ -29,17 +29,17 @@ class View
     {
         $this->renderHTML('idea', 'page/', $pageParams);
     }
-    public function list(): void
+    public function list($pageParams): void
     {
-        $this->renderHTML('list', 'page/');
+        $this->renderHTML('list', 'page/', $pageParams);
     }
-    public function login($inputToken): void
+    public function login($pageParams): void
     {
-        $this->renderHTML('login', 'page/', $inputToken);
+        $this->renderHTML('login', 'page/', $pageParams);
     }
-    public function admin($admin_GET): void
+    public function admin($pageParams): void
     {
-        $this->renderHTML('admin', 'admin/', $admin_GET);
+        $this->renderHTML('admin', 'admin/', $pageParams);
     }
     public function mod(): void
     {

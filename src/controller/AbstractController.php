@@ -64,7 +64,6 @@ abstract class AbstractController
             $this->View->footer();
         } else {
             $this->$method();
-            header("location: index.php");
             exit;
         }
     }

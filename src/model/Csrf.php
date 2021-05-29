@@ -15,7 +15,6 @@ class Csrf
         }
         $sessionConfirm = hash_equals($token['session'], $requestToken);
         $cookieConfirm  = hash_equals($token['cookie'], self::getCookieToken($page));
-
         if ($sessionConfirm && $cookieConfirm) {
             return true;
         }
@@ -24,10 +23,9 @@ class Csrf
     public static function setNewToken(string $page): void
     {
         $rand_token = openssl_random_pseudo_bytes(16);
-        $expiry = time() + 60000;
+        $expiry = time() + 3800;
         $sessionToken = bin2hex($rand_token);
         $cookieToken = md5(base64_encode($rand_token));
-
         $_SESSION['tokens'][$page] = [
             'expiry' => $expiry,
             'session'  => $sessionToken,
@@ -40,22 +38,27 @@ class Csrf
         $token = self::getTokens($page);
         return '<input type="hidden" id="csrftoken" name="token" value="' . $token['session'] . '">';
     }
+    public static function viewToken(string $page): string
+    {
+        $token = self::getTokens($page);
+        return $token['session'];
+    }
     public static function removeTokens(string $page): bool
     {
-        unset($_COOKIE[self::makeCookieName($page)], $_SESSION['tokens']);
+        unset($_COOKIE[self::makeCookieName($page)], $_SESSION['tokens'][$page]);
         return true;
     }
     private static function getTokens(string $page): ?array
     {
         return !empty($_SESSION['tokens'][$page]) ? $_SESSION['tokens'][$page] : null;
     }
-    private static function makeCookieName(string $page): string
-    {
-        return 'csrftoken-' . substr(md5($page), 0, 10);
-    }
     private static function getCookieToken(string $page): string
     {
         $value = self::makeCookieName($page);
         return !empty($_COOKIE[$value]) ? $_COOKIE[$value] : '';
+    }
+    private static function makeCookieName(string $page): string
+    {
+        return 'csrftoken-' . substr(md5($page), 0, 10);
     }
 }
