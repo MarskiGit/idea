@@ -59,7 +59,6 @@ h1 {
     width: 25vw;
     margin: 0.7rem;
     padding: 1rem 0.5rem;
-    background-color: #e5f4f8;
     border: 1px solid #cccccc;
 }
 .wrap-input_my {
@@ -81,9 +80,6 @@ h1 {
     font-size: 1rem;
     color: #555;
     padding: 0 0.3rem 0.3rem 0.3rem;
-}
-.wrap-input_my .input_my:focus {
-    background-color: #f2fbfd;
 }
 button {
     padding: 0.7rem 1.7rem;

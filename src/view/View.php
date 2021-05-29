@@ -25,19 +25,19 @@ class View
     {
         $this->renderHTML('footer', 'page/');
     }
-    public function addIdea($pageParams): void
+    public function addIdea(array $pageParams = []): void
     {
         $this->renderHTML('idea', 'page/', $pageParams);
     }
-    public function list($pageParams): void
+    public function list(array $pageParams = []): void
     {
         $this->renderHTML('list', 'page/', $pageParams);
     }
-    public function login($pageParams): void
+    public function login(array $pageParams = []): void
     {
         $this->renderHTML('login', 'page/', $pageParams);
     }
-    public function admin($pageParams): void
+    public function admin(array $pageParams = []): void
     {
         $this->renderHTML('admin', 'admin/', $pageParams);
     }
@@ -45,18 +45,21 @@ class View
     {
         $this->renderHTML('mod', 'mod/');
     }
-    public function areaAdmin(): void
+    public function pointsAdmin(array $pageParams = []): void
     {
-
-        $this->renderHTML('area', 'admin/',);
+        $this->renderHTML('points', 'admin/',);
     }
-    public function userAdmin(): void
+    public function managementAdmin(array $pageParams = []): void
     {
-        $this->renderHTML('user', 'admin/',);
+        $this->renderHTML('management', 'admin/',);
     }
-    public function statisticsAdmin(): void
+    public function areaAdmin(array $pageParams = []): void
     {
-        $this->renderHTML('statistics', 'admin/',);
+        $this->renderHTML('area', 'admin/', $pageParams);
+    }
+    public function userAdmin(array  $areaParams = []): void
+    {
+        $this->renderHTML('user', 'admin/', $areaParams);
     }
     public function homeAdmin(): void
     {

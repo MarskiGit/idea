@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Idea\controller;
 
 use Idea\model\ListIdeaModel;
-use Idea\model\UserModel;
-use Idea\model\AreaModel;
 use Idea\model\AccountModel;
+use Idea\model\AreaModel;
 use Idea\model\IdeaWrite;
 
 class AjaxController extends AbstractController
@@ -20,13 +19,13 @@ class AjaxController extends AbstractController
     }
     protected function creatorSearchIdea(): void
     {
-        $userSearch = new UserModel();
-        $this->View->renderJSON($userSearch->getSearch($this->requestParam));
+        $userSearch = new AccountModel();
+        $this->View->renderJSON($userSearch->search($this->requestParam));
     }
     protected function areaSearchIdea(): void
     {
         $areaSearch = new AreaModel();
-        $this->View->renderJSON($areaSearch->getSearch($this->requestParam));
+        $this->View->renderJSON($areaSearch->search($this->requestParam));
     }
     protected function loginIdea()
     {
@@ -36,7 +35,7 @@ class AjaxController extends AbstractController
     protected function addUserIdea()
     {
         $account = new AccountModel();
-        $this->View->renderJSON($account->add($this->requestParam));
+        $this->View->renderJSON($account->create($this->requestParam));
     }
     protected function ideaWriteIdea()
     {
@@ -46,7 +45,7 @@ class AjaxController extends AbstractController
     protected function addAreaIdea()
     {
         $area = new AreaModel();
-        $this->View->renderJSON($area->add($this->requestParam));
+        $this->View->renderJSON($area->create($this->requestParam));
     }
     protected function exitIdea(): void
     {

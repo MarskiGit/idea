@@ -6,6 +6,7 @@ namespace Idea\controller;
 
 use Idea\model\Csrf;
 use Idea\model\AccountModel;
+use Idea\model\AreaModel;
 use Idea\model\RatingSettingsIdeaModel;
 
 class PageController extends AbstractController
@@ -57,14 +58,17 @@ class PageController extends AbstractController
                 case 'home':
                     $this->View->homeAdmin();
                     break;
+                case 'points':
+                    $this->View->pointsAdmin();
+                    break;
+                case 'management':
+                    $this->View->managementAdmin();
+                    break;
                 case 'area':
-                    $this->View->areaAdmin();
+                    $this->area();
                     break;
                 case 'user':
-                    $this->View->userAdmin();
-                    break;
-                case 'statistics':
-                    $this->View->statisticsAdmin();
+                    $this->user();
                     break;
                 default:
                     $this->View->homeAdmin();
@@ -72,5 +76,21 @@ class PageController extends AbstractController
             }
         }
         echo '</main>';
+    }
+    private function area(): void
+    {
+        $area = new AreaModel();
+        $areaParams = [
+            'areaList' => $area->get(),
+        ];
+        $this->View->areaAdmin($areaParams);
+    }
+    private function user(): void
+    {
+        $user = new AccountModel();
+        $areaParams = [
+            'userList' => $user->get(),
+        ];
+        $this->View->userAdmin($areaParams);
     }
 }

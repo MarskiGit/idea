@@ -1,6 +1,8 @@
+<?php
+$counter = 1;
+?>
 <section class="container">
-    <section class="wrap_form">
-
+    <section class="wrap_context">
         <form data-form="area" novalidate>
             <legend>Dodaj Obszar</legend>
             <fieldset class="wrap-input_my">
@@ -12,4 +14,24 @@
             <button type="submit" class="button_subbmit">Dodaj</button>
         </form>
     </section>
+    <section class="wrap_context">
+        <h3>Lista Obszarów</h3>
+        <ol class="ol_list">
+            <?php foreach ($pageParams['areaList'] as $area) : ?>
+                <li>
+                    <div class="ol_name">
+                        <span><?php echo $counter ?></span>
+                        <span><?php echo $area['area_name'] ?></span>
+                    </div>
+                    <div class="ol_event">
+                        <button class="button_edit" data-id="<?php echo (int) $area['id_area'] ?>"> Edytuj </button>
+                        <button class="button_edit" data-id="<?php echo (int) $area['id_area'] ?>"> Usuń</button>
+                    </div>
+                </li>
+                <?php $counter++ ?>
+            <?php endforeach; ?>
+            </tbody>
+        </ol>
+    </section>
+
 </section>

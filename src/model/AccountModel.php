@@ -10,9 +10,28 @@ use Idea\exception\AjaxException;
 use PDO;
 use PDOException;
 
-class AccountModel extends AbstractModel
+class AccountModel extends AbstractModel implements ModelInterface
 {
-    public function add(array $requestParam): array
+    public function get(): array
+    {
+        try {
+            $stmt = $this->DB->query("SELECT id_account, full_name, id_pass, rang, active FROM account ");
+            $stmt->execute();
+        } catch (PDOException $e) {
+            throw new AjaxException('Error: Get List UserModel');
+        }
+        if ($stmt->rowCount() > 0) {
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $result[] = $row;
+            }
+            return $result;
+        } else {
+            $ok['ok'] = false;
+            $result[] = $ok;
+            return $result;
+        }
+    }
+    public function create(array $requestParam): array
     {
         if (!$this->isNameValid($requestParam['full_name'])) {
             return $this->notification([
@@ -81,41 +100,6 @@ class AccountModel extends AbstractModel
             'account' => $id,
         ]);
     }
-    public function login(array $requestParam): array
-    {
-        if (Csrf::verifyToken($requestParam['token'], 'login')) {
-            try {
-                $stmt = $this->DB->prepare('SELECT id_account, full_name, account_password, account_login, rang FROM account WHERE (account_login = :account_login) AND (active = 1)');
-                $stmt->bindValue(':account_login', $requestParam['login'], PDO::PARAM_STR);
-                $stmt->execute();
-            } catch (PDOException $e) {
-                throw new AjaxException('Błąd Login AccountModel');
-            }
-
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            if (is_array($row)) {
-                if (password_verify($requestParam['password'], $row['account_password']) && $requestParam['login'] === $row['account_login']) {
-                    $_SESSION['account'] = [
-                        'rang' => $row['rang'],
-                        'name' => $row['full_name'],
-                        'id' => $row['id_account'],
-                        'currentTime' => date("H:i:s"),
-                    ];
-                    return $this->notification(['ok' => true]);
-                }
-            } else {
-                return $this->notification([
-                    'ok' => false,
-                    'title' => 'Podano błędne dane logowania'
-                ]);
-            }
-        } else {
-            return $this->notification([
-                'ok' => false,
-                'title' => 'Błędny token logowania'
-            ]);
-        }
-    }
     public function edit(array $requestParam)
     {
         try {
@@ -131,6 +115,64 @@ class AccountModel extends AbstractModel
             $stmt->execute();
         } catch (PDOException $e) {
             throw new AjaxException('Błąd Login AccountModel');
+        }
+    }
+    public function delete(array $requestParam)
+    {
+    }
+    public function search(array $requestParam): array
+    {
+        $search = "%" . $requestParam['full_name'] . "%";
+        try {
+            $stmt = $this->DB->prepare("SELECT id_account, id_area, full_name FROM account WHERE " . $requestParam['select'] . " LIKE :name LIMIT 3");
+            $stmt->bindValue(':name', $search, PDO::PARAM_STR);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            throw new AjaxException('Błąd User Search IdeaModel');
+        }
+        if ($stmt->rowCount() > 0) {
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $result[] = $row;
+            }
+            $ok['ok'] = true;
+            array_unshift($result, $ok);
+            return $result;
+        } else {
+            $result[] = ['full_name' => 'Nie odnaleziono', 'ok' => false];
+            return $this->notification($result);
+        }
+    }
+    public function login(array $requestParam): array
+    {
+        if (Csrf::verifyToken($requestParam['token'], 'login')) {
+            try {
+                $stmt = $this->DB->prepare('SELECT id_account, full_name, account_password, account_login, rang FROM account WHERE (account_login = :account_login) AND (active = 1)');
+                $stmt->bindValue(':account_login', $requestParam['login'], PDO::PARAM_STR);
+                $stmt->execute();
+            } catch (PDOException $e) {
+                throw new AjaxException('Błąd Login AccountModel');
+            }
+
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            if (is_array($row) && password_verify($requestParam['password'], $row['account_password']) && $requestParam['login'] === $row['account_login']) {
+                $_SESSION['account'] = [
+                    'rang' => $row['rang'],
+                    'name' => $row['full_name'],
+                    'id' => $row['id_account'],
+                    'currentTime' => date("H:i:s"),
+                ];
+                return $this->notification(['ok' => true]);
+            } else {
+                return $this->notification([
+                    'ok' => false,
+                    'title' => 'Podano błędne dane logowania'
+                ]);
+            }
+        } else {
+            return $this->notification([
+                'ok' => false,
+                'title' => 'Błędny token logowania'
+            ]);
         }
     }
     public static function logout(): void

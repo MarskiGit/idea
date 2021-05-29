@@ -1,9 +1,9 @@
 'use strict';
-import PasswordCheck from './PasswordCheck.esm.js';
+import FormPassword from './FormPassword.esm.js';
 
 export default class FormValidation {
     #errorMessage;
-    #PasswordCheck;
+    #FormPassword;
     #fieldsValue;
     #data;
     #formObjects;
@@ -35,7 +35,7 @@ export default class FormValidation {
         }
         return this.#params;
     }
-    getInfoPass = () => this.#isPassword && this.#PasswordCheck.getInfo();
+    getInfoPass = () => this.#isPassword && this.#FormPassword.getInfo();
     emptyFields = () => (this.#formData() === this.#fieldsValue.filter((e) => e !== '').length ? true : false);
     #findInputs() {
         const collection = [...this.form];
@@ -56,13 +56,13 @@ export default class FormValidation {
     }
     #factory() {
         if (this.#isPassword) {
-            this.#PasswordCheck = new PasswordCheck(
+            this.#FormPassword = new FormPassword(
                 this.getInputs(['INPUT'], 'password'),
                 this.#formObjects.strengthMessage,
                 this.#formObjects.strengthMeter,
                 this.#formObjects.identicalMessage
             );
-            this.#PasswordCheck.init();
+            this.#FormPassword.init();
         }
     }
     #formData() {

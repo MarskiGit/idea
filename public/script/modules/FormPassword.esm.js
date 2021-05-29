@@ -1,5 +1,5 @@
 'use strict';
-export default class PasswordCheck {
+export default class FormPassword {
     #userMessage = {
         empty: 'Wpisz hasło &#128533;',
         worst: 'Więcej znaków &#128530;',

@@ -5,7 +5,19 @@
         <ul>
             <li class="<?php echo $pageParams['actve_link'] === 'home' ? 'display' : 'hide' ?>">
                 <a rel="admin section" href="?action=admin&admin=home" data-link="menu" class="li_button">
-                    <img src="public/img/icon/mangament.png" alt="Zarządzanie">
+                    <img src="public/img/icon/statistics.png" alt="Statystyki">
+                    <span>Statystyki</span>
+                </a>
+            </li>
+            <li class="<?php echo $pageParams['actve_link'] === 'points' ? 'display' : 'hide' ?>">
+                <a rel="admin section" href="?action=admin&admin=points" data-link="menu" class="li_button">
+                    <img src="public/img/icon/podium.png" alt="Zarządzanie">
+                    <span>Punkty</span>
+                </a>
+            </li>
+            <li class="<?php echo $pageParams['actve_link'] === 'management ' ? 'display' : 'hide' ?>">
+                <a rel="admin section" href="?action=admin&admin=management" data-link="menu" class="li_button">
+                    <img src="public/img/icon/management.png" alt="Statystyki">
                     <span>Zarządzanie</span>
                 </a>
             </li>
@@ -19,12 +31,6 @@
                 <a rel="admin section" href="?action=admin&admin=user" data-link="menu" class="li_button">
                     <img src="public/img/icon/user.png" alt="Użytkownik">
                     <span>Użytkownik</span>
-                </a>
-            </li>
-            <li class="<?php echo $pageParams['actve_link'] === 'statistics' ? 'display' : 'hide' ?>">
-                <a rel="admin section" href="?action=admin&admin=statistics" data-link="menu" class="li_button">
-                    <img src="public/img/icon/statistics.png" alt="Statystyki">
-                    <span>Statystyki</span>
                 </a>
             </li>
         </ul>
