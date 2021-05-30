@@ -7,13 +7,13 @@ namespace Idea\controller;
 use Idea\model\CsrfModel;
 use Idea\model\AccountModel;
 use Idea\model\AreaModel;
-use Idea\model\OfferRatingModel;
+use Idea\model\OfferOptionModel;
 
 class PageController extends AbstractController
 {
     protected function offerIdea(): void
     {
-        $offerRating = new OfferRatingModel();
+        $offerRating = new OfferOptionModel();
         CsrfModel::setNewToken('offer');
         $offerParams = [
             'offerSessionToken' => CsrfModel::viewToken('offer'),

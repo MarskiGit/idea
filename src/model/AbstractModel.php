@@ -68,10 +68,6 @@ abstract class AbstractModel
     }
     protected function arraySQL(array $insData): string
     {
-        // $columns = implode(", ", array_keys($insData));
-
-        $values  = implode(", ", $insData);
-        $escape = $this->escape($values);
-        return $escape;
+        return json_encode($insData);
     }
 }

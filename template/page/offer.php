@@ -20,25 +20,23 @@
             <fieldset>
                 <legend>Ocena propozycji</legend>
                 <div class="rating">
-                    <?php
-                    foreach ($pageParams['offerRating'] as $key => $value) {
-                        $title = $value['title'];
-                        $value_option = $value['value_option'];
-                        $name_option = $value['name_option'];
-                        $header = $value['header'];
-                        if (!$header) {
-                            $value_option  = explode(',', $value_option);
-                            echo "<div class='options_rating'><span>$title</span><div class='option_pkt'><select>";
-                            foreach ($value_option as $key => $value) {
-                                // $output = preg_replace('/[^0-9]/', '', $value); pozostawia tylko cyfry
-                                echo "<option value=" . $value . ">$value</option>";
-                            }
-                            echo '</select></div></div>';
-                        } else {
-                            echo "<div class='title_rating'>$title</div>";
-                        }
-                    }
-                    ?>
+                    <?php foreach ($pageParams['offerRating'] as $key => $value) : ?>
+                        <?php if ((int)$value['header']) : ?>
+                            <div class='title_rating'><?php echo $value['title'] ?></div>
+                        <?php else : ?>
+                            <div class='options_rating'>
+                                <span><?php echo $value['title'] ?></span>
+                                <div class='option_pkt' id="<?php echo $value['name_option'] ?>">
+                                    <select aria-labelledby="<?php echo $value['name_option'] ?>">
+                                        <?php $value_option  = explode(',', $value['value_option']); ?>
+                                        <?php foreach ($value_option as $option) : ?>
+                                            <option value="<?php echo $option ?> "><?php echo $option ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
                     <div class="number_rating"> <span>Suma punktów:&nbsp;</span><span class="pktnum" data-form="view_points">10</span><span>&nbsp;pkt.</span></div>
                 </div>
                 <span class="sign_number"></span>

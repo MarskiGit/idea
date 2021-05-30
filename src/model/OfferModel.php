@@ -43,7 +43,7 @@ class OfferModel extends AbstractModel
             $userIdea = $this->userIdea($id, $requestParam);
             return $this->notification([
                 'ok' => $userIdea,
-                'title' => 'Dodano pomyślmie',
+                'title' => "Dodano pomyślmie. Numer: " . date("Ymd") . "/" . $id,
             ]);
         } else {
             return $this->notification(['ok' => false, 'title' => 'Dupa',]);
