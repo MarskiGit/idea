@@ -8,7 +8,7 @@ import Request from './modules/Request.esm.js';
 
 const formObjects = {
     isPassword: false,
-    request: 'addIdea',
+    request: 'offerIdea',
     form: document.querySelector('[data-form="idea"]'),
     errorMessage: document.querySelector('[data-form="idea_message"]'),
     viewPoints: document.querySelector('[data-form="view_points"]'),
@@ -27,7 +27,7 @@ const search = {
     },
 };
 
-class Idea {
+class Offer {
     #Ajax;
     #request = {};
     #inputSearch;
@@ -60,7 +60,6 @@ class Idea {
 
         if (this.#emptyForm()) {
             this.#getrequestForm();
-            this.#clearForm();
         } else {
             this.FormValidation.showMessage('Uzupełnij wszystkie pola.');
         }
@@ -76,15 +75,27 @@ class Idea {
     }
     #getrequestForm() {
         const { before, after } = this.FormValidation.getValue();
-        this.#request.before = before;
-        this.#request.after = after;
-        this.#request.area = this.UserSearch.getSelectedId();
-        this.#request.user = this.AreaSearch.getSelectedId();
-        this.#request.pint = this.Rating.getPoints();
+        this.#request.before_value = before;
+        this.#request.after_value = after;
+        this.#request.array_users = this.UserSearch.getSelectedId();
+        this.#request.id_area = this.AreaSearch.getSelectedId()[0];
+        this.#request.pkt_user = this.Rating.getPoints();
         this.#request.saving = this.Rating.getValueString();
 
         console.log(this.#request);
+
+        this.#Ajax
+            .getJson(this.#request)
+            .then((data) => {
+                if (data.ok === true) {
+                    this.#clearForm();
+                    this.FormValidation.showMessage(`${data.title}`);
+                } else {
+                    this.FormValidation.showMessage(`${data.title}`);
+                }
+            })
+            .finally((document.body.style.cursor = 'default'));
     }
     #emptyForm = () => !!(this.FormValidation.emptyFields() && this.UserSearch.whetherListCompleted() && this.AreaSearch.whetherListCompleted());
 }
-new Idea(formObjects, search, setingRequest).init();
+new Offer(formObjects, search, setingRequest).init();

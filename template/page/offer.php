@@ -1,6 +1,5 @@
-<script type="module" src="./public/script/idea.esm.js"></script>
+<script type="module" src="./public/script/offer.esm.js"></script>
 <main data-page="main">
-
     <section class="section_container">
         <h1>Propozycja</h1>
 
@@ -22,7 +21,7 @@
                 <legend>Ocena propozycji</legend>
                 <div class="rating">
                     <?php
-                    foreach ($pageParams as $key => $value) {
+                    foreach ($pageParams['offerRating'] as $key => $value) {
                         $title = $value['title'];
                         $value_option = $value['value_option'];
                         $name_option = $value['name_option'];
@@ -79,7 +78,7 @@
                 <span class="sign_number"></span>
             </fieldset>
             <span class="massage_error idea_massage" data-form="idea_message"></span>
-            <button class="btn_write" data-form="add">Wyślij</button>
+            <button class="btn_write" data-form="add" data-token="<?php echo $pageParams['offerSessionToken'] ?>">Wyślij</button>
         </form>
     </section>
 </main>

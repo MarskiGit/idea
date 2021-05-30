@@ -4,36 +4,40 @@ declare(strict_types=1);
 
 namespace Idea\controller;
 
-use Idea\model\Csrf;
+use Idea\model\CsrfModel;
 use Idea\model\AccountModel;
 use Idea\model\AreaModel;
-use Idea\model\RatingSettingsIdeaModel;
+use Idea\model\OfferRatingModel;
 
 class PageController extends AbstractController
 {
-    protected function ideaIdea(): void
+    protected function offerIdea(): void
     {
-        $ideaRating = new RatingSettingsIdeaModel();
-        $this->View->addIdea($ideaRating->get());
+        $offerRating = new OfferRatingModel();
+        CsrfModel::setNewToken('offer');
+        $offerParams = [
+            'offerSessionToken' => CsrfModel::viewToken('offer'),
+            'offerRating' => $offerRating->get(),
+        ];
+        $this->View->offerIdea($offerParams);
     }
     protected function listIdea(): void
     {
-        Csrf::setNewToken('list');
+        CsrfModel::setNewToken('list');
         $listParams = [
-            'listSessionToken' => Csrf::viewToken('list'),
+            'listSessionToken' => CsrfModel::viewToken('list'),
         ];
         $this->View->list($listParams);
     }
     protected function homeIdea(): void
     {
-
         $this->View->home();
     }
     protected function loginIdea(): void
     {
-        Csrf::setNewToken('login');
+        CsrfModel::setNewToken('login');
         $loginParams = [
-            'loginTokenInput' => Csrf::getInputToken('login'),
+            'loginTokenInput' => CsrfModel::getInputToken('login'),
         ];
         $this->View->login($loginParams);
     }
@@ -45,7 +49,6 @@ class PageController extends AbstractController
     protected function adminIdea(): void
     {
         $admin_GET = $this->Request->getParam_GET('admin', 'home');
-
         $adminParams = [
             'actve_link' => $admin_GET,
         ];

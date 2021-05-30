@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Idea\model;
 
-class Csrf
+class CsrfModel
 {
     public static function verifyToken(string $requestToken, string $page): bool
     {

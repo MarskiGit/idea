@@ -46,11 +46,32 @@ abstract class AbstractModel
         }
         return $valid;
     }
-    protected function testInput(string $data): string
+    protected function isPasswdValid(string $password): bool
+    {
+        $valid = true;
+        $len = mb_strlen($password);
+        if ($len < 8) {
+            $valid = false;
+        }
+        return $valid;
+    }
+    protected function hash(string $value): string
+    {
+        return password_hash($value, PASSWORD_BCRYPT);
+    }
+    protected function escape(string $data): string
     {
         $data = trim($data);
         $data = stripslashes($data);
         $data = htmlspecialchars($data);
         return $data;
+    }
+    protected function arraySQL(array $insData): string
+    {
+        // $columns = implode(", ", array_keys($insData));
+
+        $values  = implode(", ", $insData);
+        $escape = $this->escape($values);
+        return $escape;
     }
 }

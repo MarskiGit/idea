@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Idea\model;
 
-use Idea\model\Csrf;
+use Idea\model\CsrfModel;
 use Idea\model\AbstractModel;
 use Idea\exception\AjaxException;
 use PDO;
@@ -144,7 +144,7 @@ class AccountModel extends AbstractModel implements ModelInterface
     }
     public function login(array $requestParam): array
     {
-        if (Csrf::verifyToken($requestParam['token'], 'login')) {
+        if (CsrfModel::verifyToken($requestParam['token'], 'login')) {
             try {
                 $stmt = $this->DB->prepare('SELECT id_account, full_name, account_password, account_login, rang FROM account WHERE (account_login = :account_login) AND (active = 1)');
                 $stmt->bindValue(':account_login', $requestParam['login'], PDO::PARAM_STR);
@@ -178,22 +178,9 @@ class AccountModel extends AbstractModel implements ModelInterface
     public static function logout(): void
     {
         if (session_status() == PHP_SESSION_ACTIVE) {
-            Csrf::removeTokens('login');
+            CsrfModel::removeTokens('login');
             unset($_SESSION['account']);
             session_destroy();
         }
-    }
-    private function isPasswdValid(string $password): bool
-    {
-        $valid = true;
-        $len = mb_strlen($password);
-        if ($len < 8) {
-            $valid = false;
-        }
-        return $valid;
-    }
-    private function hash(string $value): string
-    {
-        return password_hash($value, PASSWORD_BCRYPT);
     }
 }

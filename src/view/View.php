@@ -25,52 +25,55 @@ class View
     {
         $this->renderHTML('footer', 'page/');
     }
-    public function addIdea(array $pageParams = []): void
+    public function offerIdea(array $pageParams): void
     {
-        $this->renderHTML('idea', 'page/', $pageParams);
+        $this->renderHTML('offer', 'page/', $pageParams);
     }
-    public function list(array $pageParams = []): void
+    public function list(array $pageParams): void
     {
         $this->renderHTML('list', 'page/', $pageParams);
     }
-    public function login(array $pageParams = []): void
+    public function login(array $pageParams): void
     {
         $this->renderHTML('login', 'page/', $pageParams);
     }
-    public function admin(array $pageParams = []): void
+    public function admin(array $pageParams): void
     {
         $this->renderHTML('admin', 'admin/', $pageParams);
     }
+
     public function mod(): void
     {
         $this->renderHTML('mod', 'mod/');
     }
-    public function pointsAdmin(array $pageParams = []): void
-    {
-        $this->renderHTML('points', 'admin/',);
-    }
-    public function managementAdmin(array $pageParams = []): void
-    {
-        $this->renderHTML('management', 'admin/',);
-    }
-    public function areaAdmin(array $pageParams = []): void
-    {
-        $this->renderHTML('area', 'admin/', $pageParams);
-    }
-    public function userAdmin(array  $areaParams = []): void
-    {
-        $this->renderHTML('user', 'admin/', $areaParams);
-    }
+
     public function homeAdmin(): void
     {
         $this->renderHTML('home', 'admin/',);
     }
+    public function pointsAdmin(): void
+    {
+        $this->renderHTML('points', 'admin/',);
+    }
+    public function managementAdmin(): void
+    {
+        $this->renderHTML('management', 'admin/',);
+    }
+    public function areaAdmin(array $pageParams): void
+    {
+        $this->renderHTML('area', 'admin/', $pageParams);
+    }
+    public function userAdmin(array  $areaParams): void
+    {
+        $this->renderHTML('user', 'admin/', $areaParams);
+    }
+
     public function renderJSON(array $answer): void
     {
         echo json_encode($answer);
         exit;
     }
-    private function renderHTML(string $name, string $path = '', $pageParams = null): void
+    private function renderHTML(string $name, string $path = '', array $pageParams = []): void
     {
         $path = DIR_TEMPLATE . $path . $name . '.php';
         try {

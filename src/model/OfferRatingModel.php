@@ -10,7 +10,7 @@ use PDO;
 use PDOException;
 
 
-class RatingSettingsIdeaModel extends AbstractModel
+class OfferRatingModel extends AbstractModel
 {
     public function get()
     {
