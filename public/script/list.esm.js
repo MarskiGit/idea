@@ -4,7 +4,7 @@ import Idea from './modules/list/Idea.esm.js';
 import Exception from './modules//Exception.esm.js';
 import Request from './modules//Request.esm.js';
 
-setingRequest.#Ajax.cache = 'default';
+setingRequest.ajax.cache = 'default';
 
 const domObjects = {
     listContainer: document.querySelector('[data-list="list_container"]'),
@@ -48,6 +48,7 @@ class List {
         const status = data[0];
         if (status.ok) {
             data.shift();
+
             data.length ? this.#renderList(data) : this.#emptyList();
         } else {
             this.#listContainer.classList.remove('idea_container');
@@ -56,6 +57,8 @@ class List {
     }
     #renderList(data) {
         for (const idea of data) {
+            console.log(idea);
+
             this.#fragmentList.appendChild(new Idea(idea).getIdea());
             this.#tupleNumbers.push(parseInt(idea.id_idea, 10));
         }

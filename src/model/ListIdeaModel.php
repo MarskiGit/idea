@@ -12,17 +12,19 @@ use PDOException;
 
 class ListIdeaModel extends AbstractModel
 {
-    public function get(): array
+    public function get(array $requestParam): array
     {
+
         try {
-            $stmt = $this->DB->query("SELECT id_idea, id_area, id_users, before_value, after_value, date_added, date_implementation, pkt_mod, status FROM idea WHERE id_idea < " . $this->limitTuples($this->requestParam['last_tuple']) . " ORDER BY id_idea DESC LIMIT 6");
+            $stmt = $this->DB->query("SELECT id_idea, id_area, after_value, before_value, others_value,	array_users, date_added, date_implementation, idea_status FROM idea WHERE id_idea < " . $this->limitTuples($requestParam['last_tuple']) . " ORDER BY id_idea DESC LIMIT 6");
             $stmt->execute();
-        } catch (PDOException $e) {
+        } catch (PDOException) {
             throw new AjaxException('Error: Get List IdeaModel');
         }
+
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $row['creators'] = $this->getListNames($row['id_users']);
+                $row['creators'] = $this->getListNames($row['array_users']);
                 $row['id_area'] = $this->getArea($row['id_area']);
 
                 $result[] = $row;
@@ -38,8 +40,13 @@ class ListIdeaModel extends AbstractModel
     }
     private function getListNames($id_users): array
     {
+        $array_users = json_decode($id_users);
+        $string_id = implode(", ", $array_users);
+
+
+
         try {
-            $stmt = $this->DB->query("SELECT user_name FROM account WHERE id_user IN (" . $id_users . ")");
+            $stmt = $this->DB->query("SELECT full_name FROM account WHERE id_account IN (" . $string_id . ")");
             $stmt->execute();
         } catch (PDOException $e) {
             throw new AjaxException('Error: Name IdeaModel');

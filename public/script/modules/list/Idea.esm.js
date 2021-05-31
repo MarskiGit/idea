@@ -8,16 +8,15 @@ export default class Idea {
     #div = document.createElement('article');
     #id;
     #creators;
-    #pkt_mod;
     #date_added;
     #before_value;
     #after_value;
+    #idea_status;
     #date_implementation;
-    constructor({ status, id_idea, creators, pkt_mod, date_added, before_value, after_value, date_implementation }) {
-        this.#status = status;
+    constructor({ id_idea, id_area, creators, idea_status, date_added, before_value, after_value, date_implementation }) {
+        this.#idea_status = idea_status;
         this.#id = id_idea;
         this.#creators = creators;
-        this.#pkt_mod = pkt_mod;
         this.#date_added = date_added.slice(0, 10);
         this.#before_value = before_value;
         this.#after_value = after_value;
@@ -26,7 +25,7 @@ export default class Idea {
     }
     getIdea = () => this.#div;
     #init() {
-        this.#status = this.#statusInformation(parseInt(this.#status, 10));
+        this.#status = this.#statusInformation(parseInt(this.#idea_status, 10));
         this.#createElement();
     }
     #createElement() {
@@ -39,7 +38,6 @@ export default class Idea {
         <div class="tr ${this.#status.back}">
             <span class="th">${this.#creators.length > 1 ? 'Pomysłodawcy' : 'Pomysłodawca'}</span>
             <span class="th">Status: ${this.#status.status}</span>
-            <span class="th">Przyznane punkty: ${this.pkt_mod ? this.#pkt_mod : 0}</span>
             <span class="th">Data dodania: ${this.#date_added}</span>
         </div>
         <div class="tr">
