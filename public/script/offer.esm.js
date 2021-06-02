@@ -28,13 +28,13 @@ const search = {
 };
 
 class Offer {
-    #Ajax;
+    #Request;
     #request = {};
     #inputSearch;
     constructor(formObjects, search, setingRequest) {
         this.FormValidation = new FormValidation(formObjects);
         this.#request.request = formObjects.request;
-        this.#Ajax = new Request(setingRequest);
+        this.#Request = new Request(setingRequest);
 
         this.#inputSearch = this.FormValidation.getInputs(['INPUT'], 'search');
 
@@ -84,14 +84,17 @@ class Offer {
 
         console.log(this.#request);
 
-        this.#Ajax
+        document.body.style.cursor = 'progress';
+        this.#Request
             .getJson(this.#request)
             .then((data) => {
-                if (data.ok === true) {
+                const { ok, title } = this.#Request.getData(data);
+                console.log(data);
+                if (ok) {
                     this.#clearForm();
-                    this.FormValidation.showMessage(`${data.title}`);
+                    this.FormValidation.showMessage(`${title}`);
                 } else {
-                    this.FormValidation.showMessage(`${data.title}`);
+                    this.FormValidation.showMessage(`${title}`);
                 }
             })
             .finally((document.body.style.cursor = 'default'));

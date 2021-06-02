@@ -1,7 +1,7 @@
 'use strict';
 import { setingRequest } from './modules/seting.esm.js';
 import Idea from './modules/list/Idea.esm.js';
-import Exception from './modules//Exception.esm.js';
+
 import Request from './modules//Request.esm.js';
 
 setingRequest.ajax.cache = 'default';
@@ -11,8 +11,7 @@ const domObjects = {
 };
 
 class List {
-    #Exception;
-    #Ajax;
+    #Request;
     #request = {
         request: 'listIdea',
         last_tuple: 0,
@@ -21,13 +20,15 @@ class List {
     #listContainer;
     #tupleNumbers = [];
     #endTuples = false;
-
+    #dataAjax;
+    #token;
     constructor(domObjects, setingRequest) {
         this.#listContainer = domObjects.listContainer;
-        this.#Exception = new Exception();
-        this.#Ajax = new Request(setingRequest);
+
+        this.#Request = new Request(setingRequest);
     }
     init() {
+        this.#request.token = this.#listContainer.getAttribute('data-token');
         this.LastTuple = this.#findLastTuple();
         this.#sendRequest();
         this.#eventListeners();
@@ -38,26 +39,26 @@ class List {
     #sendRequest = () => {
         if (!this.#endTuples) {
             document.body.style.cursor = 'progress';
-            this.#Ajax
+            this.#Request
                 .getJson(this.#request)
-                .then((data) => this.#check(data))
+                .then((data) => {
+                    this.#dataAjax = this.#Request.getData(data);
+                    this.#go();
+                })
                 .finally((document.body.style.cursor = 'default'));
         }
     };
-    #check(data) {
-        const status = data[0];
-        if (status.ok) {
-            data.shift();
-
-            data.length ? this.#renderList(data) : this.#emptyList();
+    #go() {
+        if (this.#dataAjax.length) {
+            this.#renderList();
         } else {
             this.#listContainer.classList.remove('idea_container');
-            this.#Exception.view(status);
+            this.#emptyList();
         }
     }
-    #renderList(data) {
-        for (const idea of data) {
-            console.log(idea);
+    #renderList() {
+        for (const idea of this.#dataAjax) {
+            // console.log(idea);
 
             this.#fragmentList.appendChild(new Idea(idea).getIdea());
             this.#tupleNumbers.push(parseInt(idea.id_idea, 10));

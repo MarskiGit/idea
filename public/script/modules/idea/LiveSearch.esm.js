@@ -11,6 +11,7 @@ export default class LiveSearch {
     #inputSearch;
     #listResults;
     #fragmentList = document.createDocumentFragment();
+    #dataAjax;
     constructor(inputSearch, searchObjects) {
         this.#listResults = searchObjects.listResults;
         this.#inputSearch = inputSearch;
@@ -82,20 +83,17 @@ export default class LiveSearch {
         document.body.style.cursor = 'progress';
         this.#Request
             .getJson(this.#request)
-            .then((data) => this.#check(data))
+            .then((data) => {
+                this.#dataAjax = this.#Request.getData(data);
+
+                console.log(this.#dataAjax);
+                this.#renderList();
+            })
             .finally((document.body.style.cursor = 'default'));
     }
-    #check(data) {
-        const status = data[0];
-        if (status.ok) {
-            data.shift();
-            this.#renderList(data);
-        } else {
-            this.#renderList(data);
-        }
-    }
-    #renderList(data) {
-        for (const li of data) {
+    #renderList() {
+        for (const li of this.#dataAjax) {
+            console.log(li);
             this.#fragmentList.appendChild(new RenderLi(li).getLi());
         }
         this.#addListPage();

@@ -3,7 +3,7 @@ import FormValidation from './FormValidation.esm.js';
 import Request from './Request.esm.js';
 
 export default class FormHandling {
-    #Ajax;
+    #Request;
     #isPassword;
     #params;
     #request = {};
@@ -13,7 +13,7 @@ export default class FormHandling {
         this.#isPassword = formObjects.isPassword;
         this.#params = formObjects.request;
 
-        this.#Ajax = new Request(setingRequest);
+        this.#Request = new Request(setingRequest);
         this.#inputList = this.FormValidation.getInputs(['INPUT']);
     }
 
@@ -45,14 +45,17 @@ export default class FormHandling {
             request: this.#params,
             ...this.FormValidation.getValue(),
         };
-        this.#Ajax
+        this.#Request
             .getJson(this.#request)
             .then((data) => {
-                if (data.ok === true) {
+                const { ok, title } = this.#Request.getData(data);
+                console.log(ok, title);
+                if (ok) {
                     this.FormValidation.clearField();
-                    this.FormValidation.showMessage('Dodano z powodzeniem');
+                    this.FormValidation.showMessage(`${title}`);
                 } else {
-                    this.FormValidation.showMessage(`${data.title}: ${data.account}`);
+                    this.FormValidation.showMessage(`${title}`);
+                    // localStorage.setItem('key', 'value');
                 }
             })
             .finally((document.body.style.cursor = 'default'));

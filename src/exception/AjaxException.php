@@ -11,14 +11,12 @@ class AjaxException extends Exception
     public function jsonException(string $m, string $f, int $l): string
     {
         $temp = [
-            'ok' => false,
-            'statusText' => $m,
+            'api' => false,
+            'title' => $m,
             'file' => $f,
             'line' => $l,
-            'type' => 'Ajax'
+            'type' => 'PDO'
         ];
-        $test[] = $temp;
-        $answer = json_encode($test);
-        return  $answer;
+        return  json_encode($temp);
     }
 }

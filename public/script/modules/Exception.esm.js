@@ -1,14 +1,15 @@
 'use strict';
 export default class Exception {
-    #domElement = document.createElement('div');
-    constructor() {}
-    view(data) {
-        document.body.appendChild(this.#div(data));
-        if (typeof data.file !== 'undefined') console.error(data.file ? `${data.file} ${data.line}` : data.code);
+    #domElement;
+    constructor() {
+        this.#domElement = document.createElement('aside');
     }
-    #div({ type, statusText }) {
+    view(error) {
+        const { type, title, file, line } = error;
         this.#domElement.classList.add('exception');
-        this.#domElement.innerHTML = `<p>Błąd Aplikacji </p><p>${type} ${statusText}</p><div class="exception_img"></div>`;
-        return this.#domElement;
+        this.#domElement.innerHTML = `<p>Błąd Aplikacji </p><p>${type}: ${title}</p><div class="exception_img"></div>`;
+        document.body.appendChild(this.#domElement);
+
+        if (typeof file !== 'undefined') console.error(file ? `${file} ${line}` : error.code);
     }
 }

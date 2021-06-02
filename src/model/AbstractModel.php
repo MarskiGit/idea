@@ -17,9 +17,17 @@ abstract class AbstractModel
     {
         $this->DB = DB::conn();
     }
-    protected function notification($message): array
+    protected function responseAPI(array $data = [], bool $is_ok = true): array
     {
-        return is_array($message) ? $message : [$message];
+        $replay = [
+            'api' => $is_ok,
+        ];
+        if (!$is_ok) {
+            $replay =  array_merge($replay, $data);
+        } else {
+            $replay['data'] = $data;
+        }
+        return $replay;
     }
     protected function isThere(string $tuple, string $value, string $from): bool
     {

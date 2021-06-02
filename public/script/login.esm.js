@@ -11,7 +11,8 @@ const formObjects = {
 };
 
 class Login {
-    #Ajax;
+    #Request;
+    #dataAjax;
     #inputList;
     #request = {};
     constructor(formObjects, setingRequest) {
@@ -19,7 +20,7 @@ class Login {
         this.errorMessage = formObjects.errorMessage;
         this.#request.request = formObjects.request;
 
-        this.#Ajax = new Request(setingRequest);
+        this.#Request = new Request(setingRequest);
         this.#inputList = this.FormValidation.getInputs(['INPUT']);
     }
 
@@ -39,16 +40,17 @@ class Login {
                 request: 'login',
                 ...this.formParams,
             };
-            console.log(this.#request);
             document.body.style.cursor = 'progress';
-            this.#Ajax
+            this.#Request
                 .getJson(this.#request)
                 .then((data) => {
-                    if (data.ok === true) {
+                    const { ok, title } = this.#Request.getData(data);
+                    console.log(ok, title);
+                    if (ok) {
                         location.replace(localhost);
                         // localStorage.clear();
                     } else {
-                        this.FormValidation.showMessage(`${data.title}`);
+                        this.FormValidation.showMessage(`${title}`);
                         // localStorage.setItem('key', 'value');
                     }
                 })

@@ -19,7 +19,7 @@ class AreaModel extends AbstractModel implements ModelInterface
             $stmt = $this->DB->query("SELECT * FROM area ");
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Error: Get List AreaModel');
+            throw new AjaxException('Error MODEL Get Area');
         }
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -35,31 +35,33 @@ class AreaModel extends AbstractModel implements ModelInterface
     public function create(array $requestParam): array
     {
         if (!$this->isNameValid($requestParam['area_name'])) {
-            return $this->notification([
+            $replay = [
                 'ok' => false,
-                'title' => 'Nazwa;',
-                'account' => 'Minimum 3 znaki',
-                'valid' => 'name'
-            ]);
+                'title' => 'Minimum 3 znaki',
+            ];
+            return $this->responseAPI($replay);
         }
 
         if ($this->isThere('area_name', $requestParam['area_name'], 'area')) {
-            return $this->notification([
+            $replay = [
                 'ok' => false,
-                'title' => 'Ten',
-                'account' => 'Obszar Już jest w bazie',
-                'valid' => 'idArea'
-            ]);
+                'title' => 'Ten obszar jest już w bazie',
+            ];
+            return $this->responseAPI($replay);
         }
+        $area_name = $this->escape($requestParam['area_name']);
         try {
             $stmt = $this->DB->prepare('INSERT INTO area (area_name) VALUES (:area_name)');
-            $stmt->bindParam(':area_name', $requestParam['area_name'], PDO::PARAM_STR);
+            $stmt->bindParam(':area_name', $area_name, PDO::PARAM_STR);
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Błąd Added Area');
+            throw new AjaxException('Error MODEL Create Area');
         }
-
-        return $this->notification(['ok' => true,]);
+        $replay = [
+            'ok' => true,
+            'title' => 'Dodano z powodzeniem',
+        ];
+        return $this->responseAPI($replay);
     }
     public function edit(array $requestParam): void
     {
@@ -70,7 +72,7 @@ class AreaModel extends AbstractModel implements ModelInterface
 
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Błąd Login AccountModel');
+            throw new AjaxException('Error MODEL Area Edit');
         }
     }
     public function delete(array $requestParam): void
@@ -85,24 +87,25 @@ class AreaModel extends AbstractModel implements ModelInterface
     public function search(array $requestParam): array
     {
         $search = "%" . $requestParam['area_name'] . "%";
-
+        $result = [];
         try {
             $stmt = $this->DB->prepare('SELECT area_name, id_area FROM area WHERE area_name LIKE :name LIMIT 3');
             $stmt->bindValue(':name', $search, PDO::PARAM_STR);
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Błąd Area Search IdeaModel');
+            throw new AjaxException('Error Model Area Search');
         }
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $result[] = $row;
+                array_push($result, $row);
             }
-            $ok['ok'] = true;
-            array_unshift($result, $ok);
-            return $result;
+            return $this->responseAPI($result);
         } else {
-            $result[] = ['area_name' => 'Nie odnaleziono', 'ok' => false];
-            return $this->notification($result);
+            $replay = [
+                'area_name' => 'Nie odnaleziono'
+            ];
+            array_push($result, $replay);
+            return $this->responseAPI($result);
         }
     }
 }

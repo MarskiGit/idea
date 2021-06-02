@@ -18,7 +18,7 @@ class AccountModel extends AbstractModel implements ModelInterface
             $stmt = $this->DB->query("SELECT id_account, full_name, id_pass, rang, active FROM account ");
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Error: Get List UserModel');
+            throw new AjaxException('Error MODEL Get Account');
         }
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -34,48 +34,43 @@ class AccountModel extends AbstractModel implements ModelInterface
     public function create(array $requestParam): array
     {
         if (!$this->isNameValid($requestParam['full_name'])) {
-            return $this->notification([
+            $replay = [
                 'ok' => false,
-                'title' => 'Imię i Nazwisko',
-                'account' => 'Minimum 3 znaki',
-                'valid' => 'name'
-            ]);
+                'title' => 'Minimum 3 znaki',
+            ];
+            return $this->responseAPI($replay);
         }
 
         if (!$this->isPasswdValid($requestParam['password'])) {
-            return $this->notification([
+            $replay = [
                 'ok' => false,
-                'title' => 'Hasło',
-                'account' => 'Minimum 8 znaków',
-                'valid' => 'passwd'
-            ]);
+                'title' => 'Minimum  8 znaków',
+            ];
+            return $this->responseAPI($replay);
         }
 
         if ($this->isThere('full_name', $requestParam['full_name'], 'account')) {
-            return $this->notification([
+            $replay = [
                 'ok' => false,
-                'title' => 'Ten',
-                'account' => 'Użytkownik istnieje',
-                'valid' => 'idName'
-            ]);
-        }
-
-        if ($this->isThere('id_pass', $requestParam['id_pass'], 'account')) {
-            return $this->notification([
-                'ok' => false,
-                'title' => 'Ten',
-                'account' => 'Login istnieje',
-                'valid' => 'idPass'
-            ]);
+                'title' => 'Użytkownik jest już w bazie',
+            ];
+            return $this->responseAPI($replay);
         }
 
         if ($this->isThere('account_login', $requestParam['login'], 'account')) {
-            return $this->notification([
+            $replay = [
                 'ok' => false,
-                'title' => 'Ten',
-                'account' => 'Numer Identyfikacyjny istnieje',
-                'valid' => 'idPass'
-            ]);
+                'title' => 'Taki login istnieje',
+            ];
+            return $this->responseAPI($replay);
+        }
+
+        if ($this->isThere('id_pass', $requestParam['id_pass'], 'account')) {
+            $replay = [
+                'ok' => false,
+                'title' => 'Numer Identyfikacyjny istnieje',
+            ];
+            return $this->responseAPI($replay);
         }
 
         $hash_2 = $this->hash($requestParam['password']);
@@ -91,14 +86,15 @@ class AccountModel extends AbstractModel implements ModelInterface
             $stmt->bindParam(':account_password', $hash_2);
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Błąd Added Accound');
+            throw new AjaxException('Error MODEL Create Account');
         }
 
         $id = intval($this->DB->lastInsertId());
-        return $this->notification([
+        $replay = [
             'ok' => true,
-            'account' => $id,
-        ]);
+            'title' => "Dodano" . $requestParam['full_name'],
+        ];
+        return $this->responseAPI($replay);
     }
     public function edit(array $requestParam)
     {
@@ -114,7 +110,7 @@ class AccountModel extends AbstractModel implements ModelInterface
             $stmt->bindValue(':active', $requestParam['active'], PDO::PARAM_INT);
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Błąd Login AccountModel');
+            throw new AjaxException('Error MODEL Edit Account');
         }
     }
     public function delete(array $requestParam)
@@ -122,24 +118,26 @@ class AccountModel extends AbstractModel implements ModelInterface
     }
     public function search(array $requestParam): array
     {
+        $result = [];
         $search = "%" . $requestParam['full_name'] . "%";
         try {
             $stmt = $this->DB->prepare("SELECT id_account, id_area, full_name FROM account WHERE " . $requestParam['select'] . " LIKE :name LIMIT 3");
             $stmt->bindValue(':name', $search, PDO::PARAM_STR);
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Błąd User Search IdeaModel');
+            throw new AjaxException('Error MODEL Search Account');
         }
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $result[] = $row;
+                array_push($result, $row);
             }
-            $ok['ok'] = true;
-            array_unshift($result, $ok);
-            return $result;
+            return $this->responseAPI($result);
         } else {
-            $result[] = ['full_name' => 'Nie odnaleziono', 'ok' => false];
-            return $this->notification($result);
+            $replay = [
+                'full_name' => 'Nie odnaleziono',
+            ];
+            array_push($result, $replay);
+            return $this->responseAPI($result);
         }
     }
     public function login(array $requestParam): array
@@ -150,7 +148,7 @@ class AccountModel extends AbstractModel implements ModelInterface
                 $stmt->bindValue(':account_login', $requestParam['login'], PDO::PARAM_STR);
                 $stmt->execute();
             } catch (PDOException $e) {
-                throw new AjaxException('Błąd Login AccountModel');
+                throw new AjaxException('Error MODEL Login User');
             }
 
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -161,18 +159,23 @@ class AccountModel extends AbstractModel implements ModelInterface
                     'id' => $row['id_account'],
                     'currentTime' => date("H:i:s"),
                 ];
-                return $this->notification(['ok' => true]);
+                $replay = [
+                    'ok' => true,
+                ];
+                return $this->responseAPI($replay);
             } else {
-                return $this->notification([
+                $replay = [
                     'ok' => false,
-                    'title' => 'Podano błędne dane logowania'
-                ]);
+                    'title' => 'Podano błędne dane logowania',
+                ];
+                return $this->responseAPI($replay);
             }
         } else {
-            return $this->notification([
-                'ok' => false,
-                'title' => 'Błędny token logowania'
-            ]);
+            $replay = [
+                'type' => 'AUTHORIZATION',
+                'title' => 'WRONG TOKEN',
+            ];
+            return $this->responseAPI($replay, false);
         }
     }
     public static function logout(): void

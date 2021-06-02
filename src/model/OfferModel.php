@@ -33,20 +33,35 @@ class OfferModel extends AbstractModel
                 $this->DB->commit();
             } catch (PDOException $e) {
                 $this->DB->rollback();
-                throw new AjaxException('Error: Numer Pomysłu');
+                throw new AjaxException('Error MODEL Create Id Idea');
             }
             $stmt->closeCursor();
         } catch (PDOException $e) {
-            throw new AjaxException('Error: Dodawanie Pomysłu');
+            throw new AjaxException('Error MODEL Create Idea');
         }
         if ($id) {
             $userIdea = $this->userIdea($id, $requestParam);
-            return $this->notification([
-                'ok' => $userIdea,
-                'title' => "Dodano pomyślmie. Numer: " . date("Ymd") . "/" . $id,
-            ]);
+            $addet = date("Ymd") . "/" . $id;
+            if ($userIdea) {
+                $this->createDate($id, $addet);
+                $replay = [
+                    'ok' => true,
+                    'title' => "Dodano pomyślmie. Numer: " . $addet,
+                ];
+                return $this->responseAPI($replay);
+            } else {
+                $replay = [
+                    'ok' => true,
+                    'title' => 'Błąd dodawania',
+                ];
+                return $this->responseAPI($replay);
+            }
         } else {
-            return $this->notification(['ok' => false, 'title' => 'Dupa',]);
+            $replay = [
+                'ok' => true,
+                'title' => 'Błąd dodawania',
+            ];
+            return $this->responseAPI($replay, false);
         }
     }
     private function userIdea(int $id, array $requestParam): bool
@@ -66,9 +81,19 @@ class OfferModel extends AbstractModel
             }
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Error: Dodawanie Pomysłu');
+            throw new AjaxException('Error MODEL USER IDEA');
         }
-
         return true;
+    }
+    private function createDate($id_idea, string $addet): void
+    {
+        try {
+            $stmt = $this->DB->prepare("UPDATE idea SET token_idea = :token_idea WHERE id_idea = " . $id_idea . "");
+            $stmt->bindValue(':token_idea', $addet, PDO::PARAM_STR);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            dump($e);
+            throw new AjaxException('Error MODEL DATE');
+        }
     }
 }
