@@ -38,7 +38,7 @@ class AccountModel extends AbstractModel implements ModelInterface
                 'ok' => false,
                 'title' => 'Minimum 3 znaki',
             ];
-            return $this->responseAPI($replay);
+            return $this->responseAPI($replay, true);
         }
 
         if (!$this->isPasswdValid($requestParam['password'])) {
@@ -46,7 +46,7 @@ class AccountModel extends AbstractModel implements ModelInterface
                 'ok' => false,
                 'title' => 'Minimum  8 znaków',
             ];
-            return $this->responseAPI($replay);
+            return $this->responseAPI($replay, true);
         }
 
         if ($this->isThere('full_name', $requestParam['full_name'], 'account')) {
@@ -54,7 +54,7 @@ class AccountModel extends AbstractModel implements ModelInterface
                 'ok' => false,
                 'title' => 'Użytkownik jest już w bazie',
             ];
-            return $this->responseAPI($replay);
+            return $this->responseAPI($replay, true);
         }
 
         if ($this->isThere('account_login', $requestParam['login'], 'account')) {
@@ -62,7 +62,7 @@ class AccountModel extends AbstractModel implements ModelInterface
                 'ok' => false,
                 'title' => 'Taki login istnieje',
             ];
-            return $this->responseAPI($replay);
+            return $this->responseAPI($replay, true);
         }
 
         if ($this->isThere('id_pass', $requestParam['id_pass'], 'account')) {
@@ -70,7 +70,7 @@ class AccountModel extends AbstractModel implements ModelInterface
                 'ok' => false,
                 'title' => 'Numer Identyfikacyjny istnieje',
             ];
-            return $this->responseAPI($replay);
+            return $this->responseAPI($replay, true);
         }
 
         $hash_2 = $this->hash($requestParam['password']);
@@ -94,7 +94,7 @@ class AccountModel extends AbstractModel implements ModelInterface
             'ok' => true,
             'title' => "Dodano" . $requestParam['full_name'],
         ];
-        return $this->responseAPI($replay);
+        return $this->responseAPI($replay, true);
     }
     public function edit(array $requestParam)
     {
@@ -131,13 +131,13 @@ class AccountModel extends AbstractModel implements ModelInterface
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 array_push($result, $row);
             }
-            return $this->responseAPI($result);
+            return $this->responseAPI($result, true);
         } else {
             $replay = [
                 'full_name' => 'Nie odnaleziono',
             ];
             array_push($result, $replay);
-            return $this->responseAPI($result);
+            return $this->responseAPI($result, true);
         }
     }
     public function login(array $requestParam): array
@@ -162,20 +162,20 @@ class AccountModel extends AbstractModel implements ModelInterface
                 $replay = [
                     'ok' => true,
                 ];
-                return $this->responseAPI($replay);
+                return $this->responseAPI($replay, true);
             } else {
                 $replay = [
                     'ok' => false,
                     'title' => 'Podano błędne dane logowania',
                 ];
-                return $this->responseAPI($replay);
+                return $this->responseAPI($replay, true);
             }
         } else {
             $replay = [
                 'type' => 'AUTHORIZATION',
                 'title' => 'WRONG TOKEN',
             ];
-            return $this->responseAPI($replay, false);
+            return $this->responseAPI($replay);
         }
     }
     public static function logout(): void

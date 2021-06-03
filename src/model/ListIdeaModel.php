@@ -19,7 +19,7 @@ class ListIdeaModel extends AbstractModel
         if (CsrfModel::verifyToken($requestParam['token'], 'list')) {
             $result = [];
             try {
-                $stmt = $this->DB->query("SELECT id_idea, id_area, after_value, before_value, others_value,	array_users, date_added, date_implementation, idea_status FROM idea WHERE id_idea < " . $this->limitTuples($requestParam['last_tuple']) . " ORDER BY id_idea DESC LIMIT 6");
+                $stmt = $this->DB->query("SELECT id_idea, id_area, after_value, before_value, others_value,	array_users, date_added, date_implementation, idea_status, token_idea FROM idea WHERE id_idea < " . $this->limitTuples($requestParam['last_tuple']) . " ORDER BY id_idea DESC LIMIT 6");
                 $stmt->execute();
             } catch (PDOException) {
                 throw new AjaxException('Error MODEL Get List');
@@ -27,21 +27,21 @@ class ListIdeaModel extends AbstractModel
 
             if ($stmt->rowCount() > 0) {
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    $row['creators'] = $this->getListNames($row['array_users']);
-                    $row['id_area'] = $this->getArea($row['id_area']);
+                    $row['array_users'] = $this->getListNames($row['array_users']);
+                    $row['area_name'] = $this->getArea($row['id_area']);
                     array_push($result, $row);
                 }
 
-                return $this->responseAPI($result);
+                return $this->responseAPI($result, true);
             } else {
-                return $this->responseAPI();
+                return $this->responseAPI($result, true);
             }
         } else {
             $replay = [
                 'type' => 'AUTHORIZATION',
                 'title' => 'WRONG TOKEN',
             ];
-            return $this->responseAPI($replay, false);
+            return $this->responseAPI($replay);
         }
     }
     private function getListNames($id_users): array

@@ -7,20 +7,25 @@ export default class Idea {
     };
     #div = document.createElement('article');
     #id;
-    #creators;
+    #array_users;
     #date_added;
     #before_value;
     #after_value;
     #idea_status;
+    #area_name;
+    #token_idea;
     #date_implementation;
-    constructor({ id_idea, id_area, creators, idea_status, date_added, before_value, after_value, date_implementation }) {
+    constructor({ id_idea, id_area, after_value, before_value, others_value, array_users, date_added, date_implementation, idea_status, token_idea }) {
         this.#idea_status = idea_status;
         this.#id = id_idea;
-        this.#creators = creators;
-        this.#date_added = date_added.slice(0, 10);
+        this.#area_name = id_area.area_name;
+        this.#array_users = array_users;
+        this.#date_added = date_added;
         this.#before_value = before_value;
         this.#after_value = after_value;
         this.#date_implementation = date_implementation;
+        this.#token_idea = token_idea;
+        this.#area_name = id_area;
         this.#init();
     }
     getIdea = () => this.#div;
@@ -36,14 +41,14 @@ export default class Idea {
     #renderHTML() {
         return `
         <div class="tr ${this.#status.back}">
-            <span class="th">${this.#creators.length > 1 ? 'Pomysłodawcy' : 'Pomysłodawca'}</span>
+            <span class="th">${this.#array_users.length > 1 ? 'Pomysłodawcy' : 'Pomysłodawca'}</span>
             <span class="th">Status: ${this.#status.status}</span>
             <span class="th">Data dodania: ${this.#date_added}</span>
         </div>
         <div class="tr">
             <div class="td idea_authors">
                 <ol>
-                    ${this.#creators.map((name) => `<li>${name}</li>`).join('')}
+                    ${this.#array_users.map((name) => `<li>${name}</li>`).join('')}
                 </ol>
             </div>
             <div class="td idea_value">
@@ -54,7 +59,7 @@ export default class Idea {
             </div>
         </div>
         <div class="tr">
-            <span class="th">Numer propozycji: ${this.#id}</span>
+            <span class="th">Numer propozycji: ${this.#token_idea}</span>
             ${this.#dataAdded(this.#date_implementation)}
         </div>
         `;

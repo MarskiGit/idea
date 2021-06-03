@@ -35,17 +35,15 @@ class Login {
     #formHandling = (event) => {
         event.preventDefault();
         if (this.FormValidation.emptyFields()) {
-            this.formParams = this.FormValidation.getValue();
             this.#request = {
                 request: 'login',
-                ...this.formParams,
+                ...this.FormValidation.getValue(),
             };
             document.body.style.cursor = 'progress';
             this.#Request
                 .getJson(this.#request)
                 .then((data) => {
                     const { ok, title } = this.#Request.getData(data);
-                    console.log(ok, title);
                     if (ok) {
                         location.replace(localhost);
                         // localStorage.clear();

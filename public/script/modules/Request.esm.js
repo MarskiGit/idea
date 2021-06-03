@@ -10,9 +10,9 @@ export default class Request {
     #seting;
     #url;
     constructor(setingRequest) {
+        this.#Exception = new Exception();
         this.#seting = setingRequest.ajax;
         this.#url = setingRequest.url;
-        this.#Exception = new Exception();
     }
     async getJson(request) {
         this.#seting.body = JSON.stringify(request);
@@ -31,7 +31,6 @@ export default class Request {
         console.log('coś dd zrobienia', this.#status);
     }
     getData(data) {
-        console.log(data);
         const is_API = data.api;
         if (is_API) {
             return data.data;

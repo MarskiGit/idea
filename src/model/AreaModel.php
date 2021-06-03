@@ -39,7 +39,7 @@ class AreaModel extends AbstractModel implements ModelInterface
                 'ok' => false,
                 'title' => 'Minimum 3 znaki',
             ];
-            return $this->responseAPI($replay);
+            return $this->responseAPI($replay, true);
         }
 
         if ($this->isThere('area_name', $requestParam['area_name'], 'area')) {
@@ -47,7 +47,7 @@ class AreaModel extends AbstractModel implements ModelInterface
                 'ok' => false,
                 'title' => 'Ten obszar jest już w bazie',
             ];
-            return $this->responseAPI($replay);
+            return $this->responseAPI($replay, true);
         }
         $area_name = $this->escape($requestParam['area_name']);
         try {
@@ -61,7 +61,7 @@ class AreaModel extends AbstractModel implements ModelInterface
             'ok' => true,
             'title' => 'Dodano z powodzeniem',
         ];
-        return $this->responseAPI($replay);
+        return $this->responseAPI($replay, true);
     }
     public function edit(array $requestParam): void
     {
@@ -99,13 +99,13 @@ class AreaModel extends AbstractModel implements ModelInterface
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 array_push($result, $row);
             }
-            return $this->responseAPI($result);
+            return $this->responseAPI($result, true);
         } else {
             $replay = [
                 'area_name' => 'Nie odnaleziono'
             ];
             array_push($result, $replay);
-            return $this->responseAPI($result);
+            return $this->responseAPI($result, true);
         }
     }
 }

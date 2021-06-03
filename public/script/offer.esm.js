@@ -89,7 +89,6 @@ class Offer {
             .getJson(this.#request)
             .then((data) => {
                 const { ok, title } = this.#Request.getData(data);
-                console.log(data);
                 if (ok) {
                     this.#clearForm();
                     this.FormValidation.showMessage(`${title}`);

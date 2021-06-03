@@ -58,8 +58,6 @@ class List {
     }
     #renderList() {
         for (const idea of this.#dataAjax) {
-            // console.log(idea);
-
             this.#fragmentList.appendChild(new Idea(idea).getIdea());
             this.#tupleNumbers.push(parseInt(idea.id_idea, 10));
         }

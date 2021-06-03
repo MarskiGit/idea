@@ -48,20 +48,20 @@ class OfferModel extends AbstractModel
                     'ok' => true,
                     'title' => "Dodano pomyślmie. Numer: " . $addet,
                 ];
-                return $this->responseAPI($replay);
+                return $this->responseAPI($replay, true);
             } else {
                 $replay = [
                     'ok' => true,
                     'title' => 'Błąd dodawania',
                 ];
-                return $this->responseAPI($replay);
+                return $this->responseAPI($replay, true);
             }
         } else {
             $replay = [
                 'ok' => true,
                 'title' => 'Błąd dodawania',
             ];
-            return $this->responseAPI($replay, false);
+            return $this->responseAPI($replay);
         }
     }
     private function userIdea(int $id, array $requestParam): bool

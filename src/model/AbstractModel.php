@@ -17,7 +17,7 @@ abstract class AbstractModel
     {
         $this->DB = DB::conn();
     }
-    protected function responseAPI(array $data = [], bool $is_ok = true): array
+    protected function responseAPI(array $data = [], bool $is_ok = false): array
     {
         $replay = [
             'api' => $is_ok,
@@ -48,7 +48,7 @@ abstract class AbstractModel
     protected  function isNameValid($name): bool
     {
         $valid = true;
-        $len = mb_strlen($name);
+        $len = strlen($name);
         if (($len < 3) || ($len > 16)) {
             $valid = false;
         }
@@ -57,7 +57,7 @@ abstract class AbstractModel
     protected function isPasswdValid(string $password): bool
     {
         $valid = true;
-        $len = mb_strlen($password);
+        $len = strlen($password);
         if ($len < 8) {
             $valid = false;
         }
