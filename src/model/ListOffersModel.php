@@ -19,7 +19,7 @@ class ListOffersModel extends AbstractModel
         if (CsrfModel::verifyToken($requestParam['token'], 'listoffers')) {
             $result = [];
             try {
-                $stmt = $this->DB->query("SELECT id_area, after_value, before_value, others_value, mod_comment,	array_users, date_added, date_implementation, idea_status, token_idea FROM idea WHERE id_idea < " . $this->limitTuples($requestParam['last_tuple']) . " ORDER BY id_idea DESC LIMIT 6");
+                $stmt = $this->DB->query("SELECT id_idea, id_area, after_value, before_value, others_value, mod_comment, array_users, date_added, date_implementation, idea_status, token_idea FROM idea WHERE id_idea < " . $this->limitTuples($requestParam['last_tuple']) . " ORDER BY id_idea DESC LIMIT 15");
                 $stmt->execute();
             } catch (PDOException) {
                 throw new AjaxException('Error MODEL Get List');

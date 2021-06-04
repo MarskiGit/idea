@@ -1,9 +1,9 @@
 'use strict';
 import { setingRequest } from './modules/seting.esm.js';
 import FormValidation from './modules/FormValidation.esm.js';
-import Rating from './modules/offer/Rating.esm.js';
-import LiveSearch from './modules/offer/LiveSearch.esm.js';
-import CountCharacters from './modules/offer/CountCharacters.esm.js';
+import Rating from './modules/formOffer/Rating.esm.js';
+import LiveSearch from './modules/formOffer/LiveSearch.esm.js';
+import CountCharacters from './modules/formOffer/CountCharacters.esm.js';
 import Request from './modules/Request.esm.js';
 
 const formObjects = {
@@ -62,6 +62,7 @@ class FormOffer {
     #formHandling = (event) => {
         event.preventDefault();
         if (this.#emptyForm()) {
+            this.#RequestParam.token = event.target.getAttribute('data-token');
             this.#getParamForm();
         } else {
             this.#FormValidation.showMessage('Uzupełnij wszystkie pola.');
@@ -86,7 +87,7 @@ class FormOffer {
         this.#RequestParam.saving = this.#Rating.getValueString();
 
         console.log(this.#RequestParam);
-        this.#sendRequest();
+        //this.#sendRequest();
     }
     #sendRequest() {
         document.body.style.cursor = 'progress';

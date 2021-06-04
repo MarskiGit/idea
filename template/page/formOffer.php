@@ -4,10 +4,9 @@
         <h1>Propozycja</h1>
 
         <form data-form="idea" data-token="<?php echo $pageParams['formofferToken'] ?>" novalidate>
-
             <fieldset>
                 <legend>Opis stanu obecnego</legend>
-                <textarea maxlength="2000" rows="15" placeholder="Proszę wypełnić to pole" name="before" id="before" data-write="before" require></textarea>
+                <textarea maxlength=" 2000" rows="15" placeholder="Proszę wypełnić to pole" name="before" id="before" data-write="before" require></textarea>
                 <span class="sign_number" data-form="sign_number"></span>
             </fieldset>
 
@@ -76,7 +75,7 @@
                 <span class="sign_number"></span>
             </fieldset>
             <span class="massage_error idea_massage" data-form="idea_message"></span>
-            <button class="btn_write" data-form="add" data-token="<?php echo $pageParams['offerSessionToken'] ?>">Wyślij</button>
+            <button class="btn_write" data-form="add">Wyślij</button>
         </form>
     </section>
 </main>

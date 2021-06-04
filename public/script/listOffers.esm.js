@@ -1,6 +1,6 @@
 'use strict';
 import { setingRequest } from './modules/seting.esm.js';
-import Idea from './modules/list/Idea.esm.js';
+import Idea from './modules/listOffers/Idea.esm.js';
 import Request from './modules/Request.esm.js';
 
 setingRequest.ajax.cache = 'default';
