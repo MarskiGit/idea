@@ -1,35 +1,34 @@
 'use strict';
 import { setingRequest } from './modules/seting.esm.js';
 import Idea from './modules/list/Idea.esm.js';
-
 import Request from './modules//Request.esm.js';
 
 setingRequest.ajax.cache = 'default';
 
 const domObjects = {
+    request: 'listIdea',
     listContainer: document.querySelector('[data-list="list_container"]'),
 };
 
 class List {
-    #Request;
-    #request = {
-        request: 'listIdea',
+    #RequestParam = {
         last_tuple: 0,
     };
-    #fragmentList = document.createDocumentFragment();
     #listContainer;
+    #Request;
+    #LastTuple;
+    #fragmentList = document.createDocumentFragment();
     #tupleNumbers = [];
     #endTuples = false;
-    #dataAjax;
-    #token;
+    #data;
     constructor(domObjects, setingRequest) {
+        this.#RequestParam.request = domObjects.request;
         this.#listContainer = domObjects.listContainer;
-
         this.#Request = new Request(setingRequest);
     }
     init() {
-        this.#request.token = this.#listContainer.getAttribute('data-token');
-        this.LastTuple = this.#findLastTuple();
+        this.#RequestParam.token = this.#listContainer.getAttribute('data-token');
+        this.#LastTuple = this.#findLastTuple();
         this.#sendRequest();
         this.#eventListeners();
     }
@@ -40,16 +39,16 @@ class List {
         if (!this.#endTuples) {
             document.body.style.cursor = 'progress';
             this.#Request
-                .getJson(this.#request)
+                .getJson(this.#RequestParam)
                 .then((data) => {
-                    this.#dataAjax = this.#Request.getData(data);
-                    this.#go();
+                    this.#data = this.#Request.getData(data);
+                    this.#checkData();
                 })
                 .finally((document.body.style.cursor = 'default'));
         }
     };
-    #go() {
-        if (this.#dataAjax.length) {
+    #checkData() {
+        if (this.#data.length) {
             this.#renderList();
         } else {
             this.#listContainer.classList.remove('idea_container');
@@ -57,14 +56,14 @@ class List {
         }
     }
     #renderList() {
-        for (const idea of this.#dataAjax) {
+        for (const idea of this.#data) {
             this.#fragmentList.appendChild(new Idea(idea).getIdea());
             this.#tupleNumbers.push(parseInt(idea.id_idea, 10));
         }
 
-        const { end, last } = this.LastTuple();
+        const { end, last } = this.#LastTuple();
         this.#endTuples = end;
-        this.#request.last_tuple = last;
+        this.#RequestParam.last_tuple = last;
 
         this.#addListPage();
     }

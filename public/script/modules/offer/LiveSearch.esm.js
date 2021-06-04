@@ -5,21 +5,20 @@ import Choose from './Choose.esm.js';
 import RenderLi from './RenderLi.esm.js';
 
 export default class LiveSearch {
+    #RequestParam = {};
     #Request;
     #Choose;
-    #request = {};
-    #inputSearch;
     #listResults;
+    #inputSearch;
+
     #fragmentList = document.createDocumentFragment();
-    #dataAjax;
+    #data;
     constructor(inputSearch, searchObjects) {
-        this.#listResults = searchObjects.listResults;
-        this.#inputSearch = inputSearch;
-        this.#request = {
-            request: searchObjects.request,
-        };
+        this.#RequestParam.request = searchObjects.request;
         this.#Request = new Request(setingRequest);
         this.#Choose = new Choose(searchObjects.selectedList);
+        this.#listResults = searchObjects.listResults;
+        this.#inputSearch = inputSearch;
     }
     init() {
         this.#eventListeners();
@@ -72,28 +71,25 @@ export default class LiveSearch {
     }
     #valueSought(target) {
         if (target.dataset.search === 'creator_search') {
-            Number(target.value) ? (this.#request.select = 'id_pass') : (this.#request.select = 'full_name');
-            this.#request.full_name = target.value;
+            Number(target.value) ? (this.#RequestParam.select = 'id_pass') : (this.#RequestParam.select = 'full_name');
+            this.#RequestParam.full_name = target.value;
         } else {
-            this.#request.area_name = target.value;
+            this.#RequestParam.area_name = target.value;
         }
         this.#sendRequest();
     }
     #sendRequest() {
         document.body.style.cursor = 'progress';
         this.#Request
-            .getJson(this.#request)
+            .getJson(this.#RequestParam)
             .then((data) => {
-                this.#dataAjax = this.#Request.getData(data);
-
-                console.log(this.#dataAjax);
+                this.#data = this.#Request.getData(data);
                 this.#renderList();
             })
             .finally((document.body.style.cursor = 'default'));
     }
     #renderList() {
-        for (const li of this.#dataAjax) {
-            console.log(li);
+        for (const li of this.#data) {
             this.#fragmentList.appendChild(new RenderLi(li).getLi());
         }
         this.#addListPage();

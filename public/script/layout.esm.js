@@ -11,17 +11,19 @@ const domObjects = {
 
 class Layout {
     #domObjects;
+    #NavSticky;
+    #Smooth;
     constructor(domObjects) {
         this.#domObjects = domObjects;
-        this.NavSticky = new NavSticky(domObjects);
-        this.Smooth = new SmoothTop();
+        this.#NavSticky = new NavSticky(domObjects);
+        this.#Smooth = new SmoothTop();
     }
     init() {
-        this.NavSticky.init();
+        this.#NavSticky.init();
         this.#eventListeners();
     }
     #eventListeners() {
-        this.#domObjects.pageUp.addEventListener('click', () => this.Smooth.animation());
+        this.#domObjects.pageUp.addEventListener('click', () => this.#Smooth.init());
     }
 }
 

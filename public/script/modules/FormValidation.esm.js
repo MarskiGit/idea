@@ -1,33 +1,23 @@
 'use strict';
-import FormPassword from './FormPassword.esm.js';
-
 export default class FormValidation {
+    #formObjects;
     #errorMessage;
-    #FormPassword;
     #fieldsValue;
     #data;
-    #formObjects;
-    #isPassword;
     #params = {};
     constructor(formObjects) {
         this.form = formObjects.form;
         this.getInputs = this.#findInputs();
         this.#formObjects = formObjects;
-        this.#isPassword = formObjects.isPassword;
         this.#errorMessage = formObjects.errorMessage;
     }
-
-    init() {
-        this.#factory();
-    }
-
     showMessage(messafe) {
         this.#errorMessage.textContent = `${messafe}`;
         this.#errorMessage.classList.add('span_error');
         setTimeout(() => this.#errorMessage.classList.remove('span_error'), 2000);
     }
-    clearField() {
-        this.getInputs(['INPUT', 'TEXTAREA']).forEach((e) => (e.value = ''));
+    clearField(array) {
+        this.getInputs(array).forEach((e) => (e.value = ''));
     }
     getValue() {
         for (const pair of this.#data.entries()) {
@@ -35,7 +25,6 @@ export default class FormValidation {
         }
         return this.#params;
     }
-    getInfoPass = () => this.#isPassword && this.#FormPassword.getInfo();
     emptyFields = () => (this.#formData() === this.#fieldsValue.filter((e) => e !== '').length ? true : false);
     #findInputs() {
         const collection = [...this.form];
@@ -53,17 +42,6 @@ export default class FormValidation {
             }
             return find;
         };
-    }
-    #factory() {
-        if (this.#isPassword) {
-            this.#FormPassword = new FormPassword(
-                this.getInputs(['INPUT'], 'password'),
-                this.#formObjects.strengthMessage,
-                this.#formObjects.strengthMeter,
-                this.#formObjects.identicalMessage
-            );
-            this.#FormPassword.init();
-        }
     }
     #formData() {
         this.#data = new FormData(this.form);

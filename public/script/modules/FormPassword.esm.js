@@ -103,3 +103,16 @@ export default class FormPassword {
     #mediumRegex = (char) => new RegExp('^(?=.{10,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$', 'g').test(char);
     #enoughRegex = (char) => new RegExp('(?=.{8,}).*', 'g').test(char);
 }
+
+// #factory() {
+//     getInfoPass = () => this.#isPassword && this.#FormPassword.getInfo();
+//     if (this.#isPassword) {
+//         this.#FormPassword = new FormPassword(
+//             this.getInputs(['INPUT'], 'password'),
+//             this.#formObjects.strengthMessage,
+//             this.#formObjects.strengthMeter,
+//             this.#formObjects.identicalMessage
+//         );
+//         this.#FormPassword.init();
+//     }
+// }

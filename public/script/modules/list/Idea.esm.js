@@ -6,27 +6,24 @@ export default class Idea {
         status: 'Oczekuje',
     };
     #div = document.createElement('article');
-    #id;
-    #array_users;
-    #date_added;
-    #before_value;
     #after_value;
-    #idea_status;
+    #before_value;
+    #array_users;
     #area_name;
-    #token_idea;
+    #date_added;
     #date_implementation;
-    constructor({ id_idea, id_area, after_value, before_value, others_value, array_users, area_name, date_added, date_implementation, idea_status, token_idea }) {
-        this.#idea_status = idea_status;
-        this.#id = id_idea;
-        this.#area_name = id_area.area_name;
-        this.#array_users = array_users;
-        this.#date_added = date_added;
-        this.#before_value = before_value;
+    #idea_status;
+    #token_idea;
+
+    constructor({ after_value, before_value, others_value, mod_comment, array_users, area_name, date_added, date_implementation, idea_status, token_idea }) {
         this.#after_value = after_value;
-        this.#date_implementation = date_implementation;
-        this.#token_idea = token_idea;
+        this.#before_value = before_value;
+        this.#array_users = array_users;
         this.#area_name = area_name.area_name;
-        console.log(this.#area_name);
+        this.#date_added = date_added;
+        this.#date_implementation = date_implementation;
+        this.#idea_status = idea_status;
+        this.#token_idea = token_idea;
         this.#init();
     }
     getIdea = () => this.#div;
@@ -36,7 +33,7 @@ export default class Idea {
     }
     #createElement() {
         this.#div.classList.add('idea', `${this.#status.class}`);
-        this.#div.setAttribute('data-id', `${this.#token_idea}`);
+        this.#div.setAttribute('data-token_idea', `${this.#token_idea}`);
         this.#div.insertAdjacentHTML('afterbegin', this.#renderHTML());
     }
     #renderHTML() {

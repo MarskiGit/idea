@@ -37,7 +37,7 @@ class AjaxController extends AbstractController
         $account = new AccountModel();
         $this->View->renderJSON($account->create($this->requestParam));
     }
-    protected function offerIdeaIdea(): void
+    protected function offerIdea(): void
     {
         $idea = new OfferModel();
         $this->View->renderJSON($idea->create($this->requestParam));

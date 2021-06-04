@@ -4,13 +4,11 @@ import Request from './Request.esm.js';
 
 export default class FormHandling {
     #Request;
-    #isPassword;
     #params;
     #request = {};
     #inputList;
     constructor(formObjects, setingRequest) {
         this.FormValidation = new FormValidation(formObjects);
-        this.#isPassword = formObjects.isPassword;
         this.#params = formObjects.request;
 
         this.#Request = new Request(setingRequest);
@@ -27,16 +25,7 @@ export default class FormHandling {
     #handling = (event) => {
         event.preventDefault();
         if (this.FormValidation.emptyFields()) {
-            if (this.#isPassword) {
-                const { strength, identical } = this.FormValidation.getInfoPass();
-                if (strength === 3) {
-                    if (identical) {
-                        this.#sendRequest();
-                    } else this.FormValidation.showMessage('Zastosuj takie same hasła');
-                } else this.FormValidation.showMessage('Hasło musi być silne');
-            } else {
-                this.#sendRequest();
-            }
+            this.#sendRequest();
         } else this.FormValidation.showMessage('Uzupełnij wszystkie pola.');
     };
     #sendRequest() {
@@ -55,7 +44,6 @@ export default class FormHandling {
                     this.FormValidation.showMessage(`${title}`);
                 } else {
                     this.FormValidation.showMessage(`${title}`);
-                    // localStorage.setItem('key', 'value');
                 }
             })
             .finally((document.body.style.cursor = 'default'));

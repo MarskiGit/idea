@@ -1,14 +1,13 @@
 'use strict';
 import { setingRequest } from './modules/seting.esm.js';
 import FormValidation from './modules/FormValidation.esm.js';
-import Rating from './modules/idea/Rating.esm.js';
-import LiveSearch from './modules/idea/LiveSearch.esm.js';
-import CountCharacters from './modules/idea/CountCharacters.esm.js';
+import Rating from './modules/offer/Rating.esm.js';
+import LiveSearch from './modules/offer/LiveSearch.esm.js';
+import CountCharacters from './modules/offer/CountCharacters.esm.js';
 import Request from './modules/Request.esm.js';
 
 const formObjects = {
-    isPassword: false,
-    request: 'offerIdea',
+    request: 'offer',
     form: document.querySelector('[data-form="idea"]'),
     errorMessage: document.querySelector('[data-form="idea_message"]'),
     viewPoints: document.querySelector('[data-form="view_points"]'),
@@ -28,76 +27,81 @@ const search = {
 };
 
 class Offer {
+    #RequestParam = {};
+    #FormValidation;
     #Request;
-    #request = {};
     #inputSearch;
+    #UserSearch;
+    #AreaSearch;
+    #CountCharacters;
+    #Rating;
     constructor(formObjects, search, setingRequest) {
-        this.FormValidation = new FormValidation(formObjects);
-        this.#request.request = formObjects.request;
+        this.#RequestParam.request = formObjects.request;
+        this.#FormValidation = new FormValidation(formObjects);
         this.#Request = new Request(setingRequest);
 
-        this.#inputSearch = this.FormValidation.getInputs(['INPUT'], 'search');
+        this.#inputSearch = this.#FormValidation.getInputs(['INPUT'], 'search');
 
-        this.UserSearch = new LiveSearch(this.#inputSearch[0], search.userSearch);
-        this.AreaSearch = new LiveSearch(this.#inputSearch[1], search.areaSearch);
+        this.#UserSearch = new LiveSearch(this.#inputSearch[0], search.userSearch);
+        this.#AreaSearch = new LiveSearch(this.#inputSearch[1], search.areaSearch);
 
-        this.CountCharacters = new CountCharacters(this.FormValidation.getInputs(['TEXTAREA']), formObjects.signNumber);
-        this.Rating = new Rating(this.FormValidation.getInputs(['SELECT']), formObjects.viewPoints);
+        this.#CountCharacters = new CountCharacters(this.#FormValidation.getInputs(['TEXTAREA']), formObjects.signNumber);
+        this.#Rating = new Rating(this.#FormValidation.getInputs(['SELECT']), formObjects.viewPoints);
     }
     init() {
-        this.FormValidation.init();
-        this.UserSearch.init();
-        this.AreaSearch.init();
-        this.CountCharacters.init();
-        this.Rating.init();
+        this.#UserSearch.init();
+        this.#AreaSearch.init();
+        this.#CountCharacters.init();
+        this.#Rating.init();
         this.#eventListeners();
     }
     #eventListeners() {
-        this.FormValidation.form.addEventListener('submit', this.#formHandling);
+        this.#FormValidation.form.addEventListener('submit', this.#formHandling);
     }
     #formHandling = (event) => {
         event.preventDefault();
-
         if (this.#emptyForm()) {
-            this.#getrequestForm();
+            this.#getParamForm();
         } else {
-            this.FormValidation.showMessage('Uzupełnij wszystkie pola.');
+            this.#FormValidation.showMessage('Uzupełnij wszystkie pola.');
         }
     };
     #clearForm() {
-        this.FormValidation.clearField();
-        this.CountCharacters.clearLenghtCharacters();
-        this.Rating.setDefault();
-        this.UserSearch.closeList();
-        this.UserSearch.clearChosen();
-        this.AreaSearch.closeList();
-        this.AreaSearch.clearChosen();
+        this.#FormValidation.clearField(['INPUT', 'TEXTAREA']);
+        this.#CountCharacters.clearLenghtCharacters();
+        this.#Rating.setDefault();
+        this.#UserSearch.closeList();
+        this.#UserSearch.clearChosen();
+        this.#AreaSearch.closeList();
+        this.#AreaSearch.clearChosen();
     }
-    #getrequestForm() {
-        const { before, after } = this.FormValidation.getValue();
-        this.#request.before_value = before;
-        this.#request.after_value = after;
-        this.#request.array_users = this.UserSearch.getSelectedId();
-        this.#request.id_area = this.AreaSearch.getSelectedId()[0];
-        this.#request.pkt_user = this.Rating.getPoints();
-        this.#request.saving = this.Rating.getValueString();
+    #getParamForm() {
+        const { before, after } = this.#FormValidation.getValue();
+        this.#RequestParam.before_value = before;
+        this.#RequestParam.after_value = after;
+        this.#RequestParam.array_users = this.#UserSearch.getSelectedId();
+        this.#RequestParam.id_area = this.#AreaSearch.getSelectedId()[0];
+        this.#RequestParam.pkt_user = this.#Rating.getPoints();
+        this.#RequestParam.saving = this.#Rating.getValueString();
 
-        console.log(this.#request);
-
+        console.log(this.#RequestParam);
+        this.#sendRequest();
+    }
+    #sendRequest() {
         document.body.style.cursor = 'progress';
         this.#Request
-            .getJson(this.#request)
+            .getJson(this.#RequestParam)
             .then((data) => {
                 const { ok, title } = this.#Request.getData(data);
                 if (ok) {
                     this.#clearForm();
-                    this.FormValidation.showMessage(`${title}`);
+                    this.#FormValidation.showMessage(`${title}`);
                 } else {
-                    this.FormValidation.showMessage(`${title}`);
+                    this.#FormValidation.showMessage(`${title}`);
                 }
             })
             .finally((document.body.style.cursor = 'default'));
     }
-    #emptyForm = () => !!(this.FormValidation.emptyFields() && this.UserSearch.whetherListCompleted() && this.AreaSearch.whetherListCompleted());
+    #emptyForm = () => !!(this.#FormValidation.emptyFields() && this.#UserSearch.whetherListCompleted() && this.#AreaSearch.whetherListCompleted());
 }
 new Offer(formObjects, search, setingRequest).init();

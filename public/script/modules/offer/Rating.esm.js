@@ -1,12 +1,12 @@
 'use strict';
 export default class Rating {
+    #selectCollection;
     #viewPoints;
     #defaultPoint;
-    #selectCollection;
     #allOptions;
     constructor(selectCollection, viewPoints) {
-        this.#viewPoints = viewPoints;
         this.#selectCollection = selectCollection;
+        this.#viewPoints = viewPoints;
         this.#defaultPoint = this.getPoints();
     }
     init() {

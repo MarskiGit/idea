@@ -3,7 +3,7 @@ export default class SmoothTop {
     #targetPosition = 0;
     #duration = 750;
     constructor() {}
-    animation() {
+    init() {
         this.startPosition = window.pageYOffset;
         this.distance = this.#targetPosition - this.startPosition;
         this.start = null;
