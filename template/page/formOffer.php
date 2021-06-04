@@ -1,9 +1,9 @@
-<script type="module" src="./public/script/offer.esm.js"></script>
+<script type="module" src="./public/script/formOffer.esm.js"></script>
 <main data-page="main">
     <section class="section_container">
         <h1>Propozycja</h1>
 
-        <form data-form="idea" novalidate>
+        <form data-form="idea" data-token="<?php echo $pageParams['formofferToken'] ?>" novalidate>
 
             <fieldset>
                 <legend>Opis stanu obecnego</legend>

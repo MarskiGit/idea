@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Idea\controller;
 
-use Idea\model\ListIdeaModel;
+use Idea\model\ListOffersModel;
 use Idea\model\AccountModel;
 use Idea\model\AreaModel;
-use Idea\model\OfferModel;
+use Idea\model\FormOfferModel;
 
 class AjaxController extends AbstractController
 {
 
-    protected function listIdeaIdea(): void
+    protected function listOffersIdea(): void
     {
-        $ideaList = new ListIdeaModel();
+        $ideaList = new ListOffersModel();
         $this->View->renderJSON($ideaList->get($this->requestParam));
     }
     protected function creatorSearchIdea(): void
@@ -37,9 +37,9 @@ class AjaxController extends AbstractController
         $account = new AccountModel();
         $this->View->renderJSON($account->create($this->requestParam));
     }
-    protected function offerIdea(): void
+    protected function formOfferIdea(): void
     {
-        $idea = new OfferModel();
+        $idea = new FormOfferModel();
         $this->View->renderJSON($idea->create($this->requestParam));
     }
     protected function addAreaIdea(): void

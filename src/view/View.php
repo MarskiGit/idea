@@ -25,13 +25,13 @@ class View
     {
         $this->renderHTML('footer', 'page/');
     }
-    public function offerIdea(array $pageParams): void
+    public function formOffer(array $pageParams): void
     {
-        $this->renderHTML('offer', 'page/', $pageParams);
+        $this->renderHTML('formOffer', 'page/', $pageParams);
     }
-    public function list(array $pageParams): void
+    public function listOffers(array $pageParams): void
     {
-        $this->renderHTML('list', 'page/', $pageParams);
+        $this->renderHTML('listOffers', 'page/', $pageParams);
     }
     public function login(array $pageParams): void
     {

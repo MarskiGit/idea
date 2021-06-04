@@ -11,23 +11,23 @@ use Idea\model\OfferOptionModel;
 
 class PageController extends AbstractController
 {
-    protected function offerIdea(): void
+    protected function formOfferIdea(): void
     {
         $offerRating = new OfferOptionModel();
-        CsrfModel::setNewToken('offer');
+        CsrfModel::setNewToken('formoffer');
         $offerParams = [
-            'offerSessionToken' => CsrfModel::viewToken('offer'),
+            'formofferToken' => CsrfModel::viewToken('formoffer'),
             'offerRating' => $offerRating->get(),
         ];
-        $this->View->offerIdea($offerParams);
+        $this->View->formOffer($offerParams);
     }
-    protected function listIdea(): void
+    protected function listOffersIdea(): void
     {
-        CsrfModel::setNewToken('list');
+        CsrfModel::setNewToken('listoffers');
         $listParams = [
-            'listSessionToken' => CsrfModel::viewToken('list'),
+            'listoffersToken' => CsrfModel::viewToken('listoffers'),
         ];
-        $this->View->list($listParams);
+        $this->View->listOffers($listParams);
     }
     protected function homeIdea(): void
     {

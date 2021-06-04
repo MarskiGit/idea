@@ -7,7 +7,7 @@ import CountCharacters from './modules/offer/CountCharacters.esm.js';
 import Request from './modules/Request.esm.js';
 
 const formObjects = {
-    request: 'offer',
+    request: 'formOffer',
     form: document.querySelector('[data-form="idea"]'),
     errorMessage: document.querySelector('[data-form="idea_message"]'),
     viewPoints: document.querySelector('[data-form="view_points"]'),
@@ -26,7 +26,7 @@ const search = {
     },
 };
 
-class Offer {
+class FormOffer {
     #RequestParam = {};
     #FormValidation;
     #Request;
@@ -37,6 +37,7 @@ class Offer {
     #Rating;
     constructor(formObjects, search, setingRequest) {
         this.#RequestParam.request = formObjects.request;
+        this.#RequestParam.token = formObjects.form.getAttribute('data-token');
         this.#FormValidation = new FormValidation(formObjects);
         this.#Request = new Request(setingRequest);
 
@@ -104,4 +105,4 @@ class Offer {
     }
     #emptyForm = () => !!(this.#FormValidation.emptyFields() && this.#UserSearch.whetherListCompleted() && this.#AreaSearch.whetherListCompleted());
 }
-new Offer(formObjects, search, setingRequest).init();
+new FormOffer(formObjects, search, setingRequest).init();

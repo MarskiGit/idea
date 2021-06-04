@@ -1,16 +1,16 @@
 'use strict';
 import { setingRequest } from './modules/seting.esm.js';
 import Idea from './modules/list/Idea.esm.js';
-import Request from './modules//Request.esm.js';
+import Request from './modules/Request.esm.js';
 
 setingRequest.ajax.cache = 'default';
 
 const domObjects = {
-    request: 'listIdea',
-    listContainer: document.querySelector('[data-list="list_container"]'),
+    request: 'listOffers',
+    listContainer: document.querySelector('[data-list="offers_container"]'),
 };
 
-class List {
+class ListOffers {
     #RequestParam = {
         last_tuple: 0,
     };
@@ -57,15 +57,18 @@ class List {
     }
     #renderList() {
         for (const idea of this.#data) {
-            this.#fragmentList.appendChild(new Idea(idea).getIdea());
             this.#tupleNumbers.push(parseInt(idea.id_idea, 10));
+            this.#fragmentList.appendChild(new Idea(idea).getIdea());
         }
-
         const { end, last } = this.#LastTuple();
         this.#endTuples = end;
         this.#RequestParam.last_tuple = last;
 
         this.#addListPage();
+    }
+
+    #addListPage() {
+        this.#listContainer.appendChild(this.#fragmentList);
     }
     #findLastTuple() {
         const arrayTupleId = this.#tupleNumbers;
@@ -74,9 +77,6 @@ class List {
             end: arrayTupleId.includes(1),
             last: Math.min(...arrayTupleId),
         });
-    }
-    #addListPage() {
-        this.#listContainer.appendChild(this.#fragmentList);
     }
     #emptyList() {
         const div = document.createElement('div');
@@ -92,4 +92,4 @@ class List {
     }
 }
 
-new List(domObjects, setingRequest).init();
+new ListOffers(domObjects, setingRequest).init();

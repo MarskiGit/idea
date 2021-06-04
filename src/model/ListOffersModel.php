@@ -11,12 +11,12 @@ use PDO;
 use PDOException;
 
 
-class ListIdeaModel extends AbstractModel
+class ListOffersModel extends AbstractModel
 {
     public function get(array $requestParam): array
     {
 
-        if (CsrfModel::verifyToken($requestParam['token'], 'list')) {
+        if (CsrfModel::verifyToken($requestParam['token'], 'listoffers')) {
             $result = [];
             try {
                 $stmt = $this->DB->query("SELECT id_area, after_value, before_value, others_value, mod_comment,	array_users, date_added, date_implementation, idea_status, token_idea FROM idea WHERE id_idea < " . $this->limitTuples($requestParam['last_tuple']) . " ORDER BY id_idea DESC LIMIT 6");

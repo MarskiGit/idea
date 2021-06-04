@@ -29,12 +29,12 @@
      <script type="module" src="./public/script/layout.esm.js"></script>
 
      <?php switch ($globalParams['action_GET']):
-            case 'list': ?>
-             <link rel="stylesheet" href="./public/style/list.min.css" type="text/css" media="all">
+            case 'listOffers': ?>
+             <link rel="stylesheet" href="./public/style/listOffers.min.css" type="text/css" media="all">
              <?php break; ?>
          <?php
-            case 'offer': ?>
-             <link rel="stylesheet" href="./public/style/offer.min.css" type="text/css" media="all">
+            case 'formOffer': ?>
+             <link rel="stylesheet" href="./public/style/formOffer.min.css" type="text/css" media="all">
              <?php break; ?>
          <?php
             case 'login': ?>
@@ -61,8 +61,8 @@
  <body>
      <nav class="menu" data-page="nav">
          <a rel="home start" href="<?php echo HTTP_SERVER ?>" class="link_home hover_img" data-page="home_nav"><img src="public/img/home_icon.svg" alt="Strona główna"><img src="public/img/border_icon.svg" class="load" data-page="status_indicator" alt=""></a>
-         <a rel="list section" href="?action=list" class="link_button">Lista pomysłów</a>
-         <a rel="write section" href="?action=offer" class="link_button">Napisz pomysł</a>
+         <a rel="list section" href="?action=listOffers" class="link_button">Lista pomysłów</a>
+         <a rel="write section" href="?action=formOffer" class="link_button">Napisz pomysł</a>
          <div class="page_up hover_img" data-page="page_up"><img src="public/img/page_up.svg" alt="góra strony"></div>
 
          <?php switch ($account_rang):

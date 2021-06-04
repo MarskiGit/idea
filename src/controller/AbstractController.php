@@ -51,7 +51,7 @@ abstract class AbstractController
         if ($this->is_PHPInput) {
             $this->requestAJAX = $this->Request->getRequest_AJAX(DEFAULT_AJAX, self::DEFAULT_ACTION_AJAX);
             $this->requestParam = $this->Request->getParam_AJAX();
-            $this->runAjax();
+            $this->apiAjax();
         }
     }
     private function renderPage(): void
@@ -67,7 +67,7 @@ abstract class AbstractController
             exit;
         }
     }
-    private function runAjax(): void
+    private function apiAjax(): void
     {
         $method = $this->existsMethod($this->requestAJAX, self::DEFAULT_ACTION_AJAX);
         $this->$method();
