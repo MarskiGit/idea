@@ -15,7 +15,7 @@ export default class Idea {
     #area_name;
     #token_idea;
     #date_implementation;
-    constructor({ id_idea, id_area, after_value, before_value, others_value, array_users, date_added, date_implementation, idea_status, token_idea }) {
+    constructor({ id_idea, id_area, after_value, before_value, others_value, array_users, area_name, date_added, date_implementation, idea_status, token_idea }) {
         this.#idea_status = idea_status;
         this.#id = id_idea;
         this.#area_name = id_area.area_name;
@@ -25,7 +25,8 @@ export default class Idea {
         this.#after_value = after_value;
         this.#date_implementation = date_implementation;
         this.#token_idea = token_idea;
-        this.#area_name = id_area;
+        this.#area_name = area_name.area_name;
+        console.log(this.#area_name);
         this.#init();
     }
     getIdea = () => this.#div;
@@ -35,13 +36,14 @@ export default class Idea {
     }
     #createElement() {
         this.#div.classList.add('idea', `${this.#status.class}`);
-        this.#div.setAttribute('data-id_idea', `${this.id}`);
+        this.#div.setAttribute('data-id', `${this.#token_idea}`);
         this.#div.insertAdjacentHTML('afterbegin', this.#renderHTML());
     }
     #renderHTML() {
         return `
         <div class="tr ${this.#status.back}">
             <span class="th">${this.#array_users.length > 1 ? 'Pomysłodawcy' : 'Pomysłodawca'}</span>
+            <span class="th">Obszar: ${this.#area_name}</span>
             <span class="th">Status: ${this.#status.status}</span>
             <span class="th">Data dodania: ${this.#date_added}</span>
         </div>

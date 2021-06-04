@@ -41,7 +41,7 @@ class OfferModel extends AbstractModel
         }
         if ($id) {
             $userIdea = $this->userIdea($id, $requestParam);
-            $addet = date("Ymd") . "/" . $id;
+            $addet = date("ynj") . "/" . $id;
             if ($userIdea) {
                 $this->createDate($id, $addet);
                 $replay = [
