@@ -76,9 +76,9 @@ class FormOfferModel extends AbstractModel
     private function userIdea(int $id, array $requestParam): bool
     {
         $lenght_users = count($requestParam['array_users']);
-        $pkt_real = $requestParam['pkt_user'] / $lenght_users;
+        // $pkt_real = $requestParam['pkt_user'] / $lenght_users;
         try {
-            $query = "INSERT INTO user_idea (id_idea, id_account, pkt_real) VALUES ";
+            $query = "INSERT INTO user_idea (id_idea, id_account') VALUES ";
             $qPart = array_fill(0, $lenght_users, "(?, ?, ?)");
             $query .=  implode(",", $qPart);
             $stmt = $this->DB->prepare($query);
@@ -86,7 +86,6 @@ class FormOfferModel extends AbstractModel
             foreach ($requestParam['array_users'] as $item) {
                 $stmt->bindValue($i++, $id, PDO::PARAM_INT);
                 $stmt->bindValue($i++, $item, PDO::PARAM_INT);
-                $stmt->bindValue($i++, $pkt_real, PDO::PARAM_INT);
             }
             $stmt->execute();
         } catch (PDOException $e) {

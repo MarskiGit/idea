@@ -3,7 +3,7 @@
     <section class="section_container">
         <h1>Propozycja</h1>
 
-        <form data-form="idea" data-token="<?php echo $pageParams['formofferToken'] ?>" novalidate>
+        <form data-form="offer" data-token="<?php echo $pageParams['formofferToken'] ?>" novalidate>
             <fieldset>
                 <legend>Opis stanu obecnego</legend>
                 <textarea maxlength=" 2000" rows="15" placeholder="Proszę wypełnić to pole" name="before" id="before" data-write="before" require></textarea>
@@ -47,12 +47,12 @@
                     <div class="container_search">
                         <label for="creator_search" class="list_label">Wyszukaj i kliknij:</label>
                         <input id="creator_search" type="search" class="input_search" data-search="creator_search" type="search" autocomplete="off" placeholder="Nazwisko">
-                        <ul class="view_ul" data-search="ul_creator"></ul>
+                        <ul class="search_ul" data-search="ul_creator"></ul>
                         <span>Ten pomysłodawca jest na liście:</span>
                     </div>
                     <div class="chosen_ones">
                         <label for="select_name" class="list_label">Lista pomysłodawców:</label>
-                        <ul class="chosen_list" data-search="chosen_ones"></ul>
+                        <ul class="chosen_ul" data-search="chosen_ones"></ul>
                     </div>
                 </div>
                 <span class="sign_number"></span>
@@ -64,18 +64,18 @@
                     <div class="container_search">
                         <label for="area_search" class="list_label">Wyszukaj i kliknij:</label>
                         <input id="area_search" type="search" class="input_search" data-search="area_search" type="search" autocomplete="off" placeholder="Obszar">
-                        <ul class="view_ul" data-search="ul_area"></ul>
+                        <ul class="search_ul" data-search="ul_area"></ul>
                         <span>Ten obszar jest na liście:</span>
                     </div>
                     <div class="chosen_ones">
                         <label for="select_name" class="list_label">Wybrany Obszar:</label>
-                        <ul class="chosen_list" data-search="chosen_ones_area"></ul>
+                        <ul class="chosen_ul" data-search="chosen_ones_area"></ul>
                     </div>
                 </div>
                 <span class="sign_number"></span>
             </fieldset>
-            <span class="massage_error idea_massage" data-form="idea_message"></span>
-            <button class="btn_write" data-form="add">Wyślij</button>
+            <span class="massage_error offer_massage" data-form="offer_message"></span>
+            <button class="offer_button" data-form="add">Wyślij</button>
         </form>
     </section>
 </main>

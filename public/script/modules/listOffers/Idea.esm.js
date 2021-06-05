@@ -11,17 +11,31 @@ export default class Idea {
     #mod_comment;
     #array_users;
     #area_name;
+    #awarded_points;
     #date_added;
     #date_implementation;
     #idea_status;
     #token_idea;
 
-    constructor({ after_value, before_value, others_value, mod_comment, array_users, area_name, date_added, date_implementation, idea_status, token_idea }) {
+    constructor({
+        after_value,
+        before_value,
+        others_value,
+        mod_comment,
+        array_users,
+        area_name,
+        awarded_points,
+        date_added,
+        date_implementation,
+        idea_status,
+        token_idea,
+    }) {
         this.#after_value = after_value;
         this.#before_value = before_value;
         this.#array_users = array_users;
         this.#mod_comment = mod_comment;
-        this.#area_name = area_name.area_name;
+        this.#area_name = area_name;
+        this.#awarded_points = awarded_points;
         this.#date_added = date_added;
         this.#date_implementation = date_implementation;
         this.#idea_status = idea_status;
@@ -49,7 +63,7 @@ export default class Idea {
         <div class="tr">
             <div class="td idea_authors">
                 <ol>
-                    ${this.#array_users.map((name) => `<li>${name}</li>`).join('')}
+                    ${this.#array_users.map((name) => `<li class="idea_text">${name}</li>`).join('')}
                 </ol>
             </div>
             <div class="td idea_value">
@@ -61,14 +75,15 @@ export default class Idea {
             </div>
         </div>
         <div class="tr">
-            <span class="th">Numer propozycji:  <span class="font_number"> ${this.#token_idea}</span> </span>
-            ${this.#dataAdded()}
+            <span class="th">Numer pomysłu:  <span class="font_number"> ${this.#token_idea}</span> </span>
+            ${this.#setInfo('Przyznane punkty', this.#awarded_points)}
+            ${this.#setInfo('Data wdrożenia', this.#date_implementation)}
+            
         </div>
         `;
     }
-    #dataAdded = () =>
-        this.#date_implementation ? `<span class="th idea_date_add">Data wdrożenia: <span class="font_number">${this.#date_implementation}</span></span>` : '';
     #modComment = () => (this.#mod_comment ? `<span class="th"><em>Komentarz Moderatora</em></span> <p class="td idea_text"> ${this.#mod_comment} </p>` : '');
+    #setInfo = (text, data) => (data ? `<span class="th">${text}: <span class="font_number">${data * 1 ? data + 'pkt' : data}</span></span>` : '');
     #statusInformation(st) {
         switch (st) {
             case 0:

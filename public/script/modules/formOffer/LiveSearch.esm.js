@@ -9,6 +9,7 @@ export default class LiveSearch {
     #Request;
     #Choose;
     #listResults;
+    #selectedList;
     #inputSearch;
 
     #fragmentList = document.createDocumentFragment();
@@ -17,6 +18,7 @@ export default class LiveSearch {
         this.#RequestParam.request = searchObjects.request;
         this.#Request = new Request(setingRequest);
         this.#Choose = new Choose(searchObjects.selectedList);
+        this.#selectedList = searchObjects.selectedList;
         this.#listResults = searchObjects.listResults;
         this.#inputSearch = inputSearch;
     }
@@ -33,12 +35,13 @@ export default class LiveSearch {
         this.#Choose.closeSelectedList();
     }
     #eventListeners() {
-        this.#listResults.addEventListener('click', this.#selected);
+        this.#listResults.addEventListener('click', this.#selectedLI);
         this.#inputSearch.addEventListener('input', this.#debounced(this.#validation, 500));
+        this.#selectedList.addEventListener('click', this.#removeSelectedLi);
     }
-    #selected = (event) => {
+    #selectedLI = (event) => {
         const id = parseInt(event.target.getAttributeNode('data-id').value, 10);
-        if (id) {
+        if (id && event.target.tagName === 'LI') {
             const transferred = this.#Choose.selected(id, event);
             if (transferred) {
                 this.closeList();
@@ -59,10 +62,10 @@ export default class LiveSearch {
     #badSign(bool) {
         if (bool) {
             this.#userMessage('Tylko znaki alfabetu i cyfry', 'red');
-            this.#inputSearch.classList.add('errorSearch');
+            this.#inputSearch.classList.add('error_search');
         } else {
             this.#userMessage('Wyszukaj i kliknij:');
-            this.#inputSearch.classList.remove('errorSearch');
+            this.#inputSearch.classList.remove('error_search');
         }
     }
     #userMessage(text, color = '') {
@@ -84,11 +87,11 @@ export default class LiveSearch {
             .getJson(this.#RequestParam)
             .then((data) => {
                 this.#data = this.#Request.getData(data);
-                this.#renderList();
+                this.#renderLi();
             })
             .finally((document.body.style.cursor = 'default'));
     }
-    #renderList() {
+    #renderLi() {
         for (const li of this.#data) {
             this.#fragmentList.appendChild(new RenderLi(li).getLi());
         }
@@ -102,6 +105,18 @@ export default class LiveSearch {
     #removeLI() {
         [...this.#listResults.children].forEach((li) => li.remove());
     }
+    #removeSelectedLi = (event) => {
+        let id;
+        if (event.target.tagName === 'LI') {
+            id = parseInt(event.target.getAttributeNode('data-id').value, 10);
+            event.target.remove();
+        } else if (event.target.tagName === 'SPAN') {
+            const li = event.target.parentElement;
+            id = parseInt(li.getAttributeNode('data-id').value, 10);
+        }
+        this.#Choose.removeID(id);
+        if (!this.getSelectedId().length) this.#selectedList.classList.remove('on');
+    };
     #validationSign = (char) => new RegExp(/[^A-Z-ŚŁŻŹĆa-z-ęóąśłżźćń\s0-9]/gi).test(char);
     #debounced(f, t) {
         let l;

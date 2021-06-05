@@ -1,5 +1,6 @@
 'use strict';
 export default class Choose {
+    #btnHTML = '<span class="choose_delete">Usuń</span>';
     #selectedList;
     #selectedId = [];
     constructor(selectedList) {
@@ -12,9 +13,10 @@ export default class Choose {
     }
     getID = () => this.#selectedId;
     selected(id, event) {
-        if (event.target.tagName === 'LI' && this.#noRepeating(id)) {
+        if (this.#noRepeating(id)) {
             this.#selectedId.push(id);
-            const cloneSelected = event.target.cloneNode(true);
+            let cloneSelected = event.target.cloneNode(true);
+            cloneSelected.insertAdjacentHTML('beforeend', this.#btnHTML);
             this.#transfer(cloneSelected);
             return true;
         } else {
@@ -23,7 +25,13 @@ export default class Choose {
     }
     #transfer(cloneSelected) {
         this.#selectedList.appendChild(cloneSelected);
-        this.#selectedList.classList.add('on');
+        if (!this.#selectedList.classList.contains('on')) this.#selectedList.classList.add('on');
     }
     #noRepeating = (id) => !this.#selectedId.includes(id);
+    removeID(value) {
+        let i = 0;
+        while (i < this.#selectedId.length) {
+            this.#selectedId[i] === value ? this.#selectedId.splice(i, 1) : ++i;
+        }
+    }
 }

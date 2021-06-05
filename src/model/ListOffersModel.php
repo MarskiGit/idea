@@ -29,6 +29,7 @@ class ListOffersModel extends AbstractModel
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     $row['array_users'] = $this->getListNames($row['array_users']);
                     $row['area_name'] = $this->getArea($row['id_area']);
+                    $row['awarded_points'] = $this->getPint($row['id_idea']);
                     array_push($result, $row);
                 }
 
@@ -64,7 +65,7 @@ class ListOffersModel extends AbstractModel
             return $name = ['Brak użytkowników'];
         }
     }
-    private function getArea($id_area): array
+    private function getArea($id_area): string
     {
         $name = [];
         try {
@@ -74,9 +75,27 @@ class ListOffersModel extends AbstractModel
             throw new AjaxException('Error MODEL Get Area');
         }
         if ($stmt->rowCount() > 0) {
-            return $stmt->fetch(PDO::FETCH_ASSOC);
+            $name = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $name['area_name'];
         } else {
-            return $name = ['Brak Obszaru'];
+            return 'Brak Obszaru';
+        }
+    }
+    private function getPint(string $id_idea): null|string
+    {
+
+        $point = [];
+        try {
+            $stmt = $this->DB->query("SELECT SUM(awarded_points) FROM user_idea WHERE id_idea = $id_idea");
+            $stmt->execute();
+        } catch (PDOException $e) {
+            throw new AjaxException('Error MODEL Get Point');
+        }
+        if ($stmt->rowCount() > 0) {
+            $point = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $point['SUM(awarded_points)'];
+        } else {
+            return null;
         }
     }
     private function getNumberTuples(): int

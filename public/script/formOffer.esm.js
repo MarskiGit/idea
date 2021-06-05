@@ -8,8 +8,8 @@ import Request from './modules/Request.esm.js';
 
 const formObjects = {
     request: 'formOffer',
-    form: document.querySelector('[data-form="idea"]'),
-    errorMessage: document.querySelector('[data-form="idea_message"]'),
+    form: document.querySelector('[data-form="offer"]'),
+    errorMessage: document.querySelector('[data-form="offer_message"]'),
     viewPoints: document.querySelector('[data-form="view_points"]'),
     signNumber: document.querySelectorAll('[data-form="sign_number"]'),
 };
