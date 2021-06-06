@@ -1,63 +1,38 @@
 'use strict';
 import { setingRequest } from '../seting.esm.js';
 import Request from '../Request.esm.js';
-import Choose from './Choose.esm.js';
 import RenderLi from './RenderLi.esm.js';
 
 export default class LiveSearch {
     #RequestParam = {};
     #Request;
-    #Choose;
-    #listResults;
-    #selectedList;
+    #resultsSearchUl;
     #inputSearch;
-
     #fragmentList = document.createDocumentFragment();
     #data;
-    constructor(inputSearch, searchObjects) {
+    constructor(searchObjects) {
         this.#RequestParam.request = searchObjects.request;
         this.#Request = new Request(setingRequest);
-        this.#Choose = new Choose(searchObjects.selectedList);
-        this.#selectedList = searchObjects.selectedList;
-        this.#listResults = searchObjects.listResults;
-        this.#inputSearch = inputSearch;
+        this.#resultsSearchUl = searchObjects.resultsSearchUl;
     }
-    init() {
+    init(inputSearch) {
+        this.#inputSearch = inputSearch;
         this.#eventListeners();
     }
-    whetherListCompleted = () => !!this.getSelectedId().length;
-    getSelectedId = () => this.#Choose.getID();
-    closeList() {
-        this.#listResults.classList.remove('on');
-        this.#removeLI();
-    }
-    clearChosen() {
-        this.#Choose.closeSelectedList();
+    closeSearchResult() {
+        this.#resultsSearchUl.classList.remove('on');
+        this.#clearResultsLI();
     }
     #eventListeners() {
-        this.#listResults.addEventListener('click', this.#selectedLI);
         this.#inputSearch.addEventListener('input', this.#debounced(this.#validation, 500));
-        this.#selectedList.addEventListener('click', this.#removeSelectedLi);
     }
-    #selectedLI = (event) => {
-        const id = parseInt(event.target.getAttributeNode('data-id').value, 10);
-        if (id && event.target.tagName === 'LI') {
-            const transferred = this.#Choose.selected(id, event);
-            if (transferred) {
-                this.closeList();
-                this.#inputSearch.value = '';
-            } else {
-                this.#listResults.nextElementSibling.classList.add('span_error');
-                setTimeout(() => this.#listResults.nextElementSibling.classList.remove('span_error'), 2000);
-            }
-        }
-    };
+
     #validation = ({ target }) => {
         this.#validationSign(target.value) ? this.#badSign(1) : this.#searchInit(target);
     };
     #searchInit(target) {
         this.#badSign(0);
-        target.value.length >= 3 ? this.#valueSought(target) : this.closeList();
+        target.value.length >= 3 ? this.#valueSought(target) : this.closeSearchResult();
     }
     #badSign(bool) {
         if (bool) {
@@ -98,25 +73,13 @@ export default class LiveSearch {
         this.#addListPage();
     }
     #addListPage() {
-        this.#removeLI();
-        this.#listResults.appendChild(this.#fragmentList);
-        this.#listResults.classList.add('on');
+        this.#clearResultsLI();
+        this.#resultsSearchUl.appendChild(this.#fragmentList);
+        this.#resultsSearchUl.classList.add('on');
     }
-    #removeLI() {
-        [...this.#listResults.children].forEach((li) => li.remove());
+    #clearResultsLI() {
+        [...this.#resultsSearchUl.children].forEach((li) => li.remove());
     }
-    #removeSelectedLi = (event) => {
-        let id;
-        if (event.target.tagName === 'LI') {
-            id = parseInt(event.target.getAttributeNode('data-id').value, 10);
-            event.target.remove();
-        } else if (event.target.tagName === 'SPAN') {
-            const li = event.target.parentElement;
-            id = parseInt(li.getAttributeNode('data-id').value, 10);
-        }
-        this.#Choose.removeID(id);
-        if (!this.getSelectedId().length) this.#selectedList.classList.remove('on');
-    };
     #validationSign = (char) => new RegExp(/[^A-Z-ŚŁŻŹĆa-z-ęóąśłżźćń\s0-9]/gi).test(char);
     #debounced(f, t) {
         let l;

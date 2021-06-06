@@ -4,12 +4,12 @@ export default class Rating {
     #viewPoints;
     #defaultPoint;
     #allOptions;
-    constructor(selectCollection, viewPoints) {
-        this.#selectCollection = selectCollection;
+    constructor(viewPoints) {
         this.#viewPoints = viewPoints;
         this.#defaultPoint = this.getPoints();
     }
-    init() {
+    init(selectCollection) {
+        this.#selectCollection = selectCollection;
         this.#getAllSelectedValue();
 
         this.#selectCollection.forEach((se) =>

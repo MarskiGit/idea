@@ -6,11 +6,11 @@ export default class CountCharacters {
     #textLenght;
     #textAreas;
     #signNumber;
-    constructor(textAreas, signNumber) {
-        this.#textAreas = textAreas;
+    constructor(signNumber) {
         this.#signNumber = signNumber;
     }
-    init() {
+    init(textAreas) {
+        this.#textAreas = textAreas;
         this.#textAreas.forEach((textArea) => textArea.addEventListener('keyup', (event) => this.#calculaterCharacters(event)));
     }
     clearLenghtCharacters() {

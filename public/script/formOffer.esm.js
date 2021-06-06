@@ -3,6 +3,7 @@ import { setingRequest } from './modules/seting.esm.js';
 import FormValidation from './modules/FormValidation.esm.js';
 import Rating from './modules/formOffer/Rating.esm.js';
 import LiveSearch from './modules/formOffer/LiveSearch.esm.js';
+import Chose from './modules/formOffer/Chose.esm.js';
 import CountCharacters from './modules/formOffer/CountCharacters.esm.js';
 import Request from './modules/Request.esm.js';
 
@@ -15,13 +16,13 @@ const formObjects = {
 };
 const search = {
     userSearch: {
-        listResults: document.querySelector('[data-search="ul_creator"]'),
-        selectedList: document.querySelector('[data-search="chosen_ones"]'),
+        resultsSearchUl: document.querySelector('[data-search="ul_creator"]'),
+        selectedResultsUl: document.querySelector('[data-search="chosen_ones"]'),
         request: 'creatorSearch',
     },
     areaSearch: {
-        listResults: document.querySelector('[data-search="ul_area"]'),
-        selectedList: document.querySelector('[data-search="chosen_ones_area"]'),
+        resultsSearchUl: document.querySelector('[data-search="ul_area"]'),
+        selectedResultsUl: document.querySelector('[data-search="chosen_ones_area"]'),
         request: 'areaSearch',
     },
 };
@@ -30,30 +31,44 @@ class FormOffer {
     #RequestParam = {};
     #FormValidation;
     #Request;
-    #inputSearch;
     #UserSearch;
     #AreaSearch;
     #CountCharacters;
     #Rating;
+    #UserChosen;
+    #AreaChosen;
+
+    #inputLiveSearch;
+    #textAreas;
+    #optionSelecs;
     constructor(formObjects, search, setingRequest) {
         this.#RequestParam.request = formObjects.request;
         this.#RequestParam.token = formObjects.form.getAttribute('data-token');
+
         this.#FormValidation = new FormValidation(formObjects);
         this.#Request = new Request(setingRequest);
 
-        this.#inputSearch = this.#FormValidation.getInputs(['INPUT'], 'search');
+        this.#UserSearch = new LiveSearch(search.userSearch);
+        this.#AreaSearch = new LiveSearch(search.areaSearch);
 
-        this.#UserSearch = new LiveSearch(this.#inputSearch[0], search.userSearch);
-        this.#AreaSearch = new LiveSearch(this.#inputSearch[1], search.areaSearch);
+        this.#CountCharacters = new CountCharacters(formObjects.signNumber);
+        this.#Rating = new Rating(formObjects.viewPoints);
 
-        this.#CountCharacters = new CountCharacters(this.#FormValidation.getInputs(['TEXTAREA']), formObjects.signNumber);
-        this.#Rating = new Rating(this.#FormValidation.getInputs(['SELECT']), formObjects.viewPoints);
+        this.#UserChosen = new Chose(search.userSearch);
+        this.#AreaChosen = new Chose(search.areaSearch);
     }
     init() {
-        this.#UserSearch.init();
-        this.#AreaSearch.init();
-        this.#CountCharacters.init();
-        this.#Rating.init();
+        this.#inputLiveSearch = this.#FormValidation.getInputs(['INPUT'], 'search');
+        this.#textAreas = this.#FormValidation.getInputs(['TEXTAREA']);
+        this.#optionSelecs = this.#FormValidation.getInputs(['SELECT']);
+
+        this.#UserSearch.init(this.#inputLiveSearch[0]);
+        this.#AreaSearch.init(this.#inputLiveSearch[1]);
+        this.#CountCharacters.init(this.#textAreas);
+        this.#Rating.init(this.#optionSelecs);
+        this.#UserChosen.init(false);
+        this.#AreaChosen.init(true);
+
         this.#eventListeners();
     }
     #eventListeners() {
@@ -72,17 +87,17 @@ class FormOffer {
         this.#FormValidation.clearField(['INPUT', 'TEXTAREA']);
         this.#CountCharacters.clearLenghtCharacters();
         this.#Rating.setDefault();
-        this.#UserSearch.closeList();
-        this.#UserSearch.clearChosen();
-        this.#AreaSearch.closeList();
-        this.#AreaSearch.clearChosen();
+        this.#UserSearch.closeSearchResult();
+        this.#AreaSearch.closeSearchResult();
+        this.#UserChosen.closeChosenList();
+        this.#AreaChosen.closeChosenList();
     }
     #getParamForm() {
         const { before, after } = this.#FormValidation.getValue();
         this.#RequestParam.before_value = before;
         this.#RequestParam.after_value = after;
-        this.#RequestParam.array_users = this.#UserSearch.getSelectedId();
-        this.#RequestParam.id_area = this.#AreaSearch.getSelectedId()[0];
+        this.#RequestParam.array_users = this.#UserChosen.getChosen();
+        this.#RequestParam.id_area = this.#AreaChosen.getChosen()[0];
         this.#RequestParam.pkt_user = this.#Rating.getPoints();
         this.#RequestParam.saving = this.#Rating.getValueString();
 
@@ -104,6 +119,6 @@ class FormOffer {
             })
             .finally((document.body.style.cursor = 'default'));
     }
-    #emptyForm = () => !!(this.#FormValidation.emptyFields() && this.#UserSearch.whetherListCompleted() && this.#AreaSearch.whetherListCompleted());
+    #emptyForm = () => !!(this.#FormValidation.emptyFields() && this.#UserChosen.checkChosen() && this.#AreaChosen.checkChosen());
 }
 new FormOffer(formObjects, search, setingRequest).init();
