@@ -15,14 +15,14 @@ class ListOffersModel extends AbstractModel
 {
     public function get(array $requestParam): array
     {
-
+        $this->limitRow = 15;
         if (CsrfModel::verifyToken($requestParam['token'], 'listoffers')) {
             $result = [];
             try {
-                $stmt = $this->DB->query("SELECT id_idea, id_area, after_value, before_value, others_value, mod_comment, array_users, date_added, date_implementation, idea_status, token_idea FROM idea WHERE id_idea < " . $this->limitTuples($requestParam['last_tuple']) . " ORDER BY id_idea DESC LIMIT 15");
+                $stmt = $this->DB->query("SELECT id_idea, id_area, after_value, before_value, others_value, mod_comment, array_users, date_added, date_implementation, idea_status, token_idea FROM idea WHERE id_idea < " . $this->limitTuples((int)$requestParam['last_tuple']) . " ORDER BY id_idea DESC LIMIT " . $this->limitRow . " ");
                 $stmt->execute();
-            } catch (PDOException) {
-                throw new AjaxException('Error MODEL Get List');
+            } catch (PDOException $e) {
+                throw new AjaxException('Error ListOffers MODEL Get');
             }
 
             if ($stmt->rowCount() > 0) {
@@ -54,7 +54,7 @@ class ListOffersModel extends AbstractModel
             $stmt = $this->DB->query("SELECT full_name FROM account WHERE id_account IN (" . $string_id . ")");
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Error MODEL Get Name Idea');
+            throw new AjaxException('Error ListOffers MODEL Get Name Idea');
         }
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -72,7 +72,7 @@ class ListOffersModel extends AbstractModel
             $stmt = $this->DB->query("SELECT area_name FROM area WHERE id_area = $id_area");
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Error MODEL Get Area');
+            throw new AjaxException('Error ListOffers MODEL Get Area');
         }
         if ($stmt->rowCount() > 0) {
             $name = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -81,15 +81,14 @@ class ListOffersModel extends AbstractModel
             return 'Brak Obszaru';
         }
     }
-    private function getPint(string $id_idea): null|string
+    private function getPint(string $id_idea)
     {
-
         $point = [];
         try {
             $stmt = $this->DB->query("SELECT SUM(awarded_points) FROM user_idea WHERE id_idea = $id_idea");
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Error MODEL Get Point');
+            throw new AjaxException('Error ListOffers MODEL Get Point');
         }
         if ($stmt->rowCount() > 0) {
             $point = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -101,15 +100,16 @@ class ListOffersModel extends AbstractModel
     private function getNumberTuples(): int
     {
         try {
-            $stmt = $this->DB->query("SELECT COUNT(id_idea) FROM idea");
+            $stmt = $this->DB->query("SELECT id_idea FROM idea ORDER BY id_idea DESC LIMIT 1;");
             $stmt->execute();
             return intval($stmt->fetchColumn());
         } catch (PDOException $e) {
-            throw new AjaxException('Error MODEL Get Number Tuples');
+            throw new AjaxException('Error ListOffers MODEL Get Number Tuples');
         }
     }
     private function limitTuples(int $num): int
     {
+
         if (!$num) {
             return $this->getNumberTuples() + 1;
         } else {

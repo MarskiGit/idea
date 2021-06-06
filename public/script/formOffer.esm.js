@@ -1,11 +1,11 @@
 'use strict';
 import { setingRequest } from './modules/seting.esm.js';
 import FormValidation from './modules/FormValidation.esm.js';
+import Request from './modules/Request.esm.js';
+import CountCharacters from './modules/formOffer/CountCharacters.esm.js';
 import Rating from './modules/formOffer/Rating.esm.js';
 import LiveSearch from './modules/formOffer/LiveSearch.esm.js';
 import Chose from './modules/formOffer/Chose.esm.js';
-import CountCharacters from './modules/formOffer/CountCharacters.esm.js';
-import Request from './modules/Request.esm.js';
 
 const formObjects = {
     request: 'formOffer',
@@ -31,10 +31,12 @@ class FormOffer {
     #RequestParam = {};
     #FormValidation;
     #Request;
-    #UserSearch;
-    #AreaSearch;
+
     #CountCharacters;
     #Rating;
+
+    #UserSearch;
+    #AreaSearch;
     #UserChosen;
     #AreaChosen;
 
@@ -48,12 +50,11 @@ class FormOffer {
         this.#FormValidation = new FormValidation(formObjects);
         this.#Request = new Request(setingRequest);
 
-        this.#UserSearch = new LiveSearch(search.userSearch);
-        this.#AreaSearch = new LiveSearch(search.areaSearch);
-
         this.#CountCharacters = new CountCharacters(formObjects.signNumber);
         this.#Rating = new Rating(formObjects.viewPoints);
 
+        this.#UserSearch = new LiveSearch(search.userSearch);
+        this.#AreaSearch = new LiveSearch(search.areaSearch);
         this.#UserChosen = new Chose(search.userSearch);
         this.#AreaChosen = new Chose(search.areaSearch);
     }
@@ -62,10 +63,11 @@ class FormOffer {
         this.#textAreas = this.#FormValidation.getInputs(['TEXTAREA']);
         this.#optionSelecs = this.#FormValidation.getInputs(['SELECT']);
 
-        this.#UserSearch.init(this.#inputLiveSearch[0]);
-        this.#AreaSearch.init(this.#inputLiveSearch[1]);
         this.#CountCharacters.init(this.#textAreas);
         this.#Rating.init(this.#optionSelecs);
+
+        this.#UserSearch.init(this.#inputLiveSearch[0]);
+        this.#AreaSearch.init(this.#inputLiveSearch[1]);
         this.#UserChosen.init(false);
         this.#AreaChosen.init(true);
 
@@ -85,8 +87,10 @@ class FormOffer {
     };
     #clearForm() {
         this.#FormValidation.clearField(['INPUT', 'TEXTAREA']);
+
         this.#CountCharacters.clearLenghtCharacters();
         this.#Rating.setDefault();
+
         this.#UserSearch.closeSearchResult();
         this.#AreaSearch.closeSearchResult();
         this.#UserChosen.closeChosenList();
@@ -102,7 +106,7 @@ class FormOffer {
         this.#RequestParam.saving = this.#Rating.getValueString();
 
         console.log(this.#RequestParam);
-        //this.#sendRequest();
+        this.#sendRequest();
     }
     #sendRequest() {
         document.body.style.cursor = 'progress';

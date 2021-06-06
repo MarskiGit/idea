@@ -35,11 +35,11 @@ class FormOfferModel extends AbstractModel
                     $this->DB->commit();
                 } catch (PDOException $e) {
                     $this->DB->rollback();
-                    throw new AjaxException('Error MODEL Create Id Idea');
+                    throw new AjaxException('Error FormOffer MODEL Create');
                 }
                 $stmt->closeCursor();
             } catch (PDOException $e) {
-                throw new AjaxException('Error MODEL Create Idea');
+                throw new AjaxException('Error FormOffer MODEL Create Idea');
             }
             if ($id) {
                 $userIdea = $this->userIdea($id, $requestParam);
@@ -76,10 +76,9 @@ class FormOfferModel extends AbstractModel
     private function userIdea(int $id, array $requestParam): bool
     {
         $lenght_users = count($requestParam['array_users']);
-        // $pkt_real = $requestParam['pkt_user'] / $lenght_users;
+        $qPart = array_fill(0, $lenght_users, "(?, ?)");
         try {
-            $query = "INSERT INTO user_idea (id_idea, id_account') VALUES ";
-            $qPart = array_fill(0, $lenght_users, "(?, ?, ?)");
+            $query = "INSERT INTO user_idea (id_idea, id_account) VALUES ";
             $query .=  implode(",", $qPart);
             $stmt = $this->DB->prepare($query);
             $i = 1;
@@ -89,7 +88,7 @@ class FormOfferModel extends AbstractModel
             }
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Error MODEL User Idea');
+            throw new AjaxException('Error FormOffer MODEL User Idea');
         }
         return true;
     }
@@ -101,7 +100,7 @@ class FormOfferModel extends AbstractModel
             $stmt->execute();
         } catch (PDOException $e) {
             dump($e);
-            throw new AjaxException('Error MODEL Create Date');
+            throw new AjaxException('Error FormOffer MODEL Create Date');
         }
     }
 }

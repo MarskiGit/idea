@@ -63,7 +63,6 @@ class ListOffers {
         const { end, last } = this.#LastTuple();
         this.#endTuples = end;
         this.#RequestParam.last_tuple = last;
-
         this.#addListPage();
     }
 
@@ -72,7 +71,6 @@ class ListOffers {
     }
     #findLastTuple() {
         const arrayTupleId = this.#tupleNumbers;
-
         return () => ({
             end: arrayTupleId.includes(1),
             last: Math.min(...arrayTupleId),

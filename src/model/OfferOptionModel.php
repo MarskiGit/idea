@@ -18,7 +18,7 @@ class OfferOptionModel extends AbstractModel
             $stmt = $this->DB->query('SELECT * FROM offer_option');
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new IdeaException('Błąd Pobierania ustawień');
+            throw new IdeaException('Error OfferOption MODEL Get');
         }
 
         if ($stmt->rowCount() > 0) {

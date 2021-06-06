@@ -19,7 +19,7 @@ class AreaModel extends AbstractModel implements ModelInterface
             $stmt = $this->DB->query("SELECT * FROM area ");
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Error MODEL Get Area');
+            throw new AjaxException('Error Area MODEL Get');
         }
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -55,7 +55,7 @@ class AreaModel extends AbstractModel implements ModelInterface
             $stmt->bindParam(':area_name', $area_name, PDO::PARAM_STR);
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Error MODEL Create Area');
+            throw new AjaxException('Error Area MODEL Create');
         }
         $replay = [
             'ok' => true,
@@ -72,7 +72,7 @@ class AreaModel extends AbstractModel implements ModelInterface
 
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Error MODEL Area Edit');
+            throw new AjaxException('Error Area MODEL Edit');
         }
     }
     public function delete(array $requestParam): void
