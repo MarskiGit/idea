@@ -76,9 +76,8 @@ export default class Idea {
         </div>
         <div class="tr">
             <span class="th">Numer pomysłu:  <span class="font_number"> ${this.#token_idea}</span> </span>
-            ${this.#setInfo('Przyznane punkty', this.#awarded_points)}
             ${this.#setInfo('Data wdrożenia', this.#date_implementation)}
-            
+            ${this.#setInfo('Przyznane punkty', this.#awarded_points)}
         </div>
         `;
     }
