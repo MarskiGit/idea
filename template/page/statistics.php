@@ -1,4 +1,4 @@
-<script type="module" src="./public/script/home.esm.js"></script>
+<script type="module" src="./public/script/statistics.esm.js"></script>
 <?php
 
 $counter = 1;
@@ -19,9 +19,19 @@ $counter = 1;
     <section class="container wrap_header">
         <h2>Top 10</h2>
     </section>
+
     <section class="container">
+
         <section class="wrap_context">
             <h3>Pomysłodawców</h3>
+            <div class="list_quarter">
+                <ul>
+                    <li><button data-statistics="quarter">I kwartał</button></li>
+                    <li><button data-statistics="quarter">II kwartał</button></li>
+                    <li><button data-statistics="quarter">III kwartał</button></li>
+                    <li><button data-statistics="quarter">IV kwartał</button></li>
+                </ul>
+            </div>
             <table>
                 <thead>
                     <tr>
@@ -29,17 +39,31 @@ $counter = 1;
                         <th>Imie Nazwisko</th>
                         <th>Liczba propozycji</th>
                         <th>Zdobyte punkty</th>
-
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($pageParams['topTen'] as $key => $value) : ?>
+                    <?php foreach ($pageParams['topTenUser'] as $key => $value) : ?>
                         <tr>
-                            <td><?php echo $counter ?></td>
+                            <?php switch ($counter):
+                                case 1: ?>
+                                    <td class=" gold"><?php echo $counter ?></td>
+                                    <?php break; ?>
+                                <?php
+                                case 2: ?>
+                                    <td class="silver"><?php echo $counter ?></td>
+                                    <?php break; ?>
+                                <?php
+                                case 2: ?>
+                                    <td class="brown"><?php echo $counter ?></td>
+                                    <?php break; ?>
+                                <?php
+                                default: ?>
+                                    <td><?php echo $counter ?></td>
+                                    <?php break; ?>
+                            <?php endswitch; ?>
                             <td><?php echo $value['full_name'] ?></td>
                             <td><?php echo $value['offers_implemented'] ?></td>
                             <td><?php echo $value['awarded_points']; ?></td>
-
                         </tr>
                         <?php $counter++ ?>
                     <?php endforeach; ?>
@@ -74,3 +98,10 @@ $counter = 1;
     </section>
 </main>
 <!-- s9m2ajfPP[32^B: -->
+<?php
+$month = date("n");
+
+$yearQuarter = ceil($month / 3);
+
+echo "We are currently in Q$yearQuarter of " . date("Y");
+?>

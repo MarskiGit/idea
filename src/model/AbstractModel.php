@@ -78,4 +78,9 @@ abstract class AbstractModel
     {
         return json_encode($insData);
     }
+    protected  function yearQuarter(): int
+    {
+        $month = date("n");
+        return (int)ceil($month / 3);
+    }
 }

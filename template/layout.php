@@ -2,7 +2,6 @@
  <html lang="pl">
  <?php
     $account_rang = intval($_SESSION['account']['rang'] ?? 0);
-
     ?>
 
  <head>
@@ -21,9 +20,6 @@
      <link rel="icon" type="image/png" sizes="32x32" href="public/img/favicon/favicon-32x32.png">
      <link rel="icon" type="image/png" sizes="16x16" href="public/img/favicon/favicon-16x16.png">
      <link rel="manifest" href="public/img/favicon/site.webmanifest">
-     <meta name="msapplication-TileColor" content="#da532c">
-     <meta name="theme-color" content="#ffffff">
-
 
      <link rel="stylesheet" href="./public/style/layout.min.css" type="text/css" media="all">
      <script type="module" src="./public/script/layout.esm.js"></script>
@@ -52,7 +48,7 @@
              <?php break; ?>
          <?php
             default: ?>
-             <link rel="stylesheet" href="./public/style/home.min.css" type="text/css" media="all">
+             <link rel="stylesheet" href="./public/style/statistics.min.css" type="text/css" media="all">
              <!-- <script defer type="module" src="public/script/home.js"></script> -->
              <?php break; ?>
      <?php endswitch; ?>

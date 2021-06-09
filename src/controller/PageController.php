@@ -34,7 +34,7 @@ class PageController extends AbstractController
     {
         $stat = new StatisticsModel();
         $homeParams = [
-            'topTen' => $stat->getTopTen(),
+            'topTenUser' => $stat->getTopUser(),
         ];
         $this->View->statistics($homeParams);
     }

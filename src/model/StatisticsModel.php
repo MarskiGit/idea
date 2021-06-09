@@ -13,12 +13,21 @@ use PDOException;
 
 class StatisticsModel extends AbstractModel
 {
-    public function getTopTen(): array
+    public function getTopUser($quarter = null): array
     {
-
+        if ($quarter) {
+            $yearQuarter = $quarter;
+        } else {
+            $yearQuarter = $this->yearQuarter();
+        };
         $param = [];
         try {
-            $stmt = $this->DB->query("SELECT * FROM view_pkt_date ORDER BY offers_implemented DESC LIMIT 10");
+            $stmt = $this->DB->query(
+                "SELECT SUM(view_pkt_user.awarded_points) awarded_points, view_pkt_user.full_name, COUNT(*) offers_implemented 
+            FROM view_pkt_user
+            WHERE QUARTER(view_pkt_user.date_added) = $yearQuarter
+            GROUP BY view_pkt_user.full_name  DESC LIMIT 10"
+            );
             $stmt->execute();
         } catch (PDOException $e) {
             throw new IdeaException('Error Statistics MODEL Get Top Ten');
@@ -29,7 +38,7 @@ class StatisticsModel extends AbstractModel
             }
             return $param;
         } else {
-            echo 'Brak elementów do wyświetlenia';
+            return $param;
         }
     }
 }
