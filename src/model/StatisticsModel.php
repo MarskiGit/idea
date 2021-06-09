@@ -23,10 +23,11 @@ class StatisticsModel extends AbstractModel
         $param = [];
         try {
             $stmt = $this->DB->query(
-                "SELECT SUM(view_pkt_user.awarded_points) awarded_points, view_pkt_user.full_name, COUNT(*) offers_implemented 
+                "SELECT SUM(awarded_points) awarded_points, full_name, COUNT(*) offers_implemented 
             FROM view_pkt_user
-            WHERE QUARTER(view_pkt_user.date_added) = $yearQuarter
-            GROUP BY view_pkt_user.full_name  DESC LIMIT 10"
+            WHERE QUARTER(date_added) = $yearQuarter
+            GROUP BY full_name 
+            ORDER BY offers_implemented DESC LIMIT 10"
             );
             $stmt->execute();
         } catch (PDOException $e) {

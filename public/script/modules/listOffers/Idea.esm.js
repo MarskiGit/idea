@@ -48,12 +48,9 @@ export default class Idea {
         this.#createElement();
     }
     #createElement() {
-        console.time('Idea loop');
         this.#div.classList.add('idea', `${this.#status.class}`);
         this.#div.setAttribute('data-token_idea', `${this.#token_idea}`);
         this.#div.insertAdjacentHTML('afterbegin', this.#renderHTML());
-        console.timeEnd('Idea loop');
-        console.trace();
     }
     #renderHTML() {
         return `

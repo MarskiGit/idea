@@ -46,14 +46,14 @@ $counter = 1;
                         <tr>
                             <?php switch ($counter):
                                 case 1: ?>
-                                    <td class=" gold"><?php echo $counter ?></td>
+                                    <td class="gold"><?php echo $counter ?></td>
                                     <?php break; ?>
                                 <?php
                                 case 2: ?>
                                     <td class="silver"><?php echo $counter ?></td>
                                     <?php break; ?>
                                 <?php
-                                case 2: ?>
+                                case 3: ?>
                                     <td class="brown"><?php echo $counter ?></td>
                                     <?php break; ?>
                                 <?php
