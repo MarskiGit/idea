@@ -10,7 +10,7 @@ use Idea\view\View;
 
 abstract class AbstractController
 {
-    protected const DEFAULT_ACTION_HTML = 'home';
+    protected const DEFAULT_ACTION_HTML = 'statistics';
     protected const DEFAULT_ACTION_AJAX = 'exit';
     protected Request $Request;
     protected View $View;

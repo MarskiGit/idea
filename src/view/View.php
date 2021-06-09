@@ -17,9 +17,9 @@ class View
     {
         $this->renderHTML('layout', '');
     }
-    public function home(): void
+    public function statistics(array $pageParams): void
     {
-        $this->renderHTML('home', 'page/');
+        $this->renderHTML('statistics', 'page/', $pageParams);
     }
     public function footer(): void
     {

@@ -15,11 +15,10 @@ class ListOffersModel extends AbstractModel
 {
     public function get(array $requestParam): array
     {
-        $this->limitRow = 15;
         if (CsrfModel::verifyToken($requestParam['token'], 'listoffers')) {
             $result = [];
             try {
-                $stmt = $this->DB->query("SELECT * FROM view_idea WHERE id_idea < " . $this->limitTuples((int)$requestParam['last_tuple']) . " ORDER BY id_idea DESC LIMIT " . $this->limitRow . " ");
+                $stmt = $this->DB->query("SELECT * FROM view_idea WHERE id_idea < " . $this->limitTuples((int)$requestParam['last_tuple']) . " ORDER BY id_idea DESC LIMIT 15 ");
                 $stmt->execute();
             } catch (PDOException $e) {
                 throw new AjaxException('Error ListOffers MODEL Get');
@@ -82,37 +81,3 @@ class ListOffersModel extends AbstractModel
         }
     }
 }
-
-
-// private function getArea($id_area): string
-// {
-//     $name = [];
-//     try {
-//         $stmt = $this->DB->query("SELECT area_name FROM area WHERE id_area = $id_area");
-//         $stmt->execute();
-//     } catch (PDOException $e) {
-//         throw new AjaxException('Error ListOffers MODEL Get Area');
-//     }
-//     if ($stmt->rowCount() > 0) {
-//         $name = $stmt->fetch(PDO::FETCH_ASSOC);
-//         return $name['area_name'];
-//     } else {
-//         return 'Brak Obszaru';
-//     }
-// }
-// private function getPint(string $id_idea)
-// {
-//     $point = [];
-//     try {
-//         $stmt = $this->DB->query("SELECT SUM(awarded_points) FROM user_idea WHERE id_idea = $id_idea");
-//         $stmt->execute();
-//     } catch (PDOException $e) {
-//         throw new AjaxException('Error ListOffers MODEL Get Point');
-//     }
-//     if ($stmt->rowCount() > 0) {
-//         $point = $stmt->fetch(PDO::FETCH_ASSOC);
-//         return $point['SUM(awarded_points)'];
-//     } else {
-//         return null;
-//     }
-// }

@@ -8,6 +8,7 @@ use Idea\model\CsrfModel;
 use Idea\model\AccountModel;
 use Idea\model\AreaModel;
 use Idea\model\OfferOptionModel;
+use Idea\model\StatisticsModel;
 
 class PageController extends AbstractController
 {
@@ -29,9 +30,13 @@ class PageController extends AbstractController
         ];
         $this->View->listOffers($listParams);
     }
-    protected function homeIdea(): void
+    protected function statisticsIdea(): void
     {
-        $this->View->home();
+        $stat = new StatisticsModel();
+        $homeParams = [
+            'topTen' => $stat->getTopTen(),
+        ];
+        $this->View->statistics($homeParams);
     }
     protected function loginIdea(): void
     {
