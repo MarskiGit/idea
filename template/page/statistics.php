@@ -26,10 +26,10 @@ $counter = 1;
             <h3>Pomysłodawców</h3>
             <div class="list_quarter">
                 <ul>
-                    <li><button data-statistics="quarter">I kwartał</button></li>
-                    <li><button data-statistics="quarter">II kwartał</button></li>
-                    <li><button data-statistics="quarter">III kwartał</button></li>
-                    <li><button data-statistics="quarter">IV kwartał</button></li>
+                    <li><button data-statistics="quarter">I kwartał <span class=""></span></button></li>
+                    <li><button data-statistics="quarter">II kwartał <span class="ornament_line"></span></button></li>
+                    <li><button data-statistics="quarter">III kwartał <span class=""></span></button></li>
+                    <li><button data-statistics="quarter">IV kwartał <span class=""></span></button></li>
                 </ul>
             </div>
             <table>
@@ -73,6 +73,14 @@ $counter = 1;
 
         <section class="wrap_context">
             <h3>Działów</h3>
+            <div class="list_quarter">
+                <ul>
+                    <li><button data-statistics="quarter">I kwartał <span class=""></span></button></li>
+                    <li><button data-statistics="quarter">II kwartał <span class="ornament_line"></span></button></li>
+                    <li><button data-statistics="quarter">III kwartał <span class=""></span></button></li>
+                    <li><button data-statistics="quarter">IV kwartał <span class=""></span></button></li>
+                </ul>
+            </div>
             <table>
                 <thead>
                     <tr>

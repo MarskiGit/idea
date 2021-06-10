@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Login z haszem</title>
+    <title>SUPER ADMIN</title>
     <link rel="stylesheet" href="style.css" type="text/css" media="all">
     <script type="module" src="./account.esm.js"></script>
 
@@ -18,8 +18,8 @@
                 <fieldset class="wrap-input_my">
                     <span class="label-input_my">Imie i Nazwisko</span>
                     <input class="input_my" type="text" name="full_name">
-
                 </fieldset>
+
                 <fieldset class="wrap-input_my">
                     <span class="label-input_my">Login</span>
                     <input class="input_my" type="text" name="login">
@@ -38,21 +38,18 @@
                     <p class="strength_message" data-registration="identical_message"></p>
                     <span class="label-input_my">Powtórz hasło</span>
                     <input class="input_my" type="password" name="repeat_password" data-registration="repeat_password">
-
                 </fieldset>
 
                 <fieldset class="wrap-input_my">
                     <span class="label-input_my">Identyfikator</span>
                     <input class="input_my" type="number" name="id_pass" min="0" step="1" maxlength="4">
-
                 </fieldset>
+
                 <fieldset class="wrap-input_my">
                     <span class="label-input_my">Ranga</span>
                     <select class="input_my has-val" name="rang" data-select="number">
                         <option value="2">Administrator</option>
                     </select>
-
-
 
                 </fieldset>
                 <span class="massage_error" data-form="admin_message"></span>

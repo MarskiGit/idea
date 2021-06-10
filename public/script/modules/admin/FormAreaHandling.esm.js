@@ -1,49 +1,19 @@
 'use strict';
-import FormValidation from './FormValidation.esm.js';
-import FormPassword from './FormPassword.esm.js';
-import Request from './Request.esm.js';
+import { setingRequest } from '../seting.esm.js';
+import FormValidation from '../FormValidation.esm.js';
+import Request from '../Request.esm.js';
 
-const setingRequest = {
-    ajax: {
-        method: 'POST',
-        mode: 'cors',
-        cache: 'no-store',
-        credentials: 'same-origin',
-        headers: {
-            'Content-Type': 'application/json; charset=utf-8',
-        },
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer',
-    },
-    url: '../../index.php',
-};
-
-const formObjects = {
-    request: 'addUser',
-    form: document.querySelector('[data-form="admin"]'),
-    errorMessage: document.querySelector('[data-form="admin_message"]'),
-    strengthMeter: document.querySelector('[data-registration="strength_meter"]'),
-    strengthMessage: document.querySelector('[data-registration="strength_message"]'),
-    identicalMessage: document.querySelector('[data-registration="identical_message"]'),
-};
-
-class FormHandling {
+export default class FormAreaHandling {
     #FormValidation;
-    #FormPassword;
-    #Request;
     #params;
+    #Request;
     #request = {};
-    #inputList;
     constructor(formObjects) {
         this.#FormValidation = new FormValidation(formObjects);
-        this.#FormPassword = new FormPassword(formObjects.strengthMessage, formObjects.strengthMeter, formObjects.identicalMessage);
         this.#params = formObjects.request;
-
         this.#Request = new Request(setingRequest);
-        this.#inputList = this.#FormValidation.getInputs(['INPUT'], 'password');
     }
     init() {
-        this.#FormPassword.init(this.#inputList);
         this.#eventListeners();
     }
     #eventListeners() {
@@ -75,5 +45,3 @@ class FormHandling {
             .finally((document.body.style.cursor = 'default'));
     }
 }
-
-new FormHandling(formObjects).init();

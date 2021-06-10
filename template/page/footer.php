@@ -1,6 +1,6 @@
 <footer>
     <div class="author">
-        <span>&#xA9; [ Ten rok ] <a href="https://marski.pl/" target="_blank"> Mariusz Kępski</a> </span>
+        <span>&#xA9; [ Ten rok ] <a href="https://marski.pl/" target="_blank"> marski.pl</a> </span>
     </div>
     <aside class="cookies">
         <p>Informujemy, strona IDEA wykorzystuje technologię plików cookies, ale jednocześnie nie analizuje i nie gromadzi żadnych informacji.</p>

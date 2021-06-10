@@ -27,7 +27,7 @@ class StatisticsModel extends AbstractModel
             FROM view_pkt_user
             WHERE QUARTER(date_added) = $yearQuarter
             GROUP BY full_name 
-            ORDER BY offers_implemented DESC LIMIT 10"
+            ORDER BY awarded_points DESC LIMIT 10"
             );
             $stmt->execute();
         } catch (PDOException $e) {

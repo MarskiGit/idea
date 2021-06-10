@@ -11,23 +11,6 @@ $counter = 1;
                 <input class="input_my" type="text" name="full_name">
             </fieldset>
 
-            <div style="display: none">
-                <!-- <fieldset class="wrap-input_my">
-                                <p class="strength_message" data-registration="strength_message"></p>
-                                <div class="meter">
-                                    <span class="strength" data-registration="strength_meter"></span>
-                                </div>
-                                <span class="label-input_my">Hasło</span>
-                                <input class="input_my" type="password" name="password" data-registration="password">
-                                
-                            </fieldset>
-                            <fieldset class="wrap-input_my">
-                                <p class="strength_message" data-registration="identical_message"></p>
-                                <span class="label-input_my">Powtórz hasło</span>
-                                <input class="input_my" type="password" name="repeat_password" data-registration="repeat_password">
-                            </fieldset> -->
-            </div>
-
             <fieldset class="wrap-input_my">
                 <span class="label-input_my">Identyfikator</span>
                 <input class="input_my" type="number" name="id_pass" min="0" step="1" maxlength="4">
@@ -43,6 +26,31 @@ $counter = 1;
                     <option value="1">Moderator</option>
                 </select>
             </fieldset>
+
+            <div>
+                <fieldset class="wrap-input_my">
+                    <span class="label-input_my">Login</span>
+                    <input type="hidden" class="input_my" name="login">
+                </fieldset>
+
+                <fieldset class="wrap-input_my">
+                    <p class="strength_message" data-registration="strength_message"></p>
+                    <div class="meter">
+                        <span class="strength" data-registration="strength_meter"></span>
+                    </div>
+                    <span class="label-input_my">Hasło</span>
+                    <input type="hidden" class="input_my" name="password" data-registration="password">
+
+                </fieldset>
+                <fieldset class="wrap-input_my">
+                    <p class="strength_message" data-registration="identical_message"></p>
+                    <span class="label-input_my">Powtórz hasło</span>
+                    <input type="hidden" class="input_my" name="repeat_password" data-registration="repeat_password">
+                </fieldset>
+            </div>
+
+
+
             <span class="massage_error" data-form="account_message"></span>
             <button type="submit" class="button_subbmit">Dodaj</button>
         </form>
@@ -50,9 +58,9 @@ $counter = 1;
 </section>
 
 <section class="container">
-    <section class="wrap_context">
+    <section class="wrap_context wrap_list">
         <h3>Użytownicy</h3>
-        <ol class="ol_list">
+        <ol class="account_list">
             <?php foreach ($pageParams['userList'] as $user) : ?>
                 <li>
                     <div class="ol_name">

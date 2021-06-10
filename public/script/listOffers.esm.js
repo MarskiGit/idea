@@ -49,9 +49,10 @@ class ListOffers {
     };
     #checkData() {
         if (this.#data.length) {
+            this.#listContainer.classList.add('offers_container');
             this.#renderList();
         } else {
-            this.#listContainer.classList.remove('idea_container');
+            this.#listContainer.classList.remove('offers_container');
             this.#emptyList();
         }
     }
