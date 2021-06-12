@@ -6,6 +6,7 @@ namespace Idea\controller;
 
 use Idea\view\Request;
 use Idea\view\View;
+use Idea\model\CsrfModel;
 
 
 abstract class AbstractController
@@ -38,12 +39,13 @@ abstract class AbstractController
     }
     private function init(): void
     {
-
         if ($this->is_Get && !$this->is_PHPInput) {
+            CsrfModel::setNewToken('Token');
             $this->action_GET = $this->Request->getParam_GET(DEFAULT_GET, self::DEFAULT_ACTION_HTML);
             $this->View->globalParams = [
                 'action_GET' => $this->action_GET,
                 'account' => $this->account,
+                'Token' => CsrfModel::viewToken('Token'),
             ];
             $this->renderPage();
         }
@@ -57,7 +59,6 @@ abstract class AbstractController
     private function renderPage(): void
     {
         $method = $this->existsMethod($this->action_GET, self::DEFAULT_ACTION_HTML);
-
         if ($method !== 'logout' . DEFAULT_SUFIX_APP) {
             $this->View->layout();
             $this->$method();

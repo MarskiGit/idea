@@ -14,7 +14,6 @@
                 <span class="label-input_my">Hasło</span>
             </fieldset>
             <span class="massage_error login_massage" data-form="message"></span>
-            <?php echo $pageParams['loginTokenInput'] ?>
             <button type="submit" class="button_subbmit">Zaloguj się</button>
         </form>
     </section>

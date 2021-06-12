@@ -54,7 +54,7 @@
      <?php endswitch; ?>
  </head>
 
- <body>
+ <body data-token="<?php echo $globalParams['Token'] ?>">
      <nav class="menu" data-page="nav">
          <a rel="home start" href="<?php echo HTTP_SERVER ?>" class="link_home hover_img" data-page="home_nav"><img src="public/img/home_icon.svg" alt="Strona główna"><img src="public/img/border_icon.svg" class="load" data-page="status_indicator" alt=""></a>
          <a rel="list section" href="?action=listOffers" class="link_button">Lista pomysłów</a>

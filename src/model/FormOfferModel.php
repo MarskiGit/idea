@@ -14,7 +14,7 @@ class FormOfferModel extends AbstractModel
     public function create(array $requestParam): array
     {
 
-        if (CsrfModel::verifyToken($requestParam['token'], 'formoffer')) {
+        if (CsrfModel::verifyToken($requestParam['token'], 'Token')) {
             $array_users = $this->arraySQL($requestParam['array_users']);
             $others_value = $this->arraySQL($requestParam['saving']);
             $after_value = $this->escape($requestParam['after_value']);

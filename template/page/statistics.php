@@ -7,7 +7,7 @@ $counter = 1;
 ?>
 <main data-page="main">
 
-    <section class="container">
+    <section class="statistics_container">
         <div data-js="private">
             <p>Twoja przeglądarka nie wspiera w pełni technologi używanej na stronie.</p>
             <p>Spróbuj w Microsoft Edge lub Google Chrome.</p>
@@ -16,11 +16,11 @@ $counter = 1;
     </section>
 
     <h1>Statystyki</h1>
-    <section class="container wrap_header">
+    <section class="statistics_container wrap_header">
         <h2>Top 10</h2>
     </section>
 
-    <section class="container">
+    <section class="statistics_container">
 
         <section class="wrap_context">
             <h3>Pomysłodawców</h3>
@@ -42,7 +42,7 @@ $counter = 1;
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($pageParams['topTenUser'] as $key => $value) : ?>
+                    <?php foreach ($pageParams['topTenUser'] ?? [] as $key => $value) : ?>
                         <tr>
                             <?php switch ($counter):
                                 case 1: ?>
@@ -91,7 +91,7 @@ $counter = 1;
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- <?php foreach ($pageParams['topTen'] as $key => $value) : ?>
+                    <?php foreach ($pageParams['topTenArea'] ?? [] as $key => $value) : ?>
                         <tr>
                             <td><?php echo $counter ?></td>
                             <td><?php echo $value['full_name'] ?></td>
@@ -99,17 +99,10 @@ $counter = 1;
                             <td><?php echo $value['offers_implemented'] ?></td>
                         </tr>
                         <?php $counter++ ?>
-                    <?php endforeach; ?> -->
+                    <?php endforeach; ?>
                 <tbody>
             </table>
         </section>
     </section>
 </main>
 <!-- s9m2ajfPP[32^B: -->
-<?php
-$month = date("n");
-
-$yearQuarter = ceil($month / 3);
-
-echo "We are currently in Q$yearQuarter of " . date("Y");
-?>

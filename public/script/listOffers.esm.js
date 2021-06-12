@@ -11,7 +11,7 @@ const domObjects = {
 };
 
 class ListOffers {
-    #RequestParam = {
+    #requestParam = {
         last_tuple: 0,
     };
     #listContainer;
@@ -22,12 +22,12 @@ class ListOffers {
     #endTuples = false;
     #data;
     constructor(domObjects, setingRequest) {
-        this.#RequestParam.request = domObjects.request;
+        this.#requestParam.request = domObjects.request;
         this.#listContainer = domObjects.listContainer;
         this.#Request = new Request(setingRequest);
     }
     init() {
-        this.#RequestParam.token = this.#listContainer.getAttribute('data-token');
+        this.#requestParam.token = this.#listContainer.getAttribute('data-token');
         this.#LastTuple = this.#findLastTuple();
         this.#sendRequest();
         this.#eventListeners();
@@ -39,7 +39,7 @@ class ListOffers {
         if (!this.#endTuples) {
             document.body.style.cursor = 'progress';
             this.#Request
-                .getJson(this.#RequestParam)
+                .getJson(this.#requestParam)
                 .then((data) => {
                     this.#data = this.#Request.getData(data);
                     this.#checkData();
@@ -63,7 +63,7 @@ class ListOffers {
         }
         const { end, last } = this.#LastTuple();
         this.#endTuples = end;
-        this.#RequestParam.last_tuple = last;
+        this.#requestParam.last_tuple = last;
         this.#addListPage();
     }
 

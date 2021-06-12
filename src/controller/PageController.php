@@ -15,20 +15,14 @@ class PageController extends AbstractController
     protected function formOfferIdea(): void
     {
         $offerRating = new OfferOptionModel();
-        CsrfModel::setNewToken('formoffer');
         $offerParams = [
-            'formofferToken' => CsrfModel::viewToken('formoffer'),
             'offerRating' => $offerRating->get(),
         ];
         $this->View->formOffer($offerParams);
     }
     protected function listOffersIdea(): void
     {
-        CsrfModel::setNewToken('listoffers');
-        $listParams = [
-            'listoffersToken' => CsrfModel::viewToken('listoffers'),
-        ];
-        $this->View->listOffers($listParams);
+        $this->View->listOffers();
     }
     protected function statisticsIdea(): void
     {
@@ -40,11 +34,7 @@ class PageController extends AbstractController
     }
     protected function loginIdea(): void
     {
-        CsrfModel::setNewToken('login');
-        $loginParams = [
-            'loginTokenInput' => CsrfModel::getInputToken('login'),
-        ];
-        $this->View->login($loginParams);
+        $this->View->login();
     }
     protected function logoutIdea(): void
     {

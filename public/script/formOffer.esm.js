@@ -28,7 +28,7 @@ const search = {
 };
 
 class FormOffer {
-    #RequestParam = {};
+    #requestParam = {};
     #FormValidation;
     #Request;
 
@@ -44,8 +44,8 @@ class FormOffer {
     #textAreas;
     #optionSelecs;
     constructor(formObjects, search, setingRequest) {
-        this.#RequestParam.request = formObjects.request;
-        this.#RequestParam.token = formObjects.form.getAttribute('data-token');
+        this.#requestParam.request = formObjects.request;
+        this.#requestParam.token = formObjects.form.getAttribute('data-token');
 
         this.#FormValidation = new FormValidation(formObjects);
         this.#Request = new Request(setingRequest);
@@ -79,7 +79,7 @@ class FormOffer {
     #formHandling = (event) => {
         event.preventDefault();
         if (this.#emptyForm()) {
-            this.#RequestParam.token = event.target.getAttribute('data-token');
+            this.#requestParam.token = event.target.getAttribute('data-token');
             this.#getParamForm();
         } else {
             this.#FormValidation.showMessage('Uzupełnij wszystkie pola.');
@@ -98,20 +98,20 @@ class FormOffer {
     }
     #getParamForm() {
         const { before, after } = this.#FormValidation.getValue();
-        this.#RequestParam.before_value = before;
-        this.#RequestParam.after_value = after;
-        this.#RequestParam.array_users = this.#UserChosen.getChosen();
-        this.#RequestParam.id_area = this.#AreaChosen.getChosen()[0];
-        this.#RequestParam.pkt_user = this.#Rating.getPoints();
-        this.#RequestParam.saving = this.#Rating.getValueString();
+        this.#requestParam.before_value = before;
+        this.#requestParam.after_value = after;
+        this.#requestParam.array_users = this.#UserChosen.getChosen();
+        this.#requestParam.id_area = this.#AreaChosen.getChosen()[0];
+        this.#requestParam.pkt_user = this.#Rating.getPoints();
+        this.#requestParam.saving = this.#Rating.getValueString();
 
-        console.log(this.#RequestParam);
+        console.log(this.#requestParam);
         this.#sendRequest();
     }
     #sendRequest() {
         document.body.style.cursor = 'progress';
         this.#Request
-            .getJson(this.#RequestParam)
+            .getJson(this.#requestParam)
             .then((data) => {
                 const { ok, title } = this.#Request.getData(data);
                 if (ok) {

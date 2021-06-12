@@ -9,12 +9,15 @@ export default class Request {
     };
     #seting;
     #url;
+    #Token;
     constructor(setingRequest) {
         this.#Exception = new Exception();
         this.#seting = setingRequest.ajax;
         this.#url = setingRequest.url;
+        this.#Token = document.body.getAttribute('data-token');
     }
     async getJson(request) {
+        request.token = this.#Token;
         this.#seting.body = JSON.stringify(request);
 
         const response = await fetch(this.#url, this.#seting).catch(this.#handleError);

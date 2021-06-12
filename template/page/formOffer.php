@@ -1,7 +1,7 @@
 <script type="module" src="./public/script/formOffer.esm.js"></script>
 <main data-page="main">
     <h1>Propozycja</h1>
-    <form data-form="offer" data-token="<?php echo $pageParams['formofferToken'] ?>" novalidate>
+    <form data-form="offer" novalidate>
         <fieldset>
             <legend>Opis stanu obecnego</legend>
             <textarea maxlength=" 2000" rows="15" placeholder="Proszę wypełnić to pole" name="before" id="before" data-write="before" require></textarea>
@@ -17,7 +17,7 @@
         <fieldset>
             <legend>Ocena propozycji</legend>
             <div class="rating">
-                <?php foreach ($pageParams['offerRating'] as $key => $value) : ?>
+                <?php foreach ($pageParams['offerRating'] ?? [] as $key => $value) : ?>
                     <?php if ((int)$value['header']) : ?>
                         <div class='title_rating'><?php echo $value['title'] ?></div>
                     <?php else : ?>

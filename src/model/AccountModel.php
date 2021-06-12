@@ -142,7 +142,7 @@ class AccountModel extends AbstractModel implements ModelInterface
     }
     public function login(array $requestParam): array
     {
-        if (CsrfModel::verifyToken($requestParam['token'], 'login')) {
+        if (CsrfModel::verifyToken($requestParam['token'], 'Token')) {
             try {
                 $stmt = $this->DB->prepare('SELECT id_account, full_name, account_password, account_login, rang FROM account WHERE (account_login = :account_login) AND (active = 1)');
                 $stmt->bindValue(':account_login', $requestParam['login'], PDO::PARAM_STR);

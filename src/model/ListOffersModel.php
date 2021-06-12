@@ -15,7 +15,7 @@ class ListOffersModel extends AbstractModel
 {
     public function get(array $requestParam): array
     {
-        if (CsrfModel::verifyToken($requestParam['token'], 'listoffers')) {
+        if (CsrfModel::verifyToken($requestParam['token'], 'Token')) {
             $result = [];
             try {
                 $stmt = $this->DB->query("SELECT * FROM view_idea WHERE id_idea < " . $this->limitTuples((int)$requestParam['last_tuple']) . " ORDER BY id_idea DESC LIMIT 15 ");

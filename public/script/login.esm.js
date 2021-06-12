@@ -14,7 +14,7 @@ class Login {
     #FormValidation;
     #Request;
     #inputList;
-    #RequestParam;
+    #requestParam;
     constructor(formObjects, setingRequest) {
         this.#request.request = formObjects.request;
         this.#FormValidation = new FormValidation(formObjects);
@@ -31,14 +31,14 @@ class Login {
     #formHandling = (event) => {
         event.preventDefault();
         if (this.#FormValidation.emptyFields()) {
-            this.#RequestParam = { ...this.#request, ...this.#FormValidation.getValue() };
+            this.#requestParam = { ...this.#request, ...this.#FormValidation.getValue() };
             this.#sendRequest();
-        } else this.FormValidation.showMessage('Uzupełnij wszystkie pola');
+        } else this.#FormValidation.showMessage('Uzupełnij wszystkie pola');
     };
     #sendRequest() {
         document.body.style.cursor = 'progress';
         this.#Request
-            .getJson(this.#RequestParam)
+            .getJson(this.#requestParam)
             .then((data) => {
                 const { ok, title } = this.#Request.getData(data);
                 if (ok) {
