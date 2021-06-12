@@ -13,62 +13,53 @@ class FormOfferModel extends AbstractModel
 {
     public function create(array $requestParam): array
     {
+        $array_users = $this->arraySQL($requestParam['array_users']);
+        $others_value = $this->arraySQL($requestParam['saving']);
+        $after_value = $this->escape($requestParam['after_value']);
+        $before_value = $this->escape($requestParam['before_value']);
 
-        if (CsrfModel::verifyToken($requestParam['token'], 'Token')) {
-            $array_users = $this->arraySQL($requestParam['array_users']);
-            $others_value = $this->arraySQL($requestParam['saving']);
-            $after_value = $this->escape($requestParam['after_value']);
-            $before_value = $this->escape($requestParam['before_value']);
-
+        try {
+            $stmt = $this->DB->prepare('INSERT INTO idea (id_area, after_value, before_value, array_users, others_value, pkt_user ) VALUES (:id_area, :after_value, :before_value, :array_users, :others_value, :pkt_user)');
+            $stmt->bindValue(':id_area', (int)$requestParam['id_area'], PDO::PARAM_INT);
+            $stmt->bindValue(':after_value', $after_value, PDO::PARAM_STR);
+            $stmt->bindValue(':before_value', $before_value, PDO::PARAM_STR);
+            $stmt->bindValue(':array_users', $array_users, PDO::PARAM_STR);
+            $stmt->bindValue(':others_value', $others_value, PDO::PARAM_STR);
+            $stmt->bindValue(':pkt_user', (int)$requestParam['pkt_user'], PDO::PARAM_INT);
             try {
-                $stmt = $this->DB->prepare('INSERT INTO idea (id_area, after_value, before_value, array_users, others_value, pkt_user ) VALUES (:id_area, :after_value, :before_value, :array_users, :others_value, :pkt_user)');
-                $stmt->bindValue(':id_area', (int)$requestParam['id_area'], PDO::PARAM_INT);
-                $stmt->bindValue(':after_value', $after_value, PDO::PARAM_STR);
-                $stmt->bindValue(':before_value', $before_value, PDO::PARAM_STR);
-                $stmt->bindValue(':array_users', $array_users, PDO::PARAM_STR);
-                $stmt->bindValue(':others_value', $others_value, PDO::PARAM_STR);
-                $stmt->bindValue(':pkt_user', (int)$requestParam['pkt_user'], PDO::PARAM_INT);
-                try {
-                    $this->DB->beginTransaction();
-                    $stmt->execute();
-                    $id = intval($this->DB->lastInsertId());
-                    $this->DB->commit();
-                } catch (PDOException $e) {
-                    $this->DB->rollback();
-                    throw new AjaxException('Error FormOffer MODEL Create');
-                }
-                $stmt->closeCursor();
+                $this->DB->beginTransaction();
+                $stmt->execute();
+                $id = intval($this->DB->lastInsertId());
+                $this->DB->commit();
             } catch (PDOException $e) {
-                throw new AjaxException('Error FormOffer MODEL Create Idea');
+                $this->DB->rollback();
+                throw new AjaxException('Error FormOffer MODEL Create');
             }
-            if ($id) {
-                $userIdea = $this->userIdea($id, $requestParam);
-                $addet = date("ynj") . "/" . $id;
-                if ($userIdea) {
-                    $this->createDate($id, $addet);
-                    $replay = [
-                        'ok' => true,
-                        'title' => "Dodano pomyślmie. Numer: " . $addet,
-                    ];
-                    return $this->responseAPI($replay, true);
-                } else {
-                    $replay = [
-                        'ok' => true,
-                        'title' => 'Błąd dodawania',
-                    ];
-                    return $this->responseAPI($replay, true);
-                }
+            $stmt->closeCursor();
+        } catch (PDOException $e) {
+            throw new AjaxException('Error FormOffer MODEL Create Idea');
+        }
+        if ($id) {
+            $userIdea = $this->userIdea($id, $requestParam);
+            $addet = date("ynj") . "/" . $id;
+            if ($userIdea) {
+                $this->createDate($id, $addet);
+                $replay = [
+                    'ok' => true,
+                    'title' => "Dodano pomyślmie. Numer: " . $addet,
+                ];
+                return $this->responseAPI($replay, true);
             } else {
                 $replay = [
                     'ok' => true,
                     'title' => 'Błąd dodawania',
                 ];
-                return $this->responseAPI($replay);
+                return $this->responseAPI($replay, true);
             }
         } else {
             $replay = [
-                'type' => 'AUTHORIZATION',
-                'title' => 'WRONG TOKEN',
+                'ok' => true,
+                'title' => 'Błąd dodawania',
             ];
             return $this->responseAPI($replay);
         }

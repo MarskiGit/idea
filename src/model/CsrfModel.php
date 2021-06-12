@@ -20,10 +20,10 @@ class CsrfModel
         }
         return false;
     }
-    public static function setNewToken(string $page): void
+    public static function setNewToken(string $page, int $time = 86400): void
     {
         $rand_token = openssl_random_pseudo_bytes(16);
-        $expiry = time() + 3800;
+        $expiry = time() + $time;
         $sessionToken = bin2hex($rand_token);
         $cookieToken = md5(base64_encode($rand_token));
         $_SESSION['tokens'][$page] = [

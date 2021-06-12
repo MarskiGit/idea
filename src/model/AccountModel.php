@@ -142,40 +142,32 @@ class AccountModel extends AbstractModel implements ModelInterface
     }
     public function login(array $requestParam): array
     {
-        if (CsrfModel::verifyToken($requestParam['token'], 'Token')) {
-            try {
-                $stmt = $this->DB->prepare('SELECT id_account, full_name, account_password, account_login, rang FROM account WHERE (account_login = :account_login) AND (active = 1)');
-                $stmt->bindValue(':account_login', $requestParam['login'], PDO::PARAM_STR);
-                $stmt->execute();
-            } catch (PDOException $e) {
-                throw new AjaxException('Error Account MODEL Login');
-            }
+        try {
+            $stmt = $this->DB->prepare('SELECT id_account, full_name, account_password, account_login, rang FROM account WHERE (account_login = :account_login) AND (active = 1)');
+            $stmt->bindValue(':account_login', $requestParam['login'], PDO::PARAM_STR);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            throw new AjaxException('Error Account MODEL Login');
+        }
 
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            if (is_array($row) && password_verify($requestParam['password'], $row['account_password']) && $requestParam['login'] === $row['account_login']) {
-                $_SESSION['account'] = [
-                    'rang' => $row['rang'],
-                    'name' => $row['full_name'],
-                    'id' => $row['id_account'],
-                    'currentTime' => date("H:i:s"),
-                ];
-                $replay = [
-                    'ok' => true,
-                ];
-                return $this->responseAPI($replay, true);
-            } else {
-                $replay = [
-                    'ok' => false,
-                    'title' => 'Podano błędne dane logowania',
-                ];
-                return $this->responseAPI($replay, true);
-            }
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (is_array($row) && password_verify($requestParam['password'], $row['account_password']) && $requestParam['login'] === $row['account_login']) {
+            $_SESSION['account'] = [
+                'rang' => $row['rang'],
+                'name' => $row['full_name'],
+                'id' => $row['id_account'],
+                'currentTime' => time(),
+            ];
+            $replay = [
+                'ok' => true,
+            ];
+            return $this->responseAPI($replay, true);
         } else {
             $replay = [
-                'type' => 'AUTHORIZATION',
-                'title' => 'WRONG TOKEN',
+                'ok' => false,
+                'title' => 'Podano błędne dane logowania',
             ];
-            return $this->responseAPI($replay);
+            return $this->responseAPI($replay, true);
         }
     }
     public static function logout(): void

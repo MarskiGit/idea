@@ -24,7 +24,6 @@ abstract class AbstractController
 
     public function __construct(Request $Request, View $View)
     {
-
         $this->Request = $Request;
         $this->View = $View;
         $this->is_PHPInput = $this->Request->is_PHPInput();
@@ -51,9 +50,20 @@ abstract class AbstractController
         }
 
         if ($this->is_PHPInput) {
-            $this->requestAJAX = $this->Request->getRequest_AJAX(DEFAULT_AJAX, self::DEFAULT_ACTION_AJAX);
             $this->requestParam = $this->Request->getParam_AJAX();
-            $this->apiAjax();
+            if (CsrfModel::verifyToken($this->requestParam['token'], 'Token')) {
+                $this->requestAJAX = $this->Request->getRequest_AJAX(DEFAULT_AJAX, self::DEFAULT_ACTION_AJAX);
+                $this->apiAjax();
+            } else {
+                $replay['data'] = [
+                    ['api' => false,],
+                    [
+                        'type' => 'AUTHORIZATION',
+                        'title' => 'WRONG TOKEN',
+                    ],
+                ];
+                echo json_encode($replay);
+            }
         }
     }
     private function renderPage(): void

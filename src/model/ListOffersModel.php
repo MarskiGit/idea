@@ -15,31 +15,23 @@ class ListOffersModel extends AbstractModel
 {
     public function get(array $requestParam): array
     {
-        if (CsrfModel::verifyToken($requestParam['token'], 'Token')) {
-            $result = [];
-            try {
-                $stmt = $this->DB->query("SELECT * FROM view_idea WHERE id_idea < " . $this->limitTuples((int)$requestParam['last_tuple']) . " ORDER BY id_idea DESC LIMIT 15 ");
-                $stmt->execute();
-            } catch (PDOException $e) {
-                throw new AjaxException('Error ListOffers MODEL Get');
+        $result = [];
+        try {
+            $stmt = $this->DB->query("SELECT * FROM view_idea WHERE id_idea < " . $this->limitTuples((int)$requestParam['last_tuple']) . " ORDER BY id_idea DESC LIMIT 15 ");
+            $stmt->execute();
+        } catch (PDOException $e) {
+            throw new AjaxException('Error ListOffers MODEL Get');
+        }
+
+        if ($stmt->rowCount() > 0) {
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $row['array_users'] = $this->getListNames($row['array_users']);
+                array_push($result, $row);
             }
 
-            if ($stmt->rowCount() > 0) {
-                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    $row['array_users'] = $this->getListNames($row['array_users']);
-                    array_push($result, $row);
-                }
-
-                return $this->responseAPI($result, true);
-            } else {
-                return $this->responseAPI($result, true);
-            }
+            return $this->responseAPI($result, true);
         } else {
-            $replay = [
-                'type' => 'AUTHORIZATION',
-                'title' => 'WRONG TOKEN',
-            ];
-            return $this->responseAPI($replay);
+            return $this->responseAPI($result, true);
         }
     }
     private function getListNames($id_users): array
