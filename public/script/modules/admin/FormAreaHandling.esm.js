@@ -1,17 +1,16 @@
 'use strict';
-import { setingRequest } from '../seting.esm.js';
 import FormValidation from '../FormValidation.esm.js';
-import Request from '../Request.esm.js';
+import AjaxRequest from '../AjaxRequest.esm.js';
 
 export default class FormAreaHandling {
     #FormValidation;
-    #params;
-    #Request;
-    #request = {};
+    #request;
+    #AjaxRequest;
+    #requestParam = {};
     constructor(formObjects) {
         this.#FormValidation = new FormValidation(formObjects);
-        this.#params = formObjects.request;
-        this.#Request = new Request(setingRequest);
+        this.#request = formObjects.request;
+        this.#AjaxRequest = new AjaxRequest();
     }
     init() {
         this.#eventListeners();
@@ -27,14 +26,14 @@ export default class FormAreaHandling {
     };
     #sendRequest() {
         document.body.style.cursor = 'progress';
-        this.#request = {
-            request: this.#params,
+        this.#requestParam = {
+            request: this.#request,
             ...this.#FormValidation.getValue(),
         };
-        this.#Request
-            .getJson(this.#request)
+        this.#AjaxRequest
+            .getJson(this.#requestParam)
             .then((data) => {
-                const { ok, title } = this.#Request.getData(data);
+                const { ok, title } = this.#AjaxRequest.getData(data);
                 if (ok) {
                     this.#FormValidation.clearField();
                     this.#FormValidation.showMessage(`${title}`);

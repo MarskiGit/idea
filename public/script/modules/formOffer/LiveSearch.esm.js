@@ -1,18 +1,17 @@
 'use strict';
-import { setingRequest } from '../seting.esm.js';
-import Request from '../Request.esm.js';
+import AjaxRequest from '../AjaxRequest.esm.js';
 import RenderLi from './RenderLi.esm.js';
 
 export default class LiveSearch {
-    #RequestParam = {};
-    #Request;
+    #requestParam = {};
+    #AjaxRequest;
     #resultsSearchUl;
     #inputSearch;
     #fragmentList = document.createDocumentFragment();
     #data;
     constructor(searchObjects) {
-        this.#RequestParam.request = searchObjects.request;
-        this.#Request = new Request(setingRequest);
+        this.#requestParam.request = searchObjects.request;
+        this.#AjaxRequest = new AjaxRequest();
         this.#resultsSearchUl = searchObjects.resultsSearchUl;
     }
     init(inputSearch) {
@@ -49,19 +48,19 @@ export default class LiveSearch {
     }
     #valueSought(target) {
         if (target.dataset.search === 'creator_search') {
-            Number(target.value) ? (this.#RequestParam.select = 'id_pass') : (this.#RequestParam.select = 'full_name');
-            this.#RequestParam.full_name = target.value;
+            Number(target.value) ? (this.#requestParam.select = 'id_pass') : (this.#requestParam.select = 'full_name');
+            this.#requestParam.full_name = target.value;
         } else {
-            this.#RequestParam.area_name = target.value;
+            this.#requestParam.area_name = target.value;
         }
         this.#sendRequest();
     }
     #sendRequest() {
         document.body.style.cursor = 'progress';
-        this.#Request
-            .getJson(this.#RequestParam)
+        this.#AjaxRequest
+            .getJson(this.#requestParam)
             .then((data) => {
-                this.#data = this.#Request.getData(data);
+                this.#data = this.#AjaxRequest.getData(data);
                 this.#renderLi();
             })
             .finally((document.body.style.cursor = 'default'));

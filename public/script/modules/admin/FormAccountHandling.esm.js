@@ -1,21 +1,20 @@
 'use strict';
-import { setingRequest } from '../seting.esm.js';
 import FormValidation from '../FormValidation.esm.js';
 import FormPassword from '../FormPassword.esm.js';
-import Request from '../Request.esm.js';
+import AjaxRequest from '../AjaxRequest.esm.js';
 
 export default class FormAccountHandling {
     #FormValidation;
     #FormPassword;
-    #params;
-    #Request;
-    #request = {};
+    #request;
+    #AjaxRequest;
+    #requestParam = {};
     constructor(formObjects) {
         this.#FormValidation = new FormValidation(formObjects);
         this.#FormPassword = new FormPassword();
-        this.#params = formObjects.request;
+        this.#request = formObjects.request;
 
-        this.#Request = new Request(setingRequest);
+        this.#AjaxRequest = new AjaxRequest();
     }
 
     init() {
@@ -33,14 +32,14 @@ export default class FormAccountHandling {
     };
     #sendRequest() {
         document.body.style.cursor = 'progress';
-        this.#request = {
-            request: this.#params,
+        this.#requestParam = {
+            request: this.#request,
             ...this.#FormValidation.getValue(),
         };
-        this.#Request
-            .getJson(this.#request)
+        this.#AjaxRequest
+            .getJson(this.#requestParam)
             .then((data) => {
-                const { ok, title } = this.#Request.getData(data);
+                const { ok, title } = this.#AjaxRequest.getData(data);
                 console.log(ok, title);
                 if (ok) {
                     this.#FormValidation.clearField();

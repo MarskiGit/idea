@@ -1,22 +1,7 @@
 'use strict';
 import FormValidation from './FormValidation.esm.js';
 import FormPassword from './FormPassword.esm.js';
-import Request from './Request.esm.js';
-
-const setingRequest = {
-    ajax: {
-        method: 'POST',
-        mode: 'cors',
-        cache: 'no-store',
-        credentials: 'same-origin',
-        headers: {
-            'Content-Type': 'application/json; charset=utf-8',
-        },
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer',
-    },
-    url: '../../index.php',
-};
+import AjaxRequest from './AjaxRequest.esm.js';
 
 const formObjects = {
     request: 'addUser',
@@ -30,16 +15,16 @@ const formObjects = {
 class FormHandling {
     #FormValidation;
     #FormPassword;
-    #Request;
-    #params;
-    #request = {};
+    #AjaxRequest;
+    #request;
+    #requestParams = {};
     #inputList;
     constructor(formObjects) {
         this.#FormValidation = new FormValidation(formObjects);
         this.#FormPassword = new FormPassword(formObjects.strengthMessage, formObjects.strengthMeter, formObjects.identicalMessage);
-        this.#params = formObjects.request;
+        this.#request = formObjects.request;
 
-        this.#Request = new Request(setingRequest);
+        this.#AjaxRequest = new AjaxRequest();
         this.#inputList = this.#FormValidation.getInputs(['INPUT'], 'password');
     }
     init() {
@@ -57,14 +42,14 @@ class FormHandling {
     };
     #sendRequest() {
         document.body.style.cursor = 'progress';
-        this.#request = {
-            request: this.#params,
+        this.#requestParams = {
+            request: this.#request,
             ...this.#FormValidation.getValue(),
         };
-        this.#Request
-            .getJson(this.#request)
+        this.#AjaxRequest
+            .getJson(this.#requestParams)
             .then((data) => {
-                const { ok, title } = this.#Request.getData(data);
+                const { ok, title } = this.#AjaxRequest.getData(data);
                 if (ok) {
                     this.#FormValidation.clearField();
                     this.#FormValidation.showMessage(`${title}`);

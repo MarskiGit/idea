@@ -1,20 +1,5 @@
 'use strict';
-export { setingRequest, localhost, time, today };
-
-const setingRequest = {
-    ajax: {
-        method: 'POST',
-        mode: 'cors',
-        cache: 'no-store',
-        credentials: 'same-origin',
-        headers: {
-            'Content-Type': 'application/json; charset=utf-8',
-        },
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer',
-    },
-    url: 'index.php',
-};
+export { localhost, time, today };
 
 const localhost = 'http://h.localhost/01_MOJE/01_CURRENT/idea/';
 

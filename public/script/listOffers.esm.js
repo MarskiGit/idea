@@ -1,9 +1,6 @@
 'use strict';
-import { setingRequest } from './modules/seting.esm.js';
 import Idea from './modules/listOffers/Idea.esm.js';
-import Request from './modules/Request.esm.js';
-
-setingRequest.ajax.cache = 'default';
+import AjaxRequest from './modules/AjaxRequest.esm.js';
 
 const domObjects = {
     request: 'listOffers',
@@ -15,16 +12,16 @@ class ListOffers {
         last_tuple: 0,
     };
     #listContainer;
-    #Request;
+    #AjaxRequest;
     #LastTuple;
     #fragmentList = document.createDocumentFragment();
     #tupleNumbers = [];
     #endTuples = false;
     #data;
-    constructor(domObjects, setingRequest) {
+    constructor(domObjects) {
         this.#requestParam.request = domObjects.request;
         this.#listContainer = domObjects.listContainer;
-        this.#Request = new Request(setingRequest);
+        this.#AjaxRequest = new AjaxRequest();
     }
     init() {
         this.#requestParam.token = this.#listContainer.getAttribute('data-token');
@@ -38,10 +35,10 @@ class ListOffers {
     #sendRequest = () => {
         if (!this.#endTuples) {
             document.body.style.cursor = 'progress';
-            this.#Request
+            this.#AjaxRequest
                 .getJson(this.#requestParam)
                 .then((data) => {
-                    this.#data = this.#Request.getData(data);
+                    this.#data = this.#AjaxRequest.getData(data);
                     this.#checkData();
                 })
                 .finally((document.body.style.cursor = 'default'));
@@ -91,4 +88,4 @@ class ListOffers {
     }
 }
 
-new ListOffers(domObjects, setingRequest).init();
+new ListOffers(domObjects).init();

@@ -1,8 +1,8 @@
 <?php if (isset($_SESSION['account'])) : ?>
     <script type="module" src="./public/script/admin.esm.js"></script>
     <section class="container">
-        <h2>Witaj: <?php echo  $_SESSION['account']['name'] ?></h2>
-        <h2>Witaj: <?php echo  $_SESSION['account']['currentTime'] ?></h2>
+        <h2 data-time="<?php echo  $_SESSION['account']['currentTime'] ?>">Witaj: <?php echo  $_SESSION['account']['name'] ?></h2>
+        <div class="countdown"> <span data-time="countdown">00:00</span></div>
         <ul>
             <li class="<?php echo $pageParams['actve_link'] === 'home' ? 'display' : 'hide' ?>">
                 <a rel="admin section" href="?action=admin&admin=home" data-link="menu" class="li_button">

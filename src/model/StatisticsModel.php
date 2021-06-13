@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Idea\model;
 
-use Idea\model\CsrfModel;
 use Idea\model\AbstractModel;
 use Idea\exception\IdeaException;
 use PDO;

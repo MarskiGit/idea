@@ -1,7 +1,7 @@
 'use strict';
-import { setingRequest, localhost } from './modules/seting.esm.js';
+import { localhost } from './modules/seting.esm.js';
 import FormValidation from './modules/FormValidation.esm.js';
-import Request from './modules/Request.esm.js';
+import AjaxRequest from './modules/AjaxRequest.esm.js';
 
 const formObjects = {
     request: 'login',
@@ -12,14 +12,16 @@ const formObjects = {
 class Login {
     #request = {};
     #FormValidation;
-    #Request;
+    #AjaxRequest;
     #inputList;
     #requestParam;
-    constructor(formObjects, setingRequest) {
+    #date;
+    constructor(formObjects) {
         this.#request.request = formObjects.request;
         this.#FormValidation = new FormValidation(formObjects);
-        this.#Request = new Request(setingRequest);
+        this.#AjaxRequest = new AjaxRequest();
         this.#inputList = this.#FormValidation.getInputs(['INPUT']);
+        this.#date = new Date();
     }
     init() {
         this.#onBlur();
@@ -37,13 +39,12 @@ class Login {
     };
     #sendRequest() {
         document.body.style.cursor = 'progress';
-        this.#Request
+        this.#AjaxRequest
             .getJson(this.#requestParam)
             .then((data) => {
-                const { ok, title } = this.#Request.getData(data);
+                const { ok, title } = this.#AjaxRequest.getData(data);
                 if (ok) {
                     location.replace(localhost);
-                    // localStorage.clear();
                 } else {
                     this.#FormValidation.showMessage(`${title}`);
                     // localStorage.setItem('key', 'value');
@@ -59,4 +60,4 @@ class Login {
     }
 }
 
-new Login(formObjects, setingRequest).init();
+new Login(formObjects).init();

@@ -1,7 +1,6 @@
 'use strict';
-import { setingRequest } from './modules/seting.esm.js';
 import FormValidation from './modules/FormValidation.esm.js';
-import Request from './modules/Request.esm.js';
+import AjaxRequest from './modules/AjaxRequest.esm.js';
 import CountCharacters from './modules/formOffer/CountCharacters.esm.js';
 import Rating from './modules/formOffer/Rating.esm.js';
 import LiveSearch from './modules/formOffer/LiveSearch.esm.js';
@@ -30,7 +29,7 @@ const search = {
 class FormOffer {
     #requestParam = {};
     #FormValidation;
-    #Request;
+    #AjaxRequest;
 
     #CountCharacters;
     #Rating;
@@ -43,12 +42,12 @@ class FormOffer {
     #inputLiveSearch;
     #textAreas;
     #optionSelecs;
-    constructor(formObjects, search, setingRequest) {
+    constructor(formObjects, search) {
         this.#requestParam.request = formObjects.request;
         this.#requestParam.token = formObjects.form.getAttribute('data-token');
 
         this.#FormValidation = new FormValidation(formObjects);
-        this.#Request = new Request(setingRequest);
+        this.#AjaxRequest = new AjaxRequest();
 
         this.#CountCharacters = new CountCharacters(formObjects.signNumber);
         this.#Rating = new Rating(formObjects.viewPoints);
@@ -110,10 +109,10 @@ class FormOffer {
     }
     #sendRequest() {
         document.body.style.cursor = 'progress';
-        this.#Request
+        this.#AjaxRequest
             .getJson(this.#requestParam)
             .then((data) => {
-                const { ok, title } = this.#Request.getData(data);
+                const { ok, title } = this.#AjaxRequest.getData(data);
                 if (ok) {
                     this.#clearForm();
                     this.#FormValidation.showMessage(`${title}`);
@@ -125,4 +124,4 @@ class FormOffer {
     }
     #emptyForm = () => !!(this.#FormValidation.emptyFields() && this.#UserChosen.checkChosen() && this.#AreaChosen.checkChosen());
 }
-new FormOffer(formObjects, search, setingRequest).init();
+new FormOffer(formObjects, search).init();

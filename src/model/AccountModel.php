@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Idea\model;
 
-use Idea\model\CsrfModel;
 use Idea\model\AbstractModel;
 use Idea\exception\AjaxException;
 use PDO;
@@ -173,7 +172,6 @@ class AccountModel extends AbstractModel implements ModelInterface
     public static function logout(): void
     {
         if (session_status() == PHP_SESSION_ACTIVE) {
-            CsrfModel::removeTokens('login');
             unset($_SESSION['account']);
             session_destroy();
         }

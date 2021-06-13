@@ -1,6 +1,22 @@
 'use strict';
 import Exception from './Exception.esm.js';
-export default class Request {
+
+const setingRequest = {
+    ajax: {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-store',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+    },
+    url: 'index.php',
+};
+
+export default class AjaxRequest {
     #Exception;
     #status = {
         title: 'FILE NOT FOUND',
@@ -10,7 +26,7 @@ export default class Request {
     #seting;
     #url;
     #Token;
-    constructor(setingRequest) {
+    constructor() {
         this.#Exception = new Exception();
         this.#seting = setingRequest.ajax;
         this.#url = setingRequest.url;
