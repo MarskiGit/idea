@@ -30,12 +30,10 @@ class Admin {
     }
     init() {
         this.#factory();
-        this.#timeSession();
+
         this.#eventListeners();
     }
-    #eventListeners() {
-        document.addEventListener('mousemove', this.#debounced(this.#timeSession, 1000));
-    }
+    #eventListeners() {}
     #factory() {
         if (areaObjects.form) {
             new FormAreaHandling(areaObjects).init();

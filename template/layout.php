@@ -44,7 +44,9 @@
              <?php break; ?>
          <?php
             case 'mod': ?>
-             <link rel="stylesheet" href="./public/style/mod.min.css" type="text/css" media="all">
+             <?php if ($account_rang === 1) : ?>
+                 <link rel="stylesheet" href="./public/style/mod.min.css" type="text/css" media="all">
+             <?php endif; ?>
              <?php break; ?>
          <?php
             default: ?>
@@ -63,13 +65,19 @@
 
          <?php switch ($account_rang):
                 case 1: ?>
-                 <a rel="signin appendix" href="?action=logout" class="logo_idea"><img src="public/img/idea.png" alt="Idea"></a>
+                 <a rel="signin appendix" href="?action=logout" class="logo_idea">
+                     <div class="countdown"><img src="public/img/icon/logout.png" alt="Statystyki"><span data-time="countdown">05:00</span></div>
+                 </a>
                  <a rel="admin subsection" href="?action=mod" class="link_button">Mod</a>
+                 <script type="module" src="./public/script/countdown.esm.js"></script>
                  <?php break; ?>
              <?php
                 case 2: ?>
-                 <a rel="signin appendix" href="?action=logout" class="logo_idea"><img src="public/img/idea.png" alt="Idea"></a>
+                 <a rel="signin appendix" href="?action=logout" class="logo_idea">
+                     <div class="countdown"><img src="public/img/icon/logout.png" alt="Statystyki"><span data-time="countdown">05:00</span></div>
+                 </a>
                  <a rel="admin subsection" href="?action=admin" class="link_button">Admin</a>
+                 <script type="module" src="./public/script/countdown.esm.js"></script>
                  <?php break; ?>
              <?php
                 default: ?>
