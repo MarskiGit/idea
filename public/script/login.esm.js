@@ -10,18 +10,14 @@ const formObjects = {
 };
 
 class Login {
-    #request = {};
     #FormValidation;
     #AjaxRequest;
     #inputList;
-    #requestParam;
-    #date;
+    #requestParam = {};
     constructor(formObjects) {
-        this.#request.request = formObjects.request;
         this.#FormValidation = new FormValidation(formObjects);
-        this.#AjaxRequest = new AjaxRequest();
+        this.#AjaxRequest = new AjaxRequest(formObjects.request);
         this.#inputList = this.#FormValidation.getInputs(['INPUT']);
-        this.#date = new Date();
     }
     init() {
         this.#onBlur();
@@ -33,7 +29,7 @@ class Login {
     #formHandling = (event) => {
         event.preventDefault();
         if (this.#FormValidation.emptyFields()) {
-            this.#requestParam = { ...this.#request, ...this.#FormValidation.getValue() };
+            this.#requestParam = { ...this.#FormValidation.getValue() };
             this.#sendRequest();
         } else this.#FormValidation.showMessage('Uzupełnij wszystkie pola');
     };

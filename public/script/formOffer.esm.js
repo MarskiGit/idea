@@ -43,11 +43,10 @@ class FormOffer {
     #textAreas;
     #optionSelecs;
     constructor(formObjects, search) {
-        this.#requestParam.request = formObjects.request;
         this.#requestParam.token = formObjects.form.getAttribute('data-token');
 
         this.#FormValidation = new FormValidation(formObjects);
-        this.#AjaxRequest = new AjaxRequest();
+        this.#AjaxRequest = new AjaxRequest(formObjects.request);
 
         this.#CountCharacters = new CountCharacters(formObjects.signNumber);
         this.#Rating = new Rating(formObjects.viewPoints);

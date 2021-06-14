@@ -8,10 +8,9 @@ export default class LiveSearch {
     #resultsSearchUl;
     #inputSearch;
     #fragmentList = document.createDocumentFragment();
-    #data;
+    #ajaxData;
     constructor(searchObjects) {
-        this.#requestParam.request = searchObjects.request;
-        this.#AjaxRequest = new AjaxRequest();
+        this.#AjaxRequest = new AjaxRequest(searchObjects.request);
         this.#resultsSearchUl = searchObjects.resultsSearchUl;
     }
     init(inputSearch) {
@@ -60,18 +59,18 @@ export default class LiveSearch {
         this.#AjaxRequest
             .getJson(this.#requestParam)
             .then((data) => {
-                this.#data = this.#AjaxRequest.getData(data);
-                this.#renderLi();
+                this.#ajaxData = this.#AjaxRequest.getData(data);
+                this.#renderHTML();
             })
             .finally((document.body.style.cursor = 'default'));
     }
-    #renderLi() {
-        for (const li of this.#data) {
+    #renderHTML() {
+        for (const li of this.#ajaxData) {
             this.#fragmentList.appendChild(new RenderLi(li).getLi());
         }
-        this.#addListPage();
+        this.#addDOM();
     }
-    #addListPage() {
+    #addDOM() {
         this.#clearResultsLI();
         this.#resultsSearchUl.appendChild(this.#fragmentList);
         this.#resultsSearchUl.classList.add('on');

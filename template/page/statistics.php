@@ -25,14 +25,14 @@ $counter = 1;
         <section class="wrap_context">
             <h3>Pomysłodawców</h3>
             <div class="list_quarter">
-                <ul>
-                    <li><button data-statistics="quarter">I kwartał <span class=""></span></button></li>
-                    <li><button data-statistics="quarter">II kwartał <span class="ornament_line"></span></button></li>
-                    <li><button data-statistics="quarter">III kwartał <span class=""></span></button></li>
-                    <li><button data-statistics="quarter">IV kwartał <span class=""></span></button></li>
+                <ul data-topuser="user_quarter">
+                    <li><button data-statistics="quarter">I kwartał </button></li>
+                    <li><button data-statistics="quarter">II kwartał </button></li>
+                    <li><button data-statistics="quarter">III kwartał </button></li>
+                    <li><button data-statistics="quarter">IV kwartał </button></li>
                 </ul>
             </div>
-            <table>
+            <table data-topuser="users_list">
                 <thead>
                     <tr>
                         <th>Miejsce</th>
@@ -41,47 +41,21 @@ $counter = 1;
                         <th>Zdobyte punkty</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <?php foreach ($pageParams['topTenUser'] ?? [] as $key => $value) : ?>
-                        <tr>
-                            <?php switch ($counter):
-                                case 1: ?>
-                                    <td class="gold"><?php echo $counter ?></td>
-                                    <?php break; ?>
-                                <?php
-                                case 2: ?>
-                                    <td class="silver"><?php echo $counter ?></td>
-                                    <?php break; ?>
-                                <?php
-                                case 3: ?>
-                                    <td class="brown"><?php echo $counter ?></td>
-                                    <?php break; ?>
-                                <?php
-                                default: ?>
-                                    <td><?php echo $counter ?></td>
-                                    <?php break; ?>
-                            <?php endswitch; ?>
-                            <td><?php echo $value['full_name'] ?></td>
-                            <td><?php echo $value['offers_implemented'] ?></td>
-                            <td><?php echo $value['awarded_points']; ?></td>
-                        </tr>
-                        <?php $counter++ ?>
-                    <?php endforeach; ?>
-                <tbody>
+
             </table>
         </section>
 
         <section class="wrap_context">
             <h3>Działów</h3>
             <div class="list_quarter">
-                <ul>
-                    <li><button data-statistics="quarter">I kwartał <span class=""></span></button></li>
-                    <li><button data-statistics="quarter">II kwartał <span class="ornament_line"></span></button></li>
-                    <li><button data-statistics="quarter">III kwartał <span class=""></span></button></li>
-                    <li><button data-statistics="quarter">IV kwartał <span class=""></span></button></li>
+                <ul data-toparea="area_quarter">
+                    <li><button data-statistics="quarter">I kwartał </button></li>
+                    <li><button data-statistics="quarter">II kwartał </button></li>
+                    <li><button data-statistics="quarter">III kwartał </button></li>
+                    <li><button data-statistics="quarter">IV kwartał </button></li>
                 </ul>
             </div>
-            <table>
+            <table data-toparea="areas_list">
                 <thead>
                     <tr>
                         <th>Miejsce</th>
@@ -90,17 +64,6 @@ $counter = 1;
                         <th>Liczba propozycji</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <?php foreach ($pageParams['topTenArea'] ?? [] as $key => $value) : ?>
-                        <tr>
-                            <td><?php echo $counter ?></td>
-                            <td><?php echo $value['full_name'] ?></td>
-                            <td><?php echo $value['awarded_points']; ?></td>
-                            <td><?php echo $value['offers_implemented'] ?></td>
-                        </tr>
-                        <?php $counter++ ?>
-                    <?php endforeach; ?>
-                <tbody>
             </table>
         </section>
     </section>

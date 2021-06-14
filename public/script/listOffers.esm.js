@@ -17,11 +17,10 @@ class ListOffers {
     #fragmentList = document.createDocumentFragment();
     #tupleNumbers = [];
     #endTuples = false;
-    #data;
+    #ajaxData;
     constructor(domObjects) {
-        this.#requestParam.request = domObjects.request;
         this.#listContainer = domObjects.listContainer;
-        this.#AjaxRequest = new AjaxRequest();
+        this.#AjaxRequest = new AjaxRequest(domObjects.request);
     }
     init() {
         this.#requestParam.token = this.#listContainer.getAttribute('data-token');
@@ -38,14 +37,14 @@ class ListOffers {
             this.#AjaxRequest
                 .getJson(this.#requestParam)
                 .then((data) => {
-                    this.#data = this.#AjaxRequest.getData(data);
+                    this.#ajaxData = this.#AjaxRequest.getData(data);
                     this.#checkData();
                 })
                 .finally((document.body.style.cursor = 'default'));
         }
     };
     #checkData() {
-        if (this.#data.length) {
+        if (this.#ajaxData.length) {
             this.#listContainer.classList.add('offers_container');
             this.#renderList();
         } else {
@@ -54,17 +53,17 @@ class ListOffers {
         }
     }
     #renderList() {
-        for (const idea of this.#data) {
+        for (const idea of this.#ajaxData) {
             this.#tupleNumbers.push(parseInt(idea.id_idea, 10));
             this.#fragmentList.appendChild(new Idea(idea).getIdea());
         }
         const { end, last } = this.#LastTuple();
         this.#endTuples = end;
         this.#requestParam.last_tuple = last;
-        this.#addListPage();
+        this.#addDOM();
     }
 
-    #addListPage() {
+    #addDOM() {
         this.#listContainer.appendChild(this.#fragmentList);
     }
     #findLastTuple() {

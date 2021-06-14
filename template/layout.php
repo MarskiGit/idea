@@ -66,7 +66,7 @@
          <?php switch ($account_rang):
                 case 1: ?>
                  <a rel="signin appendix" href="?action=logout" class="logo_idea">
-                     <div class="countdown"><img src="public/img/icon/logout.png" alt="Statystyki"><span data-time="countdown">05:00</span></div>
+                     <div class="countdown"><img class="img_logout" src="public/img/icon/logout.png" alt="Logout"><span data-time="countdown">05:00</span></div>
                  </a>
                  <a rel="admin subsection" href="?action=mod" class="link_button">Mod</a>
                  <script type="module" src="./public/script/countdown.esm.js"></script>
@@ -74,7 +74,7 @@
              <?php
                 case 2: ?>
                  <a rel="signin appendix" href="?action=logout" class="logo_idea">
-                     <div class="countdown"><img src="public/img/icon/logout.png" alt="Statystyki"><span data-time="countdown">05:00</span></div>
+                     <div class="countdown"><img class="img_logout" src="public/img/icon/logout.png" alt="Logout"><span class="countdown_text" data-time="countdown">05:00</span></div>
                  </a>
                  <a rel="admin subsection" href="?action=admin" class="link_button">Admin</a>
                  <script type="module" src="./public/script/countdown.esm.js"></script>

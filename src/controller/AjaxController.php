@@ -8,6 +8,7 @@ use Idea\model\ListOffersModel;
 use Idea\model\AccountModel;
 use Idea\model\AreaModel;
 use Idea\model\FormOfferModel;
+use Idea\model\StatisticsModel;
 
 class AjaxController extends AbstractController
 {
@@ -46,6 +47,11 @@ class AjaxController extends AbstractController
     {
         $area = new AreaModel();
         $this->View->renderJSON($area->create($this->requestParam));
+    }
+    protected function topTenIdea(): void
+    {
+        $stat = new StatisticsModel();
+        $this->View->renderJSON($stat->getTen($this->requestParam['quarter']));
     }
     protected function exitIdea(): void
     {

@@ -6,15 +6,12 @@ import AjaxRequest from '../AjaxRequest.esm.js';
 export default class FormAccountHandling {
     #FormValidation;
     #FormPassword;
-    #request;
     #AjaxRequest;
     #requestParam = {};
     constructor(formObjects) {
         this.#FormValidation = new FormValidation(formObjects);
         this.#FormPassword = new FormPassword();
-        this.#request = formObjects.request;
-
-        this.#AjaxRequest = new AjaxRequest();
+        this.#AjaxRequest = new AjaxRequest(formObjects.request);
     }
 
     init() {
@@ -32,10 +29,7 @@ export default class FormAccountHandling {
     };
     #sendRequest() {
         document.body.style.cursor = 'progress';
-        this.#requestParam = {
-            request: this.#request,
-            ...this.#FormValidation.getValue(),
-        };
+        this.#requestParam = { ...this.#FormValidation.getValue() };
         this.#AjaxRequest
             .getJson(this.#requestParam)
             .then((data) => {

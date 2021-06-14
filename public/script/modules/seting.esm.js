@@ -1,5 +1,5 @@
 'use strict';
-export { localhost, time, today };
+export { localhost, time, today, quarterYear };
 
 const localhost = 'http://h.localhost/01_MOJE/01_CURRENT/idea/';
 
@@ -18,4 +18,8 @@ const today = () => {
         m = d.getMonth() + 1,
         da = d.getDate();
     return `${y}/${m < 10 ? `0${m}` : m}/${da < 10 ? `0${da}` : da}`;
+};
+const quarterYear = (date) => {
+    var month = date.getMonth() + 1;
+    return Math.ceil(month / 3);
 };

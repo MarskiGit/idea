@@ -23,16 +23,19 @@ export default class AjaxRequest {
         type: 'AJAX ERROR:',
         is_ok: false,
     };
+    #getRequest;
     #seting;
     #url;
     #Token;
-    constructor() {
+    constructor(request) {
+        this.#getRequest = request;
         this.#Exception = new Exception();
         this.#seting = setingRequest.ajax;
         this.#url = setingRequest.url;
         this.#Token = document.body.getAttribute('data-token');
     }
     async getJson(request) {
+        request.request = this.#getRequest;
         request.token = this.#Token;
         this.#seting.body = JSON.stringify(request);
 
