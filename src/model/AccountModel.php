@@ -141,6 +141,20 @@ class AccountModel extends AbstractModel implements ModelInterface
     }
     public function login(array $requestParam): array
     {
+        if (!isset($_SESSION['account']['login_fail'])) $_SESSION['account']['login_fail'] = 3;
+
+        if ($_SESSION['account']['login_fail'] === 0) {
+            if ((time() - $_SESSION['account']['last_time']) < (10 * 60)) {
+                $replay = [
+                    'ok' => false,
+                    'title' => 'Zablokowano dostęp na 10min',
+                ];
+                return $this->responseAPI($replay, true);
+            } else {
+                $_SESSION['account']['login_fail'] = 3;
+            }
+        }
+
         try {
             $stmt = $this->DB->prepare('SELECT id_account, full_name, account_password, account_login, rang FROM account WHERE (account_login = :account_login) AND (active = 1)');
             $stmt->bindValue(':account_login', $requestParam['login'], PDO::PARAM_STR);
@@ -155,7 +169,7 @@ class AccountModel extends AbstractModel implements ModelInterface
                 'rang' => $row['rang'],
                 'name' => $row['full_name'],
                 'id' => $row['id_account'],
-                'currentTime' => time(),
+                'login_fail' => 3
             ];
             $replay = [
                 'ok' => true,
@@ -164,8 +178,10 @@ class AccountModel extends AbstractModel implements ModelInterface
         } else {
             $replay = [
                 'ok' => false,
-                'title' => 'Podano błędne dane logowania',
+                'title' => "Błąd logowania. Pozostało " . $_SESSION['account']['login_fail'] . " próby.",
             ];
+            $_SESSION['account']['last_time'] = time();
+            $_SESSION['account']['login_fail']--;
             return $this->responseAPI($replay, true);
         }
     }
