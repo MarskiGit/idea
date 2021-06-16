@@ -37,13 +37,12 @@ class TopTen {
     #areaDOM;
     #fragmentDOM = document.createDocumentFragment();
     #quarterYear;
+    #topTen;
     constructor(topTenObjects) {
         this.#usersDOM = topTenObjects.users;
         this.#areaDOM = topTenObjects.area;
         this.#AjaxRequest = new AjaxRequest(topTenObjects.request);
         this.#quarterYear = quarterYear(new Date());
-        this.points = [67, 55, 45, 45, 45, 45, 40, 39, 39, 35, 35, 33, 20, 20, 11, 10, 10, 10, 10, 9, 8, 8, 6];
-        this.offers = [50, 40, 12, 10, 10, 29, 15, 23, 52, 20, 50, 21, 22, 0, 12, 0, 30, 2, 25, 11, 10, 5, 10];
     }
     init() {
         this.#requestParam.quarter = this.#quarterYear;
@@ -63,18 +62,40 @@ class TopTen {
             .then((data) => {
                 const { user } = this.#AjaxRequest.getData(data);
                 this.userArray = user;
-                this.#winer();
                 this.#renderHTML(user);
             })
             .finally((document.body.style.cursor = 'default'));
     };
     #renderHTML(user) {
-        const tbody = document.createElement('tbody');
-        let i = 1;
-        for (const td of user) {
-            // this.offers.push(td.offers * 1);
-            // this.points.push(td.points * 1);
+        const tbody = document.createElement('tbody'),
+            firstIn = [],
+            lastIn = [];
+        let pkt = [],
+            bool = 0,
+            i = 1;
 
+        user.sort((a, b) => b.points - a.points);
+        for (const td of user) {
+            pkt.push(td.points * 1);
+        }
+
+        for (const [l, { points, full_name, offer }] of user.entries()) {
+            firstIn.push(pkt.indexOf(points * 1));
+            lastIn.push(pkt.lastIndexOf(points * 1));
+            if (pkt[l + 1] == points && l > bool) {
+                let fragmentOffer = [];
+                this.#topTen = [...user];
+                fragmentOffer = this.#topTen.slice(firstIn[l], lastIn[l] + 1);
+
+                fragmentOffer.sort((a, b) => b.offers - a.offers);
+
+                this.#topTen.splice(firstIn[l], fragmentOffer.length, ...fragmentOffer);
+
+                bool = fragmentOffer.length + l - 1;
+            }
+        }
+
+        for (const td of this.#topTen) {
             tbody.insertAdjacentHTML('beforeend', this.#renderTr(i, td));
             i++;
         }
@@ -116,20 +137,20 @@ class TopTen {
         }
     }
     #winer() {
-        let winer = [...this.points];
-        let offer = [...this.offers];
-        console.log(offer.length, winer.length);
-        let firstIn = [];
-        let lastIn = [];
+        const points = [67, 55, 45, 45, 45, 45, 40, 39, 39, 35, 35, 33, 20, 20, 11, 10, 10, 10, 10, 9, 8, 8, 6];
+        const offers = [50, 40, 12, 10, 10, 29, 15, 23, 52, 20, 50, 21, 22, 0, 12, 0, 30, 2, 25, 11, 10, 5, 10];
 
+        let offer = [...offers];
+        const firstIn = [];
+        const lastIn = [];
         let bool = 0;
-        for (const [l, td] of this.points.entries()) {
-            lastIn.push(this.points.lastIndexOf(td));
-            firstIn.push(this.points.indexOf(td));
+        for (const [l, td] of points.entries()) {
+            lastIn.push(points.lastIndexOf(td));
+            firstIn.push(points.indexOf(td));
 
-            if (this.points[l + 1] === td && l > bool) {
+            if (points[l + 1] === td && l > bool) {
                 let fragmentOffer = [];
-                offer = [...this.offers];
+                offer = [...offers];
                 fragmentOffer = offer.slice(firstIn[l], lastIn[l] + 1);
 
                 fragmentOffer.sort((a, b) => b - a);
