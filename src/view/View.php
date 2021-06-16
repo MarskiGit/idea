@@ -17,9 +17,9 @@ class View
     {
         $this->renderHTML('layout', '');
     }
-    public function statistics(array $pageParams): void
+    public function statistics(): void
     {
-        $this->renderHTML('statistics', 'page/', $pageParams);
+        $this->renderHTML('statistics', 'page/');
     }
     public function footer(): void
     {
@@ -68,11 +68,6 @@ class View
         $this->renderHTML('user', 'admin/', $areaParams);
     }
 
-    public function renderJSON(array $answer): void
-    {
-        echo json_encode($answer);
-        exit;
-    }
     private function renderHTML(string $name, string $path = '', array $pageParams = []): void
     {
         $path = DIR_TEMPLATE . $path . $name . '.php';

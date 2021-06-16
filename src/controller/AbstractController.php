@@ -18,15 +18,12 @@ abstract class AbstractController
     protected ?string $action_GET;
     protected array $requestParam;
     protected array $account;
-    private ?string $requestAJAX;
-    private bool $is_PHPInput;
     private bool $is_Get;
 
     public function __construct(Request $Request, View $View)
     {
         $this->Request = $Request;
         $this->View = $View;
-        $this->is_PHPInput = $this->Request->is_PHPInput();
         $this->is_Get = $this->Request->is_Get();
         $this->account = $this->Request->getParam_SESSION();
         $this->init();
@@ -38,7 +35,7 @@ abstract class AbstractController
     }
     private function init(): void
     {
-        if ($this->is_Get && !$this->is_PHPInput) {
+        if ($this->is_Get) {
             CsrfModel::setNewToken('Token');
             $this->action_GET = $this->Request->getParam_GET(DEFAULT_GET, self::DEFAULT_ACTION_HTML);
             $this->View->globalParams = [
@@ -47,21 +44,6 @@ abstract class AbstractController
                 'Token' => CsrfModel::viewToken('Token'),
             ];
             $this->renderPage();
-        }
-
-        if ($this->is_PHPInput) {
-            $this->requestParam = $this->Request->getParam_AJAX();
-            if (CsrfModel::verifyToken($this->requestParam['token'], 'Token')) {
-                $this->requestAJAX = $this->Request->getRequest_AJAX(DEFAULT_AJAX, self::DEFAULT_ACTION_AJAX);
-                $this->apiAjax();
-            } else {
-                $replay = [
-                    'api' => false,
-                    'type' => 'AUTHORIZATION',
-                    'title' => 'WRONG TOKEN',
-                ];
-                echo json_encode($replay);
-            }
         }
     }
     private function renderPage(): void
@@ -75,11 +57,6 @@ abstract class AbstractController
             $this->$method();
             exit;
         }
-    }
-    private function apiAjax(): void
-    {
-        $method = $this->existsMethod($this->requestAJAX, self::DEFAULT_ACTION_AJAX);
-        $this->$method();
     }
     private function existsMethod(string $checkMethod, string $default): string
     {

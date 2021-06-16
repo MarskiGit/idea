@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Idea\controller;
 
-use Idea\model\CsrfModel;
+
 use Idea\model\AccountModel;
 use Idea\model\AreaModel;
 use Idea\model\OfferOptionModel;
@@ -26,11 +26,7 @@ class PageController extends AbstractController
     }
     protected function statisticsIdea(): void
     {
-        $stat = new StatisticsModel();
-        $homeParams = [
-            'topTenUser' => $stat->getTopUser(),
-        ];
-        $this->View->statistics($homeParams);
+        $this->View->statistics();
     }
     protected function loginIdea(): void
     {

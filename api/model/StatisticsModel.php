@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Idea\model;
+namespace Api\model;
 
-use Idea\model\AbstractModel;
-use Idea\exception\IdeaException;
+use Api\model\AbstractModel;
+use Api\exception\ApiException;
 use PDO;
 use PDOException;
 
@@ -37,7 +37,7 @@ class StatisticsModel extends AbstractModel
             );
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new IdeaException('Error Statistics MODEL Get Top Ten');
+            throw new ApiException('Error Statistics MODEL Get Top Ten');
         }
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {

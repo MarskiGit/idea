@@ -13,7 +13,7 @@ const setingRequest = {
         redirect: 'follow',
         referrerPolicy: 'no-referrer',
     },
-    url: 'index.php',
+    url: 'api.php',
 };
 
 export default class AjaxRequest {
