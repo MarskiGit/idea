@@ -55,12 +55,10 @@ abstract class AbstractController
                 $this->requestAJAX = $this->Request->getRequest_AJAX(DEFAULT_AJAX, self::DEFAULT_ACTION_AJAX);
                 $this->apiAjax();
             } else {
-                $replay['data'] = [
-                    ['api' => false,],
-                    [
-                        'type' => 'AUTHORIZATION',
-                        'title' => 'WRONG TOKEN',
-                    ],
+                $replay = [
+                    'api' => false,
+                    'type' => 'AUTHORIZATION',
+                    'title' => 'WRONG TOKEN',
                 ];
                 echo json_encode($replay);
             }

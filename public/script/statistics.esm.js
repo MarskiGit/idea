@@ -42,6 +42,8 @@ class TopTen {
         this.#areaDOM = topTenObjects.area;
         this.#AjaxRequest = new AjaxRequest(topTenObjects.request);
         this.#quarterYear = quarterYear(new Date());
+        this.points = [67, 55, 45, 45, 45, 45, 40, 39, 39, 35, 35, 33, 20, 20, 11, 10, 10, 10, 10, 9, 8, 8, 6];
+        this.offers = [50, 40, 12, 10, 10, 29, 15, 23, 52, 20, 50, 21, 22, 0, 12, 0, 30, 2, 25, 11, 10, 5, 10];
     }
     init() {
         this.#requestParam.quarter = this.#quarterYear;
@@ -60,7 +62,8 @@ class TopTen {
             .getJson(this.#requestParam)
             .then((data) => {
                 const { user } = this.#AjaxRequest.getData(data);
-
+                this.userArray = user;
+                this.#winer();
                 this.#renderHTML(user);
             })
             .finally((document.body.style.cursor = 'default'));
@@ -69,9 +72,13 @@ class TopTen {
         const tbody = document.createElement('tbody');
         let i = 1;
         for (const td of user) {
+            // this.offers.push(td.offers * 1);
+            // this.points.push(td.points * 1);
+
             tbody.insertAdjacentHTML('beforeend', this.#renderTr(i, td));
             i++;
         }
+
         this.#addDOM(tbody);
     }
     #addDOM(tbody) {
@@ -106,6 +113,34 @@ class TopTen {
                 return {
                     class: '',
                 };
+        }
+    }
+    #winer() {
+        let winer = [...this.points];
+        let offer = [...this.offers];
+        console.log(offer.length, winer.length);
+        let firstIn = [];
+        let lastIn = [];
+
+        let bool = 0;
+        for (const [l, td] of this.points.entries()) {
+            lastIn.push(this.points.lastIndexOf(td));
+            firstIn.push(this.points.indexOf(td));
+
+            if (this.points[l + 1] === td && l > bool) {
+                let fragmentOffer = [];
+                offer = [...this.offers];
+                fragmentOffer = offer.slice(firstIn[l], lastIn[l] + 1);
+
+                fragmentOffer.sort((a, b) => b - a);
+
+                offer.splice(firstIn[l], fragmentOffer.length, ...fragmentOffer);
+
+                bool = fragmentOffer.length + l - 1;
+            }
+
+            console.log(`${l} punkty: ${td}, ofert ${offer[l]}`);
+            // offer = [...this.offers];
         }
     }
 }
