@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Idea\model;
 
 use Idea\database\DB;
-use Idea\exception\AjaxException;
+use Idea\exception\ApiException;
 use PDO;
 use PDOException;
 
@@ -37,7 +37,7 @@ abstract class AbstractModel
             $stmt->bindValue(':value', $value, PDO::PARAM_STR);
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Błąd ID Is There');
+            throw new ApiException('Błąd ID Is There');
         }
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if (is_array($row)) {

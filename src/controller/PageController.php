@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Idea\controller;
 
-
 use Idea\model\AccountModel;
 use Idea\model\AreaModel;
 use Idea\model\OfferOptionModel;
-use Idea\model\StatisticsModel;
+
 
 class PageController extends AbstractController
 {

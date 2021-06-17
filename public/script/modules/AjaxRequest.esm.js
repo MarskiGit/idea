@@ -1,22 +1,8 @@
 'use strict';
 import Exception from './Exception.esm.js';
 
-const setingRequest = {
-    ajax: {
-        method: 'POST',
-        mode: 'cors',
-        cache: 'no-store',
-        credentials: 'same-origin',
-        headers: {
-            'Content-Type': 'application/json; charset=utf-8',
-        },
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer',
-    },
-    url: 'api.php',
-};
-
 export default class AjaxRequest {
+    #setingRequest;
     #Exception;
     #status = {
         title: 'FILE NOT FOUND',
@@ -29,14 +15,27 @@ export default class AjaxRequest {
     #Token;
     constructor(request) {
         this.#getRequest = request;
+        this.#setingRequest = {
+            ajax: {
+                method: 'POST',
+                mode: 'cors',
+                cache: 'default',
+                credentials: 'same-origin',
+                headers: new Headers({
+                    'X-CSRF-TOKEN': `${this.getCookie('csrftoken')}`,
+                    'Content-Type': 'application/json; charset=utf-8',
+                }),
+                redirect: 'follow',
+                referrerPolicy: 'no-referrer',
+            },
+            url: 'api.php',
+        };
+        this.#seting = this.#setingRequest.ajax;
+        this.#url = this.#setingRequest.url;
         this.#Exception = new Exception();
-        this.#seting = setingRequest.ajax;
-        this.#url = setingRequest.url;
-        this.#Token = document.body.getAttribute('data-token');
     }
     async getJson(request) {
         request.request = this.#getRequest;
-        request.token = this.#Token;
         this.#seting.body = JSON.stringify(request);
 
         const response = await fetch(this.#url, this.#seting).catch(this.#handleError);
@@ -60,5 +59,20 @@ export default class AjaxRequest {
             this.#Exception.view(data);
             return {};
         }
+    }
+    getCookie(name) {
+        if (!document.cookie) {
+            return null;
+        }
+
+        const xsrfCookies = document.cookie
+            .split(';')
+            .map((c) => c.trim())
+            .filter((c) => c.startsWith(name + '-'));
+
+        if (xsrfCookies.length === 0) {
+            return null;
+        }
+        return decodeURIComponent(xsrfCookies[0].split('=')[1]);
     }
 }

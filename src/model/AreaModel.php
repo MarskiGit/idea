@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Idea\model;
 
 use Idea\model\AbstractModel;
-use Idea\exception\AjaxException;
+use Idea\exception\ApiException;
 use Idea\model\ModelInterface;
 use PDO;
 use PDOException;
@@ -19,7 +19,7 @@ class AreaModel extends AbstractModel implements ModelInterface
             $stmt = $this->DB->query("SELECT * FROM area ");
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Error Area MODEL Get');
+            throw new ApiException('Error Area MODEL Get');
         }
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -55,7 +55,7 @@ class AreaModel extends AbstractModel implements ModelInterface
             $stmt->bindParam(':area_name', $area_name, PDO::PARAM_STR);
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Error Area MODEL Create');
+            throw new ApiException('Error Area MODEL Create');
         }
         $replay = [
             'ok' => true,
@@ -72,7 +72,7 @@ class AreaModel extends AbstractModel implements ModelInterface
 
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Error Area MODEL Edit');
+            throw new ApiException('Error Area MODEL Edit');
         }
     }
     public function delete(array $requestParam): void
@@ -81,7 +81,7 @@ class AreaModel extends AbstractModel implements ModelInterface
         //     $query = "DELETE FROM notes WHERE id = $id LIMIT 1";
         //     $this->conn->exec($query);
         // } catch (PDOException $e) {
-        //     throw new AjaxException('Nie udało się usunąć notatki', 400, $e);
+        //     throw new ApiException('Nie udało się usunąć notatki', 400, $e);
         // }
     }
     public function search(array $requestParam): array
@@ -93,7 +93,7 @@ class AreaModel extends AbstractModel implements ModelInterface
             $stmt->bindValue(':name', $search, PDO::PARAM_STR);
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Error Model Area Search');
+            throw new ApiException('Error Model Area Search');
         }
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {

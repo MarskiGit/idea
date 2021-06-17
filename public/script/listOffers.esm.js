@@ -23,7 +23,6 @@ class ListOffers {
         this.#AjaxRequest = new AjaxRequest(domObjects.request);
     }
     init() {
-        this.#requestParam.token = this.#listContainer.getAttribute('data-token');
         this.#LastTuple = this.#findLastTuple();
         this.#sendRequest();
         this.#eventListeners();

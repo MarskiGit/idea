@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Api\model;
+namespace Idea\model;
 
-use Api\model\AbstractModel;
-use Api\exception\ApiException;
+use Idea\model\AbstractModel;
+use Idea\exception\ApiException;
 use PDO;
 use PDOException;
 

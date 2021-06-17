@@ -6,50 +6,66 @@ namespace Idea\controller;
 
 use Idea\view\Request;
 use Idea\view\View;
-use Idea\model\CsrfModel;
+use Idea\model\XCsrfModel;
 
 
 abstract class AbstractController
 {
     protected const DEFAULT_ACTION_HTML = 'statistics';
-    protected const DEFAULT_ACTION_AJAX = 'exit';
+    protected const DEFAULT_ACTION_API = 'exit';
     protected Request $Request;
     protected View $View;
     protected ?string $action_GET;
     protected array $requestParam;
     protected array $account;
-    private bool $is_Get;
+    private ?string $requestAJAX;
+
 
     public function __construct(Request $Request, View $View)
     {
         $this->Request = $Request;
         $this->View = $View;
-        $this->is_Get = $this->Request->is_Get();
-        $this->account = $this->Request->getParam_SESSION();
+        $this->account = $this->Request->getParam_SESSION('account');
         $this->init();
-    }
-    protected function token(): string
-    {
-        $rand_token = openssl_random_pseudo_bytes(16);
-        return bin2hex($rand_token);
     }
     private function init(): void
     {
-        if ($this->is_Get) {
-            CsrfModel::setNewToken('Token');
-            $this->action_GET = $this->Request->getParam_GET(DEFAULT_GET, self::DEFAULT_ACTION_HTML);
-            $this->View->globalParams = [
-                'action_GET' => $this->action_GET,
-                'account' => $this->account,
-                'Token' => CsrfModel::viewToken('Token'),
-            ];
-            $this->renderPage();
+        $requestMethod = $_SERVER["REQUEST_METHOD"];
+        switch ($requestMethod) {
+            case 'GET':
+                XCsrfModel::setNewToken('Token');
+                $this->action_GET = $this->Request->getParam_GET(DEFAULT_GET, self::DEFAULT_ACTION_HTML);
+                $this->View->globalParams = [
+                    'action_GET' => $this->action_GET,
+                    'account' => $this->account,
+                ];
+                $this->renderPage();
+                break;
+            case 'POST':
+                $this->requestParam = $this->Request->getParam_AJAX();
+                if (XCsrfModel::verifyToken($this->Request->getToken(), 'Token')) {
+                    $this->requestAJAX = $this->Request->getRequest_AJAX(DEFAULT_API, self::DEFAULT_ACTION_API);
+                    $this->apiAjax();
+                } else {
+                    $replay =
+                        [
+                            'api' => false,
+                            'type' => 'AUTHORIZATION',
+                            'title' => 'WRONG TOKEN',
+                        ];
+                    echo json_encode($replay);
+                }
+                break;
+
+            default:
+                header("Location:" . HTTP_SERVER);
+                break;
         }
     }
     private function renderPage(): void
     {
-        $method = $this->existsMethod($this->action_GET, self::DEFAULT_ACTION_HTML);
-        if ($method !== 'logout' . DEFAULT_SUFIX_APP) {
+        $method = $this->existsMethod($this->action_GET, self::DEFAULT_ACTION_HTML, DEFAULT_SUFIX_IDEA);
+        if ($method !== 'logout' . DEFAULT_SUFIX_IDEA) {
             $this->View->layout();
             $this->$method();
             $this->View->footer();
@@ -58,11 +74,16 @@ abstract class AbstractController
             exit;
         }
     }
-    private function existsMethod(string $checkMethod, string $default): string
+    private function apiAjax(): void
     {
-        $method  = $checkMethod . DEFAULT_SUFIX_APP;
+        $method = $this->existsMethod($this->requestAJAX, self::DEFAULT_ACTION_API, DEFAULT_SUFIX_API);
+        $this->$method();
+    }
+    private function existsMethod(string $checkMethod, string $default, string $sufix): string
+    {
+        $method  = $checkMethod . $sufix;
         if (!method_exists($this, $method)) {
-            $method  = $default . DEFAULT_SUFIX_APP;
+            $method  = $default . $sufix;
         }
         return $method;
     }

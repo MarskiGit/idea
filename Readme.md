@@ -1,16 +1,20 @@
-# Idea - employee suggestion program 
+# Idea - employee suggestion program
 
 ## Table of contents
-* [General info](#general-info)
-* [Technologies](#technologies)
-* [Conventions](#conventions)
-* [Status](#status)
-* [Demo](#demo)
-* [Contact](#contact)
+
+-   [General info](#general-info)
+-   [Technologies](#technologies)
+-   [Conventions](#conventions)
+-   [Status](#status)
+-   [Demo](#demo)
+-   [Contact](#contact)
 
 ## General info
+
 Idea management application.
 Design and copyright - Mariusz Kępski
+
+The website uses javascript technology not supported by FireFox and Safari.
 
 Application design policy management:
 
@@ -19,28 +23,33 @@ Application design policy management:
        * Useful and efficient.
        * Resistant.
        * Clear and legible.
-       * No unnecessary elements. 
- 
+       * No unnecessary elements.
+
 ## Conventions
+
     Names:
     - HTM, CSS, MySql - snake_case
     - JavaScript, PHP - camelCase
 
-    Json only data exchange. 
+    Json only data exchange.
 
 ## Technologies
- - HTML
- - CSS
- - Vanilla JavaScript
- - PHP
- - SQL
- - Data Base : MySQL
+
+-   HTML
+-   CSS
+-   Vanilla JavaScript
+-   PHP - MVC
+-   SQL
+-   Data Base : MySQL
 
 ## Status
-* Project is: in progress
+
+-   Project is: in progress
 
 ## Demo
-In the future.
+
+[@marskipl](https://marski.pl/app/idea/)
 
 ## Contact
+
 Created by [@marskipl](https://marski.pl/) - feel free to contact me!

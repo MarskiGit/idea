@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Idea\model;
 
 use Idea\model\AbstractModel;
-use Idea\exception\AjaxException;
+use Idea\exception\ApiException;
 use PDO;
 use PDOException;
 
@@ -17,7 +17,7 @@ class AccountModel extends AbstractModel implements ModelInterface
             $stmt = $this->DB->query("SELECT id_account, full_name, id_pass, rang, active FROM account ");
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Error Account MODEL Get');
+            throw new ApiException('Error Account MODEL Get');
         }
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -85,7 +85,7 @@ class AccountModel extends AbstractModel implements ModelInterface
             $stmt->bindParam(':account_password', $hash_2);
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Error Account MODEL Create');
+            throw new ApiException('Error Account MODEL Create');
         }
 
         $id = intval($this->DB->lastInsertId());
@@ -109,7 +109,7 @@ class AccountModel extends AbstractModel implements ModelInterface
             $stmt->bindValue(':active', $requestParam['active'], PDO::PARAM_INT);
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Error Account MODEL Edit');
+            throw new ApiException('Error Account MODEL Edit');
         }
     }
     public function delete(array $requestParam)
@@ -124,7 +124,7 @@ class AccountModel extends AbstractModel implements ModelInterface
             $stmt->bindValue(':name', $search, PDO::PARAM_STR);
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Error MODEL Search Account');
+            throw new ApiException('Error MODEL Search Account');
         }
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -160,7 +160,7 @@ class AccountModel extends AbstractModel implements ModelInterface
             $stmt->bindValue(':account_login', $requestParam['login'], PDO::PARAM_STR);
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Error Account MODEL Login');
+            throw new ApiException('Error Account MODEL Login');
         }
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);

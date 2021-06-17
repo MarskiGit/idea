@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Api\controller;
+namespace Idea\controller;
 
-use Api\model\ListOffersModel;
-use Api\model\AccountModel;
-use Api\model\AreaModel;
-use Api\model\FormOfferModel;
-use Api\model\StatisticsModel;
+use Idea\model\ListOffersModel;
+use Idea\model\AccountModel;
+use Idea\model\AreaModel;
+use Idea\model\FormOfferModel;
+use Idea\model\StatisticsModel;
 
 class ApiController extends AbstractController
 {

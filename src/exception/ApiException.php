@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Api\exception;
+namespace Idea\exception;
 
 use Exception;
 

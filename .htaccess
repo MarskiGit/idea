@@ -7,6 +7,10 @@ Options -Indexes
 # RewriteCond %{HTTP_REFERER} !^$
 # RewriteRule .*\.(jpe?g|gif|bmp|png)$ - [F]
 
+
+RewriteCond %{HTTP:Authorization} ^(.+)$
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
 <IfModule mod_headers.c>
     Header always set X-Content-Type-Options nosniff
     Header unset Expires

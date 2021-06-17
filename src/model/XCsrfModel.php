@@ -2,19 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Api\model;
+namespace Idea\model;
 
-class CsrfModel
+class XCsrfModel
 {
     public static function verifyToken(string $requestToken, string $page): bool
     {
+
         $token = self::getTokens($page);
         if (empty($token) || time() > (int) $token['expiry']) {
             self::removeTokens($page);
             return false;
-        }
-        $sessionConfirm = hash_equals($token['session'], $requestToken);
-        $cookieConfirm  = hash_equals($token['cookie'], self::getCookieToken($page));
+        };
+
+        $sessionConfirm = hash_equals($token['session'], $token['session']);
+        $cookieConfirm  = hash_equals($token['cookie'], $requestToken);
         if ($sessionConfirm && $cookieConfirm) {
             return true;
         }
