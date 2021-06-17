@@ -48,7 +48,7 @@ Application design policy management:
 
 ## Demo
 
-[@marskipl](https://marski.pl/app/idea/)
+https://marski.pl/app/idea/
 
 ## Contact
 
