@@ -12,6 +12,8 @@
 Idea management application.
 Design and copyright - Mariusz Kępski
 
+!! The website uses javascript technology not supported by FireFox and Safari.
+
 Application design policy management:
 
        * The code must be maintainable.
@@ -32,7 +34,7 @@ Application design policy management:
  - HTML
  - CSS
  - Vanilla JavaScript
- - PHP
+ - PHP MVC
  - SQL
  - Data Base : MySQL
 
@@ -40,7 +42,7 @@ Application design policy management:
 * Project is: in progress
 
 ## Demo
-In the future.
+https://marski.pl/app/idea
 
 ## Contact
 Created by [@marskipl](https://marski.pl/) - feel free to contact me!
