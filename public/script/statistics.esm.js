@@ -76,13 +76,15 @@ class TopTen {
 
         user.sort((a, b) => b.points - a.points);
         for (const td of user) {
-            pkt.push(td.points * 1);
+            pkt.push(parseInt(td.points));
         }
 
-        for (const [l, { points, full_name, offer }] of user.entries()) {
-            firstIn.push(pkt.indexOf(points * 1));
-            lastIn.push(pkt.lastIndexOf(points * 1));
-            if (pkt[l + 1] == points && l > bool) {
+        for (const [l, { points }] of user.entries()) {
+            let intPoint = parseInt(points);
+
+            firstIn.push(pkt.indexOf(intPoint));
+            lastIn.push(pkt.lastIndexOf(intPoint));
+            if (pkt[l + 1] === intPoint && l > bool) {
                 let fragmentOffer = [];
                 this.#topTen = [...user];
                 fragmentOffer = this.#topTen.slice(firstIn[l], lastIn[l] + 1);
@@ -137,8 +139,8 @@ class TopTen {
         }
     }
     #winer() {
-        const points = [67, 55, 45, 45, 45, 45, 40, 39, 39, 35, 35, 33, 20, 20, 11, 10, 10, 10, 10, 9, 8, 8, 6];
-        const offers = [50, 40, 12, 10, 10, 29, 15, 23, 52, 20, 50, 21, 22, 0, 12, 0, 30, 2, 25, 11, 10, 5, 10];
+        const points = [77.25, 45.75, 20.5, 45];
+        const offers = [3, 3, 1, 2];
 
         let offer = [...offers];
         const firstIn = [];

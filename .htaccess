@@ -28,7 +28,7 @@ RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
     Header unset X-Version
 </IfModule>
 
-<filesMatch ".(ico|pdf|flv|jpg|jpeg|png|gif|swf|woff2)$">
+<filesMatch ".(ico|pdf|flv|jpg|jpeg|png|gif|swf|woff2|svg)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
 </filesMatch>
 

@@ -2,17 +2,15 @@
 
 declare(strict_types=1);
 
-session_start();
-
 require_once('utils/debug.php');
 require_once('config/config.php');
 
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Origin: " . HTTP_SERVER . "");
 header("Access-Control-Allow-Methods: POST");
-header("Access-Control-Max-Age: 3600");
+header("Access-Control-Max-Age: 86400");
 
-
+session_start();
 
 spl_autoload_register(function (string $classNamespace) {
     $path = str_replace(['\\', 'Idea/'], ['/', ''], $classNamespace);

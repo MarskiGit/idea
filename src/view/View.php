@@ -15,6 +15,9 @@ class View
     }
     public function layout(): void
     {
+        header('Content-Type: text/html; charset=utf-8');
+        header("Cache-Control: cache, must-revalidate");
+
         $this->renderHTML('layout', '');
     }
     public function statistics(): void
@@ -75,6 +78,7 @@ class View
     }
     private function renderHTML(string $name, string $path = '', array $pageParams = []): void
     {
+
         $path = DIR_TEMPLATE . $path . $name . '.php';
         try {
             if (is_file($path)) {
