@@ -21,7 +21,6 @@ class View
     public function layout(): void
     {
         header('Content-Type: text/html; charset=utf-8');
-        header("Cache-Control: public, max-age=31536000, immutable");
         $this->viewHTML('layout', '');
     }
     public function statistics(): void

@@ -70,35 +70,6 @@ class TopTen {
         this.#usersDOM.usersList.appendChild(userTop);
         this.#areaDOM.areaList.appendChild(areaTop);
     }
-
-    #winer() {
-        const points = [77.25, 45.75, 20.5, 45];
-        const offers = [3, 3, 1, 2];
-
-        let offer = [...offers];
-        const firstIn = [];
-        const lastIn = [];
-        let bool = 0;
-        for (const [l, td] of points.entries()) {
-            lastIn.push(points.lastIndexOf(td));
-            firstIn.push(points.indexOf(td));
-
-            if (points[l + 1] === td && l > bool) {
-                let fragmentOffer = [];
-                offer = [...offers];
-                fragmentOffer = offer.slice(firstIn[l], lastIn[l] + 1);
-
-                fragmentOffer.sort((a, b) => b - a);
-
-                offer.splice(firstIn[l], fragmentOffer.length, ...fragmentOffer);
-
-                bool = fragmentOffer.length + l - 1;
-            }
-
-            console.log(`${l} punkty: ${td}, ofert ${offer[l]}`);
-            // offer = [...this.offers];
-        }
-    }
 }
 
 new Private(homeObjects);

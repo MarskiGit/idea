@@ -48,23 +48,22 @@ export default class SortingTopTen {
             }
         }
         if (this.#sortedResults.length !== 0) {
-            for (const td of this.#sortedResults) {
-                this.#sortedTbody.insertAdjacentHTML('beforeend', this.#renderTr(this.#iterator, td));
-                this.#iterator++;
-            }
+            this.#createHtml(this.#sortedResults);
         } else {
-            for (const td of this.#dataObject) {
-                this.#sortedTbody.insertAdjacentHTML('beforeend', this.#renderTr(this.#iterator, td));
-                this.#iterator++;
-            }
+            this.#createHtml(this.#dataObject);
+        }
+    }
+    #createHtml(dataObject) {
+        for (const td of dataObject) {
+            this.#sortedTbody.insertAdjacentHTML('beforeend', this.#renderTr(this.#iterator, td));
+            this.#iterator++;
         }
     }
     // wyzbaczenie miejsc egzekfo
     #renderTr(i, { full_name, offers, points }) {
-        let stat = i <= 3 ? this.#statusInformation(i) : '';
         return `
         <tr>
-        <td class="${stat.class}">${i}</td>
+        <td class="${this.#statusInformation(i).class}">${i}</td>
         <td>${full_name}</td>
         <td>${offers}</td>
         <td>${points}</td>
@@ -75,15 +74,15 @@ export default class SortingTopTen {
         switch (st) {
             case 1:
                 return {
-                    class: 'gold',
+                    class: 'win_top gold',
                 };
             case 2:
                 return {
-                    class: 'silver',
+                    class: 'win_top silver',
                 };
             case 3:
                 return {
-                    class: 'brown',
+                    class: 'win_top brown',
                 };
             default:
                 return {

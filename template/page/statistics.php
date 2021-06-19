@@ -1,10 +1,4 @@
 <script type="module" src="./public/script/statistics.esm.js"></script>
-<?php
-
-$counter = 1;
-
-// dump($pageParams); 
-?>
 <main data-page="main">
 
     <section class="statistics_container">
