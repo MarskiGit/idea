@@ -1,6 +1,7 @@
 'use strict';
 import AjaxRequest from './modules/AjaxRequest.esm.js';
 import { quarterYear } from './modules/seting.esm.js';
+import SortingTopTen from './modules/statistics/SortingTopTen.esm.js';
 
 const homeObjects = {
     message: document.querySelector('[data-js="private"]'),
@@ -31,13 +32,10 @@ class Private {
 
 class TopTen {
     #AjaxRequest;
-    #ajaxData;
     #requestParam = {};
     #usersDOM;
     #areaDOM;
-    #fragmentDOM = document.createDocumentFragment();
     #quarterYear;
-    #topTen;
     constructor(topTenObjects) {
         this.#usersDOM = topTenObjects.users;
         this.#areaDOM = topTenObjects.area;
@@ -61,83 +59,18 @@ class TopTen {
             .getJson(this.#requestParam)
             .then((data) => {
                 const { user } = this.#AjaxRequest.getData(data);
-                this.userArray = user;
-                this.#renderHTML(user);
+                const userTop = new SortingTopTen(user);
+                this.#addDOM(userTop.getSortedHTML());
+
+                // this.userArray = user;
+                // this.#renderHTML(user);
             })
             .finally((document.body.style.cursor = 'default'));
     };
-    #renderHTML(user) {
-        const tbody = document.createElement('tbody'),
-            firstIn = [],
-            lastIn = [];
-        let pkt = [],
-            bool = 0,
-            i = 1;
-
-        user.sort((a, b) => b.points - a.points);
-        for (const td of user) {
-            pkt.push(parseInt(td.points));
-        }
-
-        for (const [l, { points }] of user.entries()) {
-            let intPoint = parseInt(points);
-
-            firstIn.push(pkt.indexOf(intPoint));
-            lastIn.push(pkt.lastIndexOf(intPoint));
-            if (pkt[l + 1] === intPoint && l > bool) {
-                let fragmentOffer = [];
-                this.#topTen = [...user];
-                fragmentOffer = this.#topTen.slice(firstIn[l], lastIn[l] + 1);
-
-                fragmentOffer.sort((a, b) => b.offers - a.offers);
-
-                this.#topTen.splice(firstIn[l], fragmentOffer.length, ...fragmentOffer);
-
-                bool = fragmentOffer.length + l - 1;
-            }
-        }
-
-        for (const td of this.#topTen) {
-            tbody.insertAdjacentHTML('beforeend', this.#renderTr(i, td));
-            i++;
-        }
-
-        this.#addDOM(tbody);
-    }
     #addDOM(tbody) {
         this.#usersDOM.usersList.appendChild(tbody);
     }
-    #renderTr(i, { full_name, offers, points }) {
-        let stat = i <= 3 ? this.#statusInformation(i) : '';
-        return `
-        <tr>
-        <td class="${stat.class}">${i}</td>
-        <td>${full_name}</td>
-        <td>${offers}</td>
-        <td>${points}</td>
-        </tr>
-        `;
-    }
-    #statusInformation(st) {
-        switch (st) {
-            case 1:
-                return {
-                    class: 'gold',
-                };
-            case 2:
-                return {
-                    class: 'silver',
-                };
-            case 3:
-                return {
-                    class: 'brown',
-                };
-            default:
-                return {
-                    class: '',
-                };
-        }
-    }
+
     #winer() {
         const points = [77.25, 45.75, 20.5, 45];
         const offers = [3, 3, 1, 2];

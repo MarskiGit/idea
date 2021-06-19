@@ -5,7 +5,6 @@ declare(strict_types=1);
 require_once('utils/debug.php');
 require_once('config/config.php');
 
-header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Origin: " . HTTP_SERVER . "");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 86400");
@@ -25,18 +24,22 @@ use Idea\view\Request;
 
 try {
     $input = file_get_contents('php://input');
-    $request = [
-        'get' => $_GET,
-        'post' => $_POST,
-        'phpInput' => !empty($input) ? $input : '',
-        'server' => $_SERVER,
-        'token' => $_SERVER["HTTP_X_CSRF_TOKEN"] ?? '',
-    ];
+    if ($input !== false && !empty($input)) {
+        $request = [
+            'get' => $_GET,
+            'post' => $_POST,
+            'phpInput' =>  $input,
+            'server' => $_SERVER,
+            'token' => $_SERVER["HTTP_X_CSRF_TOKEN"] ?? '',
+        ];
 
-    $Request = new Request($request);
-    $View = new View();
+        $Request = new Request($request);
+        $View = new View();
 
-    (new ApiController($Request, $View));
+        (new ApiController($Request, $View));
+    } else {
+        header("Location:" . HTTP_SERVER);
+    }
 } catch (ApiException $e) {
     echo "<div class='exception align_center'><p>Błąd Api</p><p>" . $e->getMessage() . "</p><div class='exception_img'></div></div>";
 } catch (Throwable $e) {

@@ -6,7 +6,7 @@ class CountDown {
     #setInt;
     #url;
     #params;
-    constructor(adminObjects) {
+    constructor() {
         this.#viewCountdown = document.querySelector('[data-time="countdown"]');
         this.#url = new URL(`${localhost}`);
         this.#params = { action: 'logout' };

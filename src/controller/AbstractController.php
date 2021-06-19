@@ -45,7 +45,7 @@ abstract class AbstractController
                 $this->requestParam = $this->Request->getParam_AJAX();
                 if (XCsrfModel::verifyToken($this->Request->getToken(), 'Token')) {
                     $this->requestAJAX = $this->Request->getRequest_AJAX(DEFAULT_API, self::DEFAULT_ACTION_API);
-                    $this->apiAjax();
+                    $this->api();
                 } else {
                     $replay =
                         [
@@ -69,12 +69,12 @@ abstract class AbstractController
             $this->View->layout();
             $this->$method();
             $this->View->footer();
-        } else {
+        } else if ($method === 'logout' . DEFAULT_SUFIX_IDEA) {
             $this->$method();
             exit;
         }
     }
-    private function apiAjax(): void
+    private function api(): void
     {
         $method = $this->existsMethod($this->requestAJAX, self::DEFAULT_ACTION_API, DEFAULT_SUFIX_API);
         $this->$method();

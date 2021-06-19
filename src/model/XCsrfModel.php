@@ -22,7 +22,7 @@ class XCsrfModel
         }
         return false;
     }
-    public static function setNewToken(string $page, int $time = 86400): void
+    public static function setNewToken(string $page, int $time = 3600000): void
     {
         $rand_token = openssl_random_pseudo_bytes(16);
         $expiry = time() + $time;

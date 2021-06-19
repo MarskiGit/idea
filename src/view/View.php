@@ -13,70 +13,66 @@ class View
     public function __construct()
     {
     }
+    public function response_Api(array $answer): void
+    {
+        header("Content-Type: application/json; charset=UTF-8");
+        echo json_encode($answer);
+    }
     public function layout(): void
     {
         header('Content-Type: text/html; charset=utf-8');
-        header("Cache-Control: cache, must-revalidate");
-
-        $this->renderHTML('layout', '');
+        header("Cache-Control: public, max-age=31536000, immutable");
+        $this->viewHTML('layout', '');
     }
     public function statistics(): void
     {
-        $this->renderHTML('statistics', 'page/',);
+        $this->viewHTML('statistics', 'page/',);
     }
     public function footer(): void
     {
-        $this->renderHTML('footer', 'page/');
+        $this->viewHTML('footer', 'page/');
     }
     public function formOffer(array $pageParams): void
     {
-        $this->renderHTML('formOffer', 'page/', $pageParams);
+        $this->viewHTML('formOffer', 'page/', $pageParams);
     }
     public function listOffers(): void
     {
-        $this->renderHTML('listOffers', 'page/');
+        $this->viewHTML('listOffers', 'page/');
     }
     public function login(): void
     {
-        $this->renderHTML('login', 'page/');
+        $this->viewHTML('login', 'page/');
     }
-    public function admin(array $pageParams): void
+    public function panel_Admin(array $pageParams): void
     {
-        $this->renderHTML('admin', 'admin/', $pageParams);
+        $this->viewHTML('admin', 'admin/', $pageParams);
     }
-
-    public function mod(): void
+    public function home_Admin(): void
     {
-        $this->renderHTML('mod', 'mod/');
+        $this->viewHTML('home', 'admin/',);
     }
-
-    public function homeAdmin(): void
+    public function points_Admin(): void
     {
-        $this->renderHTML('home', 'admin/',);
+        $this->viewHTML('points', 'admin/',);
     }
-    public function pointsAdmin(): void
+    public function management_Admin(): void
     {
-        $this->renderHTML('points', 'admin/',);
+        $this->viewHTML('management', 'admin/',);
     }
-    public function managementAdmin(): void
+    public function area_Admin(array $pageParams): void
     {
-        $this->renderHTML('management', 'admin/',);
+        $this->viewHTML('area', 'admin/', $pageParams);
     }
-    public function areaAdmin(array $pageParams): void
+    public function user_Admin(array  $areaParams): void
     {
-        $this->renderHTML('area', 'admin/', $pageParams);
+        $this->viewHTML('user', 'admin/', $areaParams);
     }
-    public function userAdmin(array  $areaParams): void
+    public function panel_Mod(): void
     {
-        $this->renderHTML('user', 'admin/', $areaParams);
+        $this->viewHTML('mod', 'mod/');
     }
-
-    public function renderJSON(array $answer): void
-    {
-        echo json_encode($answer);
-        exit;
-    }
-    private function renderHTML(string $name, string $path = '', array $pageParams = []): void
+    private function viewHTML(string $name, string $path = '', array $pageParams = []): void
     {
 
         $path = DIR_TEMPLATE . $path . $name . '.php';

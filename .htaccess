@@ -12,6 +12,7 @@ RewriteCond %{HTTP:Authorization} ^(.+)$
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
 <IfModule mod_headers.c>
+ Header set X-UA-Compatible "IE=edge"
     Header always set X-Content-Type-Options nosniff
     Header unset Expires
     Header unset Host
@@ -26,15 +27,20 @@ RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
     Header unset X-Powered-By
     Header unset X-Runtime
     Header unset X-Version
-</IfModule>
+
+ <FilesMatch "\.(appcache|atom|bbaw|bmp|crx|css|cur|eot|f4[abpv]|flv|geojson|gif|htc|ic[os]|jpe?g|m?js|json(ld)?|m4[av]|manifest|map|markdown|md|mp4|oex|og[agv]|opus|otf|pdf|png|rdf|rss|safariextz|svgz?|swf|topojson|tt[cf]|txt|vcard|vcf|vtt|webapp|web[mp]|webmanifest|woff2?|xloc|xml|xpi)$">
+        Header unset X-UA-Compatible
+    </FilesMatch>
 
 <filesMatch ".(ico|pdf|flv|jpg|jpeg|png|gif|swf|woff2|svg)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
 </filesMatch>
 
 <filesMatch ".(css|js)$">
- Header set Cache-Control "max-age=86400, public"
+ Header set Cache-Control "max-age=31536000, public"
 </filesMatch>
+
+</IfModule>
 
 <IfModule mod_mime.c>
     AddType application/manifest+json   webmanifest

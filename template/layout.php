@@ -6,7 +6,6 @@
 
  <head>
      <meta charset="utf-8">
-     <meta http-equiv="X-Ua-Compatible" content="IE=edge">
      <title>IDEA | Program pomysłów</title>
      <meta http-equiv="Cache-control" content="public">
      <meta name="viewport" content="width=device-width, initial-scale=1">

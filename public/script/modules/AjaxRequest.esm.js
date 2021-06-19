@@ -22,7 +22,7 @@ export default class AjaxRequest {
                 cache: 'default',
                 credentials: 'same-origin',
                 headers: new Headers({
-                    'X-CSRF-TOKEN': `${this.getCookie('csrftoken')}`,
+                    'X-CSRF-TOKEN': `${this.getCookieToken('csrftoken')}`,
                     'Content-Type': 'application/json; charset=utf-8',
                 }),
                 redirect: 'follow',
@@ -60,7 +60,7 @@ export default class AjaxRequest {
             return {};
         }
     }
-    getCookie(name) {
+    getCookieToken(name) {
         if (!document.cookie) {
             return null;
         }

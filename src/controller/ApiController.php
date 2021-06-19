@@ -13,47 +13,47 @@ use Idea\model\StatisticsModel;
 class ApiController extends AbstractController
 {
 
-    protected function listOffersApi(): void
+    protected function listOffers_Api(): void
     {
         $ApiList = new ListOffersModel();
-        $this->View->renderJSON($ApiList->get($this->requestParam));
+        $this->View->response_Api($ApiList->get($this->requestParam));
     }
-    protected function creatorSearchApi(): void
+    protected function creatorSearch_Api(): void
     {
         $userSearch = new AccountModel();
-        $this->View->renderJSON($userSearch->search($this->requestParam));
+        $this->View->response_Api($userSearch->search($this->requestParam));
     }
-    protected function areaSearchApi(): void
+    protected function areaSearch_Api(): void
     {
         $areaSearch = new AreaModel();
-        $this->View->renderJSON($areaSearch->search($this->requestParam));
+        $this->View->response_Api($areaSearch->search($this->requestParam));
     }
-    protected function loginApi(): void
+    protected function login_Api(): void
     {
         $account = new AccountModel();
-        $this->View->renderJSON($account->login($this->requestParam));
+        $this->View->response_Api($account->login($this->requestParam));
     }
-    protected function addUserApi(): void
+    protected function addUser_Api(): void
     {
         $account = new AccountModel();
-        $this->View->renderJSON($account->create($this->requestParam));
+        $this->View->response_Api($account->create($this->requestParam));
     }
-    protected function formOfferApi(): void
+    protected function formOffer_Api(): void
     {
         $Api = new FormOfferModel();
-        $this->View->renderJSON($Api->create($this->requestParam));
+        $this->View->response_Api($Api->create($this->requestParam));
     }
-    protected function addAreaApi(): void
+    protected function addArea_Api(): void
     {
         $area = new AreaModel();
-        $this->View->renderJSON($area->create($this->requestParam));
+        $this->View->response_Api($area->create($this->requestParam));
     }
-    protected function topTenApi(): void
+    protected function topTen_Api(): void
     {
         $stat = new StatisticsModel();
-        $this->View->renderJSON($stat->getTen($this->requestParam['quarter']));
+        $this->View->response_Api($stat->getTen($this->requestParam['quarter']));
     }
-    protected function exitApi(): void
+    protected function exit_Api(): void
     {
         exit();
     }

@@ -11,7 +11,7 @@ use Idea\model\OfferOptionModel;
 
 class PageController extends AbstractController
 {
-    protected function formOfferIdea(): void
+    protected function formOffer_Idea(): void
     {
         $offerRating = new OfferOptionModel();
         $offerParams = [
@@ -19,71 +19,77 @@ class PageController extends AbstractController
         ];
         $this->View->formOffer($offerParams);
     }
-    protected function listOffersIdea(): void
+    protected function listOffers_Idea(): void
     {
         $this->View->listOffers();
     }
-    protected function statisticsIdea(): void
+    protected function statistics_Idea(): void
     {
         $this->View->statistics();
     }
-    protected function loginIdea(): void
+    protected function login_Idea(): void
     {
         $this->View->login();
     }
-    protected function logoutIdea(): void
+    protected function logout_Idea(): void
     {
         AccountModel::logout();
-        header("location: index.php");
+        header("location:" . HTTP_SERVER);
     }
-    protected function adminIdea(): void
-    {
-        $admin_GET = $this->Request->getParam_GET('admin', 'home');
-        $adminParams = [
-            'actve_link' => $admin_GET,
-        ];
 
+    // Sekcja administratora
+    protected function admin_Idea(): void
+    {
         echo '<main data-page="main">';
-        $this->View->admin($adminParams);
         if (intval($this->account['rang']) === 2) {
+
+            $admin_GET = $this->Request->getParam_GET('admin', 'home');
+            $adminParams = [
+                'actve_link' => $admin_GET,
+            ];
+            $this->View->panel_Admin($adminParams);
 
             switch ($admin_GET) {
                 case 'home':
-                    $this->View->homeAdmin();
+                    $this->View->home_Admin();
                     break;
                 case 'points':
-                    $this->View->pointsAdmin();
+                    $this->View->points_Admin();
                     break;
                 case 'management':
-                    $this->View->managementAdmin();
+                    $this->View->management_Admin();
                     break;
                 case 'area':
-                    $this->area();
+                    $this->area_Admin();
                     break;
                 case 'user':
-                    $this->user();
+                    $this->user_Admin();
                     break;
                 default:
-                    $this->View->homeAdmin();
+                    $this->View->home_Admin();
                     break;
             }
+        } else {
+            echo 'Brak dostępu';
         }
         echo '</main>';
     }
-    private function area(): void
+    private function area_Admin(): void
     {
         $area = new AreaModel();
         $areaParams = [
             'areaList' => $area->get(),
         ];
-        $this->View->areaAdmin($areaParams);
+        $this->View->area_Admin($areaParams);
     }
-    private function user(): void
+    private function user_Admin(): void
     {
         $user = new AccountModel();
-        $areaParams = [
+        $userParams = [
             'userList' => $user->get(),
         ];
-        $this->View->userAdmin($areaParams);
+        $this->View->user_Admin($userParams);
     }
 }
+
+// Sekcja Moderatora
