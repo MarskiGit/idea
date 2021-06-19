@@ -15,7 +15,7 @@ const topTenObjects = {
     },
     area: {
         areaQuarter: document.querySelector('[data-toparea="area_quarter"]'),
-        areasList: document.querySelector('[data-toparea="areas_list"]'),
+        areaList: document.querySelector('[data-toparea="areas_list"]'),
     },
 };
 
@@ -58,17 +58,17 @@ class TopTen {
         this.#AjaxRequest
             .getJson(this.#requestParam)
             .then((data) => {
-                const { user } = this.#AjaxRequest.getData(data);
+                const { user, area } = this.#AjaxRequest.getData(data);
                 const userTop = new SortingTopTen(user);
-                this.#addDOM(userTop.getSortedHTML());
+                const areaTop = new SortingTopTen(area);
 
-                // this.userArray = user;
-                // this.#renderHTML(user);
+                this.#addDOM(userTop.getSortedHTML(), areaTop.getSortedHTML());
             })
             .finally((document.body.style.cursor = 'default'));
     };
-    #addDOM(tbody) {
-        this.#usersDOM.usersList.appendChild(tbody);
+    #addDOM(userTop, areaTop) {
+        this.#usersDOM.usersList.appendChild(userTop);
+        this.#areaDOM.areaList.appendChild(areaTop);
     }
 
     #winer() {

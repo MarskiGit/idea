@@ -6,7 +6,7 @@ export default class SortingTopTen {
     #lastIn = [];
     #onlyPoints = [];
     #pointsToSort;
-    #sortedResults;
+    #sortedResults = [];
     #nextToSort = 0;
     #iterator = 1;
     constructor(dataAjax) {
@@ -33,8 +33,10 @@ export default class SortingTopTen {
 
             this.#firstIn.push(this.#onlyPoints.indexOf(intPoint));
             this.#lastIn.push(this.#onlyPoints.lastIndexOf(intPoint));
+
             if (this.#onlyPoints[l + 1] === intPoint && l > this.#nextToSort) {
                 this.#sortedResults = [...this.#dataObject];
+
                 this.#pointsToSort = [];
                 this.#pointsToSort = this.#sortedResults.slice(this.#firstIn[l], this.#lastIn[l] + 1);
 
@@ -45,9 +47,16 @@ export default class SortingTopTen {
                 this.#nextToSort = this.#pointsToSort.length + l - 1;
             }
         }
-        for (const td of this.#sortedResults) {
-            this.#sortedTbody.insertAdjacentHTML('beforeend', this.#renderTr(this.#iterator, td));
-            this.#iterator++;
+        if (this.#sortedResults.length !== 0) {
+            for (const td of this.#sortedResults) {
+                this.#sortedTbody.insertAdjacentHTML('beforeend', this.#renderTr(this.#iterator, td));
+                this.#iterator++;
+            }
+        } else {
+            for (const td of this.#dataObject) {
+                this.#sortedTbody.insertAdjacentHTML('beforeend', this.#renderTr(this.#iterator, td));
+                this.#iterator++;
+            }
         }
     }
     // wyzbaczenie miejsc egzekfo

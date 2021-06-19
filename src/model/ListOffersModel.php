@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Idea\model;
 
 use Idea\model\AbstractModel;
-use Idea\exception\AjaxException;
+use Idea\exception\ApiException;
 use PDO;
 use PDOException;
-
 
 class ListOffersModel extends AbstractModel
 {
@@ -19,7 +18,7 @@ class ListOffersModel extends AbstractModel
             $stmt = $this->DB->query("SELECT * FROM view_idea WHERE id_idea < " . $this->limitTuples((int)$requestParam['last_tuple']) . " ORDER BY id_idea DESC LIMIT 15 ");
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Error ListOffers MODEL Get');
+            throw new ApiException('Error ListOffers MODEL Get');
         }
 
         if ($stmt->rowCount() > 0) {
@@ -42,7 +41,7 @@ class ListOffersModel extends AbstractModel
             $stmt = $this->DB->query("SELECT full_name FROM account WHERE id_account IN (" . $string_id . ")");
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Error ListOffers MODEL Get Name Idea');
+            throw new ApiException('Error ListOffers MODEL Get Name Idea');
         }
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -60,7 +59,7 @@ class ListOffersModel extends AbstractModel
             $stmt->execute();
             return intval($stmt->fetchColumn());
         } catch (PDOException $e) {
-            throw new AjaxException('Error ListOffers MODEL Get Number Tuples');
+            throw new ApiException('Error ListOffers MODEL Get Number Tuples');
         }
     }
     private function limitTuples(int $num): int

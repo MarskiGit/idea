@@ -60,8 +60,8 @@ $counter = 1;
                     <tr>
                         <th>Miejsce</th>
                         <th>Obszar</th>
-                        <th>Zdobyte punkty</th>
                         <th>Liczba propozycji</th>
+                        <th>Zdobyte punkty</th>
                     </tr>
                 </thead>
             </table>

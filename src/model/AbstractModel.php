@@ -9,7 +9,6 @@ use Idea\exception\ApiException;
 use PDO;
 use PDOException;
 
-
 abstract class AbstractModel
 {
     protected ?PDO $DB;
@@ -74,7 +73,7 @@ abstract class AbstractModel
         $data = htmlspecialchars($data);
         return $data;
     }
-    protected function arraySQL(array $insData): string
+    protected function jsonSQL(array $insData): string
     {
         return json_encode($insData);
     }

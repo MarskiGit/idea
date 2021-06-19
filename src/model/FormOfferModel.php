@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Idea\model;
 
 use Idea\model\AbstractModel;
-use Idea\exception\AjaxException;
+use Idea\exception\ApiException;
 use PDO;
 use PDOException;
-// token tymczasowe rozwiązanei identyfikujące pomysł. dopuki brak procedury z tranzakcja
+
 class FormOfferModel extends AbstractModel
 {
     public function create(array $requestParam): array
     {
-        $array_users = $this->arraySQL($requestParam['array_users']);
-        $others_value = $this->arraySQL($requestParam['saving']);
+        $array_users = $this->jsonSQL($requestParam['array_users']);
+        $others_value = $this->jsonSQL($requestParam['saving']);
         $after_value = $this->escape($requestParam['after_value']);
         $before_value = $this->escape($requestParam['before_value']);
 
@@ -33,11 +33,11 @@ class FormOfferModel extends AbstractModel
                 $this->DB->commit();
             } catch (PDOException $e) {
                 $this->DB->rollback();
-                throw new AjaxException('Error FormOffer MODEL Create');
+                throw new ApiException('Error FormOffer MODEL Create');
             }
             $stmt->closeCursor();
         } catch (PDOException $e) {
-            throw new AjaxException('Error FormOffer MODEL Create Idea');
+            throw new ApiException('Error FormOffer MODEL Create Idea');
         }
         if ($id) {
             $userIdea = $this->userIdea($id, $requestParam);
@@ -79,7 +79,7 @@ class FormOfferModel extends AbstractModel
             }
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new AjaxException('Error FormOffer MODEL User Idea');
+            throw new ApiException('Error FormOffer MODEL User Idea');
         }
         return true;
     }
@@ -91,7 +91,7 @@ class FormOfferModel extends AbstractModel
             $stmt->execute();
         } catch (PDOException $e) {
             dump($e);
-            throw new AjaxException('Error FormOffer MODEL Create Date');
+            throw new ApiException('Error FormOffer MODEL Create Date');
         }
     }
 }
