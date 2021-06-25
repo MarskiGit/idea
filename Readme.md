@@ -14,7 +14,7 @@
 Idea management application.
 Design and copyright - Mariusz Kępski
 
-The website uses javascript technology not supported by FireFox and Safari.
+!! The website uses javascript technology not supported by FireFox and Safari.
 
 Application design policy management:
 
