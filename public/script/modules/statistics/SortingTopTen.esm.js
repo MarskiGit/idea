@@ -1,55 +1,51 @@
 'use strict';
 export default class SortingTopTen {
-    #sortedList;
-    #dataObject;
-    #firstIn = [];
-    #lastIn = [];
+    #mixed;
     #onlyPoints = [];
-    #pointsToSort;
-    #sortedResults = [];
-    #nextToSort = 0;
+    #firstIndex = [];
+    #lastIndex = [];
+    #score = [];
+    #sortedScore;
+    #nextSortedStep = 0;
     constructor(data) {
-        this.#dataObject = data;
+        this.#mixed = data;
         this.#init();
     }
-    get = () => this.#sortedList;
+    get = () => (this.#score.length !== 0 ? this.#score : this.#mixed);
     #init() {
         this.#firstSorting();
         this.#selectPoints();
         this.#sorting();
     }
     #firstSorting() {
-        this.#dataObject.sort((a, b) => b.points - a.points);
+        this.#mixed.sort((a, b) => b.points - a.points);
     }
     #selectPoints() {
-        for (const td of this.#dataObject) {
-            this.#onlyPoints.push(parseInt(td.points));
+        for (const td of this.#mixed) {
+            this.#onlyPoints.push(Number(td.points));
         }
     }
     #sorting() {
-        for (const [l, { points }] of this.#dataObject.entries()) {
-            let intPoint = parseInt(points);
+        console.time('Sorted');
+        for (const [mixIndex, { points }] of this.#mixed.entries()) {
+            let intPoint = Number(points);
 
-            this.#firstIn.push(this.#onlyPoints.indexOf(intPoint));
-            this.#lastIn.push(this.#onlyPoints.lastIndexOf(intPoint));
+            this.#firstIndex.push(this.#onlyPoints.indexOf(intPoint));
+            this.#lastIndex.push(this.#onlyPoints.lastIndexOf(intPoint));
 
-            if (this.#onlyPoints[l + 1] === intPoint && l > this.#nextToSort) {
-                this.#sortedResults = [...this.#dataObject];
+            if (this.#onlyPoints[mixIndex + 1] === intPoint && mixIndex > this.#nextSortedStep) {
+                this.#score = [...this.#mixed];
 
-                this.#pointsToSort = [];
-                this.#pointsToSort = this.#sortedResults.slice(this.#firstIn[l], this.#lastIn[l] + 1);
+                this.#sortedScore = [];
+                this.#sortedScore = this.#score.slice(this.#firstIndex[mixIndex], this.#lastIndex[mixIndex] + 1);
 
-                this.#pointsToSort.sort((a, b) => b.offers - a.offers);
+                this.#sortedScore.sort((a, b) => b.offers - a.offers);
 
-                this.#sortedResults.splice(this.#firstIn[l], this.#pointsToSort.length, ...this.#pointsToSort);
+                this.#score.splice(this.#firstIndex[mixIndex], this.#sortedScore.length, ...this.#sortedScore);
 
-                this.#nextToSort = this.#pointsToSort.length + l - 1;
+                this.#nextSortedStep = this.#sortedScore.length + mixIndex - 1;
             }
         }
-        if (this.#sortedResults.length !== 0) {
-            this.#sortedList = this.#sortedResults;
-        } else {
-            this.#sortedList = this.#dataObject;
-        }
+        console.timeEnd('Sorted');
     }
 }

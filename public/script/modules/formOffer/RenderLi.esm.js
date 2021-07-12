@@ -5,7 +5,7 @@ export default class RenderLi {
     #name;
     #status;
     constructor({ id_account, id_area, full_name, area_name }) {
-        this.#status = parseInt(id_account) || parseInt(id_area) ? 'creator_li' : '';
+        this.#status = Number(id_account) || Number(id_area) ? 'creator_li' : '';
         this.#name = full_name || area_name;
         this.#id = id_account || id_area;
         this.#init();

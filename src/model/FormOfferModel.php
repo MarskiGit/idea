@@ -14,18 +14,17 @@ class FormOfferModel extends AbstractModel
     public function create(array $requestParam): array
     {
         $array_users = $this->jsonSQL($requestParam['array_users']);
-        $others_value = $this->jsonSQL($requestParam['saving']);
+        $rating_user = $this->jsonSQL($requestParam['rating_user']);
         $after_value = $this->escape($requestParam['after_value']);
         $before_value = $this->escape($requestParam['before_value']);
 
         try {
-            $stmt = $this->DB->prepare('INSERT INTO idea (id_area, after_value, before_value, array_users, others_value, pkt_user ) VALUES (:id_area, :after_value, :before_value, :array_users, :others_value, :pkt_user)');
-            $stmt->bindValue(':id_area', (int)$requestParam['id_area'], PDO::PARAM_INT);
+            $stmt = $this->DB->prepare('INSERT INTO idea (id_area, after_value, before_value, array_users,  rating_user ) VALUES (:id_area, :after_value, :before_value, :array_users, :rating_user)');
+            $stmt->bindValue(':id_area', (int)$requestParam['id_area'][0], PDO::PARAM_INT);
             $stmt->bindValue(':after_value', $after_value, PDO::PARAM_STR);
             $stmt->bindValue(':before_value', $before_value, PDO::PARAM_STR);
             $stmt->bindValue(':array_users', $array_users, PDO::PARAM_STR);
-            $stmt->bindValue(':others_value', $others_value, PDO::PARAM_STR);
-            $stmt->bindValue(':pkt_user', (int)$requestParam['pkt_user'], PDO::PARAM_INT);
+            $stmt->bindValue(':rating_user', $rating_user, PDO::PARAM_STR);
             try {
                 $this->DB->beginTransaction();
                 $stmt->execute();

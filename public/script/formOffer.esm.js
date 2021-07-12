@@ -83,29 +83,15 @@ class FormOffer {
             this.#FormHandling.showMessage('Uzupełnij wszystkie pola.');
         }
     };
-    #clearForm() {
-        this.#FormHandling.clear(['INPUT', 'TEXTAREA']);
-
-        this.#CountCharacters.clear();
-        this.#Rating.setDefault();
-
-        this.#UserSearch.clear();
-        this.#AreaSearch.clear();
-        this.#UserChosen.clear();
-        this.#AreaChosen.clear();
-    }
+    #emptyForm = () => !!(this.#FormHandling.emptyFields() && this.#UserChosen.check() && this.#AreaChosen.check());
     #getParamForm() {
         const { before, after } = this.#FormHandling.getValue();
         this.#requestParam.before_value = before;
         this.#requestParam.after_value = after;
         this.#requestParam.array_users = this.#UserChosen.get();
-        this.#requestParam.id_area = this.#AreaChosen.get()[0];
-        this.#requestParam.pkt_user = this.#Rating.get();
-        this.#requestParam.saving = this.#Rating.getValueString();
+        this.#requestParam.id_area = this.#AreaChosen.get();
+        this.#requestParam.rating_user = this.#Rating.get();
 
-        // rating objekt lub tablica z wynikami do bazy danych "asocjacyjna "
-
-        console.log(this.#requestParam);
         this.#sendRequest();
     }
     #sendRequest() {
@@ -123,6 +109,16 @@ class FormOffer {
             })
             .finally((document.body.style.cursor = 'default'));
     }
-    #emptyForm = () => !!(this.#FormHandling.emptyFields() && this.#UserChosen.check() && this.#AreaChosen.check());
+    #clearForm() {
+        this.#FormHandling.clear(['INPUT', 'TEXTAREA']);
+
+        this.#CountCharacters.clear();
+        this.#Rating.clear();
+
+        this.#UserSearch.clear();
+        this.#AreaSearch.clear();
+        this.#UserChosen.clear();
+        this.#AreaChosen.clear();
+    }
 }
 new FormOffer(formDOM, searchDOM).init();

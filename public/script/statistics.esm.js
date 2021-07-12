@@ -3,10 +3,6 @@ import AjaxRequest from './modules/AjaxRequest.esm.js';
 import { quarterYear } from './modules/seting.esm.js';
 import TbodyTopTen from './modules/statistics/TbodyTopTen.esm.js';
 
-const pageDOM = {
-    message: document.querySelector('[data-js="private"]'),
-};
-
 const statisticsDOM = {
     request: 'topTen',
     users: {
@@ -18,18 +14,6 @@ const statisticsDOM = {
         list: document.querySelector('[data-statistics="areas_list"]'),
     },
 };
-
-class Private {
-    #message;
-
-    constructor(pageDOM) {
-        this.#message = pageDOM.message;
-        this.#hide();
-    }
-    #hide() {
-        this.#message.style.display = 'none';
-    }
-}
 
 class TopTen {
     #AjaxRequest;
@@ -116,5 +100,4 @@ class TopTen {
     }
 }
 
-new Private(pageDOM);
 new TopTen(statisticsDOM).init();

@@ -6,7 +6,7 @@ export default class Rating {
     #allOptions;
     constructor(viewPoints) {
         this.#viewPoints = viewPoints;
-        this.#defaultPoint = this.get();
+        this.#defaultPoint = this.#getPoint();
     }
     init(selectCollection) {
         this.#selectCollection = selectCollection;
@@ -19,17 +19,23 @@ export default class Rating {
             })
         );
     }
-    get = () => parseInt(this.#viewPoints.textContent);
-    getValueString = () => this.#allOptions.filter(this.#filterString);
-    setDefault() {
+    get() {
+        const rating = [];
+        rating.push('point', this.#getPoint());
+        rating.push('saving', ...this.#getValueString());
+        return rating;
+    }
+    clear() {
         this.#selectCollection.forEach((op) => (op.selectedIndex = 0));
         this.#viewPoints.innerText = this.#defaultPoint;
     }
-    #filterString = (value) => {
+    #getPoint = () => this.#viewPoints.textContent;
+    #getValueString = () => this.#allOptions.filter(this.#filterString);
+    #filterString(value) {
         if (value.toLowerCase() === 'tak' || value.toLowerCase() === 'nie') return value;
-    };
+    }
     #getAllSelectedValue() {
-        this.#allOptions = this.#selectCollection.map((select) => select.value);
+        this.#allOptions = this.#selectCollection.map((select) => select.value.trim());
     }
     #displayPoints() {
         this.#viewPoints.innerText = `${this.#sumPoints()}`;
@@ -37,7 +43,7 @@ export default class Rating {
     #sumPoints = () =>
         this.#allOptions
             .map(this.#filterNumber)
-            .filter((el) => parseInt(el))
+            .filter((el) => Number(el))
             .reduce((a, b) => a + b);
     #filterNumber = (value) => Number(value.replace(/\D/g, ''));
 }

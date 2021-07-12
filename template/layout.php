@@ -87,3 +87,9 @@
                  <?php break; ?>
          <?php endswitch; ?>
      </nav>
+
+     <div data-js="private" class="no_js">
+         <p>Twoja przeglądarka nie wspiera w pełni technologi używanej na stronie.</p>
+         <p>Spróbuj w Microsoft Edge lub Google Chrome.</p>
+         <p>Jeżeli jednak to poczekaj na załadowanie modółow.</p>
+     </div>

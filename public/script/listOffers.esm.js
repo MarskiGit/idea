@@ -60,14 +60,22 @@ class ListOffers {
         }
     }
     #displayList() {
+        console.time('Render Idea');
+        console.group('For of');
         for (const idea of this.#ajaxData) {
-            this.#tupleNumbers.push(parseInt(idea.id_idea, 10));
+            this.#tupleNumbers.push(Number(idea.id_idea));
 
             this.#fragmentList.appendChild(new Idea(idea).get());
+
+            console.count('Idea');
         }
+        console.groupEnd();
+        console.timeLog('Render Idea');
+
         this.#countRender++;
         this.#checkTuple();
         this.#statisticsView();
+        console.timeEnd('Render Idea');
     }
     #checkTuple() {
         const { end, last } = this.#LastTuple();

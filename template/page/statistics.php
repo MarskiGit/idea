@@ -1,14 +1,5 @@
 <script type="module" src="./public/script/statistics.esm.js"></script>
 <main data-page="main">
-
-    <section class="statistics_container">
-        <div data-js="private">
-            <p>Twoja przeglądarka nie wspiera w pełni technologi używanej na stronie.</p>
-            <p>Spróbuj w Microsoft Edge lub Google Chrome.</p>
-            <p>Jeżeli jednak to poczekaj na załadowanie modółow.</p>
-        </div>
-    </section>
-
     <h1>Statystyki</h1>
     <section class="statistics_container wrap_header">
         <h2>Top 10</h2>
