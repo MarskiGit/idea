@@ -94,10 +94,9 @@ class TopTen {
     #displayTopTen(data, view) {
         const viewList = view.list;
         if (data.length > 0) {
-            if (viewList.tBodies.length == 0) {
-                viewList.appendChild(new TbodyTopTen(data).get());
-            }
-        } else if (viewList.tBodies.length > 0) {
+            this.#cleanTable(viewList);
+            viewList.appendChild(new TbodyTopTen(data).get());
+        } else {
             this.#cleanTable(viewList);
         }
         this.#changeOrnament(view.quarter);
@@ -110,8 +109,10 @@ class TopTen {
         [...quarter.children][this.#flagQuarter - 1].classList.add('ornament_line');
     }
     #cleanTable(viewList) {
-        const tbody = viewList.tBodies[0];
-        tbody.parentNode.removeChild(tbody);
+        if (viewList.tBodies.length > 0) {
+            const tbody = viewList.tBodies[0];
+            tbody.parentNode.removeChild(tbody);
+        }
     }
 }
 

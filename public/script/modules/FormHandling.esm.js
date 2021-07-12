@@ -16,7 +16,7 @@ export default class FormHandling {
         this.#errorMessage.classList.add('span_error');
         setTimeout(() => this.#errorMessage.classList.remove('span_error'), 2000);
     }
-    clearField(array) {
+    clear(array) {
         this.getInputs(array).forEach((e) => (e.value = ''));
     }
     getValue() {

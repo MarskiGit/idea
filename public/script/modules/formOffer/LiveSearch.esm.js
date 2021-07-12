@@ -30,20 +30,20 @@ export default class LiveSearch {
     #validationSign = (char) => new RegExp(/[^A-Z-ŚŁŻŹĆa-z-ęóąśłżźćń\s0-9]/gi).test(char);
     #badSign(flag) {
         if (flag) {
-            this.#displayMessage('Tylko znaki alfabetu lub cyfry', 'red');
+            this.#showMessage('Tylko znaki alfabetu lub cyfry', 'red');
             this.#inputSearch.classList.add('error_search');
         } else {
-            this.#displayMessage('Wyszukaj i kliknij:');
+            this.#showMessage('Wyszukaj i kliknij:');
             this.#inputSearch.classList.remove('error_search');
         }
     }
-    #displayMessage(text, color = '') {
+    #showMessage(text, color = '') {
         this.#inputSearch.labels[0].style.color = color;
         this.#inputSearch.labels[0].textContent = text;
     }
     #search(target) {
         this.#badSign(false);
-        target.value.length >= 3 ? this.#whatValueSearch(target) : this.closeSearchResult();
+        target.value.length >= 3 ? this.#whatValueSearch(target) : this.clear();
     }
     #whatValueSearch(target) {
         let valueSearch = target.getAttribute('data-search');

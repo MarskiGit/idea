@@ -30,7 +30,7 @@ export default class FormAreaHandling {
             .then((data) => {
                 const { ok, title } = this.#AjaxRequest.getData(data);
                 if (ok) {
-                    this.#FormHandling.clearField();
+                    this.#FormHandling.clear();
                     this.#FormHandling.showMessage(`${title}`);
                 } else {
                     this.#FormHandling.showMessage(`${title}`);

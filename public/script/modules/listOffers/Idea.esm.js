@@ -82,7 +82,7 @@ export default class Idea {
         `;
     }
     #modComment = () => (this.#mod_comment ? `<span class="th"><em>Komentarz Moderatora</em></span> <p class="td idea_text"> ${this.#mod_comment} </p>` : '');
-    #setInfo = (text, data) => (data ? `<span class="th">${text}: <span class="font_number">${data * 1 ? data + 'pkt' : data}</span></span>` : '');
+    #setInfo = (text, data) => (data ? `<span class="th">${text}: <span class="font_number">${data * 1 ? parseFloat(data).toFixed(2) + 'pkt' : data}</span></span>` : '');
     #statusInformation(st) {
         switch (st) {
             case 0:

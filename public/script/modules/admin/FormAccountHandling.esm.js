@@ -36,7 +36,7 @@ export default class FormAccountHandling {
                 const { ok, title } = this.#AjaxRequest.getData(data);
                 console.log(ok, title);
                 if (ok) {
-                    this.#FormHandling.clearField();
+                    this.#FormHandling.clear();
                     this.#FormHandling.showMessage(`${title}`);
                 } else {
                     this.#FormHandling.showMessage(`${title}`);

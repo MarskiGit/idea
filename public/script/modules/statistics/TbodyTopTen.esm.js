@@ -25,7 +25,7 @@ export default class TbodyTopTen {
         <td class="${this.#checkWinner(i).class}">${i}</td>
         <td>${full_name}</td>
         <td>${offers}</td>
-        <td>${points}</td> 
+        <td>${parseFloat(points).toFixed(2)}</td> 
         </tr>
         `;
     }
