@@ -1,37 +1,37 @@
 'use strict';
 import { localhost } from './modules/seting.esm.js';
-import FormValidation from './modules/FormValidation.esm.js';
+import FormHandling from './modules/FormHandling.esm.js';
 import AjaxRequest from './modules/AjaxRequest.esm.js';
 
-const formObjects = {
+const formDOM = {
     request: 'login',
     form: document.querySelector('[data-form="login"]'),
     errorMessage: document.querySelector('[data-form="message"]'),
 };
 
 class Login {
-    #FormValidation;
+    #FormHandling;
     #AjaxRequest;
     #inputList;
     #requestParam = {};
-    constructor(formObjects) {
-        this.#FormValidation = new FormValidation(formObjects);
-        this.#AjaxRequest = new AjaxRequest(formObjects.request);
-        this.#inputList = this.#FormValidation.getInputs(['INPUT']);
+    constructor(formDOM) {
+        this.#FormHandling = new FormHandling(formDOM);
+        this.#AjaxRequest = new AjaxRequest(formDOM.request);
+        this.#inputList = this.#FormHandling.getInputs(['INPUT']);
     }
     init() {
         this.#onBlur();
         this.#eventListeners();
     }
     #eventListeners() {
-        this.#FormValidation.form.addEventListener('submit', this.#formHandling);
+        this.#FormHandling.form.addEventListener('submit', this.#formValidation);
     }
-    #formHandling = (event) => {
+    #formValidation = (event) => {
         event.preventDefault();
-        if (this.#FormValidation.emptyFields()) {
-            this.#requestParam = { ...this.#FormValidation.getValue() };
+        if (this.#FormHandling.emptyFields()) {
+            this.#requestParam = { ...this.#FormHandling.getValue() };
             this.#sendRequest();
-        } else this.#FormValidation.showMessage('Uzupełnij wszystkie pola');
+        } else this.#FormHandling.showMessage('Uzupełnij wszystkie pola');
     };
     #sendRequest() {
         document.body.style.cursor = 'progress';
@@ -42,7 +42,7 @@ class Login {
                 if (ok) {
                     location.replace(localhost);
                 } else {
-                    this.#FormValidation.showMessage(`${title}`);
+                    this.#FormHandling.showMessage(`${title}`);
                     // localStorage.setItem('key', 'value');
                 }
             })
@@ -56,4 +56,4 @@ class Login {
     }
 }
 
-new Login(formObjects).init();
+new Login(formDOM).init();

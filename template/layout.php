@@ -16,14 +16,12 @@
      <meta name="author" content="marski.pl | Mariusz Kępski">
      <meta name="copyright" content="Copyright owner">
      <meta name="robots" content="noindex, nofollow">
+     <meta name="csrf-token" content="<?php echo $_SESSION['tokens']['Token']['session'] ?>">
      <link rel="apple-touch-icon" sizes="180x180" href="public/img/favicon/apple-touch-icon.png">
-     <link rel="icon" type="image/png" sizes="32x32" href="public/img/favicon/favicon-32x32.png">
-     <link rel="icon" type="image/png" sizes="16x16" href="public/img/favicon/favicon-16x16.png">
-     <link rel="manifest" href="public/img/favicon/site.webmanifest">
+     <link rel="icon" type="image/png" sizes="32x32" href="./public/img/favicon/favicon-32x32.png">
+     <link rel="icon" type="image/png" sizes="16x16" href="./public/img/favicon/favicon-16x16.png">
 
      <link rel="stylesheet" href="./public/style/layout.min.css" type="text/css" media="all">
-     <script type="module" src="./public/script/layout.esm.js"></script>
-
      <?php switch ($globalParams['action_GET']):
             case 'listOffers': ?>
              <link rel="stylesheet" href="./public/style/listOffers.min.css" type="text/css" media="all">
@@ -51,17 +49,21 @@
          <?php
             default: ?>
              <link rel="stylesheet" href="./public/style/statistics.min.css" type="text/css" media="all">
-             <!-- <script defer type="module" src="public/script/home.js"></script> -->
              <?php break; ?>
      <?php endswitch; ?>
+     <script type="module" src="./public/script/layout.esm.js"></script>
  </head>
 
  <body>
      <nav class="menu" data-page="nav">
          <a rel="home start" href="<?php echo HTTP_SERVER ?>" class="link_home hover_img" data-page="home_nav"><img src="public/img/home_icon.svg" alt="Strona główna"><img src="public/img/border_icon.svg" class="load" data-page="status_indicator" alt=""></a>
-         <a rel="list section" href="?action=listOffers" class="link_button">Lista pomysłów</a>
-         <a rel="write section" href="?action=formOffer" class="link_button">Napisz pomysł</a>
+         <a rel="list section" href="?action=listOffers" class="link_button <?php echo ($globalParams['action_GET'] === 'listOffers' ? 'active_link' : '') ?>">Lista pomysłów</a>
+         <a rel="write section" href="?action=formOffer" class="link_button <?php echo ($globalParams['action_GET'] === 'formOffer' ? 'active_link' : '') ?>">Napisz pomysł</a>
          <div class="page_up hover_img" data-page="page_up"><img src="public/img/page_up.svg" alt="góra strony"></div>
+         <div class="info_page">
+             <span data-page="list_lenght"></span>
+             <span data-page="render_count"></span>
+         </div>
 
          <?php switch ($account_rang):
                 case 1: ?>

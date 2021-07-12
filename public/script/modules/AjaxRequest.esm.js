@@ -12,17 +12,17 @@ export default class AjaxRequest {
     #getRequest;
     #seting;
     #url;
-    #Token;
     constructor(request) {
         this.#getRequest = request;
         this.#setingRequest = {
             ajax: {
                 method: 'POST',
                 mode: 'cors',
-                cache: 'default',
+                cache: 'no-cache',
                 credentials: 'same-origin',
                 headers: new Headers({
-                    'X-CSRF-TOKEN': `${this.getCookieToken('csrftoken')}`,
+                    Accept: 'application/json',
+                    'X-CSRF-TOKEN': `${this.#getToken()}`,
                     'Content-Type': 'application/json; charset=utf-8',
                 }),
                 redirect: 'follow',
@@ -35,7 +35,7 @@ export default class AjaxRequest {
         this.#Exception = new Exception();
     }
     async getJson(request) {
-        request.request = this.#getRequest;
+        if (!request.request) request.request = this.#getRequest;
         this.#seting.body = JSON.stringify(request);
 
         const response = await fetch(this.#url, this.#seting).catch(this.#handleError);
@@ -48,31 +48,17 @@ export default class AjaxRequest {
             return;
         }
     }
-    #handleError() {
-        console.log('coś dd zrobienia', this.#status);
-    }
     getData(data) {
         const is_API = data.api;
         if (is_API) {
             return data.data;
         } else {
-            this.#Exception.view(data);
+            this.#Exception.display(data);
             return {};
         }
     }
-    getCookieToken(name) {
-        if (!document.cookie) {
-            return null;
-        }
-
-        const xsrfCookies = document.cookie
-            .split(';')
-            .map((c) => c.trim())
-            .filter((c) => c.startsWith(name + '-'));
-
-        if (xsrfCookies.length === 0) {
-            return null;
-        }
-        return decodeURIComponent(xsrfCookies[0].split('=')[1]);
+    #handleError() {
+        console.log('coś dd zrobienia', this.#status);
     }
+    #getToken = () => document.querySelector('[name=csrf-token]').content;
 }

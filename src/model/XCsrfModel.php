@@ -10,13 +10,14 @@ class XCsrfModel
     {
 
         $token = self::getTokens($page);
+        $Ctoken = self::getCookieToken($page);
         if (empty($token) || time() > (int) $token['expiry']) {
             self::removeTokens($page);
             return false;
         };
+        $sessionConfirm = hash_equals($token['session'], $requestToken);
+        $cookieConfirm  = hash_equals($token['cookie'],  $Ctoken);
 
-        $sessionConfirm = hash_equals($token['session'], $token['session']);
-        $cookieConfirm  = hash_equals($token['cookie'], $requestToken);
         if ($sessionConfirm && $cookieConfirm) {
             return true;
         }
@@ -33,7 +34,8 @@ class XCsrfModel
             'session'  => $sessionToken,
             'cookie' => $cookieToken,
         ];
-        setcookie(self::makeCookieName($page), $cookieToken, $expiry);
+
+        setcookie(self::makeCookieName($page), $cookieToken, $expiry, '/', '', isset($_SERVER["HTTPS"]), true);
     }
     public static function getInputToken(string $page): string
     {

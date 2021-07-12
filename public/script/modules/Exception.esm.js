@@ -4,7 +4,7 @@ export default class Exception {
     constructor() {
         this.#domElement = document.createElement('aside');
     }
-    view(error) {
+    display(error) {
         const { type, title, file, line } = error;
         this.#domElement.classList.add('exception');
         this.#domElement.innerHTML = `<p>Błąd Aplikacji </p><p>${type}: ${title}</p><div class="exception_img"></div>`;

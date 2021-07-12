@@ -13,9 +13,9 @@ export default class Chose {
         this.#onelyChosen = bool;
         this.#eventListeners();
     }
-    getChosen = () => this.#selectedId;
-    checkChosen = () => (this.#selectedId.length ? true : false);
-    closeChosenList() {
+    get = () => this.#selectedId;
+    check = () => (this.#selectedId.length ? true : false);
+    clear() {
         this.#selectedResultsUl.classList.remove('on');
         [...this.#selectedResultsUl.children].forEach((li) => li.remove());
         this.#selectedId.length = 0;

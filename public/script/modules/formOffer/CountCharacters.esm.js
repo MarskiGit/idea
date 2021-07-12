@@ -13,7 +13,7 @@ export default class CountCharacters {
         this.#textAreas = textAreas;
         this.#textAreas.forEach((textArea) => textArea.addEventListener('keyup', (event) => this.#calculaterCharacters(event)));
     }
-    clearLenghtCharacters() {
+    clear() {
         this.#signNumber.forEach((sign) => (sign.innerHTML = ''));
     }
     #calculaterCharacters(event) {

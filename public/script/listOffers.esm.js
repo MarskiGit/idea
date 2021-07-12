@@ -2,15 +2,18 @@
 import Idea from './modules/listOffers/Idea.esm.js';
 import AjaxRequest from './modules/AjaxRequest.esm.js';
 
-const domObjects = {
+const listDOM = {
     request: 'listOffers',
     listContainer: document.querySelector('[data-list="offers_container"]'),
+    listLenght: document.querySelector('[data-page="list_lenght"]'),
+    renderCount: document.querySelector('[data-page="render_count"]'),
 };
 
 class ListOffers {
     #requestParam = {
         last_tuple: 0,
     };
+    #countRender = 0;
     #listContainer;
     #AjaxRequest;
     #LastTuple;
@@ -18,9 +21,14 @@ class ListOffers {
     #tupleNumbers = [];
     #endTuples = false;
     #ajaxData;
-    constructor(domObjects) {
-        this.#listContainer = domObjects.listContainer;
-        this.#AjaxRequest = new AjaxRequest(domObjects.request);
+
+    #listLenght;
+    #renderCount;
+    constructor(listDOM) {
+        this.#listContainer = listDOM.listContainer;
+        this.#listLenght = listDOM.listLenght;
+        this.#renderCount = listDOM.renderCount;
+        this.#AjaxRequest = new AjaxRequest(listDOM.request);
     }
     init() {
         this.#LastTuple = this.#findLastTuple();
@@ -37,36 +45,44 @@ class ListOffers {
                 .getJson(this.#requestParam)
                 .then((data) => {
                     this.#ajaxData = this.#AjaxRequest.getData(data);
-                    this.#checkData();
+                    this.#viewList();
                 })
                 .finally((document.body.style.cursor = 'default'));
         }
     };
-    #checkData() {
-        if (this.#ajaxData.length) {
+    #viewList() {
+        if (this.#ajaxData.length > 0) {
             this.#listContainer.classList.add('offers_container');
-            this.#renderList();
+            this.#displayList();
         } else {
             this.#listContainer.classList.remove('offers_container');
             this.#emptyList();
         }
     }
-    #renderList() {
+    #displayList() {
         for (const idea of this.#ajaxData) {
             this.#tupleNumbers.push(parseInt(idea.id_idea, 10));
-            this.#fragmentList.appendChild(new Idea(idea).getIdea());
+
+            this.#fragmentList.appendChild(new Idea(idea).get());
         }
+        this.#countRender++;
+        this.#checkTuple();
+        this.#statisticsView();
+    }
+    #checkTuple() {
         const { end, last } = this.#LastTuple();
         this.#endTuples = end;
         this.#requestParam.last_tuple = last;
-        this.#addDOM();
     }
-
-    #addDOM() {
+    // tymczaoswa metoda jako ciekwostka
+    #statisticsView() {
         this.#listContainer.appendChild(this.#fragmentList);
+        this.#listLenght.innerHTML = `Elementów listy: ${this.#tupleNumbers.length}`;
+        this.#renderCount.innerHTML = `Liczba Żądań: ${this.#countRender}`;
     }
     #findLastTuple() {
         const arrayTupleId = this.#tupleNumbers;
+
         return () => ({
             end: arrayTupleId.includes(1),
             last: Math.min(...arrayTupleId),
@@ -86,4 +102,4 @@ class ListOffers {
     }
 }
 
-new ListOffers(domObjects).init();
+new ListOffers(listDOM).init();

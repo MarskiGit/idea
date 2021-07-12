@@ -41,28 +41,28 @@ export default class FormPassword {
 
         this.#testIdentical();
         if (this.#pwd.length == 0) {
-            this.#statusDisplay(0);
+            this.#displayStatus(0);
             this.#strengthPass = 0;
             this.#strengthMessage.innerHTML = this.#userMessage.empty;
         } else if (false === this.#enoughRegex(this.#pwd)) {
-            this.#statusDisplay(25);
+            this.#displayStatus(25);
             this.#strengthPass = 0;
             this.#strengthMessage.innerHTML = this.#userMessage.worst;
         } else if (this.#strongRegex(this.#pwd)) {
-            this.#statusDisplay(100);
+            this.#displayStatus(100);
             this.#strengthPass = 3;
             this.#strengthMessage.innerHTML = this.#userMessage.strong;
         } else if (this.#mediumRegex(this.#pwd)) {
-            this.#statusDisplay(75);
+            this.#displayStatus(75);
             this.#strengthPass = 2;
             this.#strengthMessage.innerHTML = this.#userMessage.medium;
         } else {
-            this.#statusDisplay(50);
+            this.#displayStatus(50);
             this.#strengthPass = 1;
             this.#strengthMessage.innerHTML = this.#userMessage.weak;
         }
     };
-    #statusDisplay(status) {
+    #displayStatus(status) {
         switch (status) {
             case 0:
                 this.#strengthMeter.className = '';

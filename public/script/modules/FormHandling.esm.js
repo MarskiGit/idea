@@ -1,5 +1,5 @@
 'use strict';
-export default class FormValidation {
+export default class FormHandling {
     #formObjects;
     #errorMessage;
     #fieldsValue;
@@ -26,6 +26,7 @@ export default class FormValidation {
         return this.#params;
     }
     emptyFields = () => (this.#formData() === this.#fieldsValue.filter((e) => e !== '').length ? true : false);
+    // nadmiarowy kod do poprawy
     #findInputs() {
         const collection = [...this.form];
 

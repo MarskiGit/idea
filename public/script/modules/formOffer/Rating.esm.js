@@ -6,7 +6,7 @@ export default class Rating {
     #allOptions;
     constructor(viewPoints) {
         this.#viewPoints = viewPoints;
-        this.#defaultPoint = this.getPoints();
+        this.#defaultPoint = this.get();
     }
     init(selectCollection) {
         this.#selectCollection = selectCollection;
@@ -19,7 +19,7 @@ export default class Rating {
             })
         );
     }
-    getPoints = () => parseInt(this.#viewPoints.textContent);
+    get = () => parseInt(this.#viewPoints.textContent);
     getValueString = () => this.#allOptions.filter(this.#filterString);
     setDefault() {
         this.#selectCollection.forEach((op) => (op.selectedIndex = 0));

@@ -2,7 +2,7 @@
 import NavSticky from './modules/layout/NavSticky.esm.js';
 import SmoothTop from './modules/layout/SmoothTop.esm.js';
 
-const domObjects = {
+const layoutDOM = {
     home: document.querySelector('[data-page="home_nav"]'),
     nav: document.querySelector('[data-page="nav"]'),
     pageUp: document.querySelector('[data-page="page_up"]'),
@@ -10,12 +10,12 @@ const domObjects = {
 };
 
 class Layout {
-    #domObjects;
+    #layoutDOM;
     #NavSticky;
     #Smooth;
-    constructor(domObjects) {
-        this.#domObjects = domObjects;
-        this.#NavSticky = new NavSticky(domObjects);
+    constructor(layoutDOM) {
+        this.#layoutDOM = layoutDOM;
+        this.#NavSticky = new NavSticky(layoutDOM);
         this.#Smooth = new SmoothTop();
     }
     init() {
@@ -23,8 +23,8 @@ class Layout {
         this.#eventListeners();
     }
     #eventListeners() {
-        this.#domObjects.pageUp.addEventListener('click', () => this.#Smooth.init());
+        this.#layoutDOM.pageUp.addEventListener('click', () => this.#Smooth.init());
     }
 }
 
-new Layout(domObjects).init();
+new Layout(layoutDOM).init();

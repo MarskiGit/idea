@@ -19,7 +19,8 @@ const today = () => {
         da = d.getDate();
     return `${y}/${m < 10 ? `0${m}` : m}/${da < 10 ? `0${da}` : da}`;
 };
-const quarterYear = (date) => {
-    var month = date.getMonth() + 1;
+const quarterYear = () => {
+    const date = new Date();
+    const month = date.getMonth() + 1;
     return Math.ceil(month / 3);
 };

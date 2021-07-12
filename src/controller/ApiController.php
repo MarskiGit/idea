@@ -53,6 +53,16 @@ class ApiController extends AbstractController
         $stat = new StatisticsModel();
         $this->View->response_Api($stat->getTen($this->requestParam['quarter']));
     }
+    protected function topUsers_Api(): void
+    {
+        $stat = new StatisticsModel();
+        $this->View->response_Api($stat->getTopUser($this->requestParam['quarter']));
+    }
+    protected function topArea_Api(): void
+    {
+        $stat = new StatisticsModel();
+        $this->View->response_Api($stat->getTopArea($this->requestParam['quarter']));
+    }
     protected function exit_Api(): void
     {
         exit();

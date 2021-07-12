@@ -17,36 +17,37 @@ export default class LiveSearch {
         this.#inputSearch = inputSearch;
         this.#eventListeners();
     }
-    closeSearchResult() {
+    clear() {
         this.#resultsSearchUl.classList.remove('on');
         this.#clearResultsLI();
     }
     #eventListeners() {
         this.#inputSearch.addEventListener('input', this.#debounced(this.#validation, 500));
     }
-
     #validation = ({ target }) => {
-        this.#validationSign(target.value) ? this.#badSign(1) : this.#searchInit(target);
+        this.#validationSign(target.value) ? this.#badSign(true) : this.#search(target);
     };
-    #searchInit(target) {
-        this.#badSign(0);
-        target.value.length >= 3 ? this.#valueSought(target) : this.closeSearchResult();
-    }
-    #badSign(bool) {
-        if (bool) {
-            this.#userMessage('Tylko znaki alfabetu i cyfry', 'red');
+    #validationSign = (char) => new RegExp(/[^A-Z-ŚŁŻŹĆa-z-ęóąśłżźćń\s0-9]/gi).test(char);
+    #badSign(flag) {
+        if (flag) {
+            this.#displayMessage('Tylko znaki alfabetu lub cyfry', 'red');
             this.#inputSearch.classList.add('error_search');
         } else {
-            this.#userMessage('Wyszukaj i kliknij:');
+            this.#displayMessage('Wyszukaj i kliknij:');
             this.#inputSearch.classList.remove('error_search');
         }
     }
-    #userMessage(text, color = '') {
+    #displayMessage(text, color = '') {
         this.#inputSearch.labels[0].style.color = color;
         this.#inputSearch.labels[0].textContent = text;
     }
-    #valueSought(target) {
-        if (target.dataset.search === 'creator_search') {
+    #search(target) {
+        this.#badSign(false);
+        target.value.length >= 3 ? this.#whatValueSearch(target) : this.closeSearchResult();
+    }
+    #whatValueSearch(target) {
+        let valueSearch = target.getAttribute('data-search');
+        if (valueSearch === 'creator_search') {
             Number(target.value) ? (this.#requestParam.select = 'id_pass') : (this.#requestParam.select = 'full_name');
             this.#requestParam.full_name = target.value;
         } else {
@@ -60,17 +61,17 @@ export default class LiveSearch {
             .getJson(this.#requestParam)
             .then((data) => {
                 this.#ajaxData = this.#AjaxRequest.getData(data);
-                this.#renderHTML();
+                this.#viewResult();
             })
             .finally((document.body.style.cursor = 'default'));
     }
-    #renderHTML() {
+    #viewResult() {
         for (const li of this.#ajaxData) {
-            this.#fragmentList.appendChild(new RenderLi(li).getLi());
+            this.#fragmentList.appendChild(new RenderLi(li).get());
         }
-        this.#addDOM();
+        this.#displayLI();
     }
-    #addDOM() {
+    #displayLI() {
         this.#clearResultsLI();
         this.#resultsSearchUl.appendChild(this.#fragmentList);
         this.#resultsSearchUl.classList.add('on');
@@ -78,7 +79,7 @@ export default class LiveSearch {
     #clearResultsLI() {
         [...this.#resultsSearchUl.children].forEach((li) => li.remove());
     }
-    #validationSign = (char) => new RegExp(/[^A-Z-ŚŁŻŹĆa-z-ęóąśłżźćń\s0-9]/gi).test(char);
+
     #debounced(f, t) {
         let l;
         return (...a) => {

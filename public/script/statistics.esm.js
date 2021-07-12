@@ -1,28 +1,29 @@
 'use strict';
 import AjaxRequest from './modules/AjaxRequest.esm.js';
 import { quarterYear } from './modules/seting.esm.js';
-import SortingTopTen from './modules/statistics/SortingTopTen.esm.js';
+import TbodyTopTen from './modules/statistics/TbodyTopTen.esm.js';
 
-const homeObjects = {
+const pageDOM = {
     message: document.querySelector('[data-js="private"]'),
 };
 
-const topTenObjects = {
+const statisticsDOM = {
     request: 'topTen',
     users: {
-        userQuarter: document.querySelector('[data-topuser="user_quarter"]'),
-        usersList: document.querySelector('[data-topuser="users_list"]'),
+        quarter: document.querySelector('[data-statistics="user_quarter"]'),
+        list: document.querySelector('[data-statistics="users_list"]'),
     },
     area: {
-        areaQuarter: document.querySelector('[data-toparea="area_quarter"]'),
-        areaList: document.querySelector('[data-toparea="areas_list"]'),
+        quarter: document.querySelector('[data-statistics="area_quarter"]'),
+        list: document.querySelector('[data-statistics="areas_list"]'),
     },
 };
 
 class Private {
     #message;
-    constructor(homeObjects) {
-        this.#message = homeObjects.message;
+
+    constructor(pageDOM) {
+        this.#message = pageDOM.message;
         this.#hide();
     }
     #hide() {
@@ -33,44 +34,86 @@ class Private {
 class TopTen {
     #AjaxRequest;
     #requestParam = {};
-    #usersDOM;
+    #userDOM;
     #areaDOM;
-    #quarterYear;
-    constructor(topTenObjects) {
-        this.#usersDOM = topTenObjects.users;
-        this.#areaDOM = topTenObjects.area;
-        this.#AjaxRequest = new AjaxRequest(topTenObjects.request);
-        this.#quarterYear = quarterYear(new Date());
+    #flagQuarter = 0;
+    #flagButton = 0;
+    #ajaxData;
+    constructor(statisticsDOM) {
+        this.#userDOM = statisticsDOM.users;
+        this.#areaDOM = statisticsDOM.area;
+        this.#AjaxRequest = new AjaxRequest(statisticsDOM.request);
     }
     init() {
-        this.#requestParam.quarter = this.#quarterYear;
+        this.#requestParam.quarter = quarterYear();
         this.#sendRequest();
         this.#eventListeners();
-        this.#quarterYearOrnament();
     }
-    #eventListeners() {}
-    #quarterYearOrnament() {
-        [...this.#usersDOM.userQuarter.children][this.#quarterYear - 1].classList.add('ornament_line');
-        [...this.#areaDOM.areaQuarter.children][this.#quarterYear - 1].classList.add('ornament_line');
+    #eventListeners() {
+        this.#userDOM.quarter.addEventListener('click', this.#changeQuarter);
+        this.#areaDOM.quarter.addEventListener('click', this.#changeQuarter);
     }
+    #changeQuarter = (event) => {
+        if (event.target.nodeName === 'BUTTON') {
+            this.#requestParam.quarter = event.target.getAttribute('data-quarter');
+            this.#requestParam.request = event.target.getAttribute('data-request');
+            if (this.#flagQuarter != this.#requestParam.quarter || this.#flagButton != this.#requestParam.request) this.#sendRequest();
+        }
+    };
     #sendRequest = () => {
         document.body.style.cursor = 'progress';
         this.#AjaxRequest
             .getJson(this.#requestParam)
             .then((data) => {
-                const { user, area } = this.#AjaxRequest.getData(data);
-                const userTop = new SortingTopTen(user);
-                const areaTop = new SortingTopTen(area);
+                this.#ajaxData = this.#AjaxRequest.getData(data);
 
-                this.#addDOM(userTop.getSortedHTML(), areaTop.getSortedHTML());
+                this.#viewTopTen();
             })
             .finally((document.body.style.cursor = 'default'));
     };
-    #addDOM(userTop, areaTop) {
-        this.#usersDOM.usersList.appendChild(userTop);
-        this.#areaDOM.areaList.appendChild(areaTop);
+    #viewTopTen() {
+        if (this.#requestParam.request !== this.#flagButton || this.#ajaxData.quarter !== this.#flagQuarter) {
+            const { user, area, quarter } = this.#ajaxData;
+            this.#flagQuarter = quarter;
+            this.#flagButton = this.#requestParam.request;
+
+            switch (this.#flagButton) {
+                case 'topUsers':
+                    this.#displayTopTen(user, this.#userDOM);
+                    break;
+                case 'topArea':
+                    this.#displayTopTen(area, this.#areaDOM);
+                    break;
+                case 'topTen':
+                    this.#displayTopTen(user, this.#userDOM);
+                    this.#displayTopTen(area, this.#areaDOM);
+                    break;
+            }
+        }
+    }
+    #displayTopTen(data, view) {
+        const viewList = view.list;
+        if (data.length > 0) {
+            if (viewList.tBodies.length == 0) {
+                viewList.appendChild(new TbodyTopTen(data).get());
+            }
+        } else if (viewList.tBodies.length > 0) {
+            this.#cleanTable(viewList);
+        }
+        this.#changeOrnament(view.quarter);
+    }
+    #changeOrnament(quarter) {
+        [...quarter.children].forEach((li) => {
+            if (li.classList.contains('ornament_line')) li.classList.remove('ornament_line');
+        });
+
+        [...quarter.children][this.#flagQuarter - 1].classList.add('ornament_line');
+    }
+    #cleanTable(viewList) {
+        const tbody = viewList.tBodies[0];
+        tbody.parentNode.removeChild(tbody);
     }
 }
 
-new Private(homeObjects);
-new TopTen(topTenObjects).init();
+new Private(pageDOM);
+new TopTen(statisticsDOM).init();

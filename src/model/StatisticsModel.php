@@ -11,15 +11,16 @@ use PDOException;
 
 class StatisticsModel extends AbstractModel
 {
-    public function getTen($quarter = null): array
+    public function getTen($quarter): array
     {
         $param = [
-            'user' => $this->getTopUser($quarter),
-            'area' => $this->getTopArea($quarter),
+            'user' => $this->getTopUser($quarter, true),
+            'area' => $this->getTopArea($quarter, true),
+            'quarter' => $quarter,
         ];
         return $this->responseAPI($param, true);
     }
-    public function getTopUser($quarter = null): array
+    public function getTopUser($quarter = null, bool $flag = false): array
     {
         $yearQuarter =  $this->isSelectedQuarter($quarter);
         $param = [];
@@ -40,13 +41,17 @@ class StatisticsModel extends AbstractModel
                 array_push($param, $row);
             }
         }
-        if ($quarter) {
+        if ($flag) {
             return $param;
         } else {
-            return $this->responseAPI($param, true);
+            $user = [
+                'user' => $param,
+                'quarter' => $yearQuarter
+            ];
+            return $this->responseAPI($user, true);
         }
     }
-    public function getTopArea($quarter = null): array
+    public function getTopArea($quarter = null, bool $flag = false): array
     {
         $yearQuarter = $this->isSelectedQuarter($quarter);
         $param = [];
@@ -67,16 +72,20 @@ class StatisticsModel extends AbstractModel
                 array_push($param, $row);
             }
         }
-        if ($quarter) {
+        if ($flag) {
             return $param;
         } else {
-            return $this->responseAPI($param, true);
+            $user = [
+                'area' => $param,
+                'quarter' => $yearQuarter
+            ];
+            return $this->responseAPI($user, true);
         }
     }
     private function isSelectedQuarter($quarter): int
     {
         if ($quarter) {
-            return $quarter;
+            return (int)$quarter;
         } else {
             return $this->yearQuarter();
         };

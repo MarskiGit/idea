@@ -1,6 +1,6 @@
 'use strict';
 export default class SortingTopTen {
-    #sortedTbody = document.createElement('tbody');
+    #sortedList;
     #dataObject;
     #firstIn = [];
     #lastIn = [];
@@ -8,12 +8,11 @@ export default class SortingTopTen {
     #pointsToSort;
     #sortedResults = [];
     #nextToSort = 0;
-    #iterator = 1;
-    constructor(dataAjax) {
-        this.#dataObject = dataAjax;
+    constructor(data) {
+        this.#dataObject = data;
         this.#init();
     }
-    getSortedHTML = () => this.#sortedTbody;
+    get = () => this.#sortedList;
     #init() {
         this.#firstSorting();
         this.#selectPoints();
@@ -48,46 +47,9 @@ export default class SortingTopTen {
             }
         }
         if (this.#sortedResults.length !== 0) {
-            this.#createHtml(this.#sortedResults);
+            this.#sortedList = this.#sortedResults;
         } else {
-            this.#createHtml(this.#dataObject);
-        }
-    }
-    #createHtml(dataObject) {
-        for (const td of dataObject) {
-            this.#sortedTbody.insertAdjacentHTML('beforeend', this.#renderTr(this.#iterator, td));
-            this.#iterator++;
-        }
-    }
-    // wyzbaczenie miejsc egzekfo
-    #renderTr(i, { full_name, offers, points }) {
-        return `
-        <tr>
-        <td class="${this.#statusInformation(i).class}">${i}</td>
-        <td>${full_name}</td>
-        <td>${offers}</td>
-        <td>${points}</td>
-        </tr>
-        `;
-    }
-    #statusInformation(st) {
-        switch (st) {
-            case 1:
-                return {
-                    class: 'win_top gold',
-                };
-            case 2:
-                return {
-                    class: 'win_top silver',
-                };
-            case 3:
-                return {
-                    class: 'win_top brown',
-                };
-            default:
-                return {
-                    class: '',
-                };
+            this.#sortedList = this.#dataObject;
         }
     }
 }

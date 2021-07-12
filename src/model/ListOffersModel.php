@@ -15,7 +15,7 @@ class ListOffersModel extends AbstractModel
     {
         $result = [];
         try {
-            $stmt = $this->DB->query("SELECT * FROM view_idea WHERE id_idea < " . $this->limitTuples((int)$requestParam['last_tuple']) . " ORDER BY id_idea DESC LIMIT 15 ");
+            $stmt = $this->DB->query("SELECT * FROM view_idea WHERE id_idea < " . $this->limitTuples((int)$requestParam['last_tuple']) . " ORDER BY id_idea DESC LIMIT 10 ");
             $stmt->execute();
         } catch (PDOException $e) {
             throw new ApiException('Error ListOffers MODEL Get');

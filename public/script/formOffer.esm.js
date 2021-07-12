@@ -1,25 +1,25 @@
 'use strict';
-import FormValidation from './modules/FormValidation.esm.js';
+import FormHandling from './modules/FormHandling.esm.js';
 import AjaxRequest from './modules/AjaxRequest.esm.js';
 import CountCharacters from './modules/formOffer/CountCharacters.esm.js';
 import Rating from './modules/formOffer/Rating.esm.js';
 import LiveSearch from './modules/formOffer/LiveSearch.esm.js';
 import Chose from './modules/formOffer/Chose.esm.js';
 
-const formObjects = {
+const formDOM = {
     request: 'formOffer',
     form: document.querySelector('[data-form="offer"]'),
     errorMessage: document.querySelector('[data-form="offer_message"]'),
     viewPoints: document.querySelector('[data-form="view_points"]'),
     signNumber: document.querySelectorAll('[data-form="sign_number"]'),
 };
-const search = {
-    userSearch: {
+const searchDOM = {
+    user: {
         resultsSearchUl: document.querySelector('[data-search="ul_creator"]'),
         selectedResultsUl: document.querySelector('[data-search="chosen_ones"]'),
         request: 'creatorSearch',
     },
-    areaSearch: {
+    area: {
         resultsSearchUl: document.querySelector('[data-search="ul_area"]'),
         selectedResultsUl: document.querySelector('[data-search="chosen_ones_area"]'),
         request: 'areaSearch',
@@ -28,7 +28,7 @@ const search = {
 
 class FormOffer {
     #requestParam = {};
-    #FormValidation;
+    #FormHandling;
     #AjaxRequest;
 
     #CountCharacters;
@@ -42,24 +42,24 @@ class FormOffer {
     #inputLiveSearch;
     #textAreas;
     #optionSelecs;
-    constructor(formObjects, search) {
-        this.#requestParam.token = formObjects.form.getAttribute('data-token');
+    constructor(formDOM, searchDOM) {
+        this.#requestParam.token = formDOM.form.getAttribute('data-token');
 
-        this.#FormValidation = new FormValidation(formObjects);
-        this.#AjaxRequest = new AjaxRequest(formObjects.request);
+        this.#FormHandling = new FormHandling(formDOM);
+        this.#AjaxRequest = new AjaxRequest(formDOM.request);
 
-        this.#CountCharacters = new CountCharacters(formObjects.signNumber);
-        this.#Rating = new Rating(formObjects.viewPoints);
+        this.#CountCharacters = new CountCharacters(formDOM.signNumber);
+        this.#Rating = new Rating(formDOM.viewPoints);
 
-        this.#UserSearch = new LiveSearch(search.userSearch);
-        this.#AreaSearch = new LiveSearch(search.areaSearch);
-        this.#UserChosen = new Chose(search.userSearch);
-        this.#AreaChosen = new Chose(search.areaSearch);
+        this.#UserSearch = new LiveSearch(searchDOM.user);
+        this.#AreaSearch = new LiveSearch(searchDOM.area);
+        this.#UserChosen = new Chose(searchDOM.user);
+        this.#AreaChosen = new Chose(searchDOM.area);
     }
     init() {
-        this.#inputLiveSearch = this.#FormValidation.getInputs(['INPUT'], 'search');
-        this.#textAreas = this.#FormValidation.getInputs(['TEXTAREA']);
-        this.#optionSelecs = this.#FormValidation.getInputs(['SELECT']);
+        this.#inputLiveSearch = this.#FormHandling.getInputs(['INPUT'], 'search');
+        this.#textAreas = this.#FormHandling.getInputs(['TEXTAREA']);
+        this.#optionSelecs = this.#FormHandling.getInputs(['SELECT']);
 
         this.#CountCharacters.init(this.#textAreas);
         this.#Rating.init(this.#optionSelecs);
@@ -72,36 +72,38 @@ class FormOffer {
         this.#eventListeners();
     }
     #eventListeners() {
-        this.#FormValidation.form.addEventListener('submit', this.#formHandling);
+        this.#FormHandling.form.addEventListener('submit', this.#formValidation);
     }
-    #formHandling = (event) => {
+    #formValidation = (event) => {
         event.preventDefault();
         if (this.#emptyForm()) {
             this.#requestParam.token = event.target.getAttribute('data-token');
             this.#getParamForm();
         } else {
-            this.#FormValidation.showMessage('Uzupełnij wszystkie pola.');
+            this.#FormHandling.showMessage('Uzupełnij wszystkie pola.');
         }
     };
     #clearForm() {
-        this.#FormValidation.clearField(['INPUT', 'TEXTAREA']);
+        this.#FormHandling.clear(['INPUT', 'TEXTAREA']);
 
-        this.#CountCharacters.clearLenghtCharacters();
+        this.#CountCharacters.clear();
         this.#Rating.setDefault();
 
-        this.#UserSearch.closeSearchResult();
-        this.#AreaSearch.closeSearchResult();
-        this.#UserChosen.closeChosenList();
-        this.#AreaChosen.closeChosenList();
+        this.#UserSearch.clear();
+        this.#AreaSearch.clear();
+        this.#UserChosen.clear();
+        this.#AreaChosen.clear();
     }
     #getParamForm() {
-        const { before, after } = this.#FormValidation.getValue();
+        const { before, after } = this.#FormHandling.getValue();
         this.#requestParam.before_value = before;
         this.#requestParam.after_value = after;
-        this.#requestParam.array_users = this.#UserChosen.getChosen();
-        this.#requestParam.id_area = this.#AreaChosen.getChosen()[0];
-        this.#requestParam.pkt_user = this.#Rating.getPoints();
+        this.#requestParam.array_users = this.#UserChosen.get();
+        this.#requestParam.id_area = this.#AreaChosen.get()[0];
+        this.#requestParam.pkt_user = this.#Rating.get();
         this.#requestParam.saving = this.#Rating.getValueString();
+
+        // rating objekt lub tablica z wynikami do bazy danych "asocjacyjna "
 
         console.log(this.#requestParam);
         this.#sendRequest();
@@ -114,13 +116,13 @@ class FormOffer {
                 const { ok, title } = this.#AjaxRequest.getData(data);
                 if (ok) {
                     this.#clearForm();
-                    this.#FormValidation.showMessage(`${title}`);
+                    this.#FormHandling.showMessage(`${title}`);
                 } else {
-                    this.#FormValidation.showMessage(`${title}`);
+                    this.#FormHandling.showMessage(`${title}`);
                 }
             })
             .finally((document.body.style.cursor = 'default'));
     }
-    #emptyForm = () => !!(this.#FormValidation.emptyFields() && this.#UserChosen.checkChosen() && this.#AreaChosen.checkChosen());
+    #emptyForm = () => !!(this.#FormHandling.emptyFields() && this.#UserChosen.check() && this.#AreaChosen.check());
 }
-new FormOffer(formObjects, search).init();
+new FormOffer(formDOM, searchDOM).init();

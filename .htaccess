@@ -11,8 +11,9 @@ Options -Indexes
 RewriteCond %{HTTP:Authorization} ^(.+)$
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
+
 <IfModule mod_headers.c>
- Header set X-UA-Compatible "IE=edge"
+    Header set X-UA-Compatible "IE=edge"
     Header always set X-Content-Type-Options nosniff
     Header unset Expires
     Header unset Host
@@ -28,19 +29,49 @@ RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
     Header unset X-Runtime
     Header unset X-Version
 
- <FilesMatch "\.(appcache|atom|bbaw|bmp|crx|css|cur|eot|f4[abpv]|flv|geojson|gif|htc|ic[os]|jpe?g|m?js|json(ld)?|m4[av]|manifest|map|markdown|md|mp4|oex|og[agv]|opus|otf|pdf|png|rdf|rss|safariextz|svgz?|swf|topojson|tt[cf]|txt|vcard|vcf|vtt|webapp|web[mp]|webmanifest|woff2?|xloc|xml|xpi)$">
+
+    Header always edit Set-Cookie: (.*) "$1, httponly"
+	Header always append X-Frame-Options SAMEORIGIN
+	Header set X-XSS-Protection "1; mode=block"
+
+
+    <FilesMatch "\.(appcache|atom|bbaw|bmp|crx|css|cur|eot|f4[abpv]|flv|geojson|gif|htc|ic[os]|jpe?g|m?js|json(ld)?|m4[av]|manifest|map|markdown|md|mp4|oex|og[agv]|opus|otf|pdf|png|rdf|rss|safariextz|svgz?|swf|topojson|tt[cf]|txt|vcard|vcf|vtt|webapp|web[mp]|webmanifest|woff2?|xloc|xml|xpi)$">
         Header unset X-UA-Compatible
     </FilesMatch>
 
-<filesMatch ".(ico|pdf|flv|jpg|jpeg|png|gif|swf|woff2|svg|webp|css|js|woff|eot)$">
-    Header set Cache-Control "max-age=604800, public, no-cache"
-</filesMatch>
+    <filesMatch ".(ico|pdf|flv|jpg|jpeg|png|gif|swf|woff2|svg|webp|woff|eot)$">
+        Header set Cache-Control "max-age=604800, private"
+    </filesMatch>
 
+    <filesMatch ".(css|js)$">
+        Header set Cache-Control "no-cache"
+    </filesMatch>
 
-
+   <FilesMatch "\.(appcache|atom|bbaw|bmp|crx|css|cur|eot|f4[abpv]|flv|geojson|gif|htc|ic[os]|jpe?g|json(ld)?|m4[av]|manifest|map|markdown|md|mp4|oex|og[agv]|opus|otf|png|rdf|rss|safariextz|swf|topojson|tt[cf]|txt|vcard|vcf|vtt|webapp|web[mp]|webmanifest|woff2?|xloc|xpi)$">
+        Header unset Content-Security-Policy
+        Header unset X-Content-Security-Policy
+        Header unset X-WebKit-CSP
+    </FilesMatch>
 
 </IfModule>
 
+AddDefaultCharset utf-8
+
 <IfModule mod_mime.c>
     AddType application/manifest+json   webmanifest
+    AddCharset utf-8 .appcache \
+                     .atom \
+                     .css \
+                     .js \
+                     .json \
+                     .manifest \
+                     .map \
+                     .mjs \
+                     .rdf \
+                     .rss \
+                     .vtt \
+                     .webmanifest \
+                     .xml
+                   
+
 </IfModule>

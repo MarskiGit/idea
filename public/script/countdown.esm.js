@@ -13,13 +13,13 @@ class CountDown {
         this.#url.search = new URLSearchParams(this.#params).toString();
     }
     init() {
-        this.#timeSession();
+        this.#timeLogout();
         this.#eventListeners();
     }
     #eventListeners() {
-        document.addEventListener('mousemove', this.#throttled(this.#timeSession, 1000));
+        document.addEventListener('mousemove', this.#throttled(this.#timeLogout, 1000));
     }
-    #timeSession = () => {
+    #timeLogout = () => {
         if (this.#setInt) clearInterval(this.#setInt);
         let countdown = 300,
             minutes,

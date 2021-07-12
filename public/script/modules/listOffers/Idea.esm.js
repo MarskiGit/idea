@@ -42,7 +42,7 @@ export default class Idea {
         this.#token_idea = token_idea;
         this.#init();
     }
-    getIdea = () => this.#div;
+    get = () => this.#div;
     #init() {
         this.#status = this.#statusInformation(parseInt(this.#idea_status, 10));
         this.#createElement();
