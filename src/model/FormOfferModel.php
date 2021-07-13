@@ -20,7 +20,7 @@ class FormOfferModel extends AbstractModel
 
         try {
             $stmt = $this->DB->prepare('INSERT INTO idea (id_area, after_value, before_value, array_users,  rating_user ) VALUES (:id_area, :after_value, :before_value, :array_users, :rating_user)');
-            $stmt->bindValue(':id_area', (int)$requestParam['id_area'][0], PDO::PARAM_INT);
+            $stmt->bindValue(':id_area', (int)$requestParam['id_area'], PDO::PARAM_INT);
             $stmt->bindValue(':after_value', $after_value, PDO::PARAM_STR);
             $stmt->bindValue(':before_value', $before_value, PDO::PARAM_STR);
             $stmt->bindValue(':array_users', $array_users, PDO::PARAM_STR);

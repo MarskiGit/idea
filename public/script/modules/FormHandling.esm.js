@@ -1,14 +1,12 @@
 'use strict';
 export default class FormHandling {
-    #formObjects;
     #errorMessage;
     #fieldsValue;
     #data;
-    #params = {};
+    #formValue = {};
     constructor(formObjects) {
         this.form = formObjects.form;
         this.getInputs = this.#findInputs();
-        this.#formObjects = formObjects;
         this.#errorMessage = formObjects.errorMessage;
     }
     showMessage(messafe) {
@@ -20,10 +18,10 @@ export default class FormHandling {
         this.getInputs(array).forEach((e) => (e.value = ''));
     }
     getValue() {
-        for (const pair of this.#data.entries()) {
-            this.#params[pair[0]] = pair[1];
+        for (const [key, value] of this.#data.entries()) {
+            this.#formValue[key] = value;
         }
-        return this.#params;
+        return this.#formValue;
     }
     emptyFields = () => (this.#formData() === this.#fieldsValue.filter((e) => e !== '').length ? true : false);
     // nadmiarowy kod do poprawy

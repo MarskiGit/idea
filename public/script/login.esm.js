@@ -29,7 +29,7 @@ class Login {
     #formValidation = (event) => {
         event.preventDefault();
         if (this.#FormHandling.emptyFields()) {
-            this.#requestParam = { ...this.#FormHandling.getValue() };
+            this.#requestParam = Object.assign(this.#FormHandling.getValue());
             this.#sendRequest();
         } else this.#FormHandling.showMessage('Uzupełnij wszystkie pola');
     };
@@ -39,7 +39,7 @@ class Login {
             .getJson(this.#requestParam)
             .then((data) => {
                 const { ok, title } = this.#AjaxRequest.getData(data);
-                if (ok) {
+                if (Boolean(ok)) {
                     location.replace(localhost);
                 } else {
                     this.#FormHandling.showMessage(`${title}`);

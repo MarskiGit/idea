@@ -19,9 +19,9 @@ export default class FormAccountHandling {
         this.#eventListeners();
     }
     #eventListeners() {
-        this.#FormHandling.form.addEventListener('submit', this.#handling);
+        this.#FormHandling.form.addEventListener('submit', this.#validation);
     }
-    #handling = (event) => {
+    #validation = (event) => {
         event.preventDefault();
         if (this.#FormHandling.emptyFields()) {
             this.#sendRequest();
@@ -34,8 +34,7 @@ export default class FormAccountHandling {
             .getJson(this.#requestParam)
             .then((data) => {
                 const { ok, title } = this.#AjaxRequest.getData(data);
-                console.log(ok, title);
-                if (ok) {
+                if (Boolean(ok)) {
                     this.#FormHandling.clear();
                     this.#FormHandling.showMessage(`${title}`);
                 } else {

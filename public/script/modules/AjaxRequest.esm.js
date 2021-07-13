@@ -35,7 +35,7 @@ export default class AjaxRequest {
         this.#Exception = new Exception();
     }
     async getJson(request) {
-        if (!request.request) request.request = this.#getRequest;
+        if (!request.hasOwnProperty('request')) request.request = this.#getRequest;
         this.#seting.body = JSON.stringify(request);
 
         const response = await fetch(this.#url, this.#seting).catch(this.#handleError);
@@ -49,8 +49,7 @@ export default class AjaxRequest {
         }
     }
     getData(data) {
-        const is_API = data.api;
-        if (is_API) {
+        if ('api' in data && Boolean(data.api)) {
             return data.data;
         } else {
             this.#Exception.display(data);
