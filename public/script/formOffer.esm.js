@@ -43,8 +43,6 @@ class FormOffer {
     #textAreas;
     #optionSelecs;
     constructor(formDOM, searchDOM) {
-        this.#requestParam.token = formDOM.form.getAttribute('data-token');
-
         this.#FormHandling = new FormHandling(formDOM);
         this.#AjaxRequest = new AjaxRequest(formDOM.request);
 
@@ -77,7 +75,6 @@ class FormOffer {
     #formValidation = (event) => {
         event.preventDefault();
         if (this.#emptyForm()) {
-            this.#requestParam.token = event.target.getAttribute('data-token');
             this.#getParamForm();
         } else {
             this.#FormHandling.showMessage('Uzupełnij wszystkie pola.');
@@ -91,8 +88,8 @@ class FormOffer {
         this.#requestParam.array_users = this.#UserChosen.get();
         this.#requestParam.id_area = this.#AreaChosen.get();
         this.#requestParam.rating_user = this.#Rating.get();
-
-        this.#sendRequest();
+        console.log(this.#requestParam);
+        // this.#sendRequest();
     }
     #sendRequest() {
         document.body.style.cursor = 'progress';

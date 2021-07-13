@@ -24,6 +24,7 @@ class ListOffersModel extends AbstractModel
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $row['array_users'] = $this->getListNames($row['array_users']);
+                $row['rating_user'] = json_decode($row['rating_user']);
                 array_push($result, $row);
             }
 

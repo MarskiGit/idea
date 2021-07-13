@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.0
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Czas generowania: 24 Mar 2021, 16:55
+-- Czas generowania: 13 Lip 2021, 12:24
 -- Wersja serwera: 10.4.17-MariaDB
 -- Wersja PHP: 8.0.2
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Baza danych: `idea`
+-- Baza danych: `new_idea`
 --
 
 -- --------------------------------------------------------
@@ -28,37 +28,26 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `account` (
-  `id_user` int(11) NOT NULL,
+  `id_account` int(11) NOT NULL,
   `id_area` int(11) NOT NULL,
-  `user_name` varchar(50) COLLATE utf8_polish_ci NOT NULL,
-  `user_number` int(10) DEFAULT NULL,
-  `account_rang` int(1) NOT NULL DEFAULT 0,
-  `account_passwd` varchar(255) CHARACTER SET utf8 NOT NULL,
-  `account_enabled` tinyint(4) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+  `full_name` varchar(150) NOT NULL,
+  `account_login` varchar(150) DEFAULT NULL,
+  `id_pass` int(11) NOT NULL,
+  `rang` int(1) NOT NULL DEFAULT 0,
+  `account_password` varchar(255) DEFAULT NULL,
+  `active` tinyint(4) NOT NULL DEFAULT 1,
+  `data_add` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Zrzut danych tabeli `account`
 --
 
-INSERT INTO `account` (`id_user`, `id_area`, `user_name`, `user_number`, `account_rang`, `account_passwd`, `account_enabled`) VALUES
-(1, 1, 'Mariusz Kępski', 1234, 0, '', 1),
-(2, 2, 'Jan Kowalski', 1235, 0, '', 1),
-(3, 2, 'Mariusz Rower', 1111, 0, '', 1),
-(4, 1, 'Jan Kępski', 22222, 0, '', 1),
-(5, 4, 'Marek Winarek', 4444, 0, '', 1),
-(6, 3, 'Jan Niezbędny', 1233, 0, '', 1),
-(7, 3, 'Plastuś', 1236, 0, '', 1),
-(8, 7, 'Michael Music', 1258, 0, '', 1),
-(9, 6, 'Wartosćć Mariusz', 7861, 0, '', 1),
-(10, 10, 'Kiepski Kawał', 1412, 0, '', 1),
-(11, 9, 'Korniszony Słoiczkowe', 34433, 0, '', 1),
-(12, 11, 'Kogut Zielony', 655, 0, '', 1),
-(13, 11, 'Bociań Księżycowy', 65744, 0, '', 1),
-(14, 1, 'Kurczę Pieczone', 9768, 0, '', 1),
-(15, 5, 'Bronek Lonek', 6786, 0, '', 1),
-(41, 1, 'Marski', NULL, 2, '$2y$10$VLzuo.OPa7jBCuJtKjna4eUT.R2vhP9DUxHydpmo/GusPtb84uDzu', 1),
-(48, 1, 'Marski', NULL, 2, '$2y$10$XKW8ju3sh/O0lQhE8OPohOeCkzJQeerw25U/iKncXFRCuVplhfk7.', 1);
+INSERT INTO `account` (`id_account`, `id_area`, `full_name`, `account_login`, `id_pass`, `rang`, `account_password`, `active`, `data_add`) VALUES
+(4, 1, 'Maja Kępska', 'marski', 721146, 2, '$2y$10$TeLxid1Mgs0tnjIpO5rau.KSmm9tY3iDXzm9x5YW4GnXjFhn6Npy.', 1, '0000-00-00'),
+(5, 2, 'Kuba Wojnicki', NULL, 12345, 0, NULL, 1, '2021-05-30'),
+(8, 6, 'Marcin Kowalski', NULL, 1444, 0, NULL, 1, '2021-06-09'),
+(9, 5, 'Kasia Grzebinoga', NULL, 1233, 0, NULL, 1, '2021-06-09');
 
 -- --------------------------------------------------------
 
@@ -68,25 +57,20 @@ INSERT INTO `account` (`id_user`, `id_area`, `user_name`, `user_number`, `accoun
 
 CREATE TABLE `area` (
   `id_area` int(11) NOT NULL,
-  `area_name` text COLLATE utf8_polish_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+  `area_name` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Zrzut danych tabeli `area`
 --
 
 INSERT INTO `area` (`id_area`, `area_name`) VALUES
-(1, 'Roto'),
-(2, 'Laminacja'),
-(3, 'Cięcie'),
-(4, 'Magazyn'),
-(5, 'Polska'),
-(6, 'Gdzieś'),
-(7, 'Wschodni'),
-(8, 'Zachodni'),
-(9, 'Środkowy'),
-(10, 'Morski'),
-(11, 'Księżycowy');
+(1, 'Admin'),
+(2, 'Roto'),
+(3, 'Polska'),
+(4, 'Laminacja'),
+(5, 'Rolnicy'),
+(6, 'Programiści');
 
 -- --------------------------------------------------------
 
@@ -97,89 +81,48 @@ INSERT INTO `area` (`id_area`, `area_name`) VALUES
 CREATE TABLE `idea` (
   `id_idea` int(11) NOT NULL,
   `id_area` int(11) NOT NULL,
-  `id_users` text COLLATE utf8_polish_ci NOT NULL,
-  `before_value` text COLLATE utf8_polish_ci NOT NULL,
-  `after_value` text COLLATE utf8_polish_ci NOT NULL,
-  `mod_value` text COLLATE utf8_polish_ci DEFAULT NULL,
-  `date_added` datetime NOT NULL,
+  `after_value` text NOT NULL,
+  `before_value` text NOT NULL,
+  `mod_comment` text DEFAULT NULL,
+  `array_users` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `rating_user` text NOT NULL,
+  `saving_value` float DEFAULT NULL,
+  `date_added` date NOT NULL DEFAULT current_timestamp(),
   `date_implementation` date DEFAULT NULL,
-  `pkt_idea` int(3) NOT NULL,
-  `pkt_mod` int(3) DEFAULT NULL,
-  `pkt_user` int(3) NOT NULL,
-  `stat_coo` tinyint(4) DEFAULT NULL,
-  `stat_mod` tinyint(4) DEFAULT NULL,
-  `savings` tinyint(4) DEFAULT NULL,
-  `status` tinyint(4) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+  `idea_status` tinyint(1) NOT NULL DEFAULT 0,
+  `token_idea` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Zrzut danych tabeli `idea`
 --
 
-INSERT INTO `idea` (`id_idea`, `id_area`, `id_users`, `before_value`, `after_value`, `mod_value`, `date_added`, `date_implementation`, `pkt_idea`, `pkt_mod`, `pkt_user`, `stat_coo`, `stat_mod`, `savings`, `status`) VALUES
-(1, 1, '4,6', 'Jest dostępnych wiele różnych wersji Lorem Ipsum, ale większość zmieniła się pod wpływem dodanego humoru czy przypadkowych słów, które nawet w najmniejszym stopniu nie przypominają istniejących. Jeśli masz zamiar użyć fragmentu Lorem Ipsum, lepiej mieć pewność, że nie ma niczego „dziwnego” w środku tekstu. Wszystkie Internetowe generatory Lorem Ipsum mają tendencje do kopiowania już istniejących bloków, co czyni nasz pierwszym prawdziwym generatorem w Internecie. Używamy zawierającego ponad 200 łacińskich słów słownika, w kontekście wielu znanych sentencji, by wygenerować tekst wyglądający odpowiednio. To wszystko czyni „nasz” Lorem Ipsum wolnym od powtórzeń, humorystycznych wstawek czy niecharakterystycznych słów.', 'Jest dostępnych wiele różnych wersji Lorem Ipsum, ale większość zmieniła się pod wpływem dodanego humoru czy przypadkowych słów, które nawet w najmniejszym stopniu nie przypominają istniejących. Jeśli masz zamiar użyć fragmentu Lorem Ipsum, lepiej mieć pewność, że nie ma niczego „dziwnego” w środku tekstu. Wszystkie Internetowe generatory Lorem Ipsum mają tendencje do kopiowania już istniejących bloków, co czyni nasz pierwszym prawdziwym generatorem w Internecie. Używamy zawierającego ponad 200 łacińskich słów słownika, w kontekście wielu znanych sentencji, by wygenerować tekst wyglądający odpowiednio. To wszystko czyni „nasz” Lorem Ipsum wolnym od powtórzeń, humorystycznych wstawek czy niecharakterystycznych słów.', NULL, '2020-09-16 00:00:00', NULL, 0, 20, 20, NULL, NULL, 0, 1),
-(2, 1, '4,6', 'Jest dostępnych wiele różnych wersji Lorem Ipsum, ale większość zmieniła się pod wpływem dodanego humoru czy przypadkowych słów, które nawet w najmniejszym stopniu nie przypominają istniejących. Jeśli masz zamiar użyć fragmentu Lorem Ipsum, lepiej mieć pewność, że nie ma niczego „dziwnego” w środku tekstu. Wszystkie Internetowe generatory Lorem Ipsum mają tendencje do kopiowania już istniejących bloków, co czyni nasz pierwszym prawdziwym generatorem w Internecie. Używamy zawierającego ponad 200 łacińskich słów słownika, w kontekście wielu znanych sentencji, by wygenerować tekst wyglądający odpowiednio. To wszystko czyni „nasz” Lorem Ipsum wolnym od powtórzeń, humorystycznych wstawek czy niecharakterystycznych słów.', 'Jest dostępnych wiele różnych wersji Lorem Ipsum, ale większość zmieniła się pod wpływem dodanego humoru czy przypadkowych słów, które nawet w najmniejszym stopniu nie przypominają istniejących. Jeśli masz zamiar użyć fragmentu Lorem Ipsum, lepiej mieć pewność, że nie ma niczego „dziwnego” w środku tekstu. Wszystkie Internetowe generatory Lorem Ipsum mają tendencje do kopiowania już istniejących bloków, co czyni nasz pierwszym prawdziwym generatorem w Internecie. Używamy zawierającego ponad 200 łacińskich słów słownika, w kontekście wielu znanych sentencji, by wygenerować tekst wyglądający odpowiednio. To wszystko czyni „nasz” Lorem Ipsum wolnym od powtórzeń, humorystycznych wstawek czy niecharakterystycznych słów.', NULL, '2020-09-16 22:25:40', NULL, 0, NULL, 20, NULL, NULL, 0, 3),
-(3, 1, '1', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. &lt;br> Lorem Ipsum has been &lt; &amp; the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived &lt; &quot;not&quot; only five centuries, &lt; but also the leap into electronic typesetting', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. &lt;br> Lorem Ipsum has been &lt; &amp; the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived &lt; &quot;not&quot; only five centuries, &lt; but also the leap into electronic typesetting', NULL, '2020-09-16 23:45:36', NULL, 0, NULL, 10, NULL, NULL, 0, 4),
-(4, 2, '6,3', 'Sed rutrum orci lorem, et tincidunt erat suscipit et. Phasellus vel facilisis sem. Vestibulum convallis dolor et ligula faucibus, at scelerisque mi commodo. Mauris imperdiet suscipit risus. Nulla euismod quis libero sed posuere. Integer cursus ipsum neque, et auctor mi sollicitudin egestas. Sed enim nisi, dapibus non posuere ac, iaculis ut risus. Nulla pharetra turpis felis, nec dapibus diam sollicitudin non. Sed eget mi malesuada, consectetur mauris at, mattis dolor. Aenean ac dignissim ipsum. Donec vitae magna tortor. Duis congue condimentum elit vitae condimentum. ', 'Morbi eros libero, imperdiet quis nibh id, aliquet lacinia ex. Duis quis justo eu tellus fringilla venenatis id vitae elit. Ut porttitor nisi sed tincidunt dapibus. Proin in odio sit amet mauris aliquam volutpat quis eu augue. Quisque scelerisque, justo pellentesque elementum vulputate, lectus lectus pellentesque orci, at ultricies elit arcu facilisis tortor. Vestibulum tristique, est a auctor laoreet, neque lectus auctor risus, sit amet placerat est odio eu nisi. Sed ullamcorper ex ac scelerisque dictum. Donec venenatis dignissim massa eu condimentum. Phasellus at blandit massa. Praesent pharetra nisl feugiat velit dictum, nec malesuada ante semper. ', NULL, '2020-09-19 00:00:21', '2020-09-03', 0, 40, 40, NULL, NULL, 0, 2),
-(5, 4, '5,9,3', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', NULL, '2020-09-19 13:18:25', NULL, 0, NULL, 50, NULL, NULL, 0, 0),
-(6, 9, '11', 'asas', 'asas', NULL, '2020-09-19 13:36:03', NULL, 0, NULL, 10, NULL, NULL, 0, 0),
-(7, 2, '3', 'asasasasa', 'asasasas', NULL, '2020-09-19 13:38:19', NULL, 0, NULL, 10, NULL, NULL, 0, 0),
-(8, 6, '9,5', 'Statystyki\nNajwięcej wdrożonych w kwartale\nLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,\n', 'Statystyki\nNajwięcej wdrożonych w kwartale\nLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,\n', NULL, '2020-09-19 13:48:46', NULL, 0, NULL, 10, NULL, NULL, 0, 4),
-(9, 2, '2,4,6', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames. Metus dictum at tempor commodo ullamcorper a lacus vestibulum sed. Lorem ipsum dolor sit amet consectetur adipiscing elit pellentesque habitant. Magna ac placerat vestibulum lectus. Sed risus pretium quam vulputate dignissim. Molestie nunc non blandit massa. Tempus imperdiet nulla malesuada pellentesque elit eget gravida cum sociis. Aliquet lectus proin nibh nisl condimentum id venenatis a. Enim sed faucibus turpis in eu mi bibendum. Facilisis volutpat est velit egestas dui id ornare arcu. Facilisis mauris sit amet massa vitae tortor. Fringilla urna porttitor rhoncus dolor. Commodo sed egestas egestas fringilla phasellus. Libero nunc consequat interdum varius sit. Facilisis sed odio morbi quis commodo odio. Nunc sed velit dignissim sodales ut. Nunc sed velit dignissim sodales ut. Rutrum tellus pellentesque eu tincidunt tortor aliquam nulla. Felis bibendum ut tristique et egestas quis.', 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames. Metus dictum at tempor commodo ullamcorper a lacus vestibulum sed. Lorem ipsum dolor sit amet consectetur adipiscing elit pellentesque habitant. Magna ac placerat vestibulum lectus. Sed risus pretium quam vulputate dignissim. Molestie nunc non blandit massa. Tempus imperdiet nulla malesuada pellentesque elit eget gravida cum sociis. Aliquet lectus proin nibh nisl condimentum id venenatis a. Enim sed faucibus turpis in eu mi bibendum. Facilisis volutpat est velit egestas dui id ornare arcu. Facilisis mauris sit amet massa vitae tortor. Fringilla urna porttitor rhoncus dolor. Commodo sed egestas egestas fringilla phasellus. Libero nunc consequat interdum varius sit. Facilisis sed odio morbi quis commodo odio. Nunc sed velit dignissim sodales ut. Nunc sed velit dignissim sodales ut. Rutrum tellus pellentesque eu tincidunt tortor aliquam nulla. Felis bibendum ut tristique et egestas quis.Pellentesque habitant morbi tristique senectus et netus et malesuada fames. Metus dictum at tempor commodo ullamcorper a lacus vestibulum sed. Lorem ipsum dolor sit amet consectetur adipiscing elit pellentesque habitant. Magna ac placerat vestibulum lectus. Sed risus pretium quam vulputate dignissim. Molestie nunc non blandit massa. Tempus imperdiet nulla malesuada pellentesque elit eget gravida cum sociis. Aliquet lectus proin nibh nisl condimentum id venenatis a. Enim sed faucibus turpis in eu mi bibendum. Facilisis volutpat est velit egestas dui id ornare arcu. Facilisis mauris sit amet massa vitae tortor. Fringilla urna porttitor rhoncus dolor. Commodo sed egestas egestas fringilla phasellus. Libero nunc consequat interdum varius sit. Facilisis sed odio morbi quis commodo odio. Nunc sed velit dignissim sodales ut. Nunc sed velit dignissim sodales ut. Rutrum tellus pellentesque eu tincidunt tortor aliquam nulla. Felis bibendum ut tristique et egestas quis.Pellentesque habitant morbi tristique senectus et netu', NULL, '2020-09-20 11:22:49', NULL, 0, NULL, 10, NULL, NULL, 0, 3),
-(10, 1, '1,3,5', 'JSON.parse(el.dataset.select_user)[1]', 'Euismod in pellentesque massa placerat duis ultricies lacus. Enim nulla aliquet porttitor lacus luctus accumsan tortor. Volutpat maecenas volutpat blandit aliquam etiam. Egestas erat imperdiet sed euismod nisi porta lorem mollis aliquam. Tortor consequat id porta nibh venenatis cras. Adipiscing bibendum est ultricies integer quis auctor. Venenatis tellus in metus vulputate eu scelerisque felis. At in tellus integer feugiat scelerisque varius morbi. Nisl condimentum id venenatis a condimentum. Egestas purus viverra accumsan in nisl nisi scelerisque eu. Vel orci porta non pulvinar neque laoreet suspendisse. Vitae tempus quam pellentesque nec nam aliquam sem et. Congue eu consequat ac', NULL, '2020-09-20 11:26:46', NULL, 0, NULL, 20, NULL, NULL, 0, 0),
-(11, 4, '4,6,2', 'Loremp Ipsum is simply dummy text of the printing and typesetting industry. &lt;br> Lorem Ipsum has been &lt; &amp; the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived &lt; &quot;not&quot; only five centuries, &lt; but also the leap into electronic typesetting, ', 'Loremp Ipsum is simply dummy text of the printing and typesetting industry. &lt;br> Lorem Ipsum has been &lt; &amp; the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived &lt; &quot;not&quot; only five centuries, &lt; but also the leap into electronic typesetting, Loremp Ipsum is simply dummy text of the printing and typesetting industry. &lt;br> Lorem Ipsum has been &lt; &amp; the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived &lt; &quot;not&quot; only five centuries, &lt; but also the leap into electronic typesetting, ', NULL, '2020-09-21 18:12:19', NULL, 0, NULL, 10, NULL, NULL, 0, 0),
-(12, 2, '2,4', 'Google wykorzystuje pliki cookie i inne dane do dostarczania, utrzymywania i ulepszania swoich usług oraz reklam. Jeśli się zgodzisz, będziemy personalizować wyświetlane treści i reklamy na podstawie Twojej aktywności w usługach Google, takich jak wyszukiwarka, Mapy i YouTube. Współpracujemy też z firmami, które mierzą, jak użytkownicy korzystają z naszych usług. Aby przejrzeć dostępne opcje, kliknij „Pokaż więcej” lub w dowolnej chwili wejdź na g.co/privacytools.', 'Google wykorzystuje pliki cookie i inne dane do dostarczania, utrzymywania i ulepszania swoich usług oraz reklam. Jeśli się zgodzisz, będziemy personalizować wyświetlane treści i reklamy na podstawie Twojej aktywności w usługach Google, takich jak wyszukiwarka, Mapy i YouTube. Współpracujemy też z firmami, które mierzą, jak użytkownicy korzystają z naszych usług. Aby przejrzeć dostępne opcje, kliknij „Pokaż więcej” lub w dowolnej chwili wejdź na g.co/privacytools.', NULL, '2020-09-24 20:15:03', NULL, 0, NULL, 10, NULL, NULL, 0, 0),
-(13, 4, '2,4,6', '{jsSidebar(&quot;Classes&quot;)}}\n\nSłowo kluczowe static definiuje statyczną metodę lub klasę. Metody statyczne nie są wywoływane na instancjach klasy, a bezpośrednio na samej klasie. Są to często funkcje służące na przykład do tworzenia czy klonowania obiektów.', '{jsSidebar(&quot;Classes&quot;)}}\n\nSłowo kluczowe static definiuje statyczną metodę lub klasę. Metody statyczne nie są wywoływane na instancjach klasy, a bezpośrednio na samej klasie. Są to często funkcje służące na przykład do tworzenia czy klonowania obiektów.', NULL, '2020-09-25 18:25:29', NULL, 0, NULL, 10, NULL, NULL, 0, 0),
-(14, 9, '2,4,6,5,9,3,1', '{jsSidebar(&quot;Classes&quot;)}}\n\nSłowo kluczowe static definiuje statyczną metodę lub klasę. Metody statyczne nie są wywoływane na instancjach klasy, a bezpośrednio na samej klasie. Są to często funkcje służące na przykład do tworzenia czy klonowania obiektów.', '{jsSidebar(&quot;Classes&quot;)}}\n\nSłowo kluczowe static definiuje statyczną metodę lub klasę. Metody statyczne nie są wywoływane na instancjach klasy, a bezpośrednio na samej klasie. Są to często funkcje służące na przykład do tworzenia czy klonowania obiektów.', NULL, '2020-09-25 18:26:21', NULL, 0, NULL, 30, NULL, NULL, 0, 0),
-(15, 2, '2,4,6', 'aas', 'aas', NULL, '2020-09-25 19:04:30', NULL, 0, NULL, 10, NULL, NULL, 0, 0),
-(16, 6, '6', 'wewewe', 'wewewe', NULL, '2020-09-25 19:05:33', NULL, 0, NULL, 10, NULL, NULL, 0, 0),
-(17, 2, '2', 'uityuoyiykyuykyu', 'ykyukykykyk', NULL, '2020-09-25 19:07:48', NULL, 0, NULL, 10, NULL, NULL, 0, 0),
-(18, 2, '6,4,2', 'asasasasasasas', 'asasasasasasas', NULL, '2020-09-25 19:09:03', NULL, 0, NULL, 10, NULL, NULL, 0, 0),
-(19, 2, '6,4,2', 'If you want to find all HTML elements that match a specified CSS selector (id, class names, types, attributes, values of attributes, etc), use the querySelectorAll() method.\n\nThis example returns a list of all &lt;p> elements with class=&quot;intro&quot;.If you want to find all HTML elements that match a specified CSS selector (id, class names, types, attributes, values of attributes, etc), use the querySelectorAll() method.\n\nThis example returns a list of all &lt;p> elements with class=&quot;intro&quot;.If you want to find all HTML elements that match a specified CSS selector (id, class names, types, attributes, values of attributes, etc), use the querySelectorAll() method.\n\nThis example returns a list of all &lt;p> elements with class=&quot;intro&quot;.', 'If you want to find all HTML elements that match a specified CSS selector (id, class names, types, attributes, values of attributes, etc), use the querySelectorAll() method.\n\nThis example returns a list of all &lt;p> elements with class=&quot;intro&quot;.If you want to find all HTML elements that match a specified CSS selector (id, class names, types, attributes, values of attributes, etc), use the querySelectorAll() method.\n\nThis example returns a list of all &lt;p> elements with class=&quot;intro&quot;.If you want to find all HTML elements that match a specified CSS selector (id, class names, types, attributes, values of attributes, etc), use the querySelectorAll() method.\n\nThis example returns a list of all &lt;p> elements with class=&quot;intro&quot;.', NULL, '2020-09-25 19:10:42', NULL, 0, NULL, 10, NULL, NULL, 0, 0),
-(20, 1, '6,4,2,12', 'If you want to find all HTML elements that match a specified CSS selector (id, class names, types, attributes, values of attributes, etc), use the querySelectorAll() method.\n\nThis example returns a list of all &lt;p> elements with class=&quot;intro&quot;.', 'If you want to find all HTML elements that match a specified CSS selector (id, class names, types, attributes, values of attributes, etc), use the querySelectorAll() method.\n\nThis example returns a list of all &lt;p> elements with class=&quot;intro&quot;.', NULL, '2020-09-25 19:11:11', NULL, 0, NULL, 30, NULL, NULL, 0, 0),
-(21, 4, '2,4', 'Przypadkowo wcisnąłeś caps locka i wpisałeś jakiś tekst, a teraz szkoda przepisywać to wszystko od nowa', 'Przypadkowo wcisnąłeś caps locka i wpisałeś jakiś tekst, a teraz szkoda przepisywać to wszystko od nowa', NULL, '2020-09-25 19:13:20', NULL, 0, NULL, 30, NULL, NULL, 0, 0),
-(22, 2, '2,4,6', 'Przypadkowo wcisnąłeś caps locka i wpisałeś jakiś tekst, a teraz szkoda przepisywać to wszystko od nowa', 'Przypadkowo wcisnąłeś caps locka i wpisałeś jakiś tekst, a teraz szkoda przepisywać to wszystko od nowa', NULL, '2020-09-25 19:13:38', NULL, 0, NULL, 20, NULL, NULL, 0, 0),
-(23, 1, '1', '&quot;But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?&quot;', '&quot;But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?&quot;', NULL, '2020-10-11 22:47:55', NULL, 0, NULL, 40, NULL, NULL, 1, 0),
-(24, 1, '3,1', '&quot;On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.&quot;', '&quot;On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.&quot;', NULL, '2020-10-11 22:51:27', NULL, 0, NULL, 50, NULL, NULL, 0, 0),
-(25, 9, '9', '&quot;On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.&quot;', '&quot;On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.&quot;', NULL, '2020-10-11 22:53:23', NULL, 0, NULL, 20, NULL, NULL, 0, 0),
-(26, 3, '3', 'aADSDSADSAD', 'asdasdasdasdasd', NULL, '2020-10-11 22:55:43', NULL, 0, NULL, 30, NULL, NULL, 0, 0),
-(27, 5, '5', 'sadasdasd', 'asdsadasd', NULL, '2020-10-11 22:56:12', NULL, 0, NULL, 10, NULL, NULL, 0, 0),
-(28, 5, '1,3,5,9', 'asdsadadadadadaegdjyf', 'fsfesrhsgsrg', NULL, '2020-10-11 22:57:56', NULL, 0, NULL, 30, NULL, NULL, 0, 0),
-(29, 2, '2,4', '12121212121', '1212121212121', NULL, '2020-10-14 19:32:16', NULL, 0, NULL, 10, NULL, NULL, 0, 0),
-(30, 2, '4,2,6', '6666666666666666666666666666', '6666666666666666666666666666666666', NULL, '2020-10-14 20:04:19', NULL, 0, NULL, 10, NULL, NULL, 0, 0),
-(31, 2, '2,4,6', '222222222222222222222222222', '222222222222222222222222222222', NULL, '2020-10-14 20:05:38', NULL, 0, NULL, 10, NULL, NULL, 0, 0),
-(32, 2, '2,4,6', 'dddddddddd', 'dddddddddd', NULL, '2020-10-14 20:12:41', NULL, 0, NULL, 50, NULL, NULL, 1, 0),
-(33, 2, '2,4,6', '121212', '12112', NULL, '2020-10-14 20:15:18', NULL, 0, NULL, 40, NULL, NULL, 1, 0),
-(34, 1, '1,5,9', '1212121313123', '12321412313', NULL, '2020-10-14 20:17:19', NULL, 0, NULL, 90, NULL, NULL, 1, 0),
-(35, 2, '4,2', 'aaaaaaaaaaa', 'ddddddddddddddddddd', NULL, '2020-10-14 20:18:22', NULL, 0, NULL, 100, NULL, NULL, 1, 0),
-(36, 3, '3,5,9', 'asasas', 'ssss', NULL, '2020-10-14 20:18:52', NULL, 0, NULL, 40, NULL, NULL, 1, 0),
-(37, 5, '5,9', 'asas', 'asas', NULL, '2020-10-14 20:19:18', NULL, 0, NULL, 30, NULL, NULL, 0, 0),
-(38, 2, '6,4,2', 'sdgdfdzvaesr', 'sdfsbad', NULL, '2020-10-14 20:31:55', NULL, 0, NULL, 20, NULL, NULL, 0, 0),
-(39, 2, '2,4', 'qwqw', 'qwqwq', NULL, '2020-10-14 20:35:51', NULL, 0, NULL, 10, NULL, NULL, 1, 0),
-(40, 1, '1', 'Jaki test dlaczego ja tego tekstu nie wpisuje przy użyciu dziesięciorga placów, Koniecznie nawyk trzeba zaprogramować w głowie. Trudno jednak przy tak krótkich tekstach jak w programowaniu pisać taką metodą. Jednak należy ćwiczyć i tak robić to', 'Pisać dziesięcioma palcami w każdym przypadku. Przed chwilą zamknąłem okno edytora JavaScrpit, z powodu pomieszania klawiszy. Liczy się droga do celu a nie sam cel. Te zdanie nabiera dla mnie nowego znaczenia.', NULL, '2020-10-14 20:42:38', NULL, 0, NULL, 100, NULL, NULL, 1, 0),
-(41, 2, '2,4', 'Proszę wpisać w te pole wartość stanu obecnego. ', 'Test foreth zamiast map na tablicy, uzasadnieniem tego jest fakt mnij operacji na obekicie', NULL, '2020-10-15 20:00:40', NULL, 0, NULL, 50, NULL, NULL, 0, 0);
+INSERT INTO `idea` (`id_idea`, `id_area`, `after_value`, `before_value`, `mod_comment`, `array_users`, `rating_user`, `saving_value`, `date_added`, `date_implementation`, `idea_status`, `token_idea`) VALUES
+(1, 1, 'Ujednolicić komunikację, poprawność generowania danych zaznaczyć &lt;true&gt; lub &lt;false&gt; w zależności od komunikacji', 'Problem z utrzymaniem w czystości komunikacji między Api, a przeglądarką', NULL, '[4]', '{\"point\":\"30\",\"saving\":\"0\"}', NULL, '2021-06-02', NULL, 1, '2162/1'),
+(2, 3, 'Stworzyć jeden mechanizm obsługi. Lub wyodrębnić tylko najważniejsze mechanizmy', 'Bałagan z obsługą formularzy w js', NULL, '[4]', '{\"point\":\"20\",\"saving\":\"0\"}', NULL, '2021-06-03', '2021-06-04', 2, '2163/2'),
+(3, 3, 'Jedna klasa z obsługa forularza dla jednego formularza. Są zbyt różne aby je próbować pisać w jednym obiekcie. Kod staję się mało czytelny', 'Bałagan w kodzie JacaScript w obszarze obsługi formularzy', NULL, '[4]', '{\"point\":\"70\",\"saving\":\"0\"}', NULL, '2021-06-03', NULL, 3, '2163/3'),
+(4, 1, 'Czyszczenie kodu', 'Bałagan w kodzie JavaScriprt uniemożliwia reafaktiryzacje kodu modułów i klas.', NULL, '[4]', '{\"point\":\"40\",\"saving\":\"0\"}', NULL, '2021-06-04', NULL, 0, '2164/4'),
+(5, 3, 'Wyszukanie nieczytelnych klas i ich zmodyfikowanie według aktualnego standardu zapisu. &lt;h4&gt; FUCK &lt;/h4&gt;', 'W aplikacji znajdują się klasy i moduły odbiegające od standardu.', NULL, '[4,5]', '{\"point\":\"30\",\"saving\":\"0\"}', NULL, '2021-06-04', '2021-06-09', 2, '2164/5'),
+(6, 3, 'Brak spójności w nazwach. Nazwy stosowane w kodzie są różne od nazw głównych plików. Może to prowadzić do dezorientacji. ', 'Stosować spójne nazwy.', NULL, '[4]', '{\"point\":\"10\",\"saving\":\"0\"}', NULL, '2021-06-05', NULL, 0, '2165/6'),
+(21, 3, 'Test Formularza &lt;h4&gt; TEST &lt;/h4&gt;', 'Test Formularza', NULL, '[4,5]', '{\"point\":\"40\",\"saving\":\"1\"}', NULL, '2021-06-06', NULL, 1, '2166/21'),
+(22, 3, 'Test Wczytywania listy Ofert', 'Test Wczytywania listy Ofert', NULL, '[4]', '{\"point\":\"30\",\"saving\":\"0\"}\r\n', NULL, '2021-06-06', NULL, 0, '2166/22'),
+(23, 6, 'Napisać algorytm, który sprawdzi w tabeli z punktami czy powtarzają się w wartości, Jeżeli tak sprawdzenie będzie następowało w tabeli z ilością propozycji, który jest najwyższa. Podczas analizowania danych z dwóch tabel będą one usuwane aby nie doszło do pomyłek i niepotrzebnych obliczeń procesora', 'Brak logiki wyznaczania pozycji użytkownika na skali punktacji. Mianowicie - w pierwszej kolejności brane są do rankingu jest liczba zdobytych punktów. Jeżeli jednak liczba tych punktów jest jednakowa wyznacznikiem jest liczba propozycji. Brak również wyznaczania miejsc egzekwo.', NULL, '[8,4]', '{\"point\":\"10\",\"saving\":\"0\"}', NULL, '2021-06-15', '2021-06-15', 2, '21615/23'),
+(24, 6, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', NULL, '[5]', '{\"point\":\"40\",\"saving\":\"0\"}', NULL, '2021-06-16', '2021-06-16', 2, '21616/24'),
+(25, 6, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed orci nisl. Fusce sollicitudin ante sed rhoncus egestas. Nunc cursus elit eu ligula rutrum, eget iaculis nulla imperdiet. Integer sagittis viverra finibus. Nunc auctor at felis quis hendrerit. Donec enim justo, eleifend eu odio eget, scelerisque aliquet dolor. Sed in neque nisl. Nulla facilisi. Aenean tincidunt ultricies hendrerit. Suspendisse quis augue urna. Sed a vestibulum leo. Aenean congue porta sem in mattis. In hac habitasse platea dictumst. Fusce eu aliquet lacus. Nam dictum tortor non orci ultrices, a commodo orci dapibus. Donec vitae massa mauris.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed orci nisl. Fusce sollicitudin ante sed rhoncus egestas. Nunc cursus elit eu ligula rutrum, eget iaculis nulla imperdiet. Integer sagittis viverra finibus. Nunc auctor at felis quis hendrerit. Donec enim justo, eleifend eu odio eget, scelerisque aliquet dolor. Sed in neque nisl. Nulla facilisi. Aenean tincidunt ultricies hendrerit. Suspendisse quis augue urna. Sed a vestibulum leo. Aenean congue porta sem in mattis. In hac habitasse platea dictumst. Fusce eu aliquet lacus. Nam dictum tortor non orci ultrices, a commodo orci dapibus. Donec vitae massa mauris.', NULL, '[8]', '{\"point\":\"10\",\"saving\":\"1\"}\r\n', NULL, '2021-06-16', '2021-06-15', 2, '21616/25'),
+(26, 6, 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.', 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.', 'Donec sed orci nisl. Fusce sollicitudin ante sed rhoncus egestas. Nunc cursus elit eu ligula rutrum, eget iaculis nulla imperdiet. Integer sagittis viverra finibus. Nunc auctor at felis quis hendrerit. Donec enim justo, eleifend eu odio eget, scelerisque aliquet dolor. Sed in neque nisl. Nulla facilisi. Aenean tincidunt ultricies hendrerit. Suspendisse quis augue urna. Sed a vestibulum leo. Aenean congue porta sem in mattis. ', '[8]', '{\"point\":\"10\",\"saving\":\"0\"}\r\n', NULL, '2021-06-16', '2021-06-15', 2, '21616/26'),
+(27, 3, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', NULL, '[9]', '{\"point\":\"10\",\"saving\":\"0\"}\r\n', NULL, '2021-06-16', '2021-06-15', 2, '21616/27'),
+(28, 3, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam mollis lacinia lacus, non aliquet nibh consequat in. Praesent semper non magna ut rutrum. Morbi faucibus condimentum imperdiet. Pellentesque est diam, faucibus eget ullamcorper fringilla, egestas non elit. Donec consectetur, lectus sit amet commodo dictum, tellus mauris luctus neque, consectetur tristique ante risus eget turpis. Sed eget ornare justo. Ut mollis turpis sit amet mattis porttitor. Nullam semper venenatis velit, et dictum ipsum volutpat quis. Quisque suscipit, ante eget finibus vulputate, quam neque hendrerit dolor, tempor pretium arcu arcu tincidunt urna. In eu quam mattis, ullamcorper purus sed, ultrices leo. Suspendisse porta volutpat ultricies. Nam justo mauris, pharetra et consectetur finibus, rutrum ut elit.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam mollis lacinia lacus, non aliquet nibh consequat in. Praesent semper non magna ut rutrum. Morbi faucibus condimentum imperdiet. Pellentesque est diam, faucibus eget ullamcorper fringilla, egestas non elit. Donec consectetur, lectus sit amet commodo dictum, tellus mauris luctus neque, consectetur tristique ante risus eget turpis. Sed eget ornare justo. Ut mollis turpis sit amet mattis porttitor. Nullam semper venenatis velit, et dictum ipsum volutpat quis. Quisque suscipit, ante eget finibus vulputate, quam neque hendrerit dolor, tempor pretium arcu arcu tincidunt urna. In eu quam mattis, ullamcorper purus sed, ultrices leo. Suspendisse porta volutpat ultricies. Nam justo mauris, pharetra et consectetur finibus, rutrum ut elit.', 'Cras quis enim neque. Phasellus porta ullamcorper sapien id condimentum. Ut enim nunc, imperdiet egestas fermentum id, suscipit eu dolor. Aenean quis efficitur libero, quis vestibulum massa. Donec vel interdum tortor. Fusce finibus arcu vel tellus tristique, nec pharetra elit posuere. Nulla molestie nulla sed mauris commodo consequat. Nam gravida semper porta.', '[8]', '{\"point\":\"20\",\"saving\":\"1\"}', NULL, '2021-07-12', NULL, 1, '21712/28'),
+(29, 3, 'Morbi cursus accumsan sapien, sed accumsan turpis. Pellentesque viverra ante in purus molestie, ac euismod nibh pellentesque. Donec vulputate a velit sed lobortis. Sed tempor sit amet tortor et tristique. Sed vitae molestie ex, et mattis dolor. Pellentesque maximus porta metus ac gravida. Curabitur et massa elementum, congue libero ac, consectetur metus. Phasellus ultrices congue augue vitae mollis. Praesent suscipit nisl non ipsum luctus, vitae bibendum enim malesuada.', 'Morbi cursus accumsan sapien, sed accumsan turpis. Pellentesque viverra ante in purus molestie, ac euismod nibh pellentesque. Donec vulputate a velit sed lobortis. Sed tempor sit amet tortor et tristique. Sed vitae molestie ex, et mattis dolor. Pellentesque maximus porta metus ac gravida. Curabitur et massa elementum, congue libero ac, consectetur metus. Phasellus ultrices congue augue vitae mollis. Praesent suscipit nisl non ipsum luctus, vitae bibendum enim malesuada.', NULL, '[8]', '{\"point\":\"10\",\"saving\":\"0\"}', NULL, '2021-07-13', '2021-07-13', 2, '21713/29'),
+(30, 6, 'orem ipsum dolor sit amet, consectetur adipiscing elit. Nam mollis lacinia lacus, non aliquet nibh consequat in. Praesent semper non magna ut rutrum. Morbi faucibus condimentum imperdiet. Pellentesque est diam, faucibus eget ullamcorper fringilla, egestas non elit. Donec consectetur, lectus sit amet commodo dictum, tellus mauris luctus neque, consectetur tristique ante risus eget turpis. Sed eget ornare justo. Ut mollis turpis sit amet mattis porttitor.', 'orem ipsum dolor sit amet, consectetur adipiscing elit. Nam mollis lacinia lacus, non aliquet nibh consequat in. Praesent semper non magna ut rutrum. Morbi faucibus condimentum imperdiet. Pellentesque est diam, faucibus eget ullamcorper fringilla, egestas non elit. Donec consectetur, lectus sit amet commodo dictum, tellus mauris luctus neque, consectetur tristique ante risus eget turpis. Sed eget ornare justo. Ut mollis turpis sit amet mattis porttitor.', NULL, '[4]', '{\"point\":\"10\",\"saving\":\"0\"}', NULL, '2021-07-13', '2021-07-12', 2, '21713/30'),
+(31, 3, 'Cras quis enim neque. Phasellus porta ullamcorper sapien id condimentum. Ut enim nunc, imperdiet egestas fermentum id, suscipit eu dolor. Aenean quis efficitur libero, quis vestibulum massa. Donec vel interdum tortor. Fusce finibus arcu vel tellus tristique, nec pharetra elit posuere. Nulla molestie nulla sed mauris commodo consequat. Nam gravida semper porta.', 'Cras quis enim neque. Phasellus porta ullamcorper sapien id condimentum. Ut enim nunc, imperdiet egestas fermentum id, suscipit eu dolor. Aenean quis efficitur libero, quis vestibulum massa. Donec vel interdum tortor. Fusce finibus arcu vel tellus tristique, nec pharetra elit posuere. Nulla molestie nulla sed mauris commodo consequat. Nam gravida semper porta.', 'Fusce finibus arcu vel tellus tristique, nec pharetra elit posuere. Nulla molestie nulla sed mauris commodo consequat. Nam gravida semper porta.', '[8]', '{\"point\":\"10\",\"saving\":\"1\"}', NULL, '2021-07-13', '2021-07-12', 2, '21713/31');
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `moderator`
+-- Struktura tabeli dla tabeli `offer_option`
 --
 
-CREATE TABLE `moderator` (
-  `id_mod` int(11) NOT NULL,
-  `id_user` int(11) NOT NULL,
-  `id_area` int(11) NOT NULL,
-  `log` varchar(11) COLLATE utf8_polish_ci NOT NULL,
-  `pass` varchar(11) COLLATE utf8_polish_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
-
--- --------------------------------------------------------
-
---
--- Struktura tabeli dla tabeli `rating_setting`
---
-
-CREATE TABLE `rating_setting` (
+CREATE TABLE `offer_option` (
   `id_title` int(11) NOT NULL,
   `title` text COLLATE utf8_polish_ci NOT NULL,
   `name_option` text COLLATE utf8_polish_ci NOT NULL,
@@ -188,16 +131,131 @@ CREATE TABLE `rating_setting` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 --
--- Zrzut danych tabeli `rating_setting`
+-- Zrzut danych tabeli `offer_option`
 --
 
-INSERT INTO `rating_setting` (`id_title`, `title`, `name_option`, `value_option`, `header`) VALUES
-(1, 'Propozycja oszczędnościowa 5000 PLN w skali roku:', 'savings', 'NIE,TAK', 0),
+INSERT INTO `offer_option` (`id_title`, `title`, `name_option`, `value_option`, `header`) VALUES
+(1, 'Propozycja oszczędnościowa 5000 PLN w skali roku:', 'saving', 'NIE,TAK', 0),
 (2, 'Każda propozycja usprawnieniowa zgłoszona i zaakceptowana: ', 'any_suggestion', '10pkt,20pkt', 0),
 (3, 'Dodatkowo propozycje związane z:', '', '', 1),
 (4, 'Polepszenie BHP:', 'bhp', '0pkt,10pkt,20pkt,30pkt', 0),
 (5, 'Oszczędność czasu energii, materiałów itp:', 'other_savings', '0pkt,10pkt,20pkt', 0),
 (6, 'Samodzielne wdrożenie:', 'independence', '0pkt,10pkt,20pkt,30pkt', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `user_idea`
+--
+
+CREATE TABLE `user_idea` (
+  `id_user_idea` int(11) NOT NULL,
+  `id_idea` int(11) NOT NULL,
+  `id_account` int(11) NOT NULL,
+  `id_area` int(11) DEFAULT NULL,
+  `awarded_points` float DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Zrzut danych tabeli `user_idea`
+--
+
+INSERT INTO `user_idea` (`id_user_idea`, `id_idea`, `id_account`, `id_area`, `awarded_points`) VALUES
+(1, 1, 4, 1, NULL),
+(2, 2, 4, 3, 40),
+(3, 3, 4, 3, NULL),
+(4, 4, 4, 1, NULL),
+(5, 5, 4, 3, 15),
+(6, 5, 5, 3, 15),
+(10, 21, 4, 3, NULL),
+(11, 21, 5, 3, NULL),
+(12, 22, 4, 3, NULL),
+(13, 23, 8, 6, 22.25),
+(14, 23, 4, 6, 22.25),
+(15, 24, 5, 6, 30),
+(16, 25, 8, 6, 20.75),
+(17, 26, 8, 6, 2.75),
+(18, 27, 9, 6, 20.5),
+(19, 21, 5, 3, NULL),
+(20, 28, 8, 3, NULL),
+(21, 29, 8, 3, 20.74),
+(22, 30, 4, 6, 22),
+(23, 31, 8, 3, 24.7);
+
+-- --------------------------------------------------------
+
+--
+-- Zastąpiona struktura widoku `view_idea`
+-- (Zobacz poniżej rzeczywisty widok)
+--
+CREATE TABLE `view_idea` (
+`id_idea` int(11)
+,`area_name` varchar(100)
+,`after_value` text
+,`before_value` text
+,`awarded_points` double(19,2)
+,`rating_user` text
+,`mod_comment` text
+,`array_users` text
+,`date_added` date
+,`date_implementation` date
+,`idea_status` tinyint(1)
+,`token_idea` text
+);
+
+-- --------------------------------------------------------
+
+--
+-- Zastąpiona struktura widoku `view_points_test`
+-- (Zobacz poniżej rzeczywisty widok)
+--
+CREATE TABLE `view_points_test` (
+`awarded_points` double
+,`full_name` varchar(150)
+,`offers_implemented` bigint(21)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Zastąpiona struktura widoku `view_points_user`
+-- (Zobacz poniżej rzeczywisty widok)
+--
+CREATE TABLE `view_points_user` (
+`full_name` varchar(150)
+,`awarded_points` float
+,`area_name` varchar(100)
+,`id_account` int(11)
+,`id_idea` int(11)
+,`date_added` date
+);
+
+-- --------------------------------------------------------
+
+--
+-- Struktura widoku `view_idea`
+--
+DROP TABLE IF EXISTS `view_idea`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_idea`  AS SELECT `idea`.`id_idea` AS `id_idea`, `area`.`area_name` AS `area_name`, `idea`.`after_value` AS `after_value`, `idea`.`before_value` AS `before_value`, round(sum(`user_idea`.`awarded_points`),2) AS `awarded_points`, `idea`.`rating_user` AS `rating_user`, `idea`.`mod_comment` AS `mod_comment`, `idea`.`array_users` AS `array_users`, `idea`.`date_added` AS `date_added`, `idea`.`date_implementation` AS `date_implementation`, `idea`.`idea_status` AS `idea_status`, `idea`.`token_idea` AS `token_idea` FROM ((`idea` join `area` on(`area`.`id_area` = `idea`.`id_area`)) left join `user_idea` on(`idea`.`id_idea` = `user_idea`.`id_idea`)) GROUP BY `idea`.`id_idea` ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura widoku `view_points_test`
+--
+DROP TABLE IF EXISTS `view_points_test`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_points_test`  AS SELECT sum(`view_points_user`.`awarded_points`) AS `awarded_points`, `view_points_user`.`full_name` AS `full_name`, count(0) AS `offers_implemented` FROM `view_points_user` GROUP BY `view_points_user`.`full_name` ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura widoku `view_points_user`
+--
+DROP TABLE IF EXISTS `view_points_user`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_points_user`  AS SELECT `account`.`full_name` AS `full_name`, `user_idea`.`awarded_points` AS `awarded_points`, `view_idea`.`area_name` AS `area_name`, `account`.`id_account` AS `id_account`, `view_idea`.`id_idea` AS `id_idea`, `view_idea`.`date_added` AS `date_added` FROM ((`account` join `user_idea` on(`account`.`id_account` = `user_idea`.`id_account`)) join `view_idea` on(`view_idea`.`id_idea` = `user_idea`.`id_idea`)) WHERE `view_idea`.`idea_status` = 2 ;
 
 --
 -- Indeksy dla zrzutów tabel
@@ -207,8 +265,8 @@ INSERT INTO `rating_setting` (`id_title`, `title`, `name_option`, `value_option`
 -- Indeksy dla tabeli `account`
 --
 ALTER TABLE `account`
-  ADD PRIMARY KEY (`id_user`),
-  ADD KEY `FK_user_area` (`id_area`) USING BTREE;
+  ADD PRIMARY KEY (`id_account`),
+  ADD KEY `id_area` (`id_area`);
 
 --
 -- Indeksy dla tabeli `area`
@@ -220,19 +278,23 @@ ALTER TABLE `area`
 -- Indeksy dla tabeli `idea`
 --
 ALTER TABLE `idea`
-  ADD PRIMARY KEY (`id_idea`);
+  ADD PRIMARY KEY (`id_idea`),
+  ADD KEY `id_area` (`id_area`);
 
 --
--- Indeksy dla tabeli `moderator`
+-- Indeksy dla tabeli `offer_option`
 --
-ALTER TABLE `moderator`
-  ADD PRIMARY KEY (`id_mod`);
-
---
--- Indeksy dla tabeli `rating_setting`
---
-ALTER TABLE `rating_setting`
+ALTER TABLE `offer_option`
   ADD PRIMARY KEY (`id_title`);
+
+--
+-- Indeksy dla tabeli `user_idea`
+--
+ALTER TABLE `user_idea`
+  ADD PRIMARY KEY (`id_user_idea`),
+  ADD KEY `id_idea` (`id_idea`),
+  ADD KEY `id_account` (`id_account`),
+  ADD KEY `id_area` (`id_area`);
 
 --
 -- AUTO_INCREMENT dla zrzuconych tabel
@@ -242,31 +304,31 @@ ALTER TABLE `rating_setting`
 -- AUTO_INCREMENT dla tabeli `account`
 --
 ALTER TABLE `account`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `id_account` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT dla tabeli `area`
 --
 ALTER TABLE `area`
-  MODIFY `id_area` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_area` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT dla tabeli `idea`
 --
 ALTER TABLE `idea`
-  MODIFY `id_idea` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id_idea` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
--- AUTO_INCREMENT dla tabeli `moderator`
+-- AUTO_INCREMENT dla tabeli `offer_option`
 --
-ALTER TABLE `moderator`
-  MODIFY `id_mod` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT dla tabeli `rating_setting`
---
-ALTER TABLE `rating_setting`
+ALTER TABLE `offer_option`
   MODIFY `id_title` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT dla tabeli `user_idea`
+--
+ALTER TABLE `user_idea`
+  MODIFY `id_user_idea` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- Ograniczenia dla zrzutów tabel
@@ -276,7 +338,20 @@ ALTER TABLE `rating_setting`
 -- Ograniczenia dla tabeli `account`
 --
 ALTER TABLE `account`
-  ADD CONSTRAINT `FK_user_area` FOREIGN KEY (`id_area`) REFERENCES `area` (`id_area`);
+  ADD CONSTRAINT `FK_account_area` FOREIGN KEY (`id_area`) REFERENCES `area` (`id_area`);
+
+--
+-- Ograniczenia dla tabeli `idea`
+--
+ALTER TABLE `idea`
+  ADD CONSTRAINT `FK_idea_area` FOREIGN KEY (`id_area`) REFERENCES `area` (`id_area`);
+
+--
+-- Ograniczenia dla tabeli `user_idea`
+--
+ALTER TABLE `user_idea`
+  ADD CONSTRAINT `FK_user_idea_account` FOREIGN KEY (`id_account`) REFERENCES `account` (`id_account`),
+  ADD CONSTRAINT `FK_user_idea_area` FOREIGN KEY (`id_area`) REFERENCES `area` (`id_area`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

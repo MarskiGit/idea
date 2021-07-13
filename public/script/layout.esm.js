@@ -21,6 +21,7 @@ class Layout {
         this.#message = layoutDOM.message;
         this.#NavSticky = new NavSticky(layoutDOM);
         this.#Smooth = new SmoothTop();
+        console.warn('Aktualizacja: 13.07.2021 / 13:00');
     }
     init() {
         this.#NavSticky.init();

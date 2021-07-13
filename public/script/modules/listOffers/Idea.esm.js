@@ -8,6 +8,7 @@ export default class Idea {
     #div = document.createElement('article');
     #after_value;
     #before_value;
+    #rating_user;
     #mod_comment;
     #array_users;
     #area_name;
@@ -20,7 +21,7 @@ export default class Idea {
     constructor({
         after_value,
         before_value,
-        others_value,
+        rating_user,
         mod_comment,
         array_users,
         area_name,
@@ -32,6 +33,7 @@ export default class Idea {
     }) {
         this.#after_value = after_value;
         this.#before_value = before_value;
+        this.#rating_user = rating_user;
         this.#array_users = array_users;
         this.#mod_comment = mod_comment;
         this.#area_name = area_name;
@@ -71,17 +73,19 @@ export default class Idea {
                 <p class="td idea_text"> ${this.#before_value} </p>
                 <span class="th"><em>Propozycja usprawnienia</em></span>
                 <p class="td idea_text"> ${this.#after_value} </p>
+                ${this.#setInfo('Oszczędności', Number(this.#rating_user.saving) ? 'TAK' : '')}
                 ${this.#modComment()}
             </div>
         </div>
         <div class="tr">
-            <span class="th">Numer pomysłu:  <span class="font_number"> ${this.#token_idea}</span> </span>
+            ${this.#setInfo('Numer pomysłu', this.#token_idea)}
             ${this.#setInfo('Data wdrożenia', this.#date_implementation)}
             ${this.#setInfo('Przyznane punkty', this.#awarded_points)}
+            
         </div>
         `;
     }
-    #modComment = () => (this.#mod_comment ? `<span class="th"><em>Komentarz Moderatora</em></span> <p class="td idea_text"> ${this.#mod_comment} </p>` : '');
+    #modComment = () => (this.#mod_comment ? `<p class="th"><em>Komentarz Moderatora</em></p> <p class="td idea_text"> ${this.#mod_comment} </p>` : '');
     #setInfo = (text, data) => (data ? `<span class="th">${text}: <span class="font_number">${data * 1 ? Number(data).toFixed(2) + 'pkt' : data}</span></span>` : '');
     #statusInformation(st) {
         switch (st) {
