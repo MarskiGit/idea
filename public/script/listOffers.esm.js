@@ -20,7 +20,7 @@ class ListOffers {
     #fragmentList = document.createDocumentFragment();
     #tupleNumbers = [];
     #endTuples = false;
-    #ajaxData;
+    #ajaxOject;
 
     #listLenght;
     #renderCount;
@@ -44,14 +44,14 @@ class ListOffers {
             this.#AjaxRequest
                 .getJson(this.#requestParam)
                 .then((data) => {
-                    this.#ajaxData = this.#AjaxRequest.getData(data);
-                    this.#viewList();
+                    this.#ajaxOject = this.#AjaxRequest.getData(data);
+                    if (typeof this.#ajaxOject === 'object') this.#viewList();
                 })
                 .finally((document.body.style.cursor = 'default'));
         }
     };
     #viewList() {
-        if (this.#ajaxData.length > 0) {
+        if (this.#ajaxOject.length > 0) {
             this.#listContainer.classList.add('offers_container');
             this.#displayList();
         } else {
@@ -62,7 +62,7 @@ class ListOffers {
     #displayList() {
         console.time('Render Idea');
 
-        for (const idea of this.#ajaxData) {
+        for (const idea of this.#ajaxOject) {
             this.#tupleNumbers.push(Number(idea.id_idea));
 
             this.#fragmentList.appendChild(new Idea(idea).get());

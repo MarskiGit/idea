@@ -13,17 +13,19 @@ export default class SortingTopTen {
     }
     get = () => (this.#score.length !== 0 ? this.#score : this.#mixed);
     #init() {
+        this.#pointFixed();
         this.#firstSorting();
         this.#selectPoints();
         this.#sorting();
     }
+    #pointFixed() {
+        for (const winer of this.#mixed) for (let key in winer) if (key == 'points') winer[key] = Number(winer[key]).toFixed(2);
+    }
     #firstSorting() {
-        this.#mixed.sort((a, b) => b.points - a.points);
+        this.#mixed.sort((a, b) => Number(b.points) - Number(a.points));
     }
     #selectPoints() {
-        for (const td of this.#mixed) {
-            this.#onlyPoints.push(Number(td.points));
-        }
+        for (const winer of this.#mixed) this.#onlyPoints.push(winer.pints);
     }
     #sorting() {
         console.time('Sorted');

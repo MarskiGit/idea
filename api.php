@@ -46,8 +46,8 @@ try {
         header("Location:" . HTTP_SERVER);
     }
 } catch (ApiException $e) {
-    echo "<div class='exception align_center'><p>Błąd Api</p><p>" . $e->getMessage() . "</p><div class='exception_img'></div></div>";
+    echo $e->jsonException($e->getMessage());
 } catch (Throwable $e) {
-    echo "<div class='exception align_center'><p>Krytyczny Błąd Api</p><p>" . $e->getMessage() . "</p><div class='exception_img'></div></div>";
+    echo $e->getMessage();
     dump($e);
 }

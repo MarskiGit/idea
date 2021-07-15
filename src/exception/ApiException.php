@@ -8,13 +8,11 @@ use Exception;
 
 class ApiException extends Exception
 {
-    public function jsonException(string $m, string $f, int $l): string
+    public function jsonException(string $m): string
     {
         $temp = [
             'api' => false,
             'title' => $m,
-            'file' => $f,
-            'line' => $l,
             'type' => 'PDO'
         ];
         return  json_encode($temp);

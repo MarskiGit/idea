@@ -86,7 +86,7 @@ class FormOffer {
         this.#requestParam.before_value = before;
         this.#requestParam.after_value = after;
         this.#requestParam.array_users = this.#UserChosen.get();
-        this.#requestParam.id_area = this.#AreaChosen.get()[0];
+        this.#requestParam.id_area = this.#AreaChosen.get().toString();
         this.#requestParam.rating_user = this.#Rating.get();
         console.log(this.#requestParam);
         // this.#sendRequest();

@@ -22,7 +22,7 @@ class TopTen {
     #areaDOM;
     #flagQuarter = 0;
     #flagButton = 0;
-    #ajaxData;
+    #ajaxOject;
     constructor(statisticsDOM) {
         this.#userDOM = statisticsDOM.users;
         this.#areaDOM = statisticsDOM.area;
@@ -49,15 +49,14 @@ class TopTen {
         this.#AjaxRequest
             .getJson(this.#requestParam)
             .then((data) => {
-                this.#ajaxData = this.#AjaxRequest.getData(data);
-
-                this.#viewTopTen();
+                this.#ajaxOject = this.#AjaxRequest.getData(data);
+                if (typeof this.#ajaxOject === 'object') this.#viewTopTen();
             })
             .finally((document.body.style.cursor = 'default'));
     };
     #viewTopTen() {
-        if (this.#requestParam.request !== this.#flagButton || this.#ajaxData.quarter !== this.#flagQuarter) {
-            const { user, area, quarter } = this.#ajaxData;
+        if (this.#requestParam.request !== this.#flagButton || this.#ajaxOject.quarter !== this.#flagQuarter) {
+            const { user, area, quarter } = this.#ajaxOject;
             this.#flagQuarter = quarter;
             this.#flagButton = this.#requestParam.request;
 

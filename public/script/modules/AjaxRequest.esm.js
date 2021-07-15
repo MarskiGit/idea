@@ -39,10 +39,10 @@ export default class AjaxRequest {
         this.#seting.body = JSON.stringify(request);
 
         const response = await fetch(this.#url, this.#seting).catch(this.#handleError);
-        const res = await response;
+        const jsonStr = await response;
 
         if (response.ok && response.status === 200) {
-            return res.json();
+            return jsonStr.json();
         } else {
             this.#Exception.view(this.#status);
             return;
@@ -52,8 +52,9 @@ export default class AjaxRequest {
         if ('api' in data && Boolean(data.api)) {
             return data.data;
         } else {
+            console.log(data);
             this.#Exception.display(data);
-            return {};
+            return false;
         }
     }
     #handleError() {
