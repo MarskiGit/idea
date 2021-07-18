@@ -1,29 +1,41 @@
 'use strict';
 export default class CountCharacters {
-    #viewCount;
+    #characters;
+    #words;
+    #sentences;
+    #textArea;
     #maxCharacters;
-    #numberSign;
     #textLenght;
-    #textAreas;
-    #signNumber;
-    constructor(signNumber) {
-        this.#signNumber = signNumber;
+    #str;
+    #numCharacters;
+    #numWords;
+    #numSentences;
+
+    #empty = '0';
+    constructor({ characters, words, sentences }) {
+        this.#characters = characters;
+        this.#words = words;
+        this.#sentences = sentences;
     }
     init(textAreas) {
-        this.#textAreas = textAreas;
-        this.#textAreas.forEach((textArea) => textArea.addEventListener('keyup', (event) => this.#calculaterCharacters(event)));
+        this.#textArea = textAreas;
+        this.#textArea.addEventListener('keyup', (event) => this.#calculaterCharacters(event));
     }
     clear() {
-        this.#signNumber.forEach((sign) => (sign.innerHTML = ''));
+        [this.#characters, this.#words, this.#sentences].forEach((sign) => (sign.innerHTML = this.#empty));
     }
     #calculaterCharacters(event) {
-        this.#viewCount = event.target.nextElementSibling;
         this.#maxCharacters = event.target.maxLength;
         this.#textLenght = event.target.textLength;
-        this.#numberSign = this.#maxCharacters - event.target.textLength;
+        this.#str = event.target.value;
+        this.#numCharacters = this.#maxCharacters - event.target.textLength;
+        this.#numWords = this.#str.replace(/[\r\n]/g, ' ').split(' ').length;
+        this.#numSentences = this.#str.split('.').length;
         this.#displayCount();
     }
     #displayCount() {
-        this.#viewCount.innerHTML = this.#textLenght ? `${this.#numberSign}  &#8725;  ${this.#maxCharacters}` : (this.#viewCount.innerHTML = '');
+        this.#words.innerHTML = this.#textLenght ? this.#numWords : this.#empty;
+        this.#sentences.innerHTML = this.#textLenght ? this.#numSentences : this.#empty;
+        this.#characters.innerHTML = this.#textLenght ? `${this.#numCharacters}  &#8725;  ${this.#maxCharacters}` : this.#empty;
     }
 }

@@ -11,7 +11,16 @@ const formDOM = {
     form: document.querySelector('[data-form="offer"]'),
     errorMessage: document.querySelector('[data-form="offer_message"]'),
     viewPoints: document.querySelector('[data-form="view_points"]'),
-    signNumber: document.querySelectorAll('[data-form="sign_number"]'),
+    signBefore: {
+        characters: document.querySelector('[data-form="before-characters"]'),
+        words: document.querySelector('[data-form="before-words"]'),
+        sentences: document.querySelector('[data-form="before-sentences"]'),
+    },
+    signAfter: {
+        characters: document.querySelector('[data-form="after-characters"]'),
+        words: document.querySelector('[data-form="after-words"]'),
+        sentences: document.querySelector('[data-form="after-sentences"]'),
+    },
 };
 const searchDOM = {
     user: {
@@ -31,7 +40,8 @@ class FormOffer {
     #FormHandling;
     #AjaxRequest;
 
-    #CountCharacters;
+    #CountSignBefore;
+    #CountSignAfter;
     #Rating;
 
     #UserSearch;
@@ -46,7 +56,8 @@ class FormOffer {
         this.#FormHandling = new FormHandling(formDOM);
         this.#AjaxRequest = new AjaxRequest(formDOM.request);
 
-        this.#CountCharacters = new CountCharacters(formDOM.signNumber);
+        this.#CountSignBefore = new CountCharacters(formDOM.signBefore);
+        this.#CountSignAfter = new CountCharacters(formDOM.signAfter);
         this.#Rating = new Rating(formDOM.viewPoints);
 
         this.#UserSearch = new LiveSearch(searchDOM.user);
@@ -59,7 +70,8 @@ class FormOffer {
         this.#textAreas = this.#FormHandling.getInputs(['TEXTAREA']);
         this.#optionSelecs = this.#FormHandling.getInputs(['SELECT']);
 
-        this.#CountCharacters.init(this.#textAreas);
+        this.#CountSignBefore.init(this.#textAreas[0]);
+        this.#CountSignAfter.init(this.#textAreas[1]);
         this.#Rating.init(this.#optionSelecs);
 
         this.#UserSearch.init(this.#inputLiveSearch[0]);
@@ -109,7 +121,8 @@ class FormOffer {
     #clearForm() {
         this.#FormHandling.clear(['INPUT', 'TEXTAREA']);
 
-        this.#CountCharacters.clear();
+        this.#CountSignBefore.clear();
+        this.#CountSignAfter.clear();
         this.#Rating.clear();
 
         this.#UserSearch.clear();

@@ -52,7 +52,6 @@ export default class AjaxRequest {
         if ('api' in data && Boolean(data.api)) {
             return data.data;
         } else {
-            console.log(data);
             this.#Exception.display(data);
             return false;
         }

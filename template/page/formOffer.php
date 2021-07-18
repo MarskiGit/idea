@@ -5,13 +5,21 @@
         <fieldset>
             <legend>Opis stanu obecnego</legend>
             <textarea maxlength=" 2000" rows="15" placeholder="Proszę wypełnić to pole" name="before" id="before" data-write="before" require></textarea>
-            <span class="sign_number" data-form="sign_number"></span>
+            <div class="characters">
+                <span class="sign caption">Liczba słów:&nbsp</span> <span class="sign number" data-form="before-words">0</span>
+                <span class="sign caption">Liczba zdań:&nbsp</span> <span class="sign number" data-form="before-sentences">0</span>
+                <span class="sign caption">Liczba Znaków:&nbsp</span> <span class="sign number" data-form="before-characters">0</span>
+            </div>
         </fieldset>
 
         <fieldset>
             <legend>Propozycja usprawnienia</legend>
             <textarea maxlength="2000" rows="15" placeholder="Proszę wypełnić to pole" name="after" id="after" data-write="after" require></textarea>
-            <span class="sign_number" data-form="sign_number"></span>
+            <div class="characters">
+                <span class="sign caption">Liczba słów:&nbsp</span> <span class="sign number" data-form="after-words">0</span>
+                <span class="sign caption">Liczba zdań:&nbsp</span> <span class="sign number" data-form="after-sentences">0</span>
+                <span class="sign caption">Liczba Znaków:&nbsp</span> <span class="sign number" data-form="after-characters">0</span>
+            </div>
         </fieldset>
 
         <fieldset>
