@@ -6,7 +6,7 @@ export default class FormHandling {
     #formValue = {};
     constructor(formObjects) {
         this.form = formObjects.form;
-        this.getInputs = this.#findInputs();
+        this.#findInputs();
         this.#errorMessage = formObjects.errorMessage;
     }
     showMessage(messafe) {
@@ -27,11 +27,10 @@ export default class FormHandling {
     // nadmiarowy kod do poprawy
     #findInputs() {
         const collection = [...this.form];
-
-        return function (name, typ = false) {
+        this.getInputs = function (search, typ = false) {
             const find = collection.filter((i) => {
-                for (const text of name) {
-                    if (text.toUpperCase() === i.nodeName || text === i.localName) return i;
+                for (const name of search) {
+                    if (name.toUpperCase() === i.nodeName || name === i.localName) return i;
                 }
             });
             if (typ) {

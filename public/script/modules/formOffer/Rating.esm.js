@@ -3,13 +3,14 @@ export default class Rating {
     #selectCollection;
     #viewPoints;
     #defaultPoint;
-    #allRating;
+    #rating;
     constructor(viewPoints) {
         this.#viewPoints = viewPoints;
-        this.#defaultPoint = this.#getPoint();
+        this.#defaultPoint = this.#getDefaultPoint();
     }
     init(selectCollection) {
         this.#selectCollection = selectCollection;
+
         this.#getAllSelectedValue();
 
         this.#selectCollection.forEach((se) =>
@@ -19,33 +20,31 @@ export default class Rating {
             })
         );
     }
-    get() {
-        return { point: this.#getPoint(), saving: this.#getValueString() };
-    }
+    get = () => this.#rating;
     clear() {
         this.#selectCollection.forEach((op) => (op.selectedIndex = 0));
         this.#viewPoints.innerText = this.#defaultPoint;
     }
-    #getPoint = () => this.#viewPoints.textContent;
-    // mało sprwan metoda - usprawnnić do samodzielego pobierania
-    #getValueString = () => this.#allRating.filter(this.#filterBoolen).map(this.#convertBoolen).toString();
-    #filterBoolen(value) {
-        if (value.toLowerCase() === 'tak' || value.toLowerCase() === 'nie') return value;
-    }
+    #getDefaultPoint = () => this.#viewPoints.textContent;
     #getAllSelectedValue() {
-        this.#allRating = this.#selectCollection.map((select) => select.value.trim());
-    }
-    #convertBoolen(string) {
-        if (string.toLowerCase() === 'tak') return '1';
-        if (string.toLowerCase() === 'nie') return '0';
+        this.#rating = this.#selectCollection
+            .map((select) => ({
+                [select.name.trim()]: String(select.value.trim()),
+            }))
+            .reduce((obj, item) => Object.assign(obj, item), {});
     }
     #displayPoints() {
         this.#viewPoints.innerText = `${this.#sumPoints()}`;
     }
-    #sumPoints = () =>
-        this.#allRating
-            .map(this.#filterNumber)
-            .filter((el) => Number(el))
-            .reduce((a, b) => a + b);
+    #sumPoints() {
+        let points = 0;
+        let number = null;
+        for (const value in this.#rating) {
+            number = this.#filterNumber(this.#rating[value]);
+            if (number) points += number;
+        }
+        this.#rating.sum_point = points;
+        return points;
+    }
     #filterNumber = (value) => Number(value.replace(/\D/g, ''));
 }

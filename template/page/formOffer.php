@@ -32,7 +32,7 @@
                         <div class='options_rating'>
                             <span><?php echo $value['title'] ?></span>
                             <div class='option_pkt' id="<?php echo $value['name_option'] ?>">
-                                <select aria-labelledby="<?php echo $value['name_option'] ?>">
+                                <select aria-labelledby="<?php echo $value['name_option'] ?>" name="<?php echo $value['name_option'] ?>">
                                     <?php $value_option  = explode(',', $value['value_option']); ?>
                                     <?php foreach ($value_option as $option) : ?>
                                         <option value="<?php echo $option ?> "><?php echo $option ?></option>

@@ -16,7 +16,6 @@ class ListOffers {
     #countRender = 0;
     #listContainer;
     #AjaxRequest;
-    #LastTuple;
     #fragmentList = document.createDocumentFragment();
     #tupleNumbers = [];
     #endTuples = false;
@@ -31,7 +30,6 @@ class ListOffers {
         this.#AjaxRequest = new AjaxRequest(listDOM.request);
     }
     init() {
-        this.#LastTuple = this.#findLastTuple();
         this.#sendRequest();
         this.#eventListeners();
     }
@@ -68,31 +66,21 @@ class ListOffers {
             this.#fragmentList.appendChild(new Idea(idea).get());
         }
 
-        console.timeLog('Render Idea');
+        console.timeEnd('Render Idea');
 
         this.#countRender++;
         this.#checkTuple();
         this.#statisticsView();
-        console.timeEnd('Render Idea');
     }
     #checkTuple() {
-        const { end, last } = this.#LastTuple();
-        this.#endTuples = end;
-        this.#requestParam.last_tuple = last;
+        this.#endTuples = this.#tupleNumbers.includes(1);
+        this.#requestParam.last_tuple = Math.min(...this.#tupleNumbers);
     }
     // tymczaoswa metoda jako ciekwostka
     #statisticsView() {
         this.#listContainer.appendChild(this.#fragmentList);
         this.#listLenght.innerHTML = `Elementów listy: ${this.#tupleNumbers.length}`;
         this.#renderCount.innerHTML = `Liczba Żądań: ${this.#countRender}`;
-    }
-    #findLastTuple() {
-        const arrayTupleId = this.#tupleNumbers;
-
-        return () => ({
-            end: arrayTupleId.includes(1),
-            last: Math.min(...arrayTupleId),
-        });
     }
     #emptyList() {
         const div = document.createElement('div');

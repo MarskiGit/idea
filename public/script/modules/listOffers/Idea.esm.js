@@ -73,7 +73,7 @@ export default class Idea {
                 <p class="td idea_text"> ${this.#before_value} </p>
                 <span class="th"><em>Propozycja usprawnienia</em></span>
                 <p class="td idea_text"> ${this.#after_value} </p>
-                ${this.#setInfo('Oszczędności', Number(this.#rating_user.saving) ? 'TAK' : '')}
+                ${this.#setInfo('Oszczędności', this.#saving(this.#rating_user.saving))}
                 ${this.#modComment()}
             </div>
         </div>
@@ -87,6 +87,7 @@ export default class Idea {
     }
     #modComment = () => (this.#mod_comment ? `<p class="th"><em>Komentarz Moderatora</em></p> <p class="td idea_text"> ${this.#mod_comment} </p>` : '');
     #setInfo = (text, data) => (data ? `<span class="th">${text}: <span class="font_number">${data * 1 ? Number(data).toFixed(2) + 'pkt' : data}</span></span>` : '');
+    #saving = (str) => (str === 'TAK' || str == 1 ? 'TAK' : '');
     #statusInformation(st) {
         switch (st) {
             case 0:
