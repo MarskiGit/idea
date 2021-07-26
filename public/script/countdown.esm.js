@@ -1,5 +1,5 @@
 'use strict';
-import { localhost } from './modules/seting.esm.js';
+import { Config } from './modules/seting.esm.js';
 
 class CountDown {
     #viewCountdown;
@@ -8,7 +8,7 @@ class CountDown {
     #params;
     constructor() {
         this.#viewCountdown = document.querySelector('[data-time="countdown"]');
-        this.#url = new URL(`${localhost}`);
+        this.#url = new URL(`${Config.localhost}`);
         this.#params = { action: 'logout' };
         this.#url.search = new URLSearchParams(this.#params).toString();
     }
@@ -47,7 +47,7 @@ class CountDown {
         }
     }
     #logOut() {
-        fetch(this.#url).then(() => location.replace(localhost));
+        fetch(this.#url).then(() => location.replace(Config.localhost));
     }
     #throttled(f, t) {
         let l = Date.now();

@@ -13,7 +13,7 @@ class DB
     private static string $host = 'localhost';
     private static string $userName = 'new_idea';
     private static string $password = 'K93TooVTiWK4YZtK';
-    private static string $dbName = 'new_idea';
+    private static string $dbName = 'ideabook';
     private static string $dbType = 'mysql';
     private static string $encoding = 'utf-8';
     private static ?PDO $DB = null;

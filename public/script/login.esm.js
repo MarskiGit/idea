@@ -1,5 +1,5 @@
 'use strict';
-import { localhost } from './modules/seting.esm.js';
+import { Config } from './modules/seting.esm.js';
 import FormHandling from './modules/FormHandling.esm.js';
 import AjaxRequest from './modules/AjaxRequest.esm.js';
 
@@ -40,7 +40,7 @@ class Login {
             .then((data) => {
                 const { ok, title } = this.#AjaxRequest.getData(data);
                 if (Boolean(ok)) {
-                    location.replace(localhost);
+                    location.replace(Config.localhost);
                 } else {
                     this.#FormHandling.showMessage(`${title}`);
                     // localStorage.setItem('key', 'value');

@@ -1,6 +1,6 @@
 'use strict';
 import AjaxRequest from './modules/AjaxRequest.esm.js';
-import { quarterYear } from './modules/seting.esm.js';
+import { TimeApp } from './modules/seting.esm.js';
 import TbodyTopTen from './modules/statistics/TbodyTopTen.esm.js';
 
 const statisticsDOM = {
@@ -29,7 +29,7 @@ class TopTen {
         this.#AjaxRequest = new AjaxRequest(statisticsDOM.request);
     }
     init() {
-        this.#requestParam.quarter = quarterYear();
+        this.#requestParam.quarter = TimeApp.quarterYear();
         this.#sendRequest();
         this.#eventListeners();
     }
