@@ -1,7 +1,7 @@
 'use strict';
 import Exception from './Exception.esm.js';
 
-export default class AjaxRequest {
+export default class Api {
     #setingRequest;
     #Exception;
     #status = {
@@ -9,11 +9,12 @@ export default class AjaxRequest {
         type: 'AJAX ERROR:',
         is_ok: false,
     };
-    #getRequest;
     #seting;
     #url;
     constructor(request) {
-        this.#getRequest = request;
+        this.requestParam = {
+            request: request,
+        };
         this.#setingRequest = {
             ajax: {
                 method: 'POST',
@@ -34,9 +35,17 @@ export default class AjaxRequest {
         this.#url = this.#setingRequest.url;
         this.#Exception = new Exception();
     }
-    async getJson(request) {
-        if (!request.hasOwnProperty('request')) request.request = this.#getRequest;
-        this.#seting.body = JSON.stringify(request);
+    requestAPI = () => {
+        document.body.style.cursor = 'progress';
+        this.#getJson()
+            .then((data) => {
+                this.apiData = this.#getData(data);
+                if (typeof this.apiData === 'object') this.responseAPI();
+            })
+            .finally((document.body.style.cursor = 'default'));
+    };
+    async #getJson() {
+        this.#seting.body = JSON.stringify(this.requestParam);
 
         const response = await fetch(this.#url, this.#seting).catch(this.#handleError);
         const jsonStr = await response;
@@ -48,7 +57,7 @@ export default class AjaxRequest {
             return;
         }
     }
-    getData(data) {
+    #getData(data) {
         if ('api' in data && Boolean(data.api)) {
             return data.data;
         } else {

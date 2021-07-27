@@ -9,7 +9,7 @@ use Idea\exception\ApiException;
 use PDO;
 use PDOException;
 
-class RatingModel extends AbstractModel
+class OfferRatingModel extends AbstractModel
 {
     public function update(array $requestParam): array
     {

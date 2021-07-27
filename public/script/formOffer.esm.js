@@ -1,6 +1,6 @@
 'use strict';
+import Api from './modules/Api.esm.js';
 import FormHandling from './modules/FormHandling.esm.js';
-import AjaxRequest from './modules/AjaxRequest.esm.js';
 import CountCharacters from './modules/formOffer/CountCharacters.esm.js';
 import Rating from './modules/formOffer/Rating.esm.js';
 import LiveSearch from './modules/formOffer/LiveSearch.esm.js';
@@ -21,24 +21,24 @@ const formDOM = {
         words: document.querySelector('[data-form="after-words"]'),
         sentences: document.querySelector('[data-form="after-sentences"]'),
     },
-};
-const searchDOM = {
-    user: {
+    userSearch: {
         resultsSearchUl: document.querySelector('[data-search="ul_creator"]'),
         selectedResultsUl: document.querySelector('[data-search="chosen_ones"]'),
         request: 'creatorSearch',
     },
-    area: {
+    areaSearch: {
         resultsSearchUl: document.querySelector('[data-search="ul_area"]'),
         selectedResultsUl: document.querySelector('[data-search="chosen_ones_area"]'),
         request: 'areaSearch',
     },
+    // messageSearch: {
+    //     bad: 'Tylko znaki alfabetu lub cyfry',
+    //     ok: 'Wyszukaj i kliknij:',
+    // },
 };
 
-class FormOffer {
-    #requestParam = {};
+class FormOffer extends Api {
     #FormHandling;
-    #AjaxRequest;
 
     #CountSignBefore;
     #CountSignAfter;
@@ -52,18 +52,18 @@ class FormOffer {
     #inputLiveSearch;
     #textAreas;
     #optionSelecs;
-    constructor(formDOM, searchDOM) {
+    constructor(formDOM) {
+        super(formDOM.request);
         this.#FormHandling = new FormHandling(formDOM);
-        this.#AjaxRequest = new AjaxRequest(formDOM.request);
 
         this.#CountSignBefore = new CountCharacters(formDOM.signBefore);
         this.#CountSignAfter = new CountCharacters(formDOM.signAfter);
         this.#Rating = new Rating(formDOM.viewPoints);
 
-        this.#UserSearch = new LiveSearch(searchDOM.user);
-        this.#AreaSearch = new LiveSearch(searchDOM.area);
-        this.#UserChosen = new Chose(searchDOM.user);
-        this.#AreaChosen = new Chose(searchDOM.area);
+        this.#UserSearch = new LiveSearch(formDOM.userSearch);
+        this.#AreaSearch = new LiveSearch(formDOM.areaSearch);
+        this.#UserChosen = new Chose(formDOM.userSearch);
+        this.#AreaChosen = new Chose(formDOM.areaSearch);
     }
     init() {
         this.#inputLiveSearch = this.#FormHandling.getInputs(['INPUT'], 'search');
@@ -81,6 +81,15 @@ class FormOffer {
 
         this.#eventListeners();
     }
+    responseAPI() {
+        const { ok, title } = this.apiData;
+        if (ok) {
+            this.#clearForm();
+            this.#FormHandling.showMessage(`${title}`);
+        } else {
+            this.#FormHandling.showMessage(`${title}`);
+        }
+    }
     #eventListeners() {
         this.#FormHandling.form.addEventListener('submit', this.#formValidation);
     }
@@ -95,29 +104,15 @@ class FormOffer {
     #emptyForm = () => !!(this.#FormHandling.emptyFields() && this.#UserChosen.check() && this.#AreaChosen.check());
     #getParamForm() {
         const { before, after } = this.#FormHandling.getValue();
-        this.#requestParam.before_value = before;
-        this.#requestParam.after_value = after;
-        this.#requestParam.array_users = this.#UserChosen.get();
-        this.#requestParam.id_area = this.#AreaChosen.get().toString();
-        this.#requestParam.rating_user = this.#Rating.get();
-        console.log(this.#requestParam);
-        // this.#sendRequest();
+        this.requestParam.before_value = before;
+        this.requestParam.after_value = after;
+        this.requestParam.array_users = this.#UserChosen.get();
+        this.requestParam.id_area = this.#AreaChosen.get().toString();
+        this.requestParam.rating_user = this.#Rating.get();
+        console.log(this.requestParam);
+        // this.#requestAPI();
     }
-    #sendRequest() {
-        document.body.style.cursor = 'progress';
-        this.#AjaxRequest
-            .getJson(this.#requestParam)
-            .then((data) => {
-                const { ok, title } = this.#AjaxRequest.getData(data);
-                if (ok) {
-                    this.#clearForm();
-                    this.#FormHandling.showMessage(`${title}`);
-                } else {
-                    this.#FormHandling.showMessage(`${title}`);
-                }
-            })
-            .finally((document.body.style.cursor = 'default'));
-    }
+
     #clearForm() {
         this.#FormHandling.clear(['INPUT', 'TEXTAREA']);
 
@@ -131,4 +126,4 @@ class FormOffer {
         this.#AreaChosen.clear();
     }
 }
-new FormOffer(formDOM, searchDOM).init();
+new FormOffer(formDOM).init();

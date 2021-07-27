@@ -1,55 +1,49 @@
 'use strict';
+import Api from './modules/Api.esm.js';
 import Idea from './modules/listOffers/Idea.esm.js';
-import AjaxRequest from './modules/AjaxRequest.esm.js';
 
-const listDOM = {
-    request: 'listOffers',
-    listContainer: document.querySelector('[data-list="offers_container"]'),
-    listLenght: document.querySelector('[data-page="list_lenght"]'),
-    renderCount: document.querySelector('[data-page="render_count"]'),
+const ideaDOM = {
+    list: {
+        request: 'listOffers',
+        container: document.querySelector('[data-list="offers_container"]'),
+        lenght: document.querySelector('[data-page="list_lenght"]'),
+        renderCount: document.querySelector('[data-page="render_count"]'),
+    },
+    search: {
+        request: 'ideaSearch',
+        input: document.querySelector('[data-list="search"]'),
+        container: document.querySelector('[data-list="search_container"]'),
+        message: {
+            bad: 'Tylko znaki alfabetu lub cyfry',
+            ok: 'Wyszukaj',
+        },
+    },
 };
 
-class ListOffers {
-    #requestParam = {
-        last_tuple: 0,
-    };
+class ListOffers extends Api {
     #countRender = 0;
     #listContainer;
-    #AjaxRequest;
+
     #fragmentList = document.createDocumentFragment();
     #tupleNumbers = [];
     #endTuples = false;
-    #ajaxOject;
 
     #listLenght;
     #renderCount;
-    constructor(listDOM) {
-        this.#listContainer = listDOM.listContainer;
-        this.#listLenght = listDOM.listLenght;
-        this.#renderCount = listDOM.renderCount;
-        this.#AjaxRequest = new AjaxRequest(listDOM.request);
+    constructor(ideaDOM) {
+        super(ideaDOM.list.request);
+        this.requestParam.last_tuple = 0;
+        this.inputSearch = ideaDOM.search.input;
+        this.#listContainer = ideaDOM.list.container;
+        this.#listLenght = ideaDOM.list.lenght;
+        this.#renderCount = ideaDOM.list.renderCount;
     }
     init() {
-        this.#sendRequest();
+        this.#send();
         this.#eventListeners();
     }
-    #eventListeners() {
-        window.addEventListener('scroll', this.#throttled(this.#sendRequest, 950));
-    }
-    #sendRequest = () => {
-        if (!this.#endTuples) {
-            document.body.style.cursor = 'progress';
-            this.#AjaxRequest
-                .getJson(this.#requestParam)
-                .then((data) => {
-                    this.#ajaxOject = this.#AjaxRequest.getData(data);
-                    if (typeof this.#ajaxOject === 'object') this.#viewList();
-                })
-                .finally((document.body.style.cursor = 'default'));
-        }
-    };
-    #viewList() {
-        if (this.#ajaxOject.length > 0) {
+    responseAPI() {
+        if (this.apiData.length > 0) {
             this.#listContainer.classList.add('offers_container');
             this.#displayList();
         } else {
@@ -57,10 +51,16 @@ class ListOffers {
             this.#emptyList();
         }
     }
+    #eventListeners() {
+        window.addEventListener('scroll', this.#throttled(this.#send, 950));
+    }
+    #send = () => {
+        if (!this.#endTuples) this.requestAPI();
+    };
     #displayList() {
         console.time('Render Idea');
 
-        for (const idea of this.#ajaxOject) {
+        for (const idea of this.apiData) {
             this.#tupleNumbers.push(Number(idea.id_idea));
 
             this.#fragmentList.appendChild(new Idea(idea).get());
@@ -74,7 +74,7 @@ class ListOffers {
     }
     #checkTuple() {
         this.#endTuples = this.#tupleNumbers.includes(1);
-        this.#requestParam.last_tuple = Math.min(...this.#tupleNumbers);
+        this.requestParam.last_tuple = Math.min(...this.#tupleNumbers);
     }
     // tymczaoswa metoda jako ciekwostka
     #statisticsView() {
@@ -96,4 +96,4 @@ class ListOffers {
     }
 }
 
-new ListOffers(listDOM).init();
+new ListOffers(ideaDOM).init();

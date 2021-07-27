@@ -9,7 +9,7 @@ use Idea\exception\IdeaException;
 use PDO;
 use PDOException;
 
-class OfferOptionModel extends AbstractModel
+class OfferOptionsModel extends AbstractModel
 {
     public function get()
     {

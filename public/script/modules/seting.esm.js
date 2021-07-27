@@ -13,10 +13,10 @@ const Config = Object.create(
 );
 
 const TimeApp = (function () {
-    const d = new Date();
     return {
         /////// H:M:S \\\\\\\
         currentTime() {
+            const d = new Date();
             let h = d.getHours(),
                 m = d.getMinutes(),
                 s = d.getSeconds();
@@ -24,10 +24,12 @@ const TimeApp = (function () {
         },
         /////// YYYY.MM.DD \\\\\\\
         today() {
+            const d = new Date();
             (y = d.getFullYear()), (m = d.getMonth() + 1), (da = d.getDate());
             return `${y}/${m < 10 ? `0${m}` : m}/${da < 10 ? `0${da}` : da}`;
         },
         quarterYear() {
+            const d = new Date();
             const month = d.getMonth() + 1;
             return Math.ceil(month / 3);
         },

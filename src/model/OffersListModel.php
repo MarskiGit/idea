@@ -9,7 +9,7 @@ use Idea\exception\ApiException;
 use PDO;
 use PDOException;
 
-class ListOffersModel extends AbstractModel
+class OffersListModel extends AbstractModel
 {
     public function get(array $requestParam): array
     {
@@ -21,6 +21,30 @@ class ListOffersModel extends AbstractModel
             throw new ApiException('Error ListOffers MODEL Get');
         }
 
+        if ($stmt->rowCount() > 0) {
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $row['array_users'] = $this->getListNames($row['array_users']);
+                $row['rating_user'] = json_decode($row['rating_user']);
+                array_push($result, $row);
+            }
+
+            return $this->responseAPI($result, true);
+        } else {
+            return $this->responseAPI($result, true);
+        }
+    }
+    public function search(array $requestParam): array
+    {
+
+        $result = [];
+        $search = "%" . $requestParam['idea_search'] . "%";
+        try {
+            $stmt = $this->DB->prepare("SELECT * FROM view_idea WHERE before_value LIKE :name");
+            $stmt->bindValue(':name', $search, PDO::PARAM_STR);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            throw new ApiException('Error ListOffers MODEL search');
+        }
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $row['array_users'] = $this->getListNames($row['array_users']);

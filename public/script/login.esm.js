@@ -1,7 +1,7 @@
 'use strict';
 import { Config } from './modules/seting.esm.js';
+import Api from './modules/Api.esm.js';
 import FormHandling from './modules/FormHandling.esm.js';
-import AjaxRequest from './modules/AjaxRequest.esm.js';
 
 const formDOM = {
     request: 'login',
@@ -9,19 +9,26 @@ const formDOM = {
     errorMessage: document.querySelector('[data-form="message"]'),
 };
 
-class Login {
+class Login extends Api {
     #FormHandling;
-    #AjaxRequest;
     #inputList;
-    #requestParam = {};
     constructor(formDOM) {
+        super(formDOM.request);
         this.#FormHandling = new FormHandling(formDOM);
-        this.#AjaxRequest = new AjaxRequest(formDOM.request);
         this.#inputList = this.#FormHandling.getInputs(['INPUT']);
     }
     init() {
         this.#onBlur();
         this.#eventListeners();
+    }
+    responseAPI() {
+        const { ok, title } = this.apiData;
+        if (Boolean(ok)) {
+            location.replace(Config.localhost);
+        } else {
+            this.#FormHandling.showMessage(`${title}`);
+            // localStorage.setItem('key', 'value');
+        }
     }
     #eventListeners() {
         this.#FormHandling.form.addEventListener('submit', this.#formValidation);
@@ -29,25 +36,10 @@ class Login {
     #formValidation = (event) => {
         event.preventDefault();
         if (this.#FormHandling.emptyFields()) {
-            this.#requestParam = Object.assign(this.#FormHandling.getValue());
-            this.#sendRequest();
+            this.requestParam = Object.assign(this.#FormHandling.getValue());
+            this.requestAPI();
         } else this.#FormHandling.showMessage('Uzupełnij wszystkie pola');
     };
-    #sendRequest() {
-        document.body.style.cursor = 'progress';
-        this.#AjaxRequest
-            .getJson(this.#requestParam)
-            .then((data) => {
-                const { ok, title } = this.#AjaxRequest.getData(data);
-                if (Boolean(ok)) {
-                    location.replace(Config.localhost);
-                } else {
-                    this.#FormHandling.showMessage(`${title}`);
-                    // localStorage.setItem('key', 'value');
-                }
-            })
-            .finally((document.body.style.cursor = 'default'));
-    }
     #onBlur() {
         this.#inputList.forEach((i) => i.addEventListener('blur', this.#inputOnBlur));
     }

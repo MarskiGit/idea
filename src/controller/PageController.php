@@ -6,14 +6,14 @@ namespace Idea\controller;
 
 use Idea\model\AccountModel;
 use Idea\model\AreaModel;
-use Idea\model\OfferOptionModel;
+use Idea\model\OfferOptionsModel;
 
 
 class PageController extends AbstractController
 {
     protected function formOffer_Idea(): void
     {
-        $offerRating = new OfferOptionModel();
+        $offerRating = new OfferOptionsModel();
         $offerParams = [
             'offerRating' => $offerRating->get(),
         ];

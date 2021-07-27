@@ -1,6 +1,6 @@
 'use strict';
-import AjaxRequest from './modules/AjaxRequest.esm.js';
 import { TimeApp } from './modules/seting.esm.js';
+import Api from './modules/Api.esm.js';
 import TbodyTopTen from './modules/statistics/TbodyTopTen.esm.js';
 
 const statisticsDOM = {
@@ -15,50 +15,27 @@ const statisticsDOM = {
     },
 };
 
-class TopTen {
-    #AjaxRequest;
-    #requestParam = {};
+class TopTen extends Api {
     #userDOM;
     #areaDOM;
     #flagQuarter = 0;
     #flagButton = 0;
-    #ajaxOject;
+
     constructor(statisticsDOM) {
+        super(statisticsDOM.request);
         this.#userDOM = statisticsDOM.users;
         this.#areaDOM = statisticsDOM.area;
-        this.#AjaxRequest = new AjaxRequest(statisticsDOM.request);
     }
     init() {
-        this.#requestParam.quarter = TimeApp.quarterYear();
-        this.#sendRequest();
+        this.requestParam.quarter = TimeApp.quarterYear();
+        this.requestAPI();
         this.#eventListeners();
     }
-    #eventListeners() {
-        this.#userDOM.quarter.addEventListener('click', this.#changeQuarter);
-        this.#areaDOM.quarter.addEventListener('click', this.#changeQuarter);
-    }
-    #changeQuarter = (event) => {
-        if (event.target.nodeName === 'BUTTON') {
-            this.#requestParam.quarter = event.target.getAttribute('data-quarter');
-            this.#requestParam.request = event.target.getAttribute('data-request');
-            if (this.#flagQuarter != this.#requestParam.quarter || this.#flagButton != this.#requestParam.request) this.#sendRequest();
-        }
-    };
-    #sendRequest = () => {
-        document.body.style.cursor = 'progress';
-        this.#AjaxRequest
-            .getJson(this.#requestParam)
-            .then((data) => {
-                this.#ajaxOject = this.#AjaxRequest.getData(data);
-                if (typeof this.#ajaxOject === 'object') this.#viewTopTen();
-            })
-            .finally((document.body.style.cursor = 'default'));
-    };
-    #viewTopTen() {
-        if (this.#requestParam.request !== this.#flagButton || this.#ajaxOject.quarter !== this.#flagQuarter) {
-            const { user, area, quarter } = this.#ajaxOject;
+    responseAPI() {
+        if (this.requestParam.request !== this.#flagButton || this.apiData.quarter !== this.#flagQuarter) {
+            const { user, area, quarter } = this.apiData;
             this.#flagQuarter = quarter;
-            this.#flagButton = this.#requestParam.request;
+            this.#flagButton = this.requestParam.request;
 
             switch (this.#flagButton) {
                 case 'topUsers':
@@ -74,6 +51,18 @@ class TopTen {
             }
         }
     }
+    #eventListeners() {
+        this.#userDOM.quarter.addEventListener('click', this.#changeQuarter);
+        this.#areaDOM.quarter.addEventListener('click', this.#changeQuarter);
+    }
+    #changeQuarter = (event) => {
+        if (event.target.nodeName === 'BUTTON') {
+            this.requestParam.quarter = event.target.getAttribute('data-quarter');
+            this.requestParam.request = event.target.getAttribute('data-request');
+            if (this.#flagQuarter != this.requestParam.quarter || this.#flagButton != this.requestParam.request) this.requestAPI();
+        }
+    };
+
     #displayTopTen(data, view) {
         const viewList = view.list;
         if (data.length > 0) {

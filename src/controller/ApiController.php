@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Idea\controller;
 
-use Idea\model\ListOffersModel;
+use Idea\model\OffersListModel;
 use Idea\model\AccountModel;
 use Idea\model\AreaModel;
-use Idea\model\FormOfferModel;
+use Idea\model\OfferFormModel;
 use Idea\model\StatisticsModel;
 
 class ApiController extends AbstractController
@@ -15,8 +15,13 @@ class ApiController extends AbstractController
 
     protected function listOffers_Api(): void
     {
-        $ApiList = new ListOffersModel();
+        $ApiList = new OffersListModel();
         $this->View->response_Api($ApiList->get($this->requestParam));
+    }
+    protected function ideaSearch_Api(): void
+    {
+        $ApiList = new OffersListModel();
+        $this->View->response_Api($ApiList->search($this->requestParam));
     }
     protected function creatorSearch_Api(): void
     {
@@ -40,7 +45,7 @@ class ApiController extends AbstractController
     }
     protected function formOffer_Api(): void
     {
-        $Api = new FormOfferModel();
+        $Api = new OfferFormModel();
         $this->View->response_Api($Api->create($this->requestParam));
     }
     protected function addArea_Api(): void

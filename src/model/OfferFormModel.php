@@ -9,7 +9,7 @@ use Idea\exception\ApiException;
 use PDO;
 use PDOException;
 
-class FormOfferModel extends AbstractModel
+class OfferFormModel extends AbstractModel
 {
     public function create(array $requestParam): array
     {
