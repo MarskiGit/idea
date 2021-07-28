@@ -35,8 +35,8 @@ class OffersListModel extends AbstractModel
     }
     public function search(array $requestParam): array
     {
-
         $result = [];
+        $select = $requestParam['select_search'];
         $search = "%" . $requestParam['idea_search'] . "%";
         try {
             $stmt = $this->DB->prepare("SELECT * FROM view_idea WHERE before_value LIKE :name");

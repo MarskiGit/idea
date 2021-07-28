@@ -25,25 +25,27 @@ export default class SortingTopTen {
         this.#mixed.sort((a, b) => Number(b.points) - Number(a.points));
     }
     #selectPoints() {
-        for (const winer of this.#mixed) this.#onlyPoints.push(winer.pints);
+        for (const winer of this.#mixed) this.#onlyPoints.push(Number(winer.points));
     }
     #sorting() {
         console.time('Sorted');
         for (const [mixIndex, { points }] of this.#mixed.entries()) {
             let intPoint = Number(points);
 
-            this.#firstIndex.push(this.#onlyPoints.indexOf(intPoint));
-            this.#lastIndex.push(this.#onlyPoints.lastIndexOf(intPoint));
+            //this.#firstIndex.push(this.#onlyPoints.indexOf(intPoint));
+            // this.#lastIndex.push(this.#onlyPoints.lastIndexOf(intPoint));
 
             if (this.#onlyPoints[mixIndex + 1] === intPoint && mixIndex > this.#nextSortedStep) {
+                let lastIndex = this.#onlyPoints.lastIndexOf(intPoint) + 1;
+
                 this.#score = [...this.#mixed];
 
                 this.#sortedScore = [];
-                this.#sortedScore = this.#score.slice(this.#firstIndex[mixIndex], this.#lastIndex[mixIndex] + 1);
+                this.#sortedScore = this.#score.slice(mixIndex, lastIndex);
 
                 this.#sortedScore.sort((a, b) => b.offers - a.offers);
 
-                this.#score.splice(this.#firstIndex[mixIndex], this.#sortedScore.length, ...this.#sortedScore);
+                this.#score.splice(mixIndex, this.#sortedScore.length, ...this.#sortedScore);
 
                 this.#nextSortedStep = this.#sortedScore.length + mixIndex - 1;
             }
