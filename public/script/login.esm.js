@@ -36,7 +36,10 @@ class Login extends Api {
     #formValidation = (event) => {
         event.preventDefault();
         if (this.#FormHandling.emptyFields()) {
-            this.requestParam = Object.assign(this.#FormHandling.getValue());
+            const { login, password } = this.#FormHandling.getValue();
+            this.requestParam.login = login;
+            this.requestParam.password = password;
+
             this.requestAPI();
         } else this.#FormHandling.showMessage('Uzupełnij wszystkie pola');
     };

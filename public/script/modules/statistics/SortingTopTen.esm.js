@@ -32,9 +32,6 @@ export default class SortingTopTen {
         for (const [mixIndex, { points }] of this.#mixed.entries()) {
             let intPoint = Number(points);
 
-            //this.#firstIndex.push(this.#onlyPoints.indexOf(intPoint));
-            // this.#lastIndex.push(this.#onlyPoints.lastIndexOf(intPoint));
-
             if (this.#onlyPoints[mixIndex + 1] === intPoint && mixIndex > this.#nextSortedStep) {
                 let lastIndex = this.#onlyPoints.lastIndexOf(intPoint) + 1;
 

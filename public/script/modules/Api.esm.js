@@ -4,7 +4,7 @@ import Exception from './Exception.esm.js';
 export default class Api {
     #setingRequest;
     #Exception;
-    #status = {
+    #exceptionMasage = {
         title: 'FILE NOT FOUND',
         type: 'AJAX ERROR:',
         is_ok: false,
@@ -12,6 +12,7 @@ export default class Api {
     #seting;
     #url;
     constructor(request) {
+        console.log(request);
         this.requestParam = {
             request: request,
         };
@@ -39,8 +40,8 @@ export default class Api {
         document.body.style.cursor = 'progress';
         this.#getJson()
             .then((data) => {
-                this.apiData = this.#getData(data);
-                if (typeof this.apiData === 'object') this.responseAPI();
+                this.apiData = data;
+                this.responseAPI();
             })
             .finally((document.body.style.cursor = 'default'));
     };
@@ -48,17 +49,17 @@ export default class Api {
         this.#seting.body = JSON.stringify(this.requestParam);
 
         const response = await fetch(this.#url, this.#seting).catch(this.#handleError);
-        const jsonStr = await response;
 
         if (response.ok && response.status === 200) {
-            return jsonStr.json();
+            const jsonData = await response.json();
+            return this.#getData(jsonData);
         } else {
-            this.#Exception.view(this.#status);
+            this.#Exception.display(this.#exceptionMasage);
             return;
         }
     }
     #getData(data) {
-        if ('api' in data && Boolean(data.api)) {
+        if ('api' in data && Boolean(data.api) && typeof data === 'object') {
             return data.data;
         } else {
             this.#Exception.display(data);
@@ -66,7 +67,7 @@ export default class Api {
         }
     }
     #handleError() {
-        console.log('coś dd zrobienia', this.#status);
+        console.error('coś dd zrobienia', this.#status);
     }
     #getToken = () => document.querySelector('[name=csrf-token]').content;
 }
