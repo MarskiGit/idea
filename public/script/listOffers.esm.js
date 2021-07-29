@@ -13,10 +13,6 @@ const ideaDOM = {
         request: 'ideaSearch',
         input: document.querySelector('[data-list="search"]'),
         container: document.querySelector('[data-list="search_container"]'),
-        message: {
-            bad: 'Tylko znaki alfabetu lub cyfry',
-            ok: 'Wyszukaj',
-        },
     },
 };
 
@@ -50,22 +46,23 @@ class ListOffers {
         window.addEventListener('scroll', this.#throttled(this.#requestAPI, 950));
     }
     #requestAPI = () => {
-        document.body.style.cursor = 'progress';
-        if (!this.#endTuples)
+        if (!this.#endTuples) {
+            document.body.style.cursor = 'progress';
             this.#Api
                 .getJson(this.#requestParam)
                 .then((data) => {
                     this.apiData = data;
+                    if (this.apiData.length === 0) this.#endTuples = true;
                     this.#responseAPI();
                 })
-                .finally();
-        document.body.style.cursor = 'default';
+                .finally((document.body.style.cursor = 'default'));
+        }
     };
     #responseAPI() {
         if (this.apiData.length > 0) {
             this.#listContainer.classList.add('offers_container');
             this.#displayList();
-        } else {
+        } else if (!this.#endTuples) {
             this.#listContainer.classList.remove('offers_container');
             this.#emptyList();
         }
@@ -86,7 +83,6 @@ class ListOffers {
         this.#statisticsView();
     }
     #checkTuple() {
-        this.#endTuples = this.#tupleNumbers.includes(1);
         this.#requestParam.last_tuple = Math.min(...this.#tupleNumbers);
     }
     // tymczaoswa metoda jako ciekwostka

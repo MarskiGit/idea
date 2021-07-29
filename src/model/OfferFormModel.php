@@ -39,7 +39,7 @@ class OfferFormModel extends AbstractModel
             throw new ApiException('Error FormOffer MODEL Create Idea');
         }
         if ($id) {
-            $userIdea = $this->userIdea($id, $requestParam);
+            $userIdea = $this->userIdea($id, (int)$requestParam['id_area'], $requestParam);
             $addet = date("ynj") . "/" . $id;
             if ($userIdea) {
                 $this->createDate($id, $addet);
@@ -63,17 +63,18 @@ class OfferFormModel extends AbstractModel
             return $this->responseAPI($replay);
         }
     }
-    private function userIdea(int $id, array $requestParam): bool
+    private function userIdea(int $id, int $id_area, array $requestParam): bool
     {
         $lenght_users = count($requestParam['array_users']);
-        $qPart = array_fill(0, $lenght_users, "(?, ?)");
+        $qPart = array_fill(0, $lenght_users, "(?, ?, ?)");
         try {
-            $query = "INSERT INTO user_idea (id_idea, id_account) VALUES ";
+            $query = "INSERT INTO user_idea (id_idea, id_area, id_account) VALUES ";
             $query .=  implode(",", $qPart);
             $stmt = $this->DB->prepare($query);
             $i = 1;
             foreach ($requestParam['array_users'] as $item) {
                 $stmt->bindValue($i++, $id, PDO::PARAM_INT);
+                $stmt->bindValue($i++, $id_area, PDO::PARAM_INT);
                 $stmt->bindValue($i++, $item, PDO::PARAM_INT);
             }
             $stmt->execute();

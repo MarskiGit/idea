@@ -11,8 +11,8 @@ header("Access-Control-Max-Age: 86400");
 header("Cache-Control: no-store, no-cache");
 header("Pragma: no-cache");
 header("X-CSRF-Token: Fetch");
-header("always append X-Frame-Options SAMEORIGIN");
-header("set X-XSS-Protection 1; mode=block");
+// header("always append X-Frame-Options SAMEORIGIN");
+// header("set X-XSS-Protection 1; mode=block");
 
 session_start();
 

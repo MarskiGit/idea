@@ -1,17 +1,21 @@
 'use strict';
+import Api from '../Api.esm.js';
 import FormHandling from '../FormHandling.esm.js';
 import FormPassword from '../FormPassword.esm.js';
-import AjaxRequest from '../AjaxRequest.esm.js';
 
 export default class FormAccountHandling {
+    #Api;
     #FormHandling;
     #FormPassword;
-    #AjaxRequest;
-    #requestParam = {};
+    #requestParam;
     constructor(formObjects) {
+        this.#requestParam = {
+            request: formObjects.request,
+        };
+
+        this.#Api = new Api();
         this.#FormHandling = new FormHandling(formObjects);
         this.#FormPassword = new FormPassword();
-        this.#AjaxRequest = new AjaxRequest(formObjects.request);
     }
 
     init() {
@@ -24,23 +28,28 @@ export default class FormAccountHandling {
     #validation = (event) => {
         event.preventDefault();
         if (this.#FormHandling.emptyFields()) {
-            this.#sendRequest();
+            this.#requestAPI();
         } else this.#FormHandling.showMessage('Uzupełnij wszystkie pola.');
     };
-    #sendRequest() {
+    #requestAPI = () => {
         document.body.style.cursor = 'progress';
-        this.#requestParam = { ...this.#FormHandling.getValue() };
-        this.#AjaxRequest
-            .getJson(this.#requestParam)
-            .then((data) => {
-                const { ok, title } = this.#AjaxRequest.getData(data);
-                if (Boolean(ok)) {
-                    this.#FormHandling.clear();
-                    this.#FormHandling.showMessage(`${title}`);
-                } else {
-                    this.#FormHandling.showMessage(`${title}`);
-                }
-            })
-            .finally((document.body.style.cursor = 'default'));
+
+        console.log(this.#FormHandling.getValue());
+        // this.#Api
+        //     .getJson(this.#requestParam)
+        //     .then((data) => {
+        //         this.apiData = data;
+        //         this.#responseAPI();
+        //     })
+        //     .finally((document.body.style.cursor = 'default'));
+    };
+    #responseAPI() {
+        const { ok, title } = this.apiData;
+        if (Boolean(ok)) {
+            this.#FormHandling.clear();
+            this.#FormHandling.showMessage(`${title}`);
+        } else {
+            this.#FormHandling.showMessage(`${title}`);
+        }
     }
 }

@@ -6,7 +6,7 @@
 
  <head>
      <meta charset="utf-8">
-     <title>IDEA | Program pomysłów</title>
+     <title>IDEA BOOK | Program pomysłów</title>
      <meta http-equiv="Cache-control" content="public">
      <meta name="viewport" content="width=device-width, initial-scale=1">
      <meta name="apple-mobile-web-app-capable" content="yes">

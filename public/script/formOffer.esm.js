@@ -31,10 +31,6 @@ const formDOM = {
         selectedResultsUl: document.querySelector('[data-search="chosen_ones_area"]'),
         request: 'areaSearch',
     },
-    // messageSearch: {
-    //     bad: 'Tylko znaki alfabetu lub cyfry',
-    //     ok: 'Wyszukaj i kliknij:',
-    // },
 };
 
 class FormOffer {
@@ -106,8 +102,7 @@ class FormOffer {
         this.#requestParam.array_users = this.#UserChosen.get();
         this.#requestParam.id_area = this.#AreaChosen.get().toString();
         this.#requestParam.rating_user = this.#Rating.get();
-        console.log(this.#requestParam);
-        // this.#requestAPI();
+        this.#requestAPI();
     }
     #requestAPI = () => {
         document.body.style.cursor = 'progress';
