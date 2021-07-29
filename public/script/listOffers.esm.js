@@ -20,7 +20,9 @@ const ideaDOM = {
     },
 };
 
-class ListOffers extends Api {
+class ListOffers {
+    #requestParam;
+    #Api;
     #countRender = 0;
     #listContainer;
 
@@ -31,18 +33,35 @@ class ListOffers extends Api {
     #listLenght;
     #renderCount;
     constructor(ideaDOM) {
-        super(ideaDOM.list.request);
-        this.requestParam.last_tuple = 0;
+        this.#requestParam = { request: ideaDOM.list.request, last_tuple: 0 };
+        this.#Api = new Api();
+
         this.inputSearch = ideaDOM.search.input;
         this.#listContainer = ideaDOM.list.container;
         this.#listLenght = ideaDOM.list.lenght;
         this.#renderCount = ideaDOM.list.renderCount;
     }
     init() {
-        this.#send();
+        this.#requestAPI();
         this.#eventListeners();
     }
-    responseAPI() {
+
+    #eventListeners() {
+        window.addEventListener('scroll', this.#throttled(this.#requestAPI, 950));
+    }
+    #requestAPI = () => {
+        document.body.style.cursor = 'progress';
+        if (!this.#endTuples)
+            this.#Api
+                .getJson(this.#requestParam)
+                .then((data) => {
+                    this.apiData = data;
+                    this.#responseAPI();
+                })
+                .finally();
+        document.body.style.cursor = 'default';
+    };
+    #responseAPI() {
         if (this.apiData.length > 0) {
             this.#listContainer.classList.add('offers_container');
             this.#displayList();
@@ -51,12 +70,6 @@ class ListOffers extends Api {
             this.#emptyList();
         }
     }
-    #eventListeners() {
-        window.addEventListener('scroll', this.#throttled(this.#send, 950));
-    }
-    #send = () => {
-        if (!this.#endTuples) this.requestAPI();
-    };
     #displayList() {
         console.time('Render Idea');
 
@@ -74,7 +87,7 @@ class ListOffers extends Api {
     }
     #checkTuple() {
         this.#endTuples = this.#tupleNumbers.includes(1);
-        this.requestParam.last_tuple = Math.min(...this.#tupleNumbers);
+        this.#requestParam.last_tuple = Math.min(...this.#tupleNumbers);
     }
     // tymczaoswa metoda jako ciekwostka
     #statisticsView() {

@@ -2,12 +2,17 @@
 import Api from '../Api.esm.js';
 import RenderLi from './RenderLi.esm.js';
 
-export default class LiveSearch extends Api {
+export default class LiveSearch {
+    #requestParam;
+    #Api;
     #resultsSearchUl;
     #inputSearch;
     #fragmentList = document.createDocumentFragment();
     constructor(searchObjects) {
-        super(searchObjects.request);
+        this.#requestParam = {
+            request: searchObjects.request,
+        };
+        this.#Api = new Api();
         this.#resultsSearchUl = searchObjects.resultsSearchUl;
     }
     init(inputSearch) {
@@ -45,14 +50,24 @@ export default class LiveSearch extends Api {
     #whatValueSearch(target) {
         let valueSearch = target.getAttribute('data-search');
         if (valueSearch === 'creator_search') {
-            Number(target.value) ? (this.requestParam.select = 'id_pass') : (this.requestParam.select = 'full_name');
-            this.requestParam.full_name = target.value;
+            Number(target.value) ? (this.#requestParam.select = 'id_pass') : (this.#requestParam.select = 'full_name');
+            this.#requestParam.full_name = target.value;
         } else {
-            this.requestParam.area_name = target.value;
+            this.#requestParam.area_name = target.value;
         }
-        this.requestAPI();
+        this.#requestAPI();
     }
-    responseAPI() {
+    #requestAPI = () => {
+        document.body.style.cursor = 'progress';
+        this.#Api
+            .getJson(this.#requestParam)
+            .then((data) => {
+                this.apiData = data;
+                this.#responseAPI();
+            })
+            .finally((document.body.style.cursor = 'default'));
+    };
+    #responseAPI() {
         for (const li of this.apiData) {
             this.#fragmentList.appendChild(new RenderLi(li).get());
         }

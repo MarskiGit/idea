@@ -11,11 +11,7 @@ export default class Api {
     };
     #seting;
     #url;
-    constructor(request) {
-        console.log(request);
-        this.requestParam = {
-            request: request,
-        };
+    constructor() {
         this.#setingRequest = {
             ajax: {
                 method: 'POST',
@@ -36,17 +32,8 @@ export default class Api {
         this.#url = this.#setingRequest.url;
         this.#Exception = new Exception();
     }
-    requestAPI = () => {
-        document.body.style.cursor = 'progress';
-        this.#getJson()
-            .then((data) => {
-                this.apiData = data;
-                this.responseAPI();
-            })
-            .finally((document.body.style.cursor = 'default'));
-    };
-    async #getJson() {
-        this.#seting.body = JSON.stringify(this.requestParam);
+    async getJson(param) {
+        this.#seting.body = JSON.stringify(param);
 
         const response = await fetch(this.#url, this.#seting).catch(this.#handleError);
 
@@ -67,7 +54,7 @@ export default class Api {
         }
     }
     #handleError() {
-        console.error('coś dd zrobienia', this.#status);
+        console.error(`${this.#exceptionMasage.type} : ${this.#exceptionMasage.title}`);
     }
     #getToken = () => document.querySelector('[name=csrf-token]').content;
 }

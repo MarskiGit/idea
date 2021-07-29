@@ -9,11 +9,14 @@ const formDOM = {
     errorMessage: document.querySelector('[data-form="message"]'),
 };
 
-class Login extends Api {
+class Login {
+    #requestParam;
+    #Api;
     #FormHandling;
     #inputList;
     constructor(formDOM) {
-        super(formDOM.request);
+        this.#requestParam = { request: formDOM.request };
+        this.#Api = new Api();
         this.#FormHandling = new FormHandling(formDOM);
         this.#inputList = this.#FormHandling.getInputs(['INPUT']);
     }
@@ -21,7 +24,31 @@ class Login extends Api {
         this.#onBlur();
         this.#eventListeners();
     }
-    responseAPI() {
+
+    #eventListeners() {
+        this.#FormHandling.form.addEventListener('submit', this.#formValidation);
+    }
+    #formValidation = (event) => {
+        event.preventDefault();
+        if (this.#FormHandling.emptyFields()) {
+            const { login, password } = this.#FormHandling.getValue();
+            this.#requestParam.login = login;
+            this.#requestParam.password = password;
+
+            this.#requestAPi();
+        } else this.#FormHandling.showMessage('Uzupełnij wszystkie pola');
+    };
+    #requestAPi = () => {
+        document.body.style.cursor = 'progress';
+        this.#Api
+            .getJson(this.#requestParam)
+            .then((data) => {
+                this.apiData = data;
+                this.#responseAPI();
+            })
+            .finally((document.body.style.cursor = 'default'));
+    };
+    #responseAPI() {
         const { ok, title } = this.apiData;
         if (Boolean(ok)) {
             location.replace(Config.localhost);
@@ -30,19 +57,6 @@ class Login extends Api {
             // localStorage.setItem('key', 'value');
         }
     }
-    #eventListeners() {
-        this.#FormHandling.form.addEventListener('submit', this.#formValidation);
-    }
-    #formValidation = (event) => {
-        event.preventDefault();
-        if (this.#FormHandling.emptyFields()) {
-            const { login, password } = this.#FormHandling.getValue();
-            this.requestParam.login = login;
-            this.requestParam.password = password;
-
-            this.requestAPI();
-        } else this.#FormHandling.showMessage('Uzupełnij wszystkie pola');
-    };
     #onBlur() {
         this.#inputList.forEach((i) => i.addEventListener('blur', this.#inputOnBlur));
     }

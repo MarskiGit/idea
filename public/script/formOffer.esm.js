@@ -37,7 +37,9 @@ const formDOM = {
     // },
 };
 
-class FormOffer extends Api {
+class FormOffer {
+    #requestParam;
+    #Api;
     #FormHandling;
 
     #CountSignBefore;
@@ -53,7 +55,10 @@ class FormOffer extends Api {
     #textAreas;
     #optionSelecs;
     constructor(formDOM) {
-        super(formDOM.request);
+        this.#requestParam = {
+            request: formDOM.request,
+        };
+        this.#Api = new Api();
         this.#FormHandling = new FormHandling(formDOM);
 
         this.#CountSignBefore = new CountCharacters(formDOM.signBefore);
@@ -81,15 +86,7 @@ class FormOffer extends Api {
 
         this.#eventListeners();
     }
-    responseAPI() {
-        const { ok, title } = this.apiData;
-        if (ok) {
-            this.#clearForm();
-            this.#FormHandling.showMessage(`${title}`);
-        } else {
-            this.#FormHandling.showMessage(`${title}`);
-        }
-    }
+
     #eventListeners() {
         this.#FormHandling.form.addEventListener('submit', this.#formValidation);
     }
@@ -104,15 +101,33 @@ class FormOffer extends Api {
     #emptyForm = () => !!(this.#FormHandling.emptyFields() && this.#UserChosen.check() && this.#AreaChosen.check());
     #getParamForm() {
         const { before, after } = this.#FormHandling.getValue();
-        this.requestParam.before_value = before;
-        this.requestParam.after_value = after;
-        this.requestParam.array_users = this.#UserChosen.get();
-        this.requestParam.id_area = this.#AreaChosen.get().toString();
-        this.requestParam.rating_user = this.#Rating.get();
-        console.log(this.requestParam);
+        this.#requestParam.before_value = before;
+        this.#requestParam.after_value = after;
+        this.#requestParam.array_users = this.#UserChosen.get();
+        this.#requestParam.id_area = this.#AreaChosen.get().toString();
+        this.#requestParam.rating_user = this.#Rating.get();
+        console.log(this.#requestParam);
         // this.#requestAPI();
     }
-
+    #requestAPI = () => {
+        document.body.style.cursor = 'progress';
+        this.#Api
+            .getJson(this.#requestParam)
+            .then((data) => {
+                this.apiData = data;
+                this.#responseAPI();
+            })
+            .finally((document.body.style.cursor = 'default'));
+    };
+    #responseAPI() {
+        const { ok, title } = this.apiData;
+        if (ok) {
+            this.#clearForm();
+            this.#FormHandling.showMessage(`${title}`);
+        } else {
+            this.#FormHandling.showMessage(`${title}`);
+        }
+    }
     #clearForm() {
         this.#FormHandling.clear(['INPUT', 'TEXTAREA']);
 
