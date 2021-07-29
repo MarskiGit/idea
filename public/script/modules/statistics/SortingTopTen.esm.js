@@ -2,8 +2,6 @@
 export default class SortingTopTen {
     #mixed;
     #onlyPoints = [];
-    #firstIndex = [];
-    #lastIndex = [];
     #score = [];
     #sortedScore;
     #nextSortedStep = 0;
