@@ -4,16 +4,18 @@
     <section class="search_container" data-list="search_container">
         <form data-list="form_search">
             <fieldset>
-                <label for="select_search">Wyszukaj</label>
-                <select name="select_search" id="select_search" data-list="select_search">
-                    <option value="contents">treści</option>
-                    <option value="originators">pomysłodawcy</option>
-                    <option value="id">numerze</option>
-                    <option value="area">obszarze</option>
-                </select>
+                <span>Wyszukaj po:</span>
+                <div class="option_search">
+                    <select name="option_search" aria-labelledby="option search" data-list="option_search">
+                        <option value="contents">treści</option>
+                        <option value="originators">pomysłodawcy</option>
+                        <option value="id">numerze</option>
+                        <option value="area">obszarze</option>
+                    </select>
+                </div>
             </fieldset>
 
-            <input data-list="idea_search" type="search" id="select_search">
+            <input aria-labelledby="idea search" data-list="idea_search" type="search" id="select_search">
             <button>ZNAJDŹ</button>
 
         </form>

@@ -6,31 +6,31 @@
         <ul>
             <li class="<?php echo $pageParams['actve_link'] === 'home' ? 'display' : 'hide' ?>">
                 <a rel="admin section" href="?action=admin&admin=home" data-link="menu" class="li_button">
-                    <img src="public/img/icon/statistics.png" alt="Statystyki">
+                    <img src="public/img/icon/statistics.svg" alt="Statystyki">
                     <span>Statystyki</span>
                 </a>
             </li>
             <li class="<?php echo $pageParams['actve_link'] === 'points' ? 'display' : 'hide' ?>">
                 <a rel="admin section" href="?action=admin&admin=points" data-link="menu" class="li_button">
-                    <img src="public/img/icon/podium.png" alt="Zarządzanie">
+                    <img src="public/img/icon/podium.svg" alt="Zarządzanie">
                     <span>Punkty</span>
                 </a>
             </li>
             <li class="<?php echo $pageParams['actve_link'] === 'management ' ? 'display' : 'hide' ?>">
                 <a rel="admin section" href="?action=admin&admin=management" data-link="menu" class="li_button">
-                    <img src="public/img/icon/management.png" alt="Statystyki">
+                    <img src="public/img/icon/management.svg" alt="Statystyki">
                     <span>Zarządzanie</span>
                 </a>
             </li>
             <li class="<?php echo $pageParams['actve_link'] === 'area' ? 'display' : 'hide' ?>">
                 <a rel="admin section" href="?action=admin&admin=area" data-link="menu" class="li_button">
-                    <img src="public/img/icon/area.png" alt="Obszar">
+                    <img src="public/img/icon/area.svg" alt="Obszar">
                     <span>Obszar</span>
                 </a>
             </li>
             <li class="<?php echo $pageParams['actve_link'] === 'user' ? 'display' : 'hide' ?>">
                 <a rel="admin section" href="?action=admin&admin=user" data-link="menu" class="li_button">
-                    <img src="public/img/icon/user.png" alt="Użytkownik">
+                    <img src="public/img/icon/user.svg" alt="Użytkownik">
                     <span>Użytkownik</span>
                 </a>
             </li>
