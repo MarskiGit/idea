@@ -59,7 +59,7 @@ export default class Idea {
     }
     #renderHTML() {
         return `
-        <h3 class="topic"> <span>Temat:</span> <span>${this.#topic || ''}</span></h3>
+        <h3 class="topic"><span>${this.#topic || ''}</span></h3>
         <div class="shadow ${this.#status.class}">
             <div class="tr ${this.#status.back}">
                 <span class="th">${this.#array_users.length > 1 ? 'Pomysłodawcy' : 'Pomysłodawca'}</span>

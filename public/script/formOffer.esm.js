@@ -11,6 +11,9 @@ const formDOM = {
     form: document.querySelector('[data-form="offer"]'),
     errorMessage: document.querySelector('[data-form="offer_message"]'),
     viewPoints: document.querySelector('[data-form="view_points"]'),
+    signTopic: {
+        characters: document.querySelector('[data-form="topic-characters"]'),
+    },
     signBefore: {
         characters: document.querySelector('[data-form="before-characters"]'),
         words: document.querySelector('[data-form="before-words"]'),
@@ -38,8 +41,10 @@ class FormOffer {
     #Api;
     #FormHandling;
 
+    #CountSignTopic;
     #CountSignBefore;
     #CountSignAfter;
+
     #Rating;
 
     #UserSearch;
@@ -47,6 +52,7 @@ class FormOffer {
     #UserChosen;
     #AreaChosen;
 
+    #inputTopic;
     #inputLiveSearch;
     #textAreas;
     #optionSelecs;
@@ -57,8 +63,10 @@ class FormOffer {
         this.#Api = new Api();
         this.#FormHandling = new FormHandling(formDOM);
 
+        this.#CountSignTopic = new CountCharacters(formDOM.signTopic);
         this.#CountSignBefore = new CountCharacters(formDOM.signBefore);
         this.#CountSignAfter = new CountCharacters(formDOM.signAfter);
+
         this.#Rating = new Rating(formDOM.viewPoints);
 
         this.#UserSearch = new LiveSearch(formDOM.userSearch);
@@ -68,9 +76,11 @@ class FormOffer {
     }
     init() {
         this.#inputLiveSearch = this.#FormHandling.getInputs(['INPUT'], 'search');
+        this.#inputTopic = this.#FormHandling.getInputs(['INPUT'], 'text');
         this.#textAreas = this.#FormHandling.getInputs(['TEXTAREA']);
         this.#optionSelecs = this.#FormHandling.getInputs(['SELECT']);
 
+        this.#CountSignTopic.init(...this.#inputTopic);
         this.#CountSignBefore.init(this.#textAreas[0]);
         this.#CountSignAfter.init(this.#textAreas[1]);
         this.#Rating.init(this.#optionSelecs);

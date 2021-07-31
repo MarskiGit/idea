@@ -9,6 +9,7 @@
                     <select name="option_search" aria-labelledby="option search" data-list="option_search">
                         <option value="contents">treści</option>
                         <option value="originators">pomysłodawcy</option>
+                        <option value="topic">temacie</option>
                         <option value="id">numerze</option>
                         <option value="area">obszarze</option>
                     </select>

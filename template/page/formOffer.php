@@ -3,11 +3,11 @@
     <h1>Propozycja</h1>
     <form data-form="offer" novalidate>
         <fieldset>
-            <legend for="topic">Temat:</legend>
+            <legend for="topic">Temat</legend>
             <div class="offer_topic">
-                <input type="text" maxlength="150" name="topic" id="topic" data-search="offer_topic" placeholder="Proszę wypełnić to pole" require>
+                <input type="text" maxlength="100" name="topic" id="topic" data-form="offer_topic" placeholder="Proszę wypełnić to pole" require>
             </div>
-            <div class="characters">
+            <div class="characters topic">
                 <span class="sign caption">Liczba Znaków:&nbsp</span> <span class="sign number" data-form="topic-characters">0</span>
             </div>
         </fieldset>

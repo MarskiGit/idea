@@ -12,12 +12,13 @@ export default class CountCharacters {
     #numSentences;
 
     #empty = '0';
-    constructor({ characters, words, sentences }) {
+    constructor({ characters, words = null, sentences = null }) {
         this.#characters = characters;
         this.#words = words;
         this.#sentences = sentences;
     }
     init(textAreas) {
+        this.#maxCharacters = textAreas.maxLength;
         this.#textArea = textAreas;
         this.#textArea.addEventListener('keyup', (event) => this.#calculaterCharacters(event));
     }
@@ -25,17 +26,16 @@ export default class CountCharacters {
         [this.#characters, this.#words, this.#sentences].forEach((sign) => (sign.innerHTML = this.#empty));
     }
     #calculaterCharacters(event) {
-        this.#maxCharacters = event.target.maxLength;
-        this.#textLenght = event.target.textLength;
+        this.#textLenght = event.target.textLength || event.target.value.length;
         this.#str = event.target.value;
-        this.#numCharacters = this.#maxCharacters - event.target.textLength;
+        this.#numCharacters = this.#maxCharacters - this.#textLenght;
         this.#numWords = this.#str.replace(/[\r\n]/g, ' ').split(' ').length;
         this.#numSentences = this.#str.split('.').length;
         this.#displayCount();
     }
     #displayCount() {
-        this.#words.innerHTML = this.#textLenght ? this.#numWords : this.#empty;
-        this.#sentences.innerHTML = this.#textLenght ? this.#numSentences : this.#empty;
+        if (this.#words) this.#words.innerHTML = this.#textLenght ? this.#numWords : this.#empty;
+        if (this.#sentences) this.#sentences.innerHTML = this.#textLenght ? this.#numSentences : this.#empty;
         this.#characters.innerHTML = this.#textLenght ? `${this.#numCharacters}  &#8725;  ${this.#maxCharacters}` : this.#empty;
     }
 }
