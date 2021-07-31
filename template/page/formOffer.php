@@ -5,7 +5,7 @@
         <fieldset>
             <legend for="topic">Temat:</legend>
             <div class="offer_topic">
-                <input type="text" maxlength="150" name="topic" id="topic" data-search="offer_topic" placeholder="Temat" require>
+                <input type="text" maxlength="150" name="topic" id="topic" data-search="offer_topic" placeholder="Proszę wypełnić to pole" require>
             </div>
             <div class="characters">
                 <span class="sign caption">Liczba Znaków:&nbsp</span> <span class="sign number" data-form="topic-characters">0</span>
