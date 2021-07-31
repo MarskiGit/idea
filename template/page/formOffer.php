@@ -3,8 +3,18 @@
     <h1>Propozycja</h1>
     <form data-form="offer" novalidate>
         <fieldset>
+            <legend for="topic">Temat:</legend>
+            <div class="offer_topic">
+                <input type="text" maxlength="150" name="topic" id="topic" data-search="offer_topic" placeholder="Temat" require>
+            </div>
+            <div class="characters">
+                <span class="sign caption">Liczba Znaków:&nbsp</span> <span class="sign number" data-form="topic-characters">0</span>
+            </div>
+        </fieldset>
+
+        <fieldset>
             <legend>Opis stanu obecnego</legend>
-            <textarea maxlength=" 2000" rows="15" placeholder="Proszę wypełnić to pole" name="before" id="before" data-write="before" require></textarea>
+            <textarea maxlength="2000" rows="15" placeholder="Proszę wypełnić to pole" name="before" id="before" data-write="before" require></textarea>
             <div class="characters">
                 <span class="sign caption">Liczba słów:&nbsp</span> <span class="sign number" data-form="before-words">0</span>
                 <span class="sign caption">Liczba zdań:&nbsp</span> <span class="sign number" data-form="before-sentences">0</span>
@@ -52,7 +62,7 @@
             <div class="creator">
                 <div class="container_search">
                     <label for="creator_search" class="list_label">Wyszukaj i kliknij:</label>
-                    <input id="creator_search" type="search" class="input_search" data-search="creator_search" type="search" autocomplete="off" placeholder="Nazwisko">
+                    <input type="search" placeholder="Nazwisko" id="creator_search" class="input_search" data-search="creator_search" autocomplete="off">
                     <ul class="search_ul" data-search="ul_creator"></ul>
                     <span>Ten pomysłodawca jest na liście:</span>
                 </div>
@@ -69,7 +79,7 @@
             <div class="creator">
                 <div class="container_search">
                     <label for="area_search" class="list_label">Wyszukaj i kliknij:</label>
-                    <input id="area_search" type="search" class="input_search" data-search="area_search" type="search" autocomplete="off" placeholder="Obszar">
+                    <input type="search" placeholder="Obszar" id="area_search" class="input_search" data-search="area_search" autocomplete="off">
                     <ul class="search_ul" data-search="ul_area"></ul>
                     <span>Ten obszar jest na liście:</span>
                 </div>

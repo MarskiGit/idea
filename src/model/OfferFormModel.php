@@ -13,14 +13,18 @@ class OfferFormModel extends AbstractModel
 {
     public function create(array $requestParam): array
     {
-        $array_users = $this->jsonSQL($requestParam['array_users']);
-        $rating_user = $this->jsonSQL($requestParam['rating_user']);
+        $topic = $this->escape($requestParam['topic']);
         $after_value = $this->escape($requestParam['after_value']);
         $before_value = $this->escape($requestParam['before_value']);
+        $array_users = $this->jsonSQL($requestParam['array_users']);
+        $rating_user = $this->jsonSQL($requestParam['rating_user']);
+
 
         try {
-            $stmt = $this->DB->prepare('INSERT INTO idea (id_area, after_value, before_value, array_users,  rating_user ) VALUES (:id_area, :after_value, :before_value, :array_users, :rating_user)');
+            $stmt = $this->DB->prepare('INSERT INTO idea (id_area, topic, after_value, before_value, array_users,  rating_user ) VALUES (:id_area, :topic, :after_value, :before_value, :array_users, :rating_user)');
             $stmt->bindValue(':id_area', (int)$requestParam['id_area'], PDO::PARAM_INT);
+            $stmt->bindValue(':topic', $topic, PDO::PARAM_STR);
+            $stmt->bindValue(':after_value', $after_value, PDO::PARAM_STR);
             $stmt->bindValue(':after_value', $after_value, PDO::PARAM_STR);
             $stmt->bindValue(':before_value', $before_value, PDO::PARAM_STR);
             $stmt->bindValue(':array_users', $array_users, PDO::PARAM_STR);

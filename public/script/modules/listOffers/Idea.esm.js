@@ -6,6 +6,7 @@ export default class Idea {
         status: 'Oczekuje',
     };
     #div = document.createElement('article');
+    #topic;
     #after_value;
     #before_value;
     #rating_user;
@@ -19,6 +20,7 @@ export default class Idea {
     #token_idea;
 
     constructor({
+        topic,
         after_value,
         before_value,
         rating_user,
@@ -31,6 +33,7 @@ export default class Idea {
         idea_status,
         token_idea,
     }) {
+        this.#topic = topic;
         this.#after_value = after_value;
         this.#before_value = before_value;
         this.#rating_user = rating_user;
@@ -50,38 +53,41 @@ export default class Idea {
         this.#createElement();
     }
     #createElement() {
-        this.#div.classList.add('idea', `${this.#status.class}`);
+        this.#div.classList.add('idea');
         this.#div.setAttribute('data-token_idea', `${this.#token_idea}`);
         this.#div.insertAdjacentHTML('afterbegin', this.#renderHTML());
     }
     #renderHTML() {
         return `
-        <div class="tr ${this.#status.back}">
-            <span class="th">${this.#array_users.length > 1 ? 'Pomysłodawcy' : 'Pomysłodawca'}</span>
-            <span class="th">Obszar: ${this.#area_name}</span>
-            <span class="th">Status: ${this.#status.status}</span>
-            <span class="th">Data dodania: <span class="font_number">${this.#date_added}</span></span>
-        </div>
-        <div class="tr">
-            <div class="td idea_authors">
-                <ol>
-                    ${this.#array_users.map((name) => `<li class="idea_text">${name}</li>`).join('')}
-                </ol>
+        <h3 class="topic"> <span>Temat:</span> <span>${this.#topic || ''}</span></h3>
+        <div class="shadow ${this.#status.class}">
+            <div class="tr ${this.#status.back}">
+                <span class="th">${this.#array_users.length > 1 ? 'Pomysłodawcy' : 'Pomysłodawca'}</span>
+                <span class="th">Obszar: ${this.#area_name}</span>
+                <span class="th">Status: ${this.#status.status}</span>
+                <span class="th">Data dodania: <span class="font_number">${this.#date_added}</span></span>
             </div>
-            <div class="td idea_value">
-                <span class="th"><em>Opis stanu obecnego</em></span>
-                <p class="td idea_text"> ${this.#before_value} </p>
-                <span class="th"><em>Propozycja usprawnienia</em></span>
-                <p class="td idea_text"> ${this.#after_value} </p>
-                ${this.#setInfo('Oszczędności', this.#saving(this.#rating_user.saving))}
-                ${this.#modComment()}
+            <div class="tr">
+                <div class="td idea_authors">
+                    <ol>
+                        ${this.#array_users.map((name) => `<li class="idea_text">${name}</li>`).join('')}
+                    </ol>
+                </div>
+                <div class="td idea_value">
+                    <span class="th"><em>Opis stanu obecnego</em></span>
+                    <p class="td idea_text"> ${this.#before_value} </p>
+                    <span class="th"><em>Propozycja usprawnienia</em></span>
+                    <p class="td idea_text"> ${this.#after_value} </p>
+                    ${this.#setInfo('Oszczędności', this.#saving(this.#rating_user.saving))}
+                    ${this.#modComment()}
+                </div>
             </div>
-        </div>
-        <div class="tr">
-            ${this.#setInfo('Numer pomysłu', this.#token_idea)}
-            ${this.#setInfo('Data wdrożenia', this.#date_implementation)}
-            ${this.#setInfo('Przyznane punkty', this.#awarded_points)}
-            
+            <div class="tr">
+                ${this.#setInfo('Numer pomysłu', this.#token_idea)}
+                ${this.#setInfo('Data wdrożenia', this.#date_implementation)}
+                ${this.#setInfo('Przyznane punkty', this.#awarded_points)}
+        
+            </div>
         </div>
         `;
     }

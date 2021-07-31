@@ -96,13 +96,14 @@ class FormOffer {
     };
     #emptyForm = () => !!(this.#FormHandling.emptyFields() && this.#UserChosen.check() && this.#AreaChosen.check());
     #getParamForm() {
-        const { before, after } = this.#FormHandling.getValue();
+        const { before, after, topic } = this.#FormHandling.getValue();
+        this.#requestParam.topic = this.#capitalize(topic.trim());
         this.#requestParam.before_value = before;
         this.#requestParam.after_value = after;
         this.#requestParam.array_users = this.#UserChosen.get();
         this.#requestParam.id_area = this.#AreaChosen.get().toString();
         this.#requestParam.rating_user = this.#Rating.get();
-        this.#requestAPI();
+        //this.#requestAPI();
     }
     #requestAPI = () => {
         document.body.style.cursor = 'progress';
@@ -135,5 +136,6 @@ class FormOffer {
         this.#UserChosen.clear();
         this.#AreaChosen.clear();
     }
+    #capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 }
 new FormOffer(formDOM).init();
