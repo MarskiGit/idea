@@ -1,4 +1,5 @@
 'use strict';
+import { CreateRequest } from './modules/seting.esm.js';
 import Api from './modules/Api.esm.js';
 import FormHandling from './modules/FormHandling.esm.js';
 import CountCharacters from './modules/formOffer/CountCharacters.esm.js';
@@ -57,9 +58,7 @@ class FormOffer {
     #textAreas;
     #optionSelecs;
     constructor(formDOM) {
-        this.#requestParam = {
-            request: formDOM.request,
-        };
+        this.#requestParam = CreateRequest(formDOM.request);
         this.#Api = new Api();
         this.#FormHandling = new FormHandling(formDOM);
 
@@ -107,18 +106,19 @@ class FormOffer {
     #emptyForm = () => !!(this.#FormHandling.emptyFields() && this.#UserChosen.check() && this.#AreaChosen.check());
     #getParamForm() {
         const { before, after, topic } = this.#FormHandling.getValue();
-        this.#requestParam.topic = this.#capitalize(topic.trim());
-        this.#requestParam.before_value = before;
-        this.#requestParam.after_value = after;
-        this.#requestParam.array_users = this.#UserChosen.get();
-        this.#requestParam.id_area = this.#AreaChosen.get().toString();
-        this.#requestParam.rating_user = this.#Rating.get();
+        this.#requestParam.add('before_value', before);
+        this.#requestParam.add('after_value', after);
+        this.#requestParam.add('topic', this.#capitalize(topic));
+        this.#requestParam.add('array_users', this.#UserChosen.get());
+        this.#requestParam.add('id_area', this.#AreaChosen.get().toString());
+        this.#requestParam.add('rating_user', this.#Rating.get());
+        console.log(this.#requestParam.get());
         //this.#requestAPI();
     }
     #requestAPI = () => {
         document.body.style.cursor = 'progress';
         this.#Api
-            .getJson(this.#requestParam)
+            .getJson(this.#requestParam.get())
             .then((data) => {
                 this.apiData = data;
                 this.#responseAPI();

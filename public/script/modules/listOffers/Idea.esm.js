@@ -45,11 +45,13 @@ export default class Idea {
         this.#date_implementation = date_implementation;
         this.#idea_status = idea_status;
         this.#token_idea = token_idea;
+
         this.#init();
     }
     get = () => this.#div;
     #init() {
         this.#status = this.#statusInformation(parseInt(this.#idea_status, 10));
+        if (this.#awarded_points) this.#awarded_points = this.#awarded_points.replace(/(\.0|\.00)$|(0)$/, '');
         this.#createElement();
     }
     #createElement() {
@@ -92,7 +94,7 @@ export default class Idea {
         `;
     }
     #modComment = () => (this.#mod_comment ? `<p class="th"><em>Komentarz Moderatora</em></p> <p class="td idea_text"> ${this.#mod_comment} </p>` : '');
-    #setInfo = (text, data) => (data ? `<span class="th">${text}: <span class="font_number">${data * 1 ? Number(data).toFixed(2) + 'pkt' : data}</span></span>` : '');
+    #setInfo = (text, data) => (data ? `<span class="th">${text}: <span class="font_number">${data * 1 ? data + 'pkt' : data}</span></span>` : '');
     #saving = (str) => (str === 'TAK' || str == 1 ? 'TAK' : '');
     #statusInformation(st) {
         switch (st) {

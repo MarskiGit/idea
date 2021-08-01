@@ -1,5 +1,5 @@
 'use strict';
-import { TimeApp } from './modules/seting.esm.js';
+import { TimeApp, CreateRequest } from './modules/seting.esm.js';
 import Api from './modules/Api.esm.js';
 import TbodyTopTen from './modules/statistics/TbodyTopTen.esm.js';
 
@@ -24,10 +24,9 @@ class TopTen {
     #flagButton = 0;
 
     constructor(statisticsDOM) {
-        this.#requestParam = {
-            request: statisticsDOM.request,
-            quarter: TimeApp.quarterYear(),
-        };
+        this.#requestParam = CreateRequest(statisticsDOM.request);
+        this.#requestParam.add('quarter', TimeApp.quarterYear());
+
         this.#Api = new Api();
         this.#userDOM = statisticsDOM.users;
         this.#areaDOM = statisticsDOM.area;
@@ -39,7 +38,7 @@ class TopTen {
     #requestAPI = () => {
         document.body.style.cursor = 'progress';
         this.#Api
-            .getJson(this.#requestParam)
+            .getJson(this.#requestParam.get())
             .then((data) => {
                 this.apiData = data;
                 this.#responseAPI();
@@ -47,10 +46,11 @@ class TopTen {
             .finally((document.body.style.cursor = 'default'));
     };
     #responseAPI() {
-        if (this.#requestParam.request !== this.#flagButton || this.apiData.quarter !== this.#flagQuarter) {
+        const { request } = this.#requestParam.get();
+        if (request !== this.#flagButton || this.apiData.quarter !== this.#flagQuarter) {
             const { user, area, quarter } = this.apiData;
             this.#flagQuarter = quarter;
-            this.#flagButton = this.#requestParam.request;
+            this.#flagButton = request;
 
             switch (this.#flagButton) {
                 case 'topUsers':
@@ -72,9 +72,13 @@ class TopTen {
     }
     #changeQuarter = (event) => {
         if (event.target.nodeName === 'BUTTON') {
-            this.#requestParam.quarter = event.target.getAttribute('data-quarter');
-            this.#requestParam.request = event.target.getAttribute('data-request');
-            if (this.#flagQuarter != this.#requestParam.quarter || this.#flagButton != this.#requestParam.request) this.#requestAPI(this.#requestParam);
+            let dataQuarter = event.target.getAttribute('data-quarter');
+            let dataRequest = event.target.getAttribute('data-request');
+
+            this.#requestParam.add('quarter', dataQuarter);
+            this.#requestParam.add('request', dataRequest);
+
+            if (this.#flagQuarter != dataQuarter || this.#flagButton != dataRequest) this.#requestAPI(this.#requestParam.get());
         }
     };
 

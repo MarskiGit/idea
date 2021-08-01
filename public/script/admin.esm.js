@@ -12,21 +12,33 @@ function FormElement(request, form, errorMessage) {
 const areaObjects = new FormElement('addArea', document.querySelector('[data-form="area"]'), document.querySelector('[data-form="area_message"]'));
 const userObjects = new FormElement('addUser', document.querySelector('[data-form="account"]'), document.querySelector('[data-form="account_message"]'));
 
-class Admin {
-    constructor() {}
+export default class Admin {
+    constructor() {
+        this.local = location.search.replace('?action=admin&admin=', '');
+    }
     init() {
         this.#factory();
         this.#eventListeners();
     }
     #eventListeners() {}
     #factory() {
-        if (areaObjects.form) {
-            new FormAreaHandling(areaObjects).init();
-        }
-        if (userObjects.form) {
-            new FormAccountHandling(userObjects).init();
+        switch (this.local) {
+            case 'home':
+                break;
+            case 'points':
+                break;
+            case 'management':
+                break;
+            case 'area':
+                new FormAreaHandling(areaObjects).init();
+                break;
+            case 'user':
+                new FormAccountHandling(userObjects).init();
+                break;
+
+            default:
+                break;
         }
     }
 }
-
 new Admin().init();

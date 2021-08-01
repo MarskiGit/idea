@@ -28,7 +28,7 @@ export default class TbodyTopTen {
         <td class="${this.#classPlace(this.#place).class}">${this.#place}</td>
         <td>${full_name}</td>
         <td>${offers}</td>
-        <td>${points}</td> 
+        <td>${points.replace(/(\.0|\.00)$|(0)$/, '')}</td> 
         </tr>
         `;
     }

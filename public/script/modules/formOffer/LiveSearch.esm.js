@@ -1,4 +1,5 @@
 'use strict';
+import { CreateRequest } from '../seting.esm.js';
 import Api from '../Api.esm.js';
 import RenderLi from './RenderLi.esm.js';
 
@@ -9,9 +10,7 @@ export default class LiveSearch {
     #inputSearch;
     #fragmentList = document.createDocumentFragment();
     constructor(searchObjects) {
-        this.#requestParam = {
-            request: searchObjects.request,
-        };
+        this.#requestParam = CreateRequest(searchObjects.request);
         this.#Api = new Api();
         this.#resultsSearchUl = searchObjects.resultsSearchUl;
     }
@@ -50,17 +49,17 @@ export default class LiveSearch {
     #whatValueSearch(target) {
         let valueSearch = target.getAttribute('data-search');
         if (valueSearch === 'creator_search') {
-            Number(target.value) ? (this.#requestParam.select = 'id_pass') : (this.#requestParam.select = 'full_name');
-            this.#requestParam.full_name = target.value;
+            Number(target.value) ? this.#requestParam.add('select', 'id_pass') : this.#requestParam.add('select', 'full_name');
+            this.#requestParam.add('full_name', target.value);
         } else {
-            this.#requestParam.area_name = target.value;
+            this.#requestParam.add('area_name', target.value);
         }
         this.#requestAPI();
     }
     #requestAPI = () => {
         document.body.style.cursor = 'progress';
         this.#Api
-            .getJson(this.#requestParam)
+            .getJson(this.#requestParam.get())
             .then((data) => {
                 this.apiData = data;
                 this.#responseAPI();

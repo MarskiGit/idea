@@ -1,5 +1,5 @@
 'use strict';
-import { Config } from './modules/seting.esm.js';
+import { Config, CreateRequest } from './modules/seting.esm.js';
 import Api from './modules/Api.esm.js';
 import FormHandling from './modules/FormHandling.esm.js';
 
@@ -15,7 +15,7 @@ class Login {
     #FormHandling;
     #inputList;
     constructor(formDOM) {
-        this.#requestParam = { request: formDOM.request };
+        this.#requestParam = CreateRequest(formDOM.request);
         this.#Api = new Api();
         this.#FormHandling = new FormHandling(formDOM);
         this.#inputList = this.#FormHandling.getInputs(['INPUT']);
@@ -32,16 +32,15 @@ class Login {
         event.preventDefault();
         if (this.#FormHandling.emptyFields()) {
             const { login, password } = this.#FormHandling.getValue();
-            this.#requestParam.login = login;
-            this.#requestParam.password = password;
-
+            this.#requestParam.add('login', login);
+            this.#requestParam.add('password', password);
             this.#requestAPi();
         } else this.#FormHandling.showMessage('Uzupełnij wszystkie pola');
     };
     #requestAPi = () => {
         document.body.style.cursor = 'progress';
         this.#Api
-            .getJson(this.#requestParam)
+            .getJson(this.#requestParam.get())
             .then((data) => {
                 this.apiData = data;
                 this.#responseAPI();

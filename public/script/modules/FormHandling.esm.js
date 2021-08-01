@@ -19,7 +19,7 @@ export default class FormHandling {
     }
     getValue() {
         for (const [key, value] of this.#data.entries()) {
-            this.#formValue[key] = value;
+            this.#formValue[key] = value.trim();
         }
         return this.#formValue;
     }

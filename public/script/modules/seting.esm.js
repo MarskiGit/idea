@@ -1,5 +1,5 @@
 'use strict';
-export { Config, TimeApp };
+export { Config, TimeApp, CreateRequest };
 
 const Config = Object.create(
     {},
@@ -35,3 +35,16 @@ const TimeApp = (function () {
         },
     };
 })();
+
+const CreateRequest = function (req) {
+    const Request = { request: req };
+
+    return {
+        add: function (key, value) {
+            if (typeof key === 'string') Request[key] = value;
+        },
+        get: function () {
+            return Request;
+        },
+    };
+};

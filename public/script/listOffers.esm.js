@@ -1,4 +1,5 @@
 'use strict';
+import { CreateRequest } from './modules/seting.esm.js';
 import Api from './modules/Api.esm.js';
 import Idea from './modules/listOffers/Idea.esm.js';
 
@@ -29,7 +30,8 @@ class ListOffers {
     #listLenght;
     #renderCount;
     constructor(ideaDOM) {
-        this.#requestParam = { request: ideaDOM.list.request, last_tuple: 0 };
+        this.#requestParam = CreateRequest(ideaDOM.list.request);
+        this.#requestParam.add('last_tuple', 0);
         this.#Api = new Api();
 
         this.inputSearch = ideaDOM.search.input;
@@ -43,13 +45,13 @@ class ListOffers {
     }
 
     #eventListeners() {
-        window.addEventListener('scroll', this.#throttled(this.#requestAPI, 950));
+        window.addEventListener('scroll', this.#throttled(this.#requestAPI, 1000));
     }
     #requestAPI = () => {
         if (!this.#endTuples) {
             document.body.style.cursor = 'progress';
             this.#Api
-                .getJson(this.#requestParam)
+                .getJson(this.#requestParam.get())
                 .then((data) => {
                     this.apiData = data;
                     if (this.apiData.length === 0) this.#endTuples = true;
@@ -83,7 +85,7 @@ class ListOffers {
         this.#statisticsView();
     }
     #checkTuple() {
-        this.#requestParam.last_tuple = Math.min(...this.#tupleNumbers);
+        this.#requestParam.add('last_tuple', Math.min(...this.#tupleNumbers));
     }
     // tymczaoswa metoda jako ciekwostka
     #statisticsView() {

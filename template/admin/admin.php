@@ -16,7 +16,7 @@
                     <span>Punkty</span>
                 </a>
             </li>
-            <li class="<?php echo $pageParams['actve_link'] === 'management ' ? 'display' : 'hide' ?>">
+            <li class="<?php echo $pageParams['actve_link'] === 'management' ? 'display' : 'hide' ?>">
                 <a rel="admin section" href="?action=admin&admin=management" data-link="menu" class="li_button">
                     <img src="public/img/icon/management.svg" alt="Statystyki">
                     <span>Zarządzanie</span>
