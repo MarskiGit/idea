@@ -49,7 +49,9 @@
              <link rel="stylesheet" href="./public/style/statistics.min.css" type="text/css" media="all">
              <?php break; ?>
      <?php endswitch; ?>
-     <script type="module" src="./public/script/index.esm.js"></script>
+     <?php if ($globalParams['supportJS']) : ?>
+         <script type="module" src="./public/script/index.esm.js"></script>
+     <?php endif; ?>
  </head>
 
  <body>
@@ -84,8 +86,10 @@
          <?php endswitch; ?>
      </nav>
 
-     <div data-js="private" class="no_js">
-         <p>Twoja przeglądarka nie wspiera w pełni technologi używanej na stronie.</p>
-         <p>Spróbuj w Microsoft Edge lub Google Chrome.</p>
-         <p>Jeżeli jednak to poczekaj na załadowanie modółow.</p>
-     </div>
+     <?php if (!$globalParams['supportJS']) : ?>
+         <div data-js="private" class="no_js">
+             <p>Twoja przeglądarka nie wspiera w pełni technologi używanej na stronie.</p>
+             <p>Z tego powodu jej dalsze działanie jest zatrzymane.</p>
+             <p>Spróbuj w Microsoft Edge lub Google Chrome.</p>
+         </div>
+     <?php endif; ?>

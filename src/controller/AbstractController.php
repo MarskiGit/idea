@@ -38,6 +38,7 @@ abstract class AbstractController
                 $this->View->globalParams = [
                     'action_GET' => $this->action_GET,
                     'account' => $this->account,
+                    'supportJS' => $this->getBrowser(),
                 ];
                 $this->renderPage();
                 break;
@@ -86,5 +87,25 @@ abstract class AbstractController
             $method  = $default . $sufix;
         }
         return $method;
+    }
+    private function getBrowser(): bool
+    {
+        $user_agent = $_SERVER['HTTP_USER_AGENT'];
+        $browser = false;
+        $browsers = array(
+            '/msie/i' => false,
+            '/firefox/i' => false,
+            '/safari/i' => false,
+            '/chrome/i' => true,
+            '/edge/i' => true,
+            '/opera/i' => false,
+            '/mobile/i' => false
+        );
+        foreach ($browsers as $regex => $value) {
+            if (preg_match($regex, $user_agent)) {
+                $browser = $value;
+            }
+        }
+        return $browser;
     }
 }
