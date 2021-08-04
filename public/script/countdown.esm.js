@@ -1,7 +1,7 @@
 'use strict';
 import { Config } from './modules/seting.esm.js';
 
-class CountDown {
+export default class CountDown {
     #viewCountdown;
     #setInt;
     #url;
@@ -56,5 +56,3 @@ class CountDown {
         };
     }
 }
-
-new CountDown().init();

@@ -1,6 +1,5 @@
 'use strict';
 import { CreateRequest } from './modules/seting.esm.js';
-import Api from './modules/Api.esm.js';
 import Idea from './modules/listOffers/Idea.esm.js';
 
 const ideaDOM = {
@@ -17,7 +16,7 @@ const ideaDOM = {
     },
 };
 
-class ListOffers {
+export default class ListOffers {
     #requestParam;
     #Api;
     #countRender = 0;
@@ -29,7 +28,7 @@ class ListOffers {
 
     #listLenght;
     #renderCount;
-    constructor(ideaDOM) {
+    constructor(Api) {
         this.#requestParam = CreateRequest(ideaDOM.list.request);
         this.#requestParam.add('last_tuple', 0);
         this.#Api = new Api();
@@ -106,5 +105,3 @@ class ListOffers {
         };
     }
 }
-
-new ListOffers(ideaDOM).init();

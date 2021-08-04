@@ -1,6 +1,5 @@
 'use strict';
 import { CreateRequest } from './modules/seting.esm.js';
-import Api from './modules/Api.esm.js';
 import FormHandling from './modules/FormHandling.esm.js';
 import CountCharacters from './modules/formOffer/CountCharacters.esm.js';
 import Rating from './modules/formOffer/Rating.esm.js';
@@ -37,7 +36,7 @@ const formDOM = {
     },
 };
 
-class FormOffer {
+export default class FormOffer {
     #requestParam;
     #Api;
     #FormHandling;
@@ -57,7 +56,7 @@ class FormOffer {
     #inputLiveSearch;
     #textAreas;
     #optionSelecs;
-    constructor(formDOM) {
+    constructor(Api) {
         this.#requestParam = CreateRequest(formDOM.request);
         this.#Api = new Api();
         this.#FormHandling = new FormHandling(formDOM);
@@ -112,8 +111,8 @@ class FormOffer {
         this.#requestParam.add('array_users', this.#UserChosen.get());
         this.#requestParam.add('id_area', this.#AreaChosen.get().toString());
         this.#requestParam.add('rating_user', this.#Rating.get());
-        console.log(this.#requestParam.get());
-        //this.#requestAPI();
+        //console.log(this.#requestParam.get());
+        this.#requestAPI();
     }
     #requestAPI = () => {
         document.body.style.cursor = 'progress';
@@ -148,4 +147,3 @@ class FormOffer {
     }
     #capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 }
-new FormOffer(formDOM).init();

@@ -1,4 +1,3 @@
-<script type="module" src="./public/script/statistics.esm.js"></script>
 <main data-page="main">
     <h1>Statystyki</h1>
     <section class="statistics_container wrap_header">

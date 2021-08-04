@@ -17,9 +17,7 @@
      <meta name="copyright" content="Copyright owner">
      <meta name="robots" content="noindex, nofollow">
      <meta name="csrf-token" content="<?php echo $_SESSION['tokens']['Token']['session'] ?>">
-     <link rel="apple-touch-icon" sizes="180x180" href="public/img/favicon/apple-touch-icon.png">
-     <link rel="icon" type="image/png" sizes="32x32" href="./public/img/favicon/favicon-32x32.png">
-     <link rel="icon" type="image/png" sizes="16x16" href="./public/img/favicon/favicon-16x16.png">
+     <link rel="icon" type="image/png" href="./public/img/favicon.png" />
 
      <link rel="stylesheet" href="./public/style/layout.min.css" type="text/css" media="all">
      <?php switch ($globalParams['action_GET']):
@@ -51,7 +49,7 @@
              <link rel="stylesheet" href="./public/style/statistics.min.css" type="text/css" media="all">
              <?php break; ?>
      <?php endswitch; ?>
-     <script type="module" src="./public/script/layout.esm.js"></script>
+     <script type="module" src="./public/script/index.esm.js"></script>
  </head>
 
  <body>
@@ -71,7 +69,6 @@
                      <div class="countdown"><img class="img_logout" src="public/img/icon/logout.svg" alt="Logout"><span data-time="countdown">05:00</span></div>
                  </a>
                  <a rel="admin subsection" href="?action=mod" class="link_button">Mod</a>
-                 <script type="module" src="./public/script/countdown.esm.js"></script>
                  <?php break; ?>
              <?php
                 case 2: ?>
@@ -79,7 +76,6 @@
                      <div class="countdown"><img class="img_logout" src="public/img/icon/logout.svg" alt="Logout"><span class="countdown_text" data-time="countdown">05:00</span></div>
                  </a>
                  <a rel="admin subsection" href="?action=admin" class="link_button">Admin</a>
-                 <script type="module" src="./public/script/countdown.esm.js"></script>
                  <?php break; ?>
              <?php
                 default: ?>

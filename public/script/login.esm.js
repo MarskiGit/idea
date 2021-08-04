@@ -1,6 +1,5 @@
 'use strict';
 import { Config, CreateRequest } from './modules/seting.esm.js';
-import Api from './modules/Api.esm.js';
 import FormHandling from './modules/FormHandling.esm.js';
 
 const formDOM = {
@@ -9,12 +8,12 @@ const formDOM = {
     errorMessage: document.querySelector('[data-form="message"]'),
 };
 
-class Login {
+export default class Login {
     #requestParam;
     #Api;
     #FormHandling;
     #inputList;
-    constructor(formDOM) {
+    constructor(Api) {
         this.#requestParam = CreateRequest(formDOM.request);
         this.#Api = new Api();
         this.#FormHandling = new FormHandling(formDOM);
@@ -63,5 +62,3 @@ class Login {
         event.target.value ? this.classList.add('has-val') : this.classList.remove('has-val');
     }
 }
-
-new Login(formDOM).init();

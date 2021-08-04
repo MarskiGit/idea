@@ -10,18 +10,17 @@ const layoutDOM = {
     message: document.querySelector('[data-js="private"]'),
 };
 
-class Layout {
+export default class Layout {
     #layoutDOM;
     #NavSticky;
     #Smooth;
 
     #message;
-    constructor(layoutDOM) {
+    constructor() {
         this.#layoutDOM = layoutDOM;
         this.#message = layoutDOM.message;
         this.#NavSticky = new NavSticky(layoutDOM);
         this.#Smooth = new SmoothTop();
-        console.warn('Aktualizacja: 29.07.2021 / 14:00');
     }
     init() {
         this.#NavSticky.init();
@@ -35,5 +34,3 @@ class Layout {
         this.#message.style.display = 'none';
     }
 }
-
-new Layout(layoutDOM).init();

@@ -1,4 +1,3 @@
-<script type="module" src="./public/script/login.esm.js"></script>
 <main data-page="main">
     <section class="section_container">
         <h1>Witam</h1>

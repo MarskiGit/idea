@@ -13,16 +13,19 @@ const areaObjects = new FormElement('addArea', document.querySelector('[data-for
 const userObjects = new FormElement('addUser', document.querySelector('[data-form="account"]'), document.querySelector('[data-form="account_message"]'));
 
 export default class Admin {
+    #page;
     constructor() {
-        this.local = location.search.replace('?action=admin&admin=', '');
+        //  this.local = location.search.replace('?action=admin&admin=', '');
     }
-    init() {
+    init(adminPage) {
+        this.#page = adminPage;
+
         this.#factory();
         this.#eventListeners();
     }
     #eventListeners() {}
     #factory() {
-        switch (this.local) {
+        switch (this.#page) {
             case 'home':
                 break;
             case 'points':
@@ -41,4 +44,3 @@ export default class Admin {
         }
     }
 }
-new Admin().init();

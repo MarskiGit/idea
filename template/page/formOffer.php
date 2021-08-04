@@ -1,4 +1,3 @@
-<script type="module" src="./public/script/formOffer.esm.js"></script>
 <main data-page="main">
     <h1>Propozycja</h1>
     <form data-form="offer" novalidate>

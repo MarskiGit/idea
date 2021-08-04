@@ -1,6 +1,6 @@
 'use strict';
 import { TimeApp, CreateRequest } from './modules/seting.esm.js';
-import Api from './modules/Api.esm.js';
+
 import TbodyTopTen from './modules/statistics/TbodyTopTen.esm.js';
 
 const statisticsDOM = {
@@ -15,7 +15,7 @@ const statisticsDOM = {
     },
 };
 
-class TopTen {
+export default class TopTen {
     #requestParam;
     #Api;
     #userDOM;
@@ -23,7 +23,7 @@ class TopTen {
     #flagQuarter = 0;
     #flagButton = 0;
 
-    constructor(statisticsDOM) {
+    constructor(Api) {
         this.#requestParam = CreateRequest(statisticsDOM.request);
         this.#requestParam.add('quarter', TimeApp.quarterYear());
 
@@ -107,4 +107,4 @@ class TopTen {
     }
 }
 
-new TopTen(statisticsDOM).init();
+//new TopTen(statisticsDOM).init();

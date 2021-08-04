@@ -1,4 +1,3 @@
-<script defer type="module" src="./public/script/listOffers.esm.js"></script>
 <main data-page="main">
     <h1>Idea Book</h1>
     <section class="search_container" data-list="search_container">
