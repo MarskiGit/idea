@@ -7,6 +7,7 @@ class Index {
     #url = '';
     #page;
     #pageAdmin;
+    #userLogin;
     constructor() {
         this.#url = location.search;
         this.#Layout = new Layout();
@@ -16,8 +17,10 @@ class Index {
     #init() {
         this.#Layout.init();
         this.#locationUrl();
-
         this.#factory();
+
+        this.#userLogin = this.#getStorage('userLogin') || false;
+        if (this.#userLogin) this.#countDown();
 
         console.warn('Aktualizacja: 04.08.2021 / 11:00');
     }
@@ -29,6 +32,7 @@ class Index {
             if (this.#page.includes('admin')) {
                 this.#page = 'admin';
                 this.#pageAdmin = this.#url.replaceAll('?action=admin&admin=', '');
+                this.#setStorage('userLogin', true);
             }
         }
     }
@@ -51,9 +55,7 @@ class Index {
                 new Login(Api).init();
                 break;
             case 'admin':
-                const { default: CountDown } = await import('./countdown.esm.js');
                 const { default: Admin } = await import('./admin.esm.js');
-                new CountDown().init();
                 new Admin().init(this.#pageAdmin);
                 break;
 
@@ -61,6 +63,14 @@ class Index {
                 break;
         }
     }
+    async #countDown() {
+        const { default: CountDown } = await import('./countdown.esm.js');
+        new CountDown().init();
+    }
+    #setStorage(name, value) {
+        localStorage.setItem(name, value);
+    }
+    #getStorage = (name) => localStorage.getItem(name);
 }
 
 new Index();

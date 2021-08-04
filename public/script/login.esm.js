@@ -49,6 +49,7 @@ export default class Login {
     #responseAPI() {
         const { ok, title } = this.apiData;
         if (Boolean(ok)) {
+            localStorage.setItem('userLogin', true);
             location.replace(Config.localhost);
         } else {
             this.#FormHandling.showMessage(`${title}`);

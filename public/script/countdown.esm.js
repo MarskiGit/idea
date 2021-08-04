@@ -47,7 +47,10 @@ export default class CountDown {
         }
     }
     #logOut() {
-        fetch(this.#url).then(() => location.replace(Config.localhost));
+        fetch(this.#url).then(() => {
+            localStorage.removeItem('userLogin');
+            location.replace(Config.localhost);
+        });
     }
     #throttled(f, t) {
         let l = Date.now();
