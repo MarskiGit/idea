@@ -16,7 +16,7 @@
             </fieldset>
 
             <input aria-labelledby="idea search" data-list="idea_search" type="search" id="select_search">
-            <button>ZNAJDŹ</button>
+            <button type="submit">ZNAJDŹ</button>
 
         </form>
     </section>

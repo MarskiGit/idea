@@ -40,6 +40,7 @@ export default class Chose {
                 setTimeout(() => this.#resultsSearchUl.nextElementSibling.classList.remove('span_error'), 2000);
             }
         }
+        event.stopPropagation();
     };
     #cloneSelected(id, event) {
         if (this.#onelyChosen && this.#onelyChosenCheck()) return 0;
@@ -75,6 +76,7 @@ export default class Chose {
         }
         this.#removeID(id);
         if (!this.#selectedId.length) this.#selectedResultsUl.classList.remove('on');
+        event.stopPropagation();
     };
     #onelyChosenCheck = () => (this.#selectedId.length === 1 ? true : false);
     #removeID(value) {

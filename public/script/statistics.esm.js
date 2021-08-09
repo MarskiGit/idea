@@ -1,6 +1,5 @@
 'use strict';
 import { TimeApp, CreateRequest } from './modules/seting.esm.js';
-
 import TbodyTopTen from './modules/statistics/TbodyTopTen.esm.js';
 
 const statisticsDOM = {
@@ -78,7 +77,7 @@ export default class TopTen {
             this.#requestParam.add('quarter', dataQuarter);
             this.#requestParam.add('request', dataRequest);
 
-            if (this.#flagQuarter != dataQuarter || this.#flagButton != dataRequest) this.#requestAPI(this.#requestParam.get());
+            if (this.#flagQuarter != dataQuarter || this.#flagButton != dataRequest) this.#requestAPI();
         }
     };
 

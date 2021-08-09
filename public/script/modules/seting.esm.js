@@ -48,3 +48,18 @@ const CreateRequest = function (req) {
         },
     };
 };
+
+class Storage {
+    getItems(name) {
+        let data = null;
+        let storage = localStorage.getItem(name) || null;
+        if (storage) {
+            data = JSON.parse(storage);
+        }
+        return data;
+    }
+    saveItems(name, value) {
+        localStorage.setItem(name, JSON.stringify(value));
+    }
+}
+export const storage = new Storage();

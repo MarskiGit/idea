@@ -1,5 +1,6 @@
 'use strict';
 import { Config, CreateRequest } from './modules/seting.esm.js';
+import { storage } from './modules/seting.esm.js';
 import FormHandling from './modules/FormHandling.esm.js';
 
 const formDOM = {
@@ -49,7 +50,7 @@ export default class Login {
     #responseAPI() {
         const { ok, title } = this.apiData;
         if (Boolean(ok)) {
-            localStorage.setItem('userLogin', true);
+            storage.saveItems('userLogin', true);
             location.replace(Config.localhost);
         } else {
             this.#FormHandling.showMessage(`${title}`);

@@ -90,6 +90,6 @@
             <span class="sign_number"></span>
         </fieldset>
         <span class="massage_error offer_massage" data-form="offer_message"></span>
-        <button class="offer_button" data-form="add">Wyślij</button>
+        <button type="submit" class="offer_button" data-form="add">Wyślij</button>
     </form>
 </main>

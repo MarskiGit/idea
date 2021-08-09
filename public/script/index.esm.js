@@ -1,4 +1,5 @@
 'use strict';
+import { storage } from './modules/seting.esm.js';
 import Layout from './layout.esm.js';
 import Api from './modules/Api.esm.js';
 
@@ -19,7 +20,7 @@ class Index {
         this.#locationUrl();
         this.#factory();
 
-        this.#userLogin = this.#getStorage('userLogin') || false;
+        this.#userLogin = storage.getItems('userLogin');
         if (this.#userLogin) this.#countDown();
 
         console.warn('Aktualizacja: 04.08.2021 / 11:00');
@@ -32,7 +33,7 @@ class Index {
             if (this.#page.includes('admin')) {
                 this.#page = 'admin';
                 this.#pageAdmin = this.#url.replaceAll('?action=admin&admin=', '');
-                this.#setStorage('userLogin', true);
+                storage.saveItems('userLogin', true);
             }
         }
     }
@@ -67,10 +68,6 @@ class Index {
         const { default: CountDown } = await import('./countdown.esm.js');
         new CountDown().init();
     }
-    #setStorage(name, value) {
-        localStorage.setItem(name, value);
-    }
-    #getStorage = (name) => localStorage.getItem(name);
 }
 
 new Index();
