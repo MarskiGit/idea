@@ -11,8 +11,8 @@ const ideaDOM = {
     },
     search: {
         request: 'ideaSearch',
-        input: document.querySelector('[data-list="search"]'),
         container: document.querySelector('[data-list="search_container"]'),
+        toggle: document.querySelector('[data-list="search_toggle"]'),
     },
 };
 
@@ -22,6 +22,7 @@ export default class ListOffers {
     #countRender = 0;
     #listContainer;
 
+    #SearchIdea;
     #fragmentList = document.createDocumentFragment();
     #tupleNumbers = [];
     #endTuples = false;
@@ -32,15 +33,19 @@ export default class ListOffers {
         this.#requestParam = CreateRequest(ideaDOM.list.request);
         this.#requestParam.add('last_tuple', 0);
         this.#Api = new Api();
+        this.#SearchIdea = new SearchIdea();
 
-        this.inputSearch = ideaDOM.search.input;
         this.#listContainer = ideaDOM.list.container;
         this.#listLenght = ideaDOM.list.lenght;
         this.#renderCount = ideaDOM.list.renderCount;
     }
     init() {
+        this.#factory();
         this.#requestAPI();
         this.#eventListeners();
+    }
+    #factory() {
+        this.#SearchIdea.init(ideaDOM.search);
     }
 
     #eventListeners() {
@@ -104,4 +109,21 @@ export default class ListOffers {
             l + t - Date.now() < 0 && (f(), (l = Date.now()));
         };
     }
+}
+
+class SearchIdea {
+    #toggle;
+    #container;
+    constructor() {}
+    init(ideaDOM) {
+        this.#toggle = ideaDOM.toggle;
+        this.#container = ideaDOM.container;
+        this.#eventListeners();
+    }
+    #eventListeners() {
+        this.#toggle.addEventListener('click', this.#togleContainer);
+    }
+    #togleContainer = () => {
+        this.#container.classList.toggle('search_open');
+    };
 }
