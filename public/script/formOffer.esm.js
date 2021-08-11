@@ -37,42 +37,29 @@ const formDOM = {
 };
 
 export default class FormOffer {
-    #requestParam;
+    #requestParam = CreateRequest(formDOM.request);
     #Api;
-    #FormHandling;
+    #FormHandling = new FormHandling(formDOM);
 
-    #CountSignTopic;
-    #CountSignBefore;
-    #CountSignAfter;
+    #CountSignTopic = new CountCharacters(formDOM.signTopic);
+    #CountSignBefore = new CountCharacters(formDOM.signBefore);
+    #CountSignAfter = new CountCharacters(formDOM.signAfter);
 
-    #Rating;
+    #Rating = new Rating(formDOM.viewPoints);
 
-    #UserSearch;
-    #AreaSearch;
-    #UserChosen;
-    #AreaChosen;
+    #UserSearch = new LiveSearch(formDOM.userSearch);
+    #AreaSearch = new LiveSearch(formDOM.areaSearch);
+    #UserChosen = new Chose(formDOM.userSearch);
+    #AreaChosen = new Chose(formDOM.areaSearch);
 
     #inputTopic;
     #inputLiveSearch;
     #textAreas;
     #optionSelecs;
-    constructor(Api) {
-        this.#requestParam = CreateRequest(formDOM.request);
+
+    init(Api) {
         this.#Api = new Api();
-        this.#FormHandling = new FormHandling(formDOM);
 
-        this.#CountSignTopic = new CountCharacters(formDOM.signTopic);
-        this.#CountSignBefore = new CountCharacters(formDOM.signBefore);
-        this.#CountSignAfter = new CountCharacters(formDOM.signAfter);
-
-        this.#Rating = new Rating(formDOM.viewPoints);
-
-        this.#UserSearch = new LiveSearch(formDOM.userSearch);
-        this.#AreaSearch = new LiveSearch(formDOM.areaSearch);
-        this.#UserChosen = new Chose(formDOM.userSearch);
-        this.#AreaChosen = new Chose(formDOM.areaSearch);
-    }
-    init() {
         this.#inputLiveSearch = this.#FormHandling.getInputs(['INPUT'], 'search');
         this.#inputTopic = this.#FormHandling.getInputs(['INPUT'], 'text');
         this.#textAreas = this.#FormHandling.getInputs(['TEXTAREA']);

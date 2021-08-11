@@ -4,24 +4,18 @@ import Layout from './layout.esm.js';
 import Api from './modules/Api.esm.js';
 
 class Index {
-    #Layout;
-    #url = '';
+    #Layout = new Layout();
+    #url = location.search;
     #page;
     #pageAdmin;
-    #userLogin;
-    #pages;
-    constructor() {
-        this.#url = location.search;
-        this.#Layout = new Layout();
-        this.#pages = ['listOffers', 'formOffer', 'login', 'admin'];
-        this.#init();
-    }
-    #init() {
+    #userLogin = storage.getItems('userLogin');
+    #pages = ['listOffers', 'formOffer', 'login', 'admin'];
+
+    init() {
         this.#Layout.init();
         this.#checkLocationUrl();
         this.#factory();
 
-        this.#userLogin = storage.getItems('userLogin');
         if (this.#userLogin) this.#countDown();
 
         console.warn('Aktualizacja: 04.08.2021 / 11:00');
@@ -46,19 +40,19 @@ class Index {
         switch (this.#page) {
             case 'statistics':
                 const { default: TopTen } = await import('./statistics.esm.js');
-                new TopTen(Api).init();
+                new TopTen().init(Api);
                 break;
             case 'listOffers':
                 const { default: ListOffers } = await import('./listOffers.esm.js');
-                new ListOffers(Api).init();
+                new ListOffers().init(Api);
                 break;
             case 'formOffer':
                 const { default: FormOffer } = await import('./formOffer.esm.js');
-                new FormOffer(Api).init();
+                new FormOffer().init(Api);
                 break;
             case 'login':
                 const { default: Login } = await import('./login.esm.js');
-                new Login(Api).init();
+                new Login().init(Api);
                 break;
             case 'admin':
                 storage.saveItems('userLogin', true);
@@ -76,4 +70,4 @@ class Index {
     }
 }
 
-new Index();
+new Index().init();

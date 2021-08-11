@@ -18,29 +18,22 @@ const ideaDOM = {
 };
 
 export default class ListOffers {
-    #requestParam;
+    #requestParam = CreateRequest(ideaDOM.list.request);
     #Api;
     #countRender = 0;
-    #listContainer;
+    #listContainer = ideaDOM.list.container;
 
-    #SearchIdea;
+    #SearchIdea = new SearchIdea();
     #fragmentList = document.createDocumentFragment();
     #tupleNumbers = [];
     #endTuples = false;
 
-    #listLenght;
-    #renderCount;
-    constructor(Api) {
-        this.#requestParam = CreateRequest(ideaDOM.list.request);
-        this.#requestParam.add('last_tuple', 0);
-        this.#Api = new Api();
-        this.#SearchIdea = new SearchIdea();
+    #listLenght = ideaDOM.list.lenght;
+    #renderCount = ideaDOM.list.renderCount;
 
-        this.#listContainer = ideaDOM.list.container;
-        this.#listLenght = ideaDOM.list.lenght;
-        this.#renderCount = ideaDOM.list.renderCount;
-    }
-    init() {
+    init(Api) {
+        this.#Api = new Api();
+        this.#requestParam.add('last_tuple', 0);
         this.#factory();
         this.#requestAPI();
         this.#eventListeners();
@@ -116,7 +109,7 @@ class SearchIdea {
     #toggle;
     #container;
     #form;
-    constructor() {}
+
     init(ideaDOM) {
         this.#toggle = ideaDOM.toggle;
         this.#container = ideaDOM.container;

@@ -1,9 +1,7 @@
 'use strict';
 export default class Exception {
-    #domElement;
-    constructor() {
-        this.#domElement = document.createElement('aside');
-    }
+    #domElement = document.createElement('aside');
+
     display(error) {
         const { type, title, file, line } = error;
         this.#domElement.classList.add('exception');

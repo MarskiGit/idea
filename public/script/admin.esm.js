@@ -14,9 +14,7 @@ const userObjects = new FormElement('addUser', document.querySelector('[data-for
 
 export default class Admin {
     #page;
-    constructor() {
-        //  this.local = location.search.replace('?action=admin&admin=', '');
-    }
+
     init(adminPage) {
         this.#page = adminPage;
 

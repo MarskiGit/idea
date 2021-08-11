@@ -2,18 +2,14 @@
 import { Config } from './modules/seting.esm.js';
 
 export default class CountDown {
-    #viewCountdown;
+    #viewCountdown = document.querySelector('[data-time="countdown"]');
     #setInt;
-    #url;
-    #params;
-    constructor() {
-        this.#viewCountdown = document.querySelector('[data-time="countdown"]');
-        this.#url = new URL(`${Config.localhost}`);
-        this.#params = { action: 'logout' };
-        this.#url.search = new URLSearchParams(this.#params).toString();
-    }
+    #url = new URL(`${Config.localhost}`);
+    #params = { action: 'logout' };
+
     init() {
         if (this.#viewCountdown) {
+            this.#url.search = new URLSearchParams(this.#params).toString();
             this.#timeLogout();
             this.#eventListeners();
         }

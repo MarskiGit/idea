@@ -10,17 +10,14 @@ const formDOM = {
 };
 
 export default class Login {
-    #requestParam;
+    #requestParam = CreateRequest(formDOM.request);
     #Api;
-    #FormHandling;
+    #FormHandling = new FormHandling(formDOM);
     #inputList;
-    constructor(Api) {
-        this.#requestParam = CreateRequest(formDOM.request);
+
+    init(Api) {
         this.#Api = new Api();
-        this.#FormHandling = new FormHandling(formDOM);
         this.#inputList = this.#FormHandling.getInputs(['INPUT']);
-    }
-    init() {
         this.#onBlur();
         this.#eventListeners();
     }

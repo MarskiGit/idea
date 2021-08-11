@@ -10,15 +10,10 @@ const layoutDOM = {
 };
 
 export default class Layout {
-    #layoutDOM;
-    #NavSticky;
-    #Smooth;
+    #layoutDOM = layoutDOM;
+    #NavSticky = new NavSticky(layoutDOM);
+    #Smooth = new SmoothTop();
 
-    constructor() {
-        this.#layoutDOM = layoutDOM;
-        this.#NavSticky = new NavSticky(layoutDOM);
-        this.#Smooth = new SmoothTop();
-    }
     init() {
         this.#NavSticky.init();
         this.#eventListeners();

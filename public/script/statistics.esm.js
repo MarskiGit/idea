@@ -15,22 +15,16 @@ const statisticsDOM = {
 };
 
 export default class TopTen {
-    #requestParam;
+    #requestParam = CreateRequest(statisticsDOM.request);
     #Api;
-    #userDOM;
-    #areaDOM;
+    #userDOM = statisticsDOM.users;
+    #areaDOM = statisticsDOM.area;
     #flagQuarter = 0;
     #flagButton = 0;
 
-    constructor(Api) {
-        this.#requestParam = CreateRequest(statisticsDOM.request);
+    init(Api) {
         this.#requestParam.add('quarter', TimeApp.quarterYear());
-
         this.#Api = new Api();
-        this.#userDOM = statisticsDOM.users;
-        this.#areaDOM = statisticsDOM.area;
-    }
-    init() {
         this.#requestAPI();
         this.#eventListeners();
     }
