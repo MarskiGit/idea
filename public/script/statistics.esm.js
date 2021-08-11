@@ -105,5 +105,3 @@ export default class TopTen {
         }
     }
 }
-
-//new TopTen(statisticsDOM).init();
