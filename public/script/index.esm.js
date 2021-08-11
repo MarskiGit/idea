@@ -9,15 +9,16 @@ class Index {
     #page;
     #pageAdmin;
     #userLogin;
+    #pages;
     constructor() {
         this.#url = location.search;
         this.#Layout = new Layout();
-
+        this.#pages = ['listOffers', 'formOffer', 'login', 'admin'];
         this.#init();
     }
     #init() {
         this.#Layout.init();
-        this.#locationUrl();
+        this.#checkLocationUrl();
         this.#factory();
 
         this.#userLogin = storage.getItems('userLogin');
@@ -25,16 +26,20 @@ class Index {
 
         console.warn('Aktualizacja: 04.08.2021 / 11:00');
     }
-    #locationUrl() {
-        if (this.#url === '') {
-            this.#page = 'statistics';
-        } else {
-            this.#page = this.#url.replaceAll('?action=', '');
+    #checkLocationUrl() {
+        let page = this.#url.replaceAll('?action=', '');
+        if (page.includes('admin')) page = 'admin';
+
+        const pgeIsExist = this.#pages.includes(page);
+
+        if (pgeIsExist) {
+            this.#page = page;
             if (this.#page.includes('admin')) {
                 this.#page = 'admin';
                 this.#pageAdmin = this.#url.replaceAll('?action=admin&admin=', '');
-                storage.saveItems('userLogin', true);
             }
+        } else {
+            this.#page = 'statistics';
         }
     }
     async #factory() {
@@ -56,6 +61,7 @@ class Index {
                 new Login(Api).init();
                 break;
             case 'admin':
+                storage.saveItems('userLogin', true);
                 const { default: Admin } = await import('./admin.esm.js');
                 new Admin().init(this.#pageAdmin);
                 break;

@@ -39,7 +39,7 @@ class Request
     }
     public function getParam_SESSION(string $name): array
     {
-        return  $_SESSION[$name] ?? [];
+        return  $_SESSION[$name] ?? ['rang' => 0];
     }
     public function getToken(): string
     {

@@ -13,8 +13,10 @@ export default class CountDown {
         this.#url.search = new URLSearchParams(this.#params).toString();
     }
     init() {
-        this.#timeLogout();
-        this.#eventListeners();
+        if (this.#viewCountdown) {
+            this.#timeLogout();
+            this.#eventListeners();
+        }
     }
     #eventListeners() {
         document.addEventListener('mousemove', this.#throttled(this.#timeLogout, 1000));

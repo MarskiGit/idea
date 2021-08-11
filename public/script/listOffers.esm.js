@@ -13,6 +13,7 @@ const ideaDOM = {
         request: 'ideaSearch',
         container: document.querySelector('[data-list="search_container"]'),
         toggle: document.querySelector('[data-list="search_toggle"]'),
+        form: document.querySelector('[data-list="form_search"]'),
     },
 };
 
@@ -114,16 +115,22 @@ export default class ListOffers {
 class SearchIdea {
     #toggle;
     #container;
+    #form;
     constructor() {}
     init(ideaDOM) {
         this.#toggle = ideaDOM.toggle;
         this.#container = ideaDOM.container;
+        this.#form = ideaDOM.form;
         this.#eventListeners();
     }
     #eventListeners() {
         this.#toggle.addEventListener('click', this.#togleContainer);
+        this.#form.addEventListener('submit', this.#validation);
     }
     #togleContainer = () => {
         this.#container.classList.toggle('search_open');
+    };
+    #validation = (event) => {
+        event.preventDefault();
     };
 }
