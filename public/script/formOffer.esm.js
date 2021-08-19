@@ -11,6 +11,7 @@ const formDOM = {
     form: document.querySelector('[data-form="offer"]'),
     errorMessage: document.querySelector('[data-form="offer_message"]'),
     viewPoints: document.querySelector('[data-form="view_points"]'),
+    submitButton: document.querySelector('[data-form="btn_submit"]'),
     signTopic: {
         characters: document.querySelector('[data-form="topic-characters"]'),
     },
@@ -80,6 +81,7 @@ export default class FormOffer {
 
     #eventListeners() {
         this.#FormHandling.form.addEventListener('submit', this.#formValidation);
+        formDOM.submitButton.addEventListener('focus', this.#loseFocus, false);
     }
     #formValidation = (event) => {
         event.preventDefault();
@@ -92,12 +94,12 @@ export default class FormOffer {
     #emptyForm = () => !!(this.#FormHandling.emptyFields() && this.#UserChosen.check() && this.#AreaChosen.check());
     #getParamForm() {
         const { before, after, topic } = this.#FormHandling.getValue();
-        this.#requestParam.add('before_value', before);
-        this.#requestParam.add('after_value', after);
-        this.#requestParam.add('topic', this.#capitalize(topic));
-        this.#requestParam.add('array_users', this.#UserChosen.get());
-        this.#requestParam.add('id_area', this.#AreaChosen.get().toString());
-        this.#requestParam.add('rating_user', this.#Rating.get());
+        this.#requestParam.set('before_value', before);
+        this.#requestParam.set('after_value', after);
+        this.#requestParam.set('topic', this.#capitalize(topic));
+        this.#requestParam.set('array_users', this.#UserChosen.get());
+        this.#requestParam.set('id_area', this.#AreaChosen.get().toString());
+        this.#requestParam.set('rating_user', this.#Rating.get());
         //console.log(this.#requestParam.get());
         this.#requestAPI();
     }
@@ -132,5 +134,6 @@ export default class FormOffer {
         this.#UserChosen.clear();
         this.#AreaChosen.clear();
     }
+    #loseFocus = () => formDOM.submitButton.blur();
     #capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 }

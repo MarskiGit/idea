@@ -35,19 +35,19 @@ class AreaModel extends AbstractModel implements ModelInterface
     public function create(array $requestParam): array
     {
         if (!$this->isNameValid($requestParam['area_name'])) {
-            $replay = [
+            $this->response = [
                 'ok' => false,
                 'title' => 'Minimum 3 znaki',
             ];
-            return $this->responseAPI($replay, true);
+            return $this->responseAPI();
         }
 
         if ($this->isThere('area_name', $requestParam['area_name'], 'area')) {
-            $replay = [
+            $this->response = [
                 'ok' => false,
                 'title' => 'Ten obszar jest już w bazie',
             ];
-            return $this->responseAPI($replay, true);
+            return $this->responseAPI();
         }
         $area_name = $this->escape($requestParam['area_name']);
         try {
@@ -57,11 +57,11 @@ class AreaModel extends AbstractModel implements ModelInterface
         } catch (PDOException $e) {
             throw new ApiException('Error Area MODEL Create');
         }
-        $replay = [
+        $this->response = [
             'ok' => true,
             'title' => 'Dodano z powodzeniem',
         ];
-        return $this->responseAPI($replay, true);
+        return $this->responseAPI();
     }
     public function edit(array $requestParam): void
     {
@@ -87,7 +87,7 @@ class AreaModel extends AbstractModel implements ModelInterface
     public function search(array $requestParam): array
     {
         $search = "%" . $requestParam['area_name'] . "%";
-        $result = [];
+
         try {
             $stmt = $this->DB->prepare('SELECT area_name, id_area FROM area WHERE area_name LIKE :name LIMIT 3');
             $stmt->bindValue(':name', $search, PDO::PARAM_STR);
@@ -97,15 +97,15 @@ class AreaModel extends AbstractModel implements ModelInterface
         }
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                array_push($result, $row);
+                array_push($this->response, $row);
             }
-            return $this->responseAPI($result, true);
+            return $this->responseAPI();
         } else {
-            $replay = [
-                'area_name' => 'Nie odnaleziono'
-            ];
-            array_push($result, $replay);
-            return $this->responseAPI($result, true);
+            array_push($this->response, [
+                'full_name' => 'Nie odnaleziono',
+            ]);
+
+            return $this->responseAPI();
         }
     }
 }

@@ -23,7 +23,7 @@ export default class TopTen {
     #flagButton = 0;
 
     init(Api) {
-        this.#requestParam.add('quarter', TimeApp.quarterYear());
+        this.#requestParam.set('quarter', TimeApp.quarterYear());
         this.#Api = new Api();
         this.#requestAPI();
         this.#eventListeners();
@@ -68,8 +68,8 @@ export default class TopTen {
             let dataQuarter = event.target.getAttribute('data-quarter');
             let dataRequest = event.target.getAttribute('data-request');
 
-            this.#requestParam.add('quarter', dataQuarter);
-            this.#requestParam.add('request', dataRequest);
+            this.#requestParam.set('quarter', dataQuarter);
+            this.#requestParam.set('request', dataRequest);
 
             if (this.#flagQuarter != dataQuarter || this.#flagButton != dataRequest) this.#requestAPI();
         }

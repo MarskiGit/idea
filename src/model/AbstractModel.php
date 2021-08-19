@@ -12,21 +12,17 @@ use PDOException;
 abstract class AbstractModel
 {
     protected ?PDO $DB;
+    protected array $response = [];
     public function __construct()
     {
         $this->DB = DB::conn();
     }
-    protected function responseAPI(array $data = [], bool $is_ok = false): array
+    protected function responseAPI(bool $is_ok = true): array
     {
-        $replay = [
+        return $replay = [
             'api' => $is_ok,
+            'data' => $this->response,
         ];
-        if (!$is_ok) {
-            $replay =  array_merge($replay, $data);
-        } else {
-            $replay['data'] = $data;
-        }
-        return $replay;
     }
     protected function isThere(string $tuple, string $value, string $from): bool
     {

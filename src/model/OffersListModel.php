@@ -13,9 +13,24 @@ class OffersListModel extends AbstractModel
 {
     public function get(array $requestParam): array
     {
-        $result = [];
+
+        switch ($requestParam['option_search']) {
+            case 'contents':
+                $this->search($requestParam['idea_search'], (int)$requestParam['last_tuple']);
+                break;
+
+            default:
+                $this->defaultList((int)$requestParam['last_tuple']);
+                break;
+        }
+
+        return $this->responseAPI();
+    }
+    private function defaultList(int $lastTuple): void
+    {
+
         try {
-            $stmt = $this->DB->query("SELECT * FROM view_idea WHERE id_idea < " . $this->limitTuples((int)$requestParam['last_tuple']) . " ORDER BY id_idea DESC LIMIT 10 ");
+            $stmt = $this->DB->query("SELECT * FROM view_idea WHERE id_idea < " . $this->limitTuples($lastTuple) . " ORDER BY id_idea DESC LIMIT 10 ");
             $stmt->execute();
         } catch (PDOException $e) {
             throw new ApiException('Error ListOffers MODEL Get');
@@ -25,22 +40,18 @@ class OffersListModel extends AbstractModel
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $row['array_users'] = $this->getListNames($row['array_users']);
                 $row['rating_user'] = json_decode($row['rating_user']);
-                array_push($result, $row);
+                array_push($this->response, $row);
             }
-
-            return $this->responseAPI($result, true);
-        } else {
-            return $this->responseAPI($result, true);
         }
     }
-    public function search(array $requestParam): array
+    private function search(string $search, int $lastTuple): void
     {
-        $result = [];
-        $select = $requestParam['select_search'];
-        $search = "%" . $requestParam['idea_search'] . "%";
+
+        $searchSQL = "%" . $search . "%";
         try {
-            $stmt = $this->DB->prepare("SELECT * FROM view_idea WHERE before_value LIKE :name");
-            $stmt->bindValue(':name', $search, PDO::PARAM_STR);
+            $stmt = $this->DB->prepare("SELECT * FROM view_idea WHERE CONCAT(after_value , before_value) LIKE :name AND id_idea < " . $this->limitTuples($lastTuple) . " ORDER BY id_idea DESC LIMIT 10 ");
+            $stmt->bindValue(':name', $searchSQL, PDO::PARAM_STR);
+
             $stmt->execute();
         } catch (PDOException $e) {
             throw new ApiException('Error ListOffers MODEL search');
@@ -49,19 +60,15 @@ class OffersListModel extends AbstractModel
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $row['array_users'] = $this->getListNames($row['array_users']);
                 $row['rating_user'] = json_decode($row['rating_user']);
-                array_push($result, $row);
+                array_push($this->response, $row);
             }
-
-            return $this->responseAPI($result, true);
-        } else {
-            return $this->responseAPI($result, true);
         }
     }
     private function getListNames($id_users): array
     {
+        $result = [];
         $array_users = json_decode($id_users);
         $string_id = implode(", ", $array_users);
-        $name = [];
         try {
             $stmt = $this->DB->query("SELECT full_name FROM account WHERE id_account IN (" . $string_id . ")");
             $stmt->execute();
@@ -70,11 +77,11 @@ class OffersListModel extends AbstractModel
         }
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $name[] = $row['full_name'];
+                $result[] = $row['full_name'];
             }
-            return $name;
+            return $result;
         } else {
-            return $name = ['Brak użytkowników'];
+            return $result = ['Brak użytkownika'];
         }
     }
     private function getNumberTuples(): int
@@ -82,10 +89,10 @@ class OffersListModel extends AbstractModel
         try {
             $stmt = $this->DB->query("SELECT id_idea FROM idea ORDER BY id_idea DESC LIMIT 1");
             $stmt->execute();
-            return intval($stmt->fetchColumn());
         } catch (PDOException $e) {
             throw new ApiException('Error ListOffers MODEL Get Number Tuples');
         }
+        return intval($stmt->fetchColumn());
     }
     private function limitTuples(int $num): int
     {
@@ -96,3 +103,28 @@ class OffersListModel extends AbstractModel
         }
     }
 }
+
+
+// private function count_search($search): int
+// {
+//     $result = 0;
+
+//     try {
+//         $stmt = $this->DB->prepare("SELECT count(*) FROM view_idea WHERE before_value LIKE :name OR after_value LIKE :name OR CONCAT(after_value , after_value ) LIKE :name ");
+//         $stmt->bindValue(':name', $search, PDO::PARAM_STR);
+//         $stmt->execute();
+//     } catch (PDOException $e) {
+//         throw new ApiException('Error ListOffers MODEL search');
+//     }
+//     if ($stmt->rowCount() > 0) {
+//         $result = $stmt->fetchColumn();
+
+//         return (int)$result;
+//     } else {
+//         return $result;
+//     }
+// }
+
+        // $select = $requestParam['option_search'];
+        // var_dump($this->limitTuples((int)$last_tuple));
+        // before_value LIKE :name OR after_value LIKE :name AND

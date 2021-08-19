@@ -44,7 +44,7 @@ class Index {
                 break;
             case 'listOffers':
                 const { default: ListOffers } = await import('./listOffers.esm.js');
-                new ListOffers().init(Api);
+                new ListOffers().init();
                 break;
             case 'formOffer':
                 const { default: FormOffer } = await import('./formOffer.esm.js');

@@ -56,10 +56,13 @@
 
  <body>
      <nav class="menu" data-page="nav">
-         <a rel="home start" href="<?php echo HTTP_SERVER ?>" class="link_home hover_img" data-page="home_nav"><img src="public/img/home_icon.svg" alt="Strona główna"><img src="public/img/border_icon.svg" class="load" data-page="status_indicator" alt=""></a>
-         <a rel="list section" href="?action=listOffers" class="link_button <?php echo ($globalParams['action_GET'] === 'listOffers' ? 'active_link' : '') ?>">Lista pomysłów</a>
-         <a rel="write section" href="?action=formOffer" class="link_button <?php echo ($globalParams['action_GET'] === 'formOffer' ? 'active_link' : '') ?>">Napisz pomysł</a>
-         <div class="page_up hover_img" data-page="page_up"><img src="public/img/page_up.svg" alt="góra strony"></div>
+         <a rel="home start" href="<?php echo HTTP_SERVER ?>" class="link_home btn_layout <?php echo ($globalParams['action_GET'] === 'statistics' ? 'active_btn' : '') ?>" data-page="home_nav">
+             <span>H</span>
+             <img src="public/img/home_icon.svg" alt="Strona główna" class="img_home">
+         </a>
+         <a rel="list section" href="?action=listOffers" class="btn_layout <?php echo ($globalParams['action_GET'] === 'listOffers' ? 'active_btn' : '') ?>">Lista pomysłów</a>
+         <a rel="write section" href="?action=formOffer" class="btn_layout <?php echo ($globalParams['action_GET'] === 'formOffer' ? 'active_btn' : '') ?>">Napisz pomysł</a>
+         <div class="btn_layout hover_img" data-page="page_up"><img src="public/img/page_up.svg" alt="góra strony" class="img_home"><span>H</span></div>
          <div class="info_page">
              <span data-page="list_lenght"></span>
              <span data-page="render_count"></span>
@@ -68,16 +71,16 @@
          <?php switch ($account_rang):
                 case 1: ?>
                  <a rel="signin appendix" href="?action=logout" class="logo_idea">
-                     <div class="countdown"><img class="img_logout" src="public/img/icon/logout.svg" alt="Logout"><span data-time="countdown">05:00</span></div>
+                     <div class="btn_layout countdown"><img class="img_logout" src="public/img/icon/logout.svg" alt="Logout"><span data-time="countdown">05:00</span></div>
                  </a>
-                 <a rel="admin subsection" href="?action=mod" class="link_button">Mod</a>
+                 <a rel="admin subsection" href="?action=mod" class="btn_layout">Mod</a>
                  <?php break; ?>
              <?php
                 case 2: ?>
                  <a rel="signin appendix" href="?action=logout" class="logo_idea">
-                     <div class="countdown"><img class="img_logout" src="public/img/icon/logout.svg" alt="Logout"><span class="countdown_text" data-time="countdown">05:00</span></div>
+                     <div class="btn_layout countdown"><img class="img_logout" src="public/img/icon/logout.svg" alt="Logout"><span class="countdown_text" data-time="countdown">05:00</span></div>
                  </a>
-                 <a rel="admin subsection" href="?action=admin" class="link_button">Admin</a>
+                 <a rel="admin subsection" href="?action=admin" class="btn_layout <?php echo ($globalParams['action_GET'] === 'admin' ? 'active_btn' : '') ?>">Admin</a>
                  <?php break; ?>
              <?php
                 default: ?>

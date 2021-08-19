@@ -13,12 +13,12 @@ class StatisticsModel extends AbstractModel
 {
     public function getTen($quarter): array
     {
-        $param = [
+        $this->response = [
             'user' => $this->getTopUser($quarter, true),
             'area' => $this->getTopArea($quarter, true),
             'quarter' => $quarter,
         ];
-        return $this->responseAPI($param, true);
+        return $this->responseAPI();
     }
     public function getTopUser($quarter = null, bool $flag = false): array
     {
@@ -44,11 +44,11 @@ class StatisticsModel extends AbstractModel
         if ($flag) {
             return $param;
         } else {
-            $user = [
+            $this->response = [
                 'user' => $param,
                 'quarter' => $yearQuarter
             ];
-            return $this->responseAPI($user, true);
+            return $this->responseAPI();
         }
     }
     public function getTopArea($quarter = null, bool $flag = false): array
@@ -75,11 +75,11 @@ class StatisticsModel extends AbstractModel
         if ($flag) {
             return $param;
         } else {
-            $user = [
+            $this->response = [
                 'area' => $param,
                 'quarter' => $yearQuarter
             ];
-            return $this->responseAPI($user, true);
+            return $this->responseAPI();
         }
     }
     private function isSelectedQuarter($quarter): int

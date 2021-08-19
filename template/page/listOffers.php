@@ -13,10 +13,16 @@
                     <option value="area">Obszar:</option>
                 </select>
             </fieldset>
-            <input aria-labelledby="idea search" data-list="idea_search" type="search" id="select_search">
-            <button type="submit">ZNAJDŹ</button>
+            <input aria-labelledby="idea search" data-list="idea_search" type="search" id="select_search" name="idea_search">
+            <span class="massage_error list_massage" data-list="offer_message"></span>
+            <button type="submit" class="btn_layout" data-list="button_submit">ZNAJDŹ</button>
         </form>
     </section>
     <section class="offers_container" data-list="offers_container"></section>
+    <section class="offers_container last_element hide" data-list="empty_list">
+        <div class="IdeaList">
+            <h4 class="empty_idea">Brak elementów do wyświetlenia</h4>
+        </div>
+    </section>
 
 </main>

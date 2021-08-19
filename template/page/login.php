@@ -13,7 +13,7 @@
                 <span class="label-input_my">Hasło</span>
             </fieldset>
             <span class="massage_error login_massage" data-form="message"></span>
-            <button type="submit" class="button_subbmit">Zaloguj się</button>
+            <button type="submit" class="btn_layout" data-form="btn_submit">Zaloguj się</button>
         </form>
     </section>
 </main>

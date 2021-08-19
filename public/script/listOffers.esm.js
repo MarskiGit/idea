@@ -1,101 +1,90 @@
 'use strict';
 import { CreateRequest } from './modules/seting.esm.js';
 import Idea from './modules/listOffers/Idea.esm.js';
+import Api from './modules/Api.esm.js';
+import FormHandling from './modules/FormHandling.esm.js';
 
 const ideaDOM = {
     list: {
         request: 'listOffers',
         container: document.querySelector('[data-list="offers_container"]'),
+        empty: document.querySelector('[data-list="empty_list"]'),
         lenght: document.querySelector('[data-page="list_lenght"]'),
         renderCount: document.querySelector('[data-page="render_count"]'),
     },
     search: {
         request: 'ideaSearch',
         container: document.querySelector('[data-list="search_container"]'),
-        toggle: document.querySelector('[data-list="search_toggle"]'),
-        form: document.querySelector('[data-list="form_search"]'),
+        toggleButton: document.querySelector('[data-list="search_toggle"]'),
+        form: {
+            form: document.querySelector('[data-list="form_search"]'),
+            errorMessage: document.querySelector('[data-list="offer_message"]'),
+            errorMessage: document.querySelector('[data-list="offer_message"]'),
+            button: document.querySelector('[data-list="button_submit"]'),
+        },
     },
 };
 
 export default class ListOffers {
     #requestParam = CreateRequest(ideaDOM.list.request);
-    #Api;
-    #countRender = 0;
-    #listContainer = ideaDOM.list.container;
+    #FormHandling = new FormHandling(ideaDOM.search.form);
+    #FormTogle = new FormTogle();
 
-    #SearchIdea = new SearchIdea();
-    #fragmentList = document.createDocumentFragment();
-    #tupleNumbers = [];
-    #endTuples = false;
+    #inputSearch;
 
-    #listLenght = ideaDOM.list.lenght;
-    #renderCount = ideaDOM.list.renderCount;
+    init() {
+        this.#inputSearch = this.#FormHandling.getInputs(['INPUT'], 'search')[0];
 
-    init(Api) {
-        this.#Api = new Api();
-        this.#requestParam.add('last_tuple', 0);
         this.#factory();
-        this.#requestAPI();
+        this.#initList();
         this.#eventListeners();
     }
     #factory() {
-        this.#SearchIdea.init(ideaDOM.search);
+        this.#FormTogle.init();
     }
-
+    #initList() {
+        this.#requestParam.set('last_tuple', view.lastTupleId());
+        this.#requestParam.set('option_search', '');
+        getData.requestApi(this.#requestParam.get());
+    }
     #eventListeners() {
-        window.addEventListener('scroll', this.#throttled(this.#requestAPI, 1000));
+        window.addEventListener('scroll', this.#throttled(this.#setParam, 1000));
+        this.#FormHandling.form.addEventListener('submit', this.#setParam);
+        this.#inputSearch.addEventListener('search', this.#setParam);
+        ideaDOM.search.form.button.addEventListener('focus', this.#losefocus, false);
     }
-    #requestAPI = () => {
-        if (!this.#endTuples) {
-            document.body.style.cursor = 'progress';
-            this.#Api
-                .getJson(this.#requestParam.get())
-                .then((data) => {
-                    this.apiData = data;
-                    if (this.apiData.length === 0) this.#endTuples = true;
-                    this.#responseAPI();
-                })
-                .finally((document.body.style.cursor = 'default'));
+    #setParam = (event) => {
+        event && event.preventDefault();
+
+        if (event && event.type === 'submit') {
+            this.#formValidation();
+        } else if (event && event.type === 'search') {
+            this.#requestParam.set('option_search', '');
+            view.resetTuplesNumber();
+            view.clear();
+            this.#get();
+        } else if (!getData.getEndTuples()) {
+            this.#get();
         }
     };
-    #responseAPI() {
-        if (this.apiData.length > 0) {
-            this.#listContainer.classList.add('offers_container');
-            this.#displayList();
-        } else if (!this.#endTuples) {
-            this.#listContainer.classList.remove('offers_container');
-            this.#emptyList();
+    #formValidation() {
+        if (this.#FormHandling.emptyFields()) {
+            this.#setRequestSearch();
+            view.clear();
+        } else {
+            this.#FormHandling.showMessage('Uzupełnij wszystkie pola.');
         }
     }
-    #displayList() {
-        console.time('Render Idea');
-
-        for (const idea of this.apiData) {
-            this.#tupleNumbers.push(Number(idea.id_idea));
-
-            this.#fragmentList.appendChild(new Idea(idea).get());
-        }
-
-        console.timeEnd('Render Idea');
-
-        this.#countRender++;
-        this.#checkTuple();
-        this.#statisticsView();
+    #setRequestSearch() {
+        const { option_search, idea_search } = this.#FormHandling.getValue();
+        this.#requestParam.set('option_search', option_search);
+        this.#requestParam.set('idea_search', idea_search);
+        view.resetTuplesNumber();
+        this.#get();
     }
-    #checkTuple() {
-        this.#requestParam.add('last_tuple', Math.min(...this.#tupleNumbers));
-    }
-    // tymczaoswa metoda jako ciekwostka
-    #statisticsView() {
-        this.#listContainer.appendChild(this.#fragmentList);
-        this.#listLenght.innerHTML = `Elementów listy: ${this.#tupleNumbers.length}`;
-        this.#renderCount.innerHTML = `Liczba Żądań: ${this.#countRender}`;
-    }
-    #emptyList() {
-        const div = document.createElement('div');
-        div.classList.add('IdeaList');
-        div.innerHTML = '<h4 class="empty_idea">Brak elementów do wyświetlenia.</h4>';
-        this.#listContainer.appendChild(div);
+    #get() {
+        this.#requestParam.set('last_tuple', view.lastTupleId());
+        getData.requestApi(this.#requestParam.get());
     }
     #throttled(f, t) {
         let l = Date.now();
@@ -103,27 +92,94 @@ export default class ListOffers {
             l + t - Date.now() < 0 && (f(), (l = Date.now()));
         };
     }
+    #losefocus = () => ideaDOM.search.form.button.blur();
 }
 
-class SearchIdea {
-    #toggle;
-    #container;
-    #form;
-
-    init(ideaDOM) {
-        this.#toggle = ideaDOM.toggle;
-        this.#container = ideaDOM.container;
-        this.#form = ideaDOM.form;
+class FormTogle {
+    #toggleButton = ideaDOM.search.toggleButton;
+    #container = ideaDOM.search.container;
+    init() {
         this.#eventListeners();
     }
     #eventListeners() {
-        this.#toggle.addEventListener('click', this.#togleContainer);
-        this.#form.addEventListener('submit', this.#validation);
+        this.#toggleButton.addEventListener('click', this.#togleContainer);
     }
     #togleContainer = () => {
-        this.#container.classList.toggle('search_open');
-    };
-    #validation = (event) => {
-        event.preventDefault();
+        this.#container.classList.toggle('form_open');
     };
 }
+
+class GetData {
+    #dataApi;
+    #endTuples = false;
+    #Api = new Api();
+
+    getEndTuples = () => this.#endTuples;
+    requestApi(request) {
+        document.body.style.cursor = 'progress';
+        this.#Api
+            .getJson(request)
+            .then((data) => {
+                this.#dataApi = data;
+
+                this.#dataApi.length === 0 ? (this.#endTuples = true) : (this.#endTuples = false);
+                this.#responseAPI();
+            })
+            .finally((document.body.style.cursor = 'default'));
+    }
+    #responseAPI() {
+        if (this.#dataApi.length > 0) {
+            view.displayList(this.#dataApi);
+        } else {
+            view.emptyList();
+        }
+    }
+}
+
+class View {
+    #listContainer = ideaDOM.list.container;
+    #emptyList = ideaDOM.list.empty;
+    #listLenght = ideaDOM.list.lenght;
+    #renderCount = ideaDOM.list.renderCount;
+    #tupleID = [];
+
+    #fragmentList = document.createDocumentFragment();
+    #countRender = 0;
+
+    displayList(data) {
+        this.#listContainer.classList.add('offers_container');
+
+        console.time('Render Idea');
+
+        for (const idea of data) {
+            this.#tupleID.push(Number(idea.id_idea));
+            this.#fragmentList.appendChild(new Idea(idea).get());
+        }
+
+        console.timeEnd('Render Idea');
+
+        this.#countRender++;
+        this.#viewList();
+    }
+    clear() {
+        while (this.#listContainer.lastElementChild) {
+            this.#listContainer.removeChild(this.#listContainer.lastElementChild);
+        }
+        // this.#listContainer.innerHTML = '';
+    }
+    emptyList() {
+        this.#tupleID.length > 0 ? this.#emptyList.classList.add('hide') : this.#emptyList.classList.remove('hide');
+    }
+    lastTupleId = () => (Number.isFinite(Math.min(...this.#tupleID)) ? Math.min(...this.#tupleID) : 0);
+    resetTuplesNumber() {
+        this.#tupleID.length = 0;
+    }
+    #viewList() {
+        this.#listContainer.appendChild(this.#fragmentList);
+        this.#listLenght.innerHTML = `Elementów listy: ${this.#tupleID.length}`;
+        this.#renderCount.innerHTML = `Liczba Żądań: ${this.#countRender}`;
+    }
+}
+
+const getData = new GetData();
+const view = new View();

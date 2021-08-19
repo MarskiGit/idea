@@ -47,24 +47,24 @@ class OfferFormModel extends AbstractModel
             $addet = date("ynj") . "/" . $id;
             if ($userIdea) {
                 $this->createDate($id, $addet);
-                $replay = [
+                $this->response = [
                     'ok' => true,
                     'title' => "Dodano pomyślmie. Numer: " . $addet,
                 ];
-                return $this->responseAPI($replay, true);
+                return $this->responseAPI();
             } else {
-                $replay = [
+                $this->response = [
                     'ok' => true,
                     'title' => 'Błąd dodawania',
                 ];
-                return $this->responseAPI($replay, true);
+                return $this->responseAPI();
             }
         } else {
-            $replay = [
+            $this->response = [
                 'ok' => true,
                 'title' => 'Błąd dodawania',
             ];
-            return $this->responseAPI($replay);
+            return $this->responseAPI();
         }
     }
     private function userIdea(int $id, int $id_area, array $requestParam): bool

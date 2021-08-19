@@ -49,10 +49,10 @@ export default class LiveSearch {
     #whatValueSearch(target) {
         let valueSearch = target.getAttribute('data-search');
         if (valueSearch === 'creator_search') {
-            Number(target.value) ? this.#requestParam.add('select', 'id_pass') : this.#requestParam.add('select', 'full_name');
-            this.#requestParam.add('full_name', target.value);
+            Number(target.value) ? this.#requestParam.set('select', 'id_pass') : this.#requestParam.set('select', 'full_name');
+            this.#requestParam.set('full_name', target.value);
         } else {
-            this.#requestParam.add('area_name', target.value);
+            this.#requestParam.set('area_name', target.value);
         }
         this.#requestAPI();
     }

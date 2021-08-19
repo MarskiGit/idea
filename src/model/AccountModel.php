@@ -33,43 +33,43 @@ class AccountModel extends AbstractModel implements ModelInterface
     public function create(array $requestParam): array
     {
         if (!$this->isNameValid($requestParam['full_name'])) {
-            $replay = [
+            $this->response = [
                 'ok' => false,
                 'title' => 'Minimum 3 znaki',
             ];
-            return $this->responseAPI($replay, true);
+            return $this->responseAPI();
         }
 
         if (!$this->isPasswdValid($requestParam['password'])) {
-            $replay = [
+            $this->response = [
                 'ok' => false,
                 'title' => 'Minimum  8 znaków',
             ];
-            return $this->responseAPI($replay, true);
+            return $this->responseAPI();
         }
 
         if ($this->isThere('full_name', $requestParam['full_name'], 'account')) {
-            $replay = [
+            $this->response = [
                 'ok' => false,
                 'title' => 'Użytkownik jest już w bazie',
             ];
-            return $this->responseAPI($replay, true);
+            return $this->responseAPI();
         }
 
         if ($this->isThere('account_login', $requestParam['login'], 'account')) {
-            $replay = [
+            $this->response = [
                 'ok' => false,
                 'title' => 'Taki login istnieje',
             ];
-            return $this->responseAPI($replay, true);
+            return $this->responseAPI();
         }
 
         if ($this->isThere('id_pass', $requestParam['id_pass'], 'account')) {
-            $replay = [
+            $this->response = [
                 'ok' => false,
                 'title' => 'Numer Identyfikacyjny istnieje',
             ];
-            return $this->responseAPI($replay, true);
+            return $this->responseAPI();
         }
 
         $hash_2 = $this->hash($requestParam['password']);
@@ -89,11 +89,11 @@ class AccountModel extends AbstractModel implements ModelInterface
         }
 
         $id = intval($this->DB->lastInsertId());
-        $replay = [
+        $this->response = [
             'ok' => true,
             'title' => "Dodano" . $requestParam['full_name'],
         ];
-        return $this->responseAPI($replay, true);
+        return $this->responseAPI();
     }
     public function edit(array $requestParam)
     {
@@ -117,7 +117,7 @@ class AccountModel extends AbstractModel implements ModelInterface
     }
     public function search(array $requestParam): array
     {
-        $result = [];
+
         $search = "%" . $requestParam['full_name'] . "%";
         try {
             $stmt = $this->DB->prepare("SELECT id_account, id_area, full_name FROM account WHERE " . $requestParam['select'] . " LIKE :name LIMIT 3");
@@ -128,15 +128,15 @@ class AccountModel extends AbstractModel implements ModelInterface
         }
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                array_push($result, $row);
+                array_push($this->response, $row);
             }
-            return $this->responseAPI($result, true);
+            return $this->responseAPI();
         } else {
-            $replay = [
+            array_push($this->response, [
                 'full_name' => 'Nie odnaleziono',
-            ];
-            array_push($result, $replay);
-            return $this->responseAPI($result, true);
+            ]);
+
+            return $this->responseAPI();
         }
     }
     public function login(array $requestParam): array
@@ -145,11 +145,11 @@ class AccountModel extends AbstractModel implements ModelInterface
 
         if ($_SESSION['account']['login_fail'] === 0) {
             if ((time() - $_SESSION['account']['last_time']) < (10 * 60)) {
-                $replay = [
+                $this->response = [
                     'ok' => false,
                     'title' => 'Zablokowano dostęp na 10min',
                 ];
-                return $this->responseAPI($replay, true);
+                return $this->responseAPI();
             } else {
                 $_SESSION['account']['login_fail'] = 3;
             }
@@ -171,18 +171,18 @@ class AccountModel extends AbstractModel implements ModelInterface
                 'id' => $row['id_account'],
                 'login_fail' => 3
             ];
-            $replay = [
+            $this->response = [
                 'ok' => true,
             ];
-            return $this->responseAPI($replay, true);
+            return $this->responseAPI();
         } else {
-            $replay = [
+            $this->response = [
                 'ok' => false,
                 'title' => "Błąd logowania. Pozostało " . $_SESSION['account']['login_fail'] . " próby.",
             ];
             $_SESSION['account']['last_time'] = time();
             $_SESSION['account']['login_fail']--;
-            return $this->responseAPI($replay, true);
+            return $this->responseAPI();
         }
     }
     public static function logout(): void

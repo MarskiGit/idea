@@ -27,17 +27,17 @@ class OfferRatingModel extends AbstractModel
             if ((int)$requestParam['idea_status'] == 2)   $this->dividePoint((int)$requestParam['id_idea'], (int)$requestParam['number_users'], (int)$requestParam['awarded_point']);
 
 
-            $replay = [
+            $this->response = [
                 'ok' => true,
                 'title' => "Dodano pomyślmie. Numer: ",
             ];
-            return $this->responseAPI($replay, true);
+            return $this->responseAPI();
         } else {
-            $replay = [
+            $this->response = [
                 'ok' => true,
                 'title' => 'Błąd dodawania',
             ];
-            return $this->responseAPI($replay);
+            return $this->responseAPI();
         }
     }
     private function dividePoint(int $id, int $numberUsers, int $awarded_points)

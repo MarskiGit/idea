@@ -18,11 +18,6 @@ class ApiController extends AbstractController
         $ApiList = new OffersListModel();
         $this->View->response_Api($ApiList->get($this->requestParam));
     }
-    protected function ideaSearch_Api(): void
-    {
-        $ApiList = new OffersListModel();
-        $this->View->response_Api($ApiList->search($this->requestParam));
-    }
     protected function creatorSearch_Api(): void
     {
         $userSearch = new AccountModel();

@@ -40,7 +40,7 @@ const CreateRequest = function (req) {
     const Request = { request: req };
 
     return {
-        add: function (key, value) {
+        set: function (key, value) {
             if (typeof key === 'string') Request[key] = value;
         },
         get: function () {
