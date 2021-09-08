@@ -1,11 +1,7 @@
 'use strict';
 export default class Idea {
-    #status = {
-        class: 'waiting',
-        back: 'waiting_back',
-        status: 'Oczekuje',
-    };
-    #div = document.createElement('article');
+    #status;
+    #article;
     #topic;
     #after_value;
     #before_value;
@@ -18,8 +14,7 @@ export default class Idea {
     #date_implementation;
     #idea_status;
     #token_idea;
-
-    constructor({
+    render({
         topic,
         after_value,
         before_value,
@@ -33,6 +28,7 @@ export default class Idea {
         idea_status,
         token_idea,
     }) {
+        this.#article = document.createElement('article');
         this.#topic = topic;
         this.#after_value = after_value;
         this.#before_value = before_value;
@@ -45,19 +41,18 @@ export default class Idea {
         this.#date_implementation = date_implementation;
         this.#idea_status = idea_status;
         this.#token_idea = token_idea;
-
         this.#init();
     }
-    get = () => this.#div;
+    get = () => this.#article;
     #init() {
         this.#status = this.#statusInformation(parseInt(this.#idea_status, 10));
         if (this.#awarded_points) this.#awarded_points = this.#awarded_points.replace(/(\.0|\.00)$|(0)$/, '');
         this.#createElement();
     }
     #createElement() {
-        this.#div.classList.add('idea');
-        this.#div.setAttribute('data-token_idea', `${this.#token_idea}`);
-        this.#div.insertAdjacentHTML('afterbegin', this.#renderHTML());
+        this.#article.classList.add('idea');
+        this.#article.setAttribute('data-token_idea', `${this.#token_idea}`);
+        this.#article.insertAdjacentHTML('afterbegin', this.#renderHTML());
     }
     #renderHTML() {
         return `

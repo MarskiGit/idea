@@ -19,7 +19,6 @@ const ideaDOM = {
         form: {
             form: document.querySelector('[data-list="form_search"]'),
             errorMessage: document.querySelector('[data-list="offer_message"]'),
-            errorMessage: document.querySelector('[data-list="offer_message"]'),
             button: document.querySelector('[data-list="button_submit"]'),
         },
     },
@@ -137,6 +136,8 @@ class GetData {
 }
 
 class View {
+    #Idea = new Idea();
+
     #listContainer = ideaDOM.list.container;
     #emptyList = ideaDOM.list.empty;
     #listLenght = ideaDOM.list.lenght;
@@ -145,7 +146,6 @@ class View {
 
     #fragmentList = document.createDocumentFragment();
     #countRender = 0;
-
     displayList(data) {
         this.#listContainer.classList.add('offers_container');
 
@@ -153,7 +153,8 @@ class View {
 
         for (const idea of data) {
             this.#tupleID.push(Number(idea.id_idea));
-            this.#fragmentList.appendChild(new Idea(idea).get());
+            this.#Idea.render(idea);
+            this.#fragmentList.appendChild(this.#Idea.get());
         }
 
         console.timeEnd('Render Idea');
