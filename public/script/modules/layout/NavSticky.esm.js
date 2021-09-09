@@ -25,12 +25,12 @@ export default class NavSticky {
     #on() {
         this.#nav.classList.add('nav_sticky');
         this.#homeImg.forEach((img) => img.classList.add('filter'));
-        this.#pageUp.style.display = 'block';
+        // this.#pageUp.style.display = 'block';
     }
     #off() {
         this.#nav.classList.remove('nav_sticky');
         this.#homeImg.forEach((img) => img.classList.remove('filter'));
-        this.#pageUp.style.display = 'none';
+        // this.#pageUp.style.display = 'none';
     }
     #throttled(f, t) {
         let l = Date.now();

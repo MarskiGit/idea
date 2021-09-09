@@ -55,40 +55,50 @@
  </head>
 
  <body>
-     <nav class="menu" data-page="nav">
-         <a rel="home start" href="<?php echo HTTP_SERVER ?>" class="link_home btn_layout <?php echo ($globalParams['action_GET'] === 'statistics' ? 'active_btn' : '') ?>" data-page="home_nav">
-             <span>H</span>
-             <img src="public/img/home_icon.svg" alt="Strona główna" class="img_home">
-         </a>
-         <a rel="list section" href="?action=listOffers" class="btn_layout <?php echo ($globalParams['action_GET'] === 'listOffers' ? 'active_btn' : '') ?>">Lista pomysłów</a>
-         <a rel="write section" href="?action=formOffer" class="btn_layout <?php echo ($globalParams['action_GET'] === 'formOffer' ? 'active_btn' : '') ?>">Napisz pomysł</a>
-         <div class="btn_layout hover_img" data-page="page_up"><img src="public/img/page_up.svg" alt="góra strony" class="img_home"><span>H</span></div>
-         <div class="info_page">
-             <span data-page="list_lenght"></span>
-             <span data-page="render_count"></span>
-         </div>
-
-         <?php switch ($account_rang):
-                case 1: ?>
-                 <a rel="signin appendix" href="?action=logout" class="logo_idea">
-                     <div class="btn_layout countdown"><img class="img_logout" src="public/img/icon/logout.svg" alt="Logout"><span data-time="countdown">05:00</span></div>
-                 </a>
-                 <a rel="admin subsection" href="?action=mod" class="btn_layout">Mod</a>
-                 <?php break; ?>
-             <?php
-                case 2: ?>
-                 <a rel="signin appendix" href="?action=logout" class="logo_idea">
-                     <div class="btn_layout countdown"><img class="img_logout" src="public/img/icon/logout.svg" alt="Logout"><span class="countdown_text" data-time="countdown">05:00</span></div>
-                 </a>
-                 <a rel="admin subsection" href="?action=admin" class="btn_layout <?php echo ($globalParams['action_GET'] === 'admin' ? 'active_btn' : '') ?>">Admin</a>
-                 <?php break; ?>
-             <?php
-                default: ?>
-                 <a rel="signin appendix" href="?action=login" class="logo_idea"><img src="public/img/idea_book.svg" alt="Idea"></a>
-                 <?php break; ?>
-         <?php endswitch; ?>
+     <nav data-page="nav">
+         <div class="margin"></div>
+         <ul class="menu_list">
+             <li class="memu_item <?php echo ($globalParams['action_GET'] === 'statistics' ? 'active_page' : '') ?>">
+                 <a rel="home start" href="<?php echo HTTP_SERVER ?>" class="" data-page="home_nav">Home</a>
+             </li>
+             <li class="memu_item <?php echo ($globalParams['action_GET'] === 'listOffers' ? 'active_page' : '') ?>">
+                 <a rel="list section" href="?action=listOffers" class="">Lista</a>
+             </li>
+             <li class="memu_item <?php echo ($globalParams['action_GET'] === 'formOffer' ? 'active_page' : '') ?>">
+                 <a rel="write section" href="?action=formOffer" class="">Dodaj</a>
+             </li>
+             <li class="memu_item">
+                 <div class="info_page">
+                     <span data-page="list_lenght"></span>
+                     <span data-page="render_count"></span>
+                 </div>
+             </li>
+             <li class="memu_item logo <?php echo ($globalParams['action_GET'] === 'admin' ? 'active_page' : '') ?>">
+                 <?php switch ($account_rang):
+                        case 1: ?>
+                         <a rel="admin subsection" class="logged" href="?action=mod" class="btn_layout">Mod</a>
+                         <?php break; ?>
+                     <?php
+                        case 2: ?>
+                         <a rel="admin subsection" class="logged" href="?action=admin">Admin</a>
+                         <?php break; ?>
+                     <?php
+                        default: ?>
+                         <a rel="signin appendix" href="?action=login"><img src="public/img/idea_book.svg" alt="Idea"> </a>
+                         <?php break; ?>
+                 <?php endswitch; ?>
+             </li>
+             <?php if ($account_rang === 1 || $account_rang === 2) : ?>
+                 <li class="memu_item loguot">
+                     <a rel="signin appendix" href="?action=logout">
+                         <div class="countdown"><img src="public/img/icon/logout.svg" alt="Logout"><span class="countdown_text" data-time="countdown">05:00</span></div>
+                     </a>
+                 </li>
+             <?php endif; ?>
+         </ul>
+         <div class="margin"></div>
      </nav>
-
+     <!-- <img src="public/img/idea_book.svg" alt="Idea"> -->
      <?php if (!$globalParams['supportJS']) : ?>
          <div data-js="private" class="no_js">
              <p>Twoja przeglądarka nie wspiera w pełni technologi używanej na stronie.</p>

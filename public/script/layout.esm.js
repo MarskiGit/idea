@@ -19,6 +19,6 @@ export default class Layout {
         this.#eventListeners();
     }
     #eventListeners() {
-        this.#layoutDOM.pageUp.addEventListener('click', () => this.#Smooth.init());
+        //this.#layoutDOM.pageUp.addEventListener('click', () => this.#Smooth.init());
     }
 }

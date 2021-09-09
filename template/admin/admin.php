@@ -2,7 +2,7 @@
     <section class="container">
         <p>Administrator</p>
         <h2><?php echo  $_SESSION['account']['name'] ?></h2>
-        <ul>
+        <ul class="menu_adimn">
             <li class="<?php echo $pageParams['actve_link'] === 'home' ? 'actve_link' : '' ?>">
                 <a rel="admin section" href="?action=admin&admin=home" data-link="menu" class="li_button">
                     <img src="public/img/icon/statistics.svg" alt="Statystyki">
