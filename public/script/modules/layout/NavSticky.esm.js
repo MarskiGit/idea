@@ -26,7 +26,6 @@ export default class NavSticky {
         }
     }
     #on() {
-        this.#nav.classList.add('nav_sticky');
         this.#list.forEach((li) => {
             if (li.classList.contains('active_page')) {
                 li.classList.add('sticky_active_page');
@@ -34,6 +33,7 @@ export default class NavSticky {
                 li.classList.add('blur');
             }
         });
+        this.#nav.classList.add('nav_sticky');
         this.#flagSticky = !this.#flagSticky;
     }
     #off() {

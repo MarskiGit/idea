@@ -91,7 +91,7 @@
         </fieldset>
         <fieldset>
             <span class="massage_error offer_massage" data-form="offer_message"></span>
-            <button type="submit" class="btn_layout btn_submit" data-form="btn_submit">Wyślij</button>
+            <button type="submit" class="btn_layout" data-form="btn_submit">Wyślij</button>
         </fieldset>
     </form>
 </main>

@@ -56,7 +56,6 @@
 
  <body>
      <nav data-page="nav">
-
          <ul class="menu_list" data-menu="list">
              <li class="margin"></li>
              <li class="memu_item <?php echo ($globalParams['action_GET'] === 'statistics' ? 'active_page' : '') ?>">
@@ -98,9 +97,7 @@
              <?php endif; ?>
              <li class="margin"></li>
          </ul>
-
      </nav>
-     <!-- <img src="public/img/idea_book.svg" alt="Idea"> -->
      <?php if (!$globalParams['supportJS']) : ?>
          <div data-js="private" class="no_js">
              <p>Twoja przeglądarka nie wspiera w pełni technologi używanej na stronie.</p>
