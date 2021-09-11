@@ -1,14 +1,13 @@
 'use strict';
 export default class NavSticky {
-    #homeImg;
+    #list;
     #nav;
-    #pageUp;
     #main;
     #navPosition;
-    constructor({ home, nav, pageUp, main }) {
-        this.#homeImg = [...home.children];
+    #flagSticky = true;
+    constructor({ list, nav, main }) {
         this.#nav = nav;
-        this.#pageUp = pageUp;
+        this.#list = [...list.children];
         this.#main = main;
     }
     init() {
@@ -20,17 +19,33 @@ export default class NavSticky {
         window.addEventListener('scroll', this.#throttled(this.#sticky.bind(this), 10));
     }
     #sticky() {
-        window.pageYOffset > this.#navPosition.top.toFixed() ? this.#on() : this.#off();
+        if (window.pageYOffset > this.#navPosition.top.toFixed()) {
+            if (this.#flagSticky) this.#on();
+        } else {
+            if (!this.#flagSticky) this.#off();
+        }
     }
     #on() {
         this.#nav.classList.add('nav_sticky');
-        this.#homeImg.forEach((img) => img.classList.add('filter'));
-        // this.#pageUp.style.display = 'block';
+        this.#list.forEach((li) => {
+            if (li.classList.contains('active_page')) {
+                li.classList.add('sticky_active_page');
+            } else {
+                li.classList.add('blur');
+            }
+        });
+        this.#flagSticky = !this.#flagSticky;
     }
     #off() {
         this.#nav.classList.remove('nav_sticky');
-        this.#homeImg.forEach((img) => img.classList.remove('filter'));
-        // this.#pageUp.style.display = 'none';
+        this.#list.forEach((li) => {
+            if (li.classList.contains('active_page')) {
+                li.classList.remove('sticky_active_page');
+            } else {
+                li.classList.remove('blur');
+            }
+        });
+        this.#flagSticky = !this.#flagSticky;
     }
     #throttled(f, t) {
         let l = Date.now();

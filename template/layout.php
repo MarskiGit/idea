@@ -56,8 +56,9 @@
 
  <body>
      <nav data-page="nav">
-         <div class="margin"></div>
-         <ul class="menu_list">
+
+         <ul class="menu_list" data-menu="list">
+             <li class="margin"></li>
              <li class="memu_item <?php echo ($globalParams['action_GET'] === 'statistics' ? 'active_page' : '') ?>">
                  <a rel="home start" href="<?php echo HTTP_SERVER ?>" class="" data-page="home_nav">Home</a>
              </li>
@@ -95,8 +96,9 @@
                      </a>
                  </li>
              <?php endif; ?>
+             <li class="margin"></li>
          </ul>
-         <div class="margin"></div>
+
      </nav>
      <!-- <img src="public/img/idea_book.svg" alt="Idea"> -->
      <?php if (!$globalParams['supportJS']) : ?>

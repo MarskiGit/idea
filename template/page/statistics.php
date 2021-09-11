@@ -1,13 +1,13 @@
 <main data-page="main">
     <h1>Statystyki</h1>
-    <section class="statistics_container wrap_header">
-        <h2>Top 10</h2>
-    </section>
 
+
+
+    <h2 class="stat_h2">Top 10</h2>
     <section class="statistics_container">
 
         <section class="wrap_context">
-            <h3>Pomysłodawców</h3>
+            <h3>Pomysłodawcy</h3>
             <div class="list_quarter">
                 <ul data-statistics="user_quarter">
                     <li><button data-quarter="1" data-request="topUsers">I kwartał </button></li>
@@ -30,7 +30,7 @@
         </section>
 
         <section class="wrap_context">
-            <h3>Działów</h3>
+            <h3>Działy</h3>
             <div class="list_quarter">
                 <ul data-statistics="area_quarter">
                     <li><button data-quarter="1" data-request="topAreas">I kwartał </button></li>

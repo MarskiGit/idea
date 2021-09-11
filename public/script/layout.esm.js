@@ -5,12 +5,11 @@ import SmoothTop from './modules/layout/SmoothTop.esm.js';
 const layoutDOM = {
     home: document.querySelector('[data-page="home_nav"]'),
     nav: document.querySelector('[data-page="nav"]'),
-    pageUp: document.querySelector('[data-page="page_up"]'),
     main: document.querySelector('[data-page="main"]'),
+    list: document.querySelector('[data-menu="list"]'),
 };
 
 export default class Layout {
-    #layoutDOM = layoutDOM;
     #NavSticky = new NavSticky(layoutDOM);
     #Smooth = new SmoothTop();
 
