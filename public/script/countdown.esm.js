@@ -1,5 +1,5 @@
 'use strict';
-import { Config } from './modules/seting.esm.js';
+import { Config } from './modules/config.esm.js';
 
 export default class CountDown {
     #viewCountdown = document.querySelector('[data-time="countdown"]');

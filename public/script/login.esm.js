@@ -1,6 +1,7 @@
 'use strict';
-import { Config, CreateRequest } from './modules/seting.esm.js';
-import { storage } from './modules/seting.esm.js';
+import { Config } from './modules/config.esm.js';
+import { handleRequestParams } from './modules/modules.esm.js';
+import { storage } from './modules/modules.esm.js';
 import FormHandling from './modules/FormHandling.esm.js';
 
 const formDOM = {
@@ -11,7 +12,7 @@ const formDOM = {
 };
 
 export default class Login {
-    #requestParam = CreateRequest(formDOM.request);
+    #requestParam = handleRequestParams(formDOM.request);
     #Api;
     #FormHandling = new FormHandling(formDOM);
     #inputList;
@@ -25,7 +26,6 @@ export default class Login {
 
     #eventListeners() {
         this.#FormHandling.form.addEventListener('submit', this.#formValidation);
-        formDOM.submitButton.addEventListener('focus', this.#losefocus, false);
     }
     #formValidation = (event) => {
         event.preventDefault();
@@ -39,7 +39,7 @@ export default class Login {
     #requestAPi = () => {
         document.body.style.cursor = 'progress';
         this.#Api
-            .getJson(this.#requestParam.get())
+            .postJson(this.#requestParam.getPost())
             .then((data) => {
                 this.apiData = data;
                 this.#responseAPI();
@@ -59,7 +59,6 @@ export default class Login {
     #onBlur() {
         this.#inputList.forEach((i) => i.addEventListener('blur', this.#inputOnBlur));
     }
-    #losefocus = () => formDOM.submitButton.blur();
     #inputOnBlur(event) {
         event.target.value ? this.classList.add('has-val') : this.classList.remove('has-val');
     }

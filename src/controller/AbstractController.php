@@ -28,38 +28,52 @@ abstract class AbstractController
         $this->account = $this->Request->getParam_SESSION('account');
         $this->init();
     }
-    private function init(): void
+    public function init(): void
     {
-        $requestMethod = $_SERVER["REQUEST_METHOD"];
-        switch ($requestMethod) {
-            case 'GET':
-                XCsrfModel::setNewToken('Token');
-                $this->action_GET = $this->Request->getParam_GET(DEFAULT_GET, self::DEFAULT_ACTION_HTML);
-                $this->View->globalParams = [
-                    'action_GET' => $this->action_GET,
-                    'account' => $this->account,
-                    'supportJS' => $this->getBrowser(),
-                ];
+        switch ($this->Request->getIndex()) {
+            case 'page':
+                $this->initPage();
                 $this->renderPage();
+                break;
+            case 'api':
+                if (XCsrfModel::verifyToken($this->Request->getToken(), 'Token')) {
+                    $this->initApi();
+                    $this->renderApi();
+                } else {
+                    header("HTTP/1.1 401 Unauthorized");
+                    $this->notFoundResponse('401', 'AUTHORIZATION', 'WRONG TOKEN');
+                }
+                break;
+            default:
+                header("HTTP/1.1 501 Not Implemented");
+                break;
+        }
+    }
+
+    private function initPage(): void
+    {
+        XCsrfModel::setNewToken('Token');
+        $this->action_GET = $this->Request->getParam_GET(DEFAULT_GET, self::DEFAULT_ACTION_HTML);
+        $this->View->globalParams = [
+            'action_GET' => $this->action_GET,
+            'account' => $this->account,
+            'supportJS' => $this->getBrowser(),
+        ];
+    }
+    private function initApi(): void
+    {
+        switch ($this->Request->getMethod()) {
+            case 'GET':
+                $this->requestAJAX = $this->Request->getParam_GET(DEFAULT_API, self::DEFAULT_ACTION_API);
+                $this->requestParam = $this->Request->getParams_GET();
                 break;
             case 'POST':
                 $this->requestParam = $this->Request->getParam_AJAX();
-                if (XCsrfModel::verifyToken($this->Request->getToken(), 'Token')) {
-                    $this->requestAJAX = $this->Request->getRequest_AJAX(DEFAULT_API, self::DEFAULT_ACTION_API);
-                    $this->api();
-                } else {
-                    $replay =
-                        [
-                            'api' => false,
-                            'type' => 'AUTHORIZATION',
-                            'title' => 'WRONG TOKEN',
-                        ];
-                    echo json_encode($replay);
-                }
+                $this->requestAJAX = $this->Request->getRequest_AJAX(DEFAULT_API, self::DEFAULT_ACTION_API);
                 break;
-
             default:
-                header("Location:" . HTTP_SERVER);
+                header("HTTP/1.1 501 Not Implemented");
+                $this->notFoundResponse('501', 'SERWER', 'Not Implemented');
                 break;
         }
     }
@@ -75,7 +89,7 @@ abstract class AbstractController
             exit;
         }
     }
-    private function api(): void
+    private function renderApi(): void
     {
         $method = $this->existsMethod($this->requestAJAX, self::DEFAULT_ACTION_API, DEFAULT_SUFIX_API);
         $this->$method();
@@ -87,6 +101,17 @@ abstract class AbstractController
             $method  = $default . $sufix;
         }
         return $method;
+    }
+    private function notFoundResponse(string $error, string $type, string $title): void
+    {
+        $replay =
+            [
+                'api' => $error,
+                'type' => $type,
+                'title' => $title,
+            ];
+
+        echo json_encode($replay);
     }
     private function getBrowser(): bool
     {

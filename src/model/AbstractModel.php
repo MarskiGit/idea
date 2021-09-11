@@ -17,9 +17,9 @@ abstract class AbstractModel
     {
         $this->DB = DB::conn();
     }
-    protected function responseAPI(bool $is_ok = true): array
+    protected function responseAPI(int $is_ok = 200): array
     {
-        return $replay = [
+        return [
             'api' => $is_ok,
             'data' => $this->response,
         ];

@@ -1,5 +1,5 @@
 'use strict';
-import { CreateRequest } from './modules/seting.esm.js';
+import { handleRequestParams } from './modules/modules.esm.js';
 import Idea from './modules/listOffers/Idea.esm.js';
 import Api from './modules/Api.esm.js';
 import FormHandling from './modules/FormHandling.esm.js';
@@ -25,7 +25,7 @@ const ideaDOM = {
 };
 
 export default class ListOffers {
-    #requestParam = CreateRequest(ideaDOM.list.request);
+    #requestParam = handleRequestParams(ideaDOM.list.request);
     #FormHandling = new FormHandling(ideaDOM.search.form);
     #FormTogle = new FormTogle();
 
@@ -43,22 +43,20 @@ export default class ListOffers {
     }
     #initList() {
         this.#requestParam.set('last_tuple', view.lastTupleId());
-        this.#requestParam.set('option_search', '');
-        getData.requestApi(this.#requestParam.get());
+        getData.requestApi(this.#requestParam.getUrl());
     }
     #eventListeners() {
         window.addEventListener('scroll', this.#throttled(this.#setParam, 1000));
         this.#FormHandling.form.addEventListener('submit', this.#setParam);
         this.#inputSearch.addEventListener('search', this.#setParam);
-        ideaDOM.search.form.button.addEventListener('focus', this.#losefocus, false);
     }
     #setParam = (event) => {
         event && event.preventDefault();
-
         if (event && event.type === 'submit') {
             this.#formValidation();
         } else if (event && event.type === 'search') {
-            this.#requestParam.set('option_search', '');
+            this.#requestParam.deletePatam('option_search');
+            this.#requestParam.deletePatam('idea_search');
             view.resetTuplesNumber();
             view.clear();
             this.#get();
@@ -83,7 +81,7 @@ export default class ListOffers {
     }
     #get() {
         this.#requestParam.set('last_tuple', view.lastTupleId());
-        getData.requestApi(this.#requestParam.get());
+        getData.requestApi(this.#requestParam.getUrl());
     }
     #throttled(f, t) {
         let l = Date.now();
@@ -91,7 +89,6 @@ export default class ListOffers {
             l + t - Date.now() < 0 && (f(), (l = Date.now()));
         };
     }
-    #losefocus = () => ideaDOM.search.form.button.blur();
 }
 
 class FormTogle {

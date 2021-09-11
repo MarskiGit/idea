@@ -1,5 +1,5 @@
 'use strict';
-import { Config } from './modules/seting.esm.js';
+import { Config } from './modules/config.esm.js';
 import FormAreaHandling from './modules/admin/FormAreaHandling.esm.js';
 import FormAccountHandling from './modules/admin/FormAccountHandling.esm.js';
 

@@ -14,9 +14,8 @@ export default class Api {
     constructor() {
         this.#setingRequest = {
             ajax: {
-                method: 'POST',
                 mode: 'cors',
-                cache: 'no-cache',
+                cache: 'default',
                 credentials: 'same-origin',
                 headers: new Headers({
                     Accept: 'application/json',
@@ -32,9 +31,22 @@ export default class Api {
         this.#url = this.#setingRequest.url;
         this.#Exception = new Exception();
     }
-    async getJson(param) {
-        this.#seting.body = JSON.stringify(param);
+    async getJson(str) {
+        const url = `${this.#url}/?${str}`;
+        this.#seting.method = 'GET';
+        const response = await fetch(url, this.#seting).catch(this.#handleError);
 
+        if (response.ok && response.status === 200) {
+            const jsonData = await response.json();
+            return this.#getData(jsonData);
+        } else {
+            this.#Exception.display(this.#exceptionMasage);
+            return;
+        }
+    }
+    async postJson(param) {
+        this.#seting.body = JSON.stringify(param);
+        this.#seting.method = 'POST';
         const response = await fetch(this.#url, this.#seting).catch(this.#handleError);
 
         if (response.ok && response.status === 200) {
@@ -46,7 +58,7 @@ export default class Api {
         }
     }
     #getData(data) {
-        if ('api' in data && Boolean(data.api) && typeof data === 'object') {
+        if (Number(data.api) === 200 && typeof data === 'object') {
             return data.data;
         } else {
             this.#Exception.display(data);

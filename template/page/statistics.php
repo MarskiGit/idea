@@ -33,10 +33,10 @@
             <h3>Działów</h3>
             <div class="list_quarter">
                 <ul data-statistics="area_quarter">
-                    <li><button data-quarter="1" data-request="topArea">I kwartał </button></li>
-                    <li><button data-quarter="2" data-request="topArea">II kwartał </button></li>
-                    <li><button data-quarter="3" data-request="topArea">III kwartał </button></li>
-                    <li><button data-quarter="4" data-request="topArea">IV kwartał </button></li>
+                    <li><button data-quarter="1" data-request="topAreas">I kwartał </button></li>
+                    <li><button data-quarter="2" data-request="topAreas">II kwartał </button></li>
+                    <li><button data-quarter="3" data-request="topAreas">III kwartał </button></li>
+                    <li><button data-quarter="4" data-request="topAreas">IV kwartał </button></li>
                 </ul>
             </div>
             <table data-statistics="areas_list">

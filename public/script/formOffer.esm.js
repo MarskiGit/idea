@@ -1,5 +1,5 @@
 'use strict';
-import { CreateRequest } from './modules/seting.esm.js';
+import { handleRequestParams } from './modules/modules.esm.js';
 import FormHandling from './modules/FormHandling.esm.js';
 import CountCharacters from './modules/formOffer/CountCharacters.esm.js';
 import Rating from './modules/formOffer/Rating.esm.js';
@@ -38,7 +38,7 @@ const formDOM = {
 };
 
 export default class FormOffer {
-    #requestParam = CreateRequest(formDOM.request);
+    #requestParam = handleRequestParams(formDOM.request);
     #Api;
     #FormHandling = new FormHandling(formDOM);
 
@@ -81,7 +81,6 @@ export default class FormOffer {
 
     #eventListeners() {
         this.#FormHandling.form.addEventListener('submit', this.#formValidation);
-        formDOM.submitButton.addEventListener('focus', this.#loseFocus, false);
     }
     #formValidation = (event) => {
         event.preventDefault();
@@ -106,7 +105,7 @@ export default class FormOffer {
     #requestAPI = () => {
         document.body.style.cursor = 'progress';
         this.#Api
-            .getJson(this.#requestParam.get())
+            .postJson(this.#requestParam.getPost())
             .then((data) => {
                 this.apiData = data;
                 this.#responseAPI();
@@ -134,6 +133,5 @@ export default class FormOffer {
         this.#UserChosen.clear();
         this.#AreaChosen.clear();
     }
-    #loseFocus = () => formDOM.submitButton.blur();
     #capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 }

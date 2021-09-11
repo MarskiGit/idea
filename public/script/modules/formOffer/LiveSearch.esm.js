@@ -1,5 +1,5 @@
 'use strict';
-import { CreateRequest } from '../seting.esm.js';
+import { handleRequestParams } from '../modules.esm.js';
 import Api from '../Api.esm.js';
 import RenderLi from './RenderLi.esm.js';
 
@@ -10,7 +10,7 @@ export default class LiveSearch {
     #inputSearch;
     #fragmentList = document.createDocumentFragment();
     constructor(searchObjects) {
-        this.#requestParam = CreateRequest(searchObjects.request);
+        this.#requestParam = handleRequestParams(searchObjects.request);
         this.#Api = new Api();
         this.#resultsSearchUl = searchObjects.resultsSearchUl;
     }
@@ -59,7 +59,7 @@ export default class LiveSearch {
     #requestAPI = () => {
         document.body.style.cursor = 'progress';
         this.#Api
-            .getJson(this.#requestParam.get())
+            .getJson(this.#requestParam.getUrl())
             .then((data) => {
                 this.apiData = data;
                 this.#responseAPI();

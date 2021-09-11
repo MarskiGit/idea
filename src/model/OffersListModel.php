@@ -14,7 +14,7 @@ class OffersListModel extends AbstractModel
     public function get(array $requestParam): array
     {
 
-        switch ($requestParam['option_search']) {
+        switch ($requestParam['option_search'] ?? '') {
             case 'contents':
                 $this->search($requestParam['idea_search'], (int)$requestParam['last_tuple']);
                 break;

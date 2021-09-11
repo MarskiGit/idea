@@ -1,5 +1,5 @@
 'use strict';
-import { TimeApp, CreateRequest } from './modules/seting.esm.js';
+import { TimeApp, handleRequestParams } from './modules/modules.esm.js';
 import TbodyTopTen from './modules/statistics/TbodyTopTen.esm.js';
 
 const statisticsDOM = {
@@ -15,7 +15,7 @@ const statisticsDOM = {
 };
 
 export default class TopTen {
-    #requestParam = CreateRequest(statisticsDOM.request);
+    #requestParam = handleRequestParams(statisticsDOM.request);
     #Api;
     #userDOM = statisticsDOM.users;
     #areaDOM = statisticsDOM.area;
@@ -31,7 +31,7 @@ export default class TopTen {
     #requestAPI = () => {
         document.body.style.cursor = 'progress';
         this.#Api
-            .getJson(this.#requestParam.get())
+            .getJson(this.#requestParam.getUrl())
             .then((data) => {
                 this.apiData = data;
                 this.#responseAPI();
@@ -39,7 +39,7 @@ export default class TopTen {
             .finally((document.body.style.cursor = 'default'));
     };
     #responseAPI() {
-        const { request } = this.#requestParam.get();
+        const request = this.#requestParam.getParam('request');
         if (request !== this.#flagButton || this.apiData.quarter !== this.#flagQuarter) {
             const { user, area, quarter } = this.apiData;
             this.#flagQuarter = quarter;
@@ -49,7 +49,7 @@ export default class TopTen {
                 case 'topUsers':
                     this.#displayTopTen(user, this.#userDOM);
                     break;
-                case 'topArea':
+                case 'topAreas':
                     this.#displayTopTen(area, this.#areaDOM);
                     break;
                 case 'topTen':

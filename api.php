@@ -6,9 +6,10 @@ require_once('utils/debug.php');
 require_once('config/config.php');
 
 header("Access-Control-Allow-Origin: " . HTTP_SERVER . "");
-header("Access-Control-Allow-Methods: POST");
-header("Access-Control-Max-Age: 86400");
-header("Cache-Control: no-store, no-cache");
+header("Content-Type: application/json; charset=UTF-8");
+header("Access-Control-Allow-Methods: OPTIONS,GET,POST,PUT,DELETE");
+header("Access-Control-Max-Age: 3600");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 header("Pragma: no-cache");
 header("X-CSRF-Token: Fetch");
 // header("always append X-Frame-Options SAMEORIGIN");
@@ -28,26 +29,21 @@ use Idea\view\View;
 use Idea\view\Request;
 
 try {
-    $input = file_get_contents('php://input');
-    if ($input !== false && !empty($input)) {
-        $request = [
-            'get' => $_GET,
-            'post' => $_POST,
-            'phpInput' =>  $input,
-            'server' => $_SERVER,
-            'token' => $_SERVER["HTTP_X_CSRF_TOKEN"] ?? '',
-        ];
+    $request = [
+        'index' => 'api',
+        'get' => $_GET,
+        'post' => $_POST,
+        'phpInput' =>  file_get_contents('php://input'),
+        'server' => $_SERVER,
+        'token' => $_SERVER["HTTP_X_CSRF_TOKEN"] ?? '',
+    ];
 
-        $Request = new Request($request);
-        $View = new View();
+    $Request = new Request($request);
+    $View = new View();
 
-        (new ApiController($Request, $View));
-    } else {
-        header("Location:" . HTTP_SERVER);
-    }
+    (new ApiController($Request, $View));
 } catch (ApiException $e) {
     echo $e->jsonException($e->getMessage());
 } catch (Throwable $e) {
     echo $e->getMessage();
-    dump($e);
 }

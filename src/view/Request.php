@@ -11,6 +11,7 @@ class Request
     private string $phpInput;
     private array $server;
     private string $token;
+    private string $index;
 
     public function __construct(array $params)
     {
@@ -19,10 +20,21 @@ class Request
         $this->phpInput =  $params['phpInput'];
         $this->server = $params['server'];
         $this->token = $params['token'];
+        $this->index = $params['index'];
+    }
+    public function getIndex(): string
+    {
+        return $this->index;
     }
     public function getParam_GET(string $name, $default = null): ?string
     {
         return $this->get[$name] ?? $default;
+    }
+    public function getParams_GET()
+    {
+        $indexCompleted = array_search('request', $this->get);
+        unset($this->get[$indexCompleted]);
+        return $this->get;
     }
     public function getParam_POST(string $name, $default = null): ?string
     {
@@ -45,13 +57,9 @@ class Request
     {
         return $this->token;
     }
-    public function is_Post(): bool
+    public function getMethod(): string
     {
-        return $this->server['REQUEST_METHOD'] === 'POST';
-    }
-    public function is_Get(): bool
-    {
-        return $this->server['REQUEST_METHOD'] === 'GET';
+        return $this->server['REQUEST_METHOD'];
     }
     public function is_PHPInput(): bool
     {

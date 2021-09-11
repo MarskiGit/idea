@@ -1,16 +1,5 @@
 'use strict';
-export { Config, TimeApp, CreateRequest };
-
-const Config = Object.create(
-    {},
-    {
-        localhost: {
-            value: 'http://h.localhost/01_MOJE/01_CURRENT/idea/',
-            writable: false,
-            configurable: false,
-        },
-    }
-);
+export { TimeApp, handleRequestParams };
 
 const TimeApp = (function () {
     return {
@@ -36,15 +25,28 @@ const TimeApp = (function () {
     };
 })();
 
-const CreateRequest = function (req) {
+const handleRequestParams = function (req) {
     const Request = { request: req };
+    let str = '';
 
     return {
         set: function (key, value) {
             if (typeof key === 'string') Request[key] = value;
         },
-        get: function () {
+        getPost: function () {
             return Request;
+        },
+        getUrl: function () {
+            str = '';
+            for (let key in Request) str += `${key}=${Request[key]}&`;
+            let url = str.slice(0, -1);
+            return url;
+        },
+        getParam: function (key) {
+            return Request[key];
+        },
+        deletePatam: function (key) {
+            delete Request[key];
         },
     };
 };

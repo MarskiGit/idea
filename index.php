@@ -18,11 +18,11 @@ use Idea\view\View;
 use Idea\view\Request;
 
 try {
-    $input = file_get_contents('php://input');
     $request = [
+        'index' => 'page',
         'get' => $_GET,
-        'post' => $_POST,
-        'phpInput' => !empty($input) ? $input : '',
+        'post' => [],
+        'phpInput' => '',
         'server' => $_SERVER,
         'token' => $_SERVER["HTTP_X_CSRF_TOKEN"] ?? '',
     ];
@@ -35,5 +35,4 @@ try {
     echo "<div class='exception align_center'><p>Błąd Aplikacji</p><p>" . $e->getMessage() . "</p><div class='exception_img'></div></div>";
 } catch (Throwable $e) {
     echo "<div class='exception align_center'><p>Krytyczny Błąd Aplikacji</p><p>" . $e->getMessage() . "</p><div class='exception_img'></div></div>";
-    dump($e);
 }

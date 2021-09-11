@@ -1,5 +1,5 @@
 'use strict';
-import { storage } from './modules/seting.esm.js';
+import { storage } from './modules/modules.esm.js';
 import Layout from './layout.esm.js';
 import Api from './modules/Api.esm.js';
 
@@ -18,7 +18,7 @@ class Index {
 
         if (this.#userLogin) this.#countDown();
 
-        console.warn('Aktualizacja: 04.08.2021 / 11:00');
+        console.warn('Aktualizacja: 10.09.2021 / 20:30');
     }
     #checkLocationUrl() {
         let page = this.#url.replaceAll('?action=', '');

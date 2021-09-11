@@ -11,24 +11,32 @@ use PDOException;
 
 class StatisticsModel extends AbstractModel
 {
-    public function getTen($quarter): array
+    public function get(string $select, $quarter): array
     {
-        $this->response = [
-            'user' => $this->getTopUser($quarter, true),
-            'area' => $this->getTopArea($quarter, true),
-            'quarter' => $quarter,
-        ];
+        $this->yearQuarter =  $this->isSelectedQuarter($quarter);
+        switch ($select) {
+            case 'TopUsers':
+                $this->response['user'] = $this->getTopUsers();
+                break;
+            case 'TopAreas':
+                $this->response['area'] = $this->getTopAreas();
+                break;
+            default:
+                $this->response['user'] = $this->getTopUsers();
+                $this->response['area'] = $this->getTopAreas();
+                break;
+        }
+        $this->response['quarter'] = $quarter;
         return $this->responseAPI();
     }
-    public function getTopUser($quarter = null, bool $flag = false): array
+    private function getTopUsers(): array
     {
-        $yearQuarter =  $this->isSelectedQuarter($quarter);
         $param = [];
         try {
             $stmt = $this->DB->query(
                 "SELECT full_name, SUM(awarded_points) points, COUNT(*) offers
             FROM view_points_user
-            WHERE QUARTER(date_added) = $yearQuarter
+            WHERE QUARTER(date_added) = $this->yearQuarter
             GROUP BY full_name 
             ORDER BY points DESC LIMIT 10"
             );
@@ -41,25 +49,16 @@ class StatisticsModel extends AbstractModel
                 array_push($param, $row);
             }
         }
-        if ($flag) {
-            return $param;
-        } else {
-            $this->response = [
-                'user' => $param,
-                'quarter' => $yearQuarter
-            ];
-            return $this->responseAPI();
-        }
+        return $param;
     }
-    public function getTopArea($quarter = null, bool $flag = false): array
+    private function getTopAreas(): array
     {
-        $yearQuarter = $this->isSelectedQuarter($quarter);
         $param = [];
         try {
             $stmt = $this->DB->query(
                 "SELECT area_name as full_name, SUM(awarded_points) points, COUNT(DISTINCT id_idea) offers
                 FROM view_points_user
-                WHERE QUARTER(date_added) = $yearQuarter
+                WHERE QUARTER(date_added) = $this->yearQuarter
                 GROUP BY area_name
                 ORDER BY offers DESC"
             );
@@ -72,15 +71,7 @@ class StatisticsModel extends AbstractModel
                 array_push($param, $row);
             }
         }
-        if ($flag) {
-            return $param;
-        } else {
-            $this->response = [
-                'area' => $param,
-                'quarter' => $yearQuarter
-            ];
-            return $this->responseAPI();
-        }
+        return $param;
     }
     private function isSelectedQuarter($quarter): int
     {

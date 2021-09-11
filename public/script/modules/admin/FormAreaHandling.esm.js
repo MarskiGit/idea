@@ -1,5 +1,5 @@
 'use strict';
-import { CreateRequest } from '../seting.esm.js';
+import { handleRequestParams } from '../modules.esm.js';
 import Api from '../Api.esm.js';
 import FormHandling from '../FormHandling.esm.js';
 
@@ -8,7 +8,7 @@ export default class FormAreaHandling {
     #Api;
     #FormHandling;
     constructor(formObjects) {
-        let vv = CreateRequest();
+        let vv = handleRequestParams();
         this.#requestParam = {
             request: formObjects.request,
         };

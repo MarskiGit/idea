@@ -15,7 +15,6 @@ class View
     }
     public function response_Api(array $answer): void
     {
-        header("Content-Type: application/json; charset=UTF-8");
         echo json_encode($answer);
     }
     public function layout(): void
