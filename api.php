@@ -1,8 +1,6 @@
 <?php
 
 declare(strict_types=1);
-
-require_once('utils/debug.php');
 require_once('config/config.php');
 
 header("Access-Control-Allow-Origin: " . HTTP_SERVER . "");
@@ -12,10 +10,10 @@ header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 header("Pragma: no-cache");
 header("X-CSRF-Token: Fetch");
-// header("always append X-Frame-Options SAMEORIGIN");
-// header("set X-XSS-Protection 1; mode=block");
 
 session_start();
+
+require_once('utils/debug.php');
 
 spl_autoload_register(function (string $classNamespace) {
     $path = str_replace(['\\', 'Idea/'], ['/', ''], $classNamespace);

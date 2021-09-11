@@ -1,11 +1,14 @@
 <?php
 
 declare(strict_types=1);
-date_default_timezone_set('Europe/Warsaw');
+require_once('config/config.php');
+
+header('Content-Type: text/html; charset=utf-8');
+
 session_start();
 
 require_once("utils/debug.php");
-require_once('config/config.php');
+
 spl_autoload_register(function (string $classNamespace) {
     $path = str_replace(['\\', 'Idea/'], ['/', ''], $classNamespace);
     $path = "src/$path.php";

@@ -19,7 +19,6 @@ class View
     }
     public function layout(): void
     {
-        header('Content-Type: text/html; charset=utf-8');
         $this->viewHTML('layout', '');
     }
     public function statistics(): void

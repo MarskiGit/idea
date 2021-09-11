@@ -1,4 +1,6 @@
 <?php
+date_default_timezone_set('Europe/Warsaw');
+
 // !!! Pozostawić w takiej formie - nie zmieniać !!!
 define('DEFAULT_PAPPER', 's9m2ajfPP[32^B:');
 // !!! Leave it as it is - do not change it  !!!
