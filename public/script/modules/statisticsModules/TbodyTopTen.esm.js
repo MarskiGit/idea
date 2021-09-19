@@ -3,17 +3,19 @@ import SortingTopTen from './SortingTopTen.esm.js';
 
 export default class TbodyTopTen {
     #tbody;
-    #ListMixed;
+    #ListMixed = new SortingTopTen();
     #ListSortet;
-    #place = 1;
-    constructor(list) {
-        this.#ListMixed = new SortingTopTen(list);
-        this.#ListSortet = this.#ListMixed.get();
+    #place;
+    render(data) {
+        this.#place = 1;
+        this.#ListMixed.sort(data);
+
         this.#tbody = document.createElement('tbody');
-        this.#renderTbody();
+        this.#init();
     }
     get = () => this.#tbody;
-    #renderTbody() {
+    #init() {
+        this.#ListSortet = this.#ListMixed.get();
         let i = 0;
         for (const td of this.#ListSortet) {
             this.#tbody.insertAdjacentHTML('beforeend', this.#renderTr(i, td));

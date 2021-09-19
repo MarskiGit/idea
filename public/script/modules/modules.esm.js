@@ -22,6 +22,10 @@ const TimeApp = (function () {
             const month = d.getMonth() + 1;
             return Math.ceil(month / 3);
         },
+        year() {
+            const d = new Date();
+            return Number(d.getFullYear());
+        },
     };
 })();
 

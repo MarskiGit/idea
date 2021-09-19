@@ -1,12 +1,16 @@
 'use strict';
 export default class SortingTopTen {
     #mixed;
-    #onlyPoints = [];
-    #score = [];
+    #onlyPoints;
+    #score;
     #sortedScore;
-    #nextSortedStep = 0;
-    constructor(data) {
+    #nextSortedStep;
+    sort(data) {
         this.#mixed = data;
+        this.#onlyPoints = [];
+        this.#score = [];
+        this.#sortedScore;
+        this.#nextSortedStep = 0;
         this.#init();
     }
     get = () => (this.#score.length !== 0 ? this.#score : this.#mixed);

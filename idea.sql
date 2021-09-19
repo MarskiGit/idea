@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Czas generowania: 13 Lip 2021, 12:24
+-- Czas generowania: 19 Wrz 2021, 19:32
 -- Wersja serwera: 10.4.17-MariaDB
 -- Wersja PHP: 8.0.2
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Baza danych: `new_idea`
+-- Baza danych: `ideabook`
 --
 
 -- --------------------------------------------------------
@@ -36,18 +36,25 @@ CREATE TABLE `account` (
   `rang` int(1) NOT NULL DEFAULT 0,
   `account_password` varchar(255) DEFAULT NULL,
   `active` tinyint(4) NOT NULL DEFAULT 1,
-  `data_add` date NOT NULL
+  `date_added` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Zrzut danych tabeli `account`
 --
 
-INSERT INTO `account` (`id_account`, `id_area`, `full_name`, `account_login`, `id_pass`, `rang`, `account_password`, `active`, `data_add`) VALUES
-(4, 1, 'Maja Kępska', 'marski', 721146, 2, '$2y$10$TeLxid1Mgs0tnjIpO5rau.KSmm9tY3iDXzm9x5YW4GnXjFhn6Npy.', 1, '0000-00-00'),
+INSERT INTO `account` (`id_account`, `id_area`, `full_name`, `account_login`, `id_pass`, `rang`, `account_password`, `active`, `date_added`) VALUES
+(4, 1, 'Maja Kępska', 'marski', 721146, 2, '$2y$10$TeLxid1Mgs0tnjIpO5rau.KSmm9tY3iDXzm9x5YW4GnXjFhn6Npy.', 1, '2021-01-01'),
 (5, 2, 'Kuba Wojnicki', NULL, 12345, 0, NULL, 1, '2021-05-30'),
 (8, 6, 'Marcin Kowalski', NULL, 1444, 0, NULL, 1, '2021-06-09'),
-(9, 5, 'Kasia Grzebinoga', NULL, 1233, 0, NULL, 1, '2021-06-09');
+(9, 5, 'Kasia Grzebinoga', NULL, 1233, 0, NULL, 1, '2021-06-09'),
+(10, 6, 'Mariusz Kępski', NULL, 11111, 0, NULL, 1, '2021-08-09'),
+(11, 5, 'Kazimierz Kopalski', NULL, 1011, 0, NULL, 1, '2021-08-18'),
+(12, 2, 'Jakub Mymla', NULL, 22222, 0, NULL, 1, '2021-09-18'),
+(13, 4, 'Marcin Kolorowy', NULL, 14257, 0, NULL, 1, '2020-09-02'),
+(14, 3, 'Karolina Waliska', NULL, 7778787, 0, NULL, 1, '2018-07-16'),
+(15, 6, 'Ania Jakubczyk', NULL, 77777, 0, NULL, 1, '2021-09-24'),
+(16, 5, 'Kuba Wrona', NULL, 45464, 0, NULL, 1, '2014-09-11');
 
 -- --------------------------------------------------------
 
@@ -81,12 +88,13 @@ INSERT INTO `area` (`id_area`, `area_name`) VALUES
 CREATE TABLE `idea` (
   `id_idea` int(11) NOT NULL,
   `id_area` int(11) NOT NULL,
+  `topic` varchar(150) NOT NULL,
   `after_value` text NOT NULL,
   `before_value` text NOT NULL,
   `mod_comment` text DEFAULT NULL,
   `array_users` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `rating_user` text NOT NULL,
-  `saving_value` float DEFAULT NULL,
+  `saving` float DEFAULT NULL,
   `date_added` date NOT NULL DEFAULT current_timestamp(),
   `date_implementation` date DEFAULT NULL,
   `idea_status` tinyint(1) NOT NULL DEFAULT 0,
@@ -97,24 +105,32 @@ CREATE TABLE `idea` (
 -- Zrzut danych tabeli `idea`
 --
 
-INSERT INTO `idea` (`id_idea`, `id_area`, `after_value`, `before_value`, `mod_comment`, `array_users`, `rating_user`, `saving_value`, `date_added`, `date_implementation`, `idea_status`, `token_idea`) VALUES
-(1, 1, 'Ujednolicić komunikację, poprawność generowania danych zaznaczyć &lt;true&gt; lub &lt;false&gt; w zależności od komunikacji', 'Problem z utrzymaniem w czystości komunikacji między Api, a przeglądarką', NULL, '[4]', '{\"point\":\"30\",\"saving\":\"0\"}', NULL, '2021-06-02', NULL, 1, '2162/1'),
-(2, 3, 'Stworzyć jeden mechanizm obsługi. Lub wyodrębnić tylko najważniejsze mechanizmy', 'Bałagan z obsługą formularzy w js', NULL, '[4]', '{\"point\":\"20\",\"saving\":\"0\"}', NULL, '2021-06-03', '2021-06-04', 2, '2163/2'),
-(3, 3, 'Jedna klasa z obsługa forularza dla jednego formularza. Są zbyt różne aby je próbować pisać w jednym obiekcie. Kod staję się mało czytelny', 'Bałagan w kodzie JacaScript w obszarze obsługi formularzy', NULL, '[4]', '{\"point\":\"70\",\"saving\":\"0\"}', NULL, '2021-06-03', NULL, 3, '2163/3'),
-(4, 1, 'Czyszczenie kodu', 'Bałagan w kodzie JavaScriprt uniemożliwia reafaktiryzacje kodu modułów i klas.', NULL, '[4]', '{\"point\":\"40\",\"saving\":\"0\"}', NULL, '2021-06-04', NULL, 0, '2164/4'),
-(5, 3, 'Wyszukanie nieczytelnych klas i ich zmodyfikowanie według aktualnego standardu zapisu. &lt;h4&gt; FUCK &lt;/h4&gt;', 'W aplikacji znajdują się klasy i moduły odbiegające od standardu.', NULL, '[4,5]', '{\"point\":\"30\",\"saving\":\"0\"}', NULL, '2021-06-04', '2021-06-09', 2, '2164/5'),
-(6, 3, 'Brak spójności w nazwach. Nazwy stosowane w kodzie są różne od nazw głównych plików. Może to prowadzić do dezorientacji. ', 'Stosować spójne nazwy.', NULL, '[4]', '{\"point\":\"10\",\"saving\":\"0\"}', NULL, '2021-06-05', NULL, 0, '2165/6'),
-(21, 3, 'Test Formularza &lt;h4&gt; TEST &lt;/h4&gt;', 'Test Formularza', NULL, '[4,5]', '{\"point\":\"40\",\"saving\":\"1\"}', NULL, '2021-06-06', NULL, 1, '2166/21'),
-(22, 3, 'Test Wczytywania listy Ofert', 'Test Wczytywania listy Ofert', NULL, '[4]', '{\"point\":\"30\",\"saving\":\"0\"}\r\n', NULL, '2021-06-06', NULL, 0, '2166/22'),
-(23, 6, 'Napisać algorytm, który sprawdzi w tabeli z punktami czy powtarzają się w wartości, Jeżeli tak sprawdzenie będzie następowało w tabeli z ilością propozycji, który jest najwyższa. Podczas analizowania danych z dwóch tabel będą one usuwane aby nie doszło do pomyłek i niepotrzebnych obliczeń procesora', 'Brak logiki wyznaczania pozycji użytkownika na skali punktacji. Mianowicie - w pierwszej kolejności brane są do rankingu jest liczba zdobytych punktów. Jeżeli jednak liczba tych punktów jest jednakowa wyznacznikiem jest liczba propozycji. Brak również wyznaczania miejsc egzekwo.', NULL, '[8,4]', '{\"point\":\"10\",\"saving\":\"0\"}', NULL, '2021-06-15', '2021-06-15', 2, '21615/23'),
-(24, 6, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', NULL, '[5]', '{\"point\":\"40\",\"saving\":\"0\"}', NULL, '2021-06-16', '2021-06-16', 2, '21616/24'),
-(25, 6, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed orci nisl. Fusce sollicitudin ante sed rhoncus egestas. Nunc cursus elit eu ligula rutrum, eget iaculis nulla imperdiet. Integer sagittis viverra finibus. Nunc auctor at felis quis hendrerit. Donec enim justo, eleifend eu odio eget, scelerisque aliquet dolor. Sed in neque nisl. Nulla facilisi. Aenean tincidunt ultricies hendrerit. Suspendisse quis augue urna. Sed a vestibulum leo. Aenean congue porta sem in mattis. In hac habitasse platea dictumst. Fusce eu aliquet lacus. Nam dictum tortor non orci ultrices, a commodo orci dapibus. Donec vitae massa mauris.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed orci nisl. Fusce sollicitudin ante sed rhoncus egestas. Nunc cursus elit eu ligula rutrum, eget iaculis nulla imperdiet. Integer sagittis viverra finibus. Nunc auctor at felis quis hendrerit. Donec enim justo, eleifend eu odio eget, scelerisque aliquet dolor. Sed in neque nisl. Nulla facilisi. Aenean tincidunt ultricies hendrerit. Suspendisse quis augue urna. Sed a vestibulum leo. Aenean congue porta sem in mattis. In hac habitasse platea dictumst. Fusce eu aliquet lacus. Nam dictum tortor non orci ultrices, a commodo orci dapibus. Donec vitae massa mauris.', NULL, '[8]', '{\"point\":\"10\",\"saving\":\"1\"}\r\n', NULL, '2021-06-16', '2021-06-15', 2, '21616/25'),
-(26, 6, 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.', 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.', 'Donec sed orci nisl. Fusce sollicitudin ante sed rhoncus egestas. Nunc cursus elit eu ligula rutrum, eget iaculis nulla imperdiet. Integer sagittis viverra finibus. Nunc auctor at felis quis hendrerit. Donec enim justo, eleifend eu odio eget, scelerisque aliquet dolor. Sed in neque nisl. Nulla facilisi. Aenean tincidunt ultricies hendrerit. Suspendisse quis augue urna. Sed a vestibulum leo. Aenean congue porta sem in mattis. ', '[8]', '{\"point\":\"10\",\"saving\":\"0\"}\r\n', NULL, '2021-06-16', '2021-06-15', 2, '21616/26'),
-(27, 3, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', NULL, '[9]', '{\"point\":\"10\",\"saving\":\"0\"}\r\n', NULL, '2021-06-16', '2021-06-15', 2, '21616/27'),
-(28, 3, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam mollis lacinia lacus, non aliquet nibh consequat in. Praesent semper non magna ut rutrum. Morbi faucibus condimentum imperdiet. Pellentesque est diam, faucibus eget ullamcorper fringilla, egestas non elit. Donec consectetur, lectus sit amet commodo dictum, tellus mauris luctus neque, consectetur tristique ante risus eget turpis. Sed eget ornare justo. Ut mollis turpis sit amet mattis porttitor. Nullam semper venenatis velit, et dictum ipsum volutpat quis. Quisque suscipit, ante eget finibus vulputate, quam neque hendrerit dolor, tempor pretium arcu arcu tincidunt urna. In eu quam mattis, ullamcorper purus sed, ultrices leo. Suspendisse porta volutpat ultricies. Nam justo mauris, pharetra et consectetur finibus, rutrum ut elit.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam mollis lacinia lacus, non aliquet nibh consequat in. Praesent semper non magna ut rutrum. Morbi faucibus condimentum imperdiet. Pellentesque est diam, faucibus eget ullamcorper fringilla, egestas non elit. Donec consectetur, lectus sit amet commodo dictum, tellus mauris luctus neque, consectetur tristique ante risus eget turpis. Sed eget ornare justo. Ut mollis turpis sit amet mattis porttitor. Nullam semper venenatis velit, et dictum ipsum volutpat quis. Quisque suscipit, ante eget finibus vulputate, quam neque hendrerit dolor, tempor pretium arcu arcu tincidunt urna. In eu quam mattis, ullamcorper purus sed, ultrices leo. Suspendisse porta volutpat ultricies. Nam justo mauris, pharetra et consectetur finibus, rutrum ut elit.', 'Cras quis enim neque. Phasellus porta ullamcorper sapien id condimentum. Ut enim nunc, imperdiet egestas fermentum id, suscipit eu dolor. Aenean quis efficitur libero, quis vestibulum massa. Donec vel interdum tortor. Fusce finibus arcu vel tellus tristique, nec pharetra elit posuere. Nulla molestie nulla sed mauris commodo consequat. Nam gravida semper porta.', '[8]', '{\"point\":\"20\",\"saving\":\"1\"}', NULL, '2021-07-12', NULL, 1, '21712/28'),
-(29, 3, 'Morbi cursus accumsan sapien, sed accumsan turpis. Pellentesque viverra ante in purus molestie, ac euismod nibh pellentesque. Donec vulputate a velit sed lobortis. Sed tempor sit amet tortor et tristique. Sed vitae molestie ex, et mattis dolor. Pellentesque maximus porta metus ac gravida. Curabitur et massa elementum, congue libero ac, consectetur metus. Phasellus ultrices congue augue vitae mollis. Praesent suscipit nisl non ipsum luctus, vitae bibendum enim malesuada.', 'Morbi cursus accumsan sapien, sed accumsan turpis. Pellentesque viverra ante in purus molestie, ac euismod nibh pellentesque. Donec vulputate a velit sed lobortis. Sed tempor sit amet tortor et tristique. Sed vitae molestie ex, et mattis dolor. Pellentesque maximus porta metus ac gravida. Curabitur et massa elementum, congue libero ac, consectetur metus. Phasellus ultrices congue augue vitae mollis. Praesent suscipit nisl non ipsum luctus, vitae bibendum enim malesuada.', NULL, '[8]', '{\"point\":\"10\",\"saving\":\"0\"}', NULL, '2021-07-13', '2021-07-13', 2, '21713/29'),
-(30, 6, 'orem ipsum dolor sit amet, consectetur adipiscing elit. Nam mollis lacinia lacus, non aliquet nibh consequat in. Praesent semper non magna ut rutrum. Morbi faucibus condimentum imperdiet. Pellentesque est diam, faucibus eget ullamcorper fringilla, egestas non elit. Donec consectetur, lectus sit amet commodo dictum, tellus mauris luctus neque, consectetur tristique ante risus eget turpis. Sed eget ornare justo. Ut mollis turpis sit amet mattis porttitor.', 'orem ipsum dolor sit amet, consectetur adipiscing elit. Nam mollis lacinia lacus, non aliquet nibh consequat in. Praesent semper non magna ut rutrum. Morbi faucibus condimentum imperdiet. Pellentesque est diam, faucibus eget ullamcorper fringilla, egestas non elit. Donec consectetur, lectus sit amet commodo dictum, tellus mauris luctus neque, consectetur tristique ante risus eget turpis. Sed eget ornare justo. Ut mollis turpis sit amet mattis porttitor.', NULL, '[4]', '{\"point\":\"10\",\"saving\":\"0\"}', NULL, '2021-07-13', '2021-07-12', 2, '21713/30'),
-(31, 3, 'Cras quis enim neque. Phasellus porta ullamcorper sapien id condimentum. Ut enim nunc, imperdiet egestas fermentum id, suscipit eu dolor. Aenean quis efficitur libero, quis vestibulum massa. Donec vel interdum tortor. Fusce finibus arcu vel tellus tristique, nec pharetra elit posuere. Nulla molestie nulla sed mauris commodo consequat. Nam gravida semper porta.', 'Cras quis enim neque. Phasellus porta ullamcorper sapien id condimentum. Ut enim nunc, imperdiet egestas fermentum id, suscipit eu dolor. Aenean quis efficitur libero, quis vestibulum massa. Donec vel interdum tortor. Fusce finibus arcu vel tellus tristique, nec pharetra elit posuere. Nulla molestie nulla sed mauris commodo consequat. Nam gravida semper porta.', 'Fusce finibus arcu vel tellus tristique, nec pharetra elit posuere. Nulla molestie nulla sed mauris commodo consequat. Nam gravida semper porta.', '[8]', '{\"point\":\"10\",\"saving\":\"1\"}', NULL, '2021-07-13', '2021-07-12', 2, '21713/31');
+INSERT INTO `idea` (`id_idea`, `id_area`, `topic`, `after_value`, `before_value`, `mod_comment`, `array_users`, `rating_user`, `saving`, `date_added`, `date_implementation`, `idea_status`, `token_idea`) VALUES
+(1, 1, 'Temat Jest taki', 'Ujednolicić komunikację, poprawność generowania danych zaznaczyć &lt;true&gt; lub &lt;false&gt; w zależności od komunikacji', 'Problem z utrzymaniem w czystości komunikacji między Api, a przeglądarką', NULL, '[4]', '{\"point\":\"30\",\"saving\":\"0\"}', NULL, '2021-06-02', NULL, 1, '2162/1'),
+(2, 3, 'Stworzymy nowy świat.', 'Stworzyć jeden mechanizm obsługi. Lub wyodrębnić tylko najważniejsze mechanizmy', 'Bałagan z obsługą formularzy w js', NULL, '[4]', '{\"point\":\"20\",\"saving\":\"0\"}', NULL, '2021-06-03', '2021-06-04', 2, '2163/2'),
+(3, 3, 'Obsługa formularza polska', 'Jedna klasa z obsługa forularza dla jednego formularza. Są zbyt różne aby je próbować pisać w jednym obiekcie. Kod staję się mało czytelny', 'Bałagan w kodzie JacaScript w obszarze obsługi formularzy', NULL, '[4]', '{\"point\":\"70\",\"saving\":\"0\"}', NULL, '2021-06-03', NULL, 3, '2163/3'),
+(4, 1, 'Czyszczenie kodu Polska', 'Czyszczenie kodu', 'Bałagan w kodzie JavaScriprt uniemożliwia reafaktiryzacje kodu modułów i klas.', NULL, '[4]', '{\"point\":\"40\",\"saving\":\"0\"}', NULL, '2021-06-04', NULL, 0, '2164/4'),
+(5, 3, 'Maszyna admina jest powolna', 'Wyszukanie nieczytelnych klas i ich zmodyfikowanie według aktualnego standardu zapisu. &lt;h4&gt; FUCK &lt;/h4&gt;', 'W aplikacji znajdują się klasy i moduły odbiegające od standardu.', NULL, '[4,5]', '{\"point\":\"30\",\"saving\":\"0\"}', NULL, '2021-06-04', '2021-06-09', 2, '2164/5'),
+(6, 3, 'Szukamy polska i admin', 'Brak spójności w nazwach. Nazwy stosowane w kodzie są różne od nazw głównych plików. Może to prowadzić do dezorientacji. ', 'Stosować spójne nazwy.', NULL, '[4]', '{\"point\":\"10\",\"saving\":\"0\"}', NULL, '2021-06-05', NULL, 0, '2165/6'),
+(21, 3, 'Laminiarze i admin', 'Test Formularza &lt;h4&gt; TEST &lt;/h4&gt;', 'Test Formularza', NULL, '[4,5]', '{\"point\":\"40\",\"saving\":\"1\"}', 45200, '2021-06-06', '2021-07-27', 2, '2166/21'),
+(22, 3, 'Polska temat jest wesoły', 'Test Wczytywania listy Ofert', 'Test Wczytywania listy Ofert', NULL, '[4]', '{\"point\":\"30\",\"saving\":\"0\"}\r\n', NULL, '2021-06-06', NULL, 0, '2166/22'),
+(23, 6, 'Admin czyta dzieciom', 'Napisać algorytm, który sprawdzi w tabeli z punktami czy powtarzają się w wartości, Jeżeli tak sprawdzenie będzie następowało w tabeli z ilością propozycji, który jest najwyższa. Podczas analizowania danych z dwóch tabel będą one usuwane aby nie doszło do pomyłek i niepotrzebnych obliczeń procesora', 'Brak logiki wyznaczania pozycji użytkownika na skali punktacji. Mianowicie - w pierwszej kolejności brane są do rankingu jest liczba zdobytych punktów. Jeżeli jednak liczba tych punktów jest jednakowa wyznacznikiem jest liczba propozycji. Brak również wyznaczania miejsc egzekwo.', NULL, '[8,4]', '{\"point\":\"10\",\"saving\":\"0\"}', NULL, '2021-06-15', '2021-06-15', 2, '21615/23'),
+(24, 6, 'Ludzie polska test tematu', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', NULL, '[5]', '{\"point\":\"40\",\"saving\":\"0\"}', NULL, '2021-06-16', '2021-06-16', 2, '21616/24'),
+(25, 6, 'Lorem ipsum', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed orci nisl. Fusce sollicitudin ante sed rhoncus egestas. Nunc cursus elit eu ligula rutrum, eget iaculis nulla imperdiet. Integer sagittis viverra finibus. Nunc auctor at felis quis hendrerit. Donec enim justo, eleifend eu odio eget, scelerisque aliquet dolor. Sed in neque nisl. Nulla facilisi. Aenean tincidunt ultricies hendrerit. Suspendisse quis augue urna. Sed a vestibulum leo. Aenean congue porta sem in mattis. In hac habitasse platea dictumst. Fusce eu aliquet lacus. Nam dictum tortor non orci ultrices, a commodo orci dapibus. Donec vitae massa mauris.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed orci nisl. Fusce sollicitudin ante sed rhoncus egestas. Nunc cursus elit eu ligula rutrum, eget iaculis nulla imperdiet. Integer sagittis viverra finibus. Nunc auctor at felis quis hendrerit. Donec enim justo, eleifend eu odio eget, scelerisque aliquet dolor. Sed in neque nisl. Nulla facilisi. Aenean tincidunt ultricies hendrerit. Suspendisse quis augue urna. Sed a vestibulum leo. Aenean congue porta sem in mattis. In hac habitasse platea dictumst. Fusce eu aliquet lacus. Nam dictum tortor non orci ultrices, a commodo orci dapibus. Donec vitae massa mauris.', NULL, '[8]', '{\"point\":\"10\",\"saving\":\"1\"}\r\n', NULL, '2021-06-16', '2021-06-15', 2, '21616/25'),
+(26, 6, 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestia', 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.', 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.', 'Donec sed orci nisl. Fusce sollicitudin ante sed rhoncus egestas. Nunc cursus elit eu ligula rutrum, eget iaculis nulla imperdiet. Integer sagittis viverra finibus. Nunc auctor at felis quis hendrerit. Donec enim justo, eleifend eu odio eget, scelerisque aliquet dolor. Sed in neque nisl. Nulla facilisi. Aenean tincidunt ultricies hendrerit. Suspendisse quis augue urna. Sed a vestibulum leo. Aenean congue porta sem in mattis. ', '[8]', '{\"point\":\"10\",\"saving\":\"0\"}\r\n', NULL, '2021-06-16', '2021-06-15', 2, '21616/26'),
+(27, 3, 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestia', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', NULL, '[9]', '{\"point\":\"10\",\"saving\":\"0\"}\r\n', NULL, '2021-06-16', '2021-06-15', 2, '21616/27'),
+(28, 3, 'At vero eos et accusamus et iusto odio occaecati cupiditate non provident, similique sunt in culpa qui ', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam mollis lacinia lacus, non aliquet nibh consequat in. Praesent semper non magna ut rutrum. Morbi faucibus condimentum imperdiet. Pellentesque est diam, faucibus eget ullamcorper fringilla, egestas non elit. Donec consectetur, lectus sit amet commodo dictum, tellus mauris luctus neque, consectetur tristique ante risus eget turpis. Sed eget ornare justo. Ut mollis turpis sit amet mattis porttitor. Nullam semper venenatis velit, et dictum ipsum volutpat quis. Quisque suscipit, ante eget finibus vulputate, quam neque hendrerit dolor, tempor pretium arcu arcu tincidunt urna. In eu quam mattis, ullamcorper purus sed, ultrices leo. Suspendisse porta volutpat ultricies. Nam justo mauris, pharetra et consectetur finibus, rutrum ut elit.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam mollis lacinia lacus, non aliquet nibh consequat in. Praesent semper non magna ut rutrum. Morbi faucibus condimentum imperdiet. Pellentesque est diam, faucibus eget ullamcorper fringilla, egestas non elit. Donec consectetur, lectus sit amet commodo dictum, tellus mauris luctus neque, consectetur tristique ante risus eget turpis. Sed eget ornare justo. Ut mollis turpis sit amet mattis porttitor. Nullam semper venenatis velit, et dictum ipsum volutpat quis. Quisque suscipit, ante eget finibus vulputate, quam neque hendrerit dolor, tempor pretium arcu arcu tincidunt urna. In eu quam mattis, ullamcorper purus sed, ultrices leo. Suspendisse porta volutpat ultricies. Nam justo mauris, pharetra et consectetur finibus, rutrum ut elit.', 'Cras quis enim neque. Phasellus porta ullamcorper sapien id condimentum. Ut enim nunc, imperdiet egestas fermentum id, suscipit eu dolor. Aenean quis efficitur libero, quis vestibulum massa. Donec vel interdum tortor. Fusce finibus arcu vel tellus tristique, nec pharetra elit posuere. Nulla molestie nulla sed mauris commodo consequat. Nam gravida semper porta.', '[8]', '{\"point\":\"20\",\"saving\":\"1\"}', 1100, '2021-07-12', NULL, 1, '21712/28'),
+(29, 3, 'At vero eos et accusamus et iusto odio occaecati cupiditate non provident, similique sunt in culpa qui ', 'Morbi cursus accumsan sapien, sed accumsan turpis. Pellentesque viverra ante in purus molestie, ac euismod nibh pellentesque. Donec vulputate a velit sed lobortis. Sed tempor sit amet tortor et tristique. Sed vitae molestie ex, et mattis dolor. Pellentesque maximus porta metus ac gravida. Curabitur et massa elementum, congue libero ac, consectetur metus. Phasellus ultrices congue augue vitae mollis. Praesent suscipit nisl non ipsum luctus, vitae bibendum enim malesuada.', 'Morbi cursus accumsan sapien, sed accumsan turpis. Pellentesque viverra ante in purus molestie, ac euismod nibh pellentesque. Donec vulputate a velit sed lobortis. Sed tempor sit amet tortor et tristique. Sed vitae molestie ex, et mattis dolor. Pellentesque maximus porta metus ac gravida. Curabitur et massa elementum, congue libero ac, consectetur metus. Phasellus ultrices congue augue vitae mollis. Praesent suscipit nisl non ipsum luctus, vitae bibendum enim malesuada.', NULL, '[8]', '{\"point\":\"10\",\"saving\":\"0\"}', NULL, '2021-07-13', '2021-07-13', 2, '21713/29'),
+(30, 6, 'At vero eos et accusamus et iusto odio occaecati cupiditate non provident, similique sunt in culpa qui ', 'orem ipsum dolor sit amet, consectetur adipiscing elit. Nam mollis lacinia lacus, non aliquet nibh consequat in. Praesent semper non magna ut rutrum. Morbi faucibus condimentum imperdiet. Pellentesque est diam, faucibus eget ullamcorper fringilla, egestas non elit. Donec consectetur, lectus sit amet commodo dictum, tellus mauris luctus neque, consectetur tristique ante risus eget turpis. Sed eget ornare justo. Ut mollis turpis sit amet mattis porttitor.', 'orem ipsum dolor sit amet, consectetur adipiscing elit. Nam mollis lacinia lacus, non aliquet nibh consequat in. Praesent semper non magna ut rutrum. Morbi faucibus condimentum imperdiet. Pellentesque est diam, faucibus eget ullamcorper fringilla, egestas non elit. Donec consectetur, lectus sit amet commodo dictum, tellus mauris luctus neque, consectetur tristique ante risus eget turpis. Sed eget ornare justo. Ut mollis turpis sit amet mattis porttitor.', NULL, '[4]', '{\"point\":\"10\",\"saving\":\"0\"}', NULL, '2021-07-13', '2021-07-12', 2, '21713/30'),
+(31, 3, 'Tera wpiszemy coś innego', 'Cras quis enim neque. Phasellus porta ullamcorper sapien id condimentum. Ut enim nunc, imperdiet egestas fermentum id, suscipit eu dolor. Aenean quis efficitur libero, quis vestibulum massa. Donec vel interdum tortor. Fusce finibus arcu vel tellus tristique, nec pharetra elit posuere. Nulla molestie nulla sed mauris commodo consequat. Nam gravida semper porta.', 'Cras quis enim neque. Phasellus porta ullamcorper sapien id condimentum. Ut enim nunc, imperdiet egestas fermentum id, suscipit eu dolor. Aenean quis efficitur libero, quis vestibulum massa. Donec vel interdum tortor. Fusce finibus arcu vel tellus tristique, nec pharetra elit posuere. Nulla molestie nulla sed mauris commodo consequat. Nam gravida semper porta.', 'Fusce finibus arcu vel tellus tristique, nec pharetra elit posuere. Nulla molestie nulla sed mauris commodo consequat. Nam gravida semper porta.', '[8]', '{\"point\":\"10\",\"saving\":\"1\"}', 8000, '2021-07-13', '2021-07-12', 2, '21713/31'),
+(32, 3, 'At vero eos et accusamus et iusto odio occaecati cupiditate non provident, similique sunt in culpa qui ', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', NULL, '[8]', '{\"point\":\"10\",\"saving\":\"0\"}', NULL, '2021-07-13', NULL, 1, '21713/32'),
+(34, 3, 'At vero eos et accusamus et iusto odio occaecati cupiditate non provident, similique sunt in culpa qui ', 'Sed consequat libero sem, et congue est vulputate eget. Proin quis enim eget tellus sollicitudin tincidunt vel sed ligula. Nullam enim lorem, egestas quis tincidunt id, volutpat eget diam. Nam feugiat a mauris ac dictum. Vivamus porttitor risus vitae nunc interdum scelerisque. Integer id consequat magna. Quisque finibus ex justo, ut finibus orci posuere non. Ut posuere lorem vitae hendrerit iaculis. Sed nulla justo, maximus ut nisi eu, scelerisque bibendum ipsum. Mauris placerat justo eget risus vehicula, eu suscipit velit tristique.', 'Sed consequat libero sem, et congue est vulputate eget. Proin quis enim eget tellus sollicitudin tincidunt vel sed ligula. Nullam enim lorem, egestas quis tincidunt id, volutpat eget diam. Nam feugiat a mauris ac dictum. Vivamus porttitor risus vitae nunc interdum scelerisque. Integer id consequat magna. Quisque finibus ex justo, ut finibus orci posuere non. Ut posuere lorem vitae hendrerit iaculis.', ' Sed nulla justo, maximus ut nisi eu, scelerisque bibendum ipsum. Mauris placerat justo eget risus vehicula, eu suscipit velit tristique.', '[8]', '{\"point\":\"10\",\"saving\":\"0\"}', NULL, '2021-07-13', NULL, 3, '21713/34'),
+(35, 4, 'At vero eos et accusamus et iusto odio occaecati cupiditate non provident, similique sunt in culpa qui ', 'JavaScript Array findIndex() Method - W3SchoolsPrzetłumacz tę stronę\r\nhttps://www.w3schools.com/jsref/jsref_findindex.asp\r\nJavaScript Array.findIndex () Definition and Usage. The Array.findIndex () method returns the index of the first array element that passes a test... Browser Support. The Array.find () method is not supported in Internet Explorer. Syntax. Parameter Values. A function to be run for each element in ...', 'JavaScript Array findIndex() Method - W3SchoolsPrzetłumacz tę stronę\r\nhttps://www.w3schools.com/jsref/jsref_findindex.asp\r\nJavaScript Array.findIndex () Definition and Usage. The Array.findIndex () method returns the index of the first array element that passes a test... Browser Support. The Array.find () method is not supported in Internet Explorer. Syntax. Parameter Values. A function to be run for each element in ...', NULL, '[8]', '{\"saving\":\"NIE\",\"any_suggestion\":\"10pkt\",\"bhp\":\"0pkt\",\"other_savings\":\"0pkt\",\"independence\":\"0pkt\"}', NULL, '2021-07-29', NULL, 0, ''),
+(36, 4, 'At vero eos et accusamus et iusto odio occaecati cupiditate non provident, similique sunt in culpa qui ', 'JavaScript Array findIndex() Method - W3SchoolsPrzetłumacz tę stronę\r\nhttps://www.w3schools.com/jsref/jsref_findindex.asp\r\nJavaScript Array.findIndex () Definition and Usage. The Array.findIndex () method returns the index of the first array element that passes a test... Browser Support. The Array.find () method is not supported in Internet Explorer. Syntax. Parameter Values. A function to be run for each element in ...', 'JavaScript Array findIndex() Method - W3SchoolsPrzetłumacz tę stronę\r\nhttps://www.w3schools.com/jsref/jsref_findindex.asp\r\nJavaScript Array.findIndex () Definition and Usage. The Array.findIndex () method returns the index of the first array element that passes a test... Browser Support. The Array.find () method is not supported in Internet Explorer. Syntax. Parameter Values. A function to be run for each element in ...', NULL, '[4]', '{\"saving\":\"NIE\",\"any_suggestion\":\"10pkt\",\"bhp\":\"0pkt\",\"other_savings\":\"0pkt\",\"independence\":\"0pkt\"}', NULL, '2021-07-29', NULL, 0, '21729/36'),
+(37, 3, '', 'assdadasdasdasd', 'dassdasdad', NULL, '[4]', '{\"saving\":\"NIE\",\"any_suggestion\":\"10pkt\",\"bhp\":\"0pkt\",\"other_savings\":\"0pkt\",\"independence\":\"0pkt\"}', NULL, '2021-07-31', NULL, 3, '21731/37'),
+(38, 3, 'Test do edycji', 't jesy estowy tekc bez znaczenia i korekcji', 't jesy estowy tekc bez znaczenia i korekcji', NULL, '[4]', '{\"saving\":\"NIE\",\"any_suggestion\":\"10pkt\",\"bhp\":\"0pkt\",\"other_savings\":\"0pkt\",\"independence\":\"0pkt\"}', NULL, '2021-07-31', NULL, 0, '21731/38'),
+(39, 3, 'Lorem ipsum zmiany na backend', 'Wyeliminowanie powtórzeń w kodzie i uproszczenie obsługi po przez dodanie globalnej zmiennej do klasy abstrakcyjne. Wymusza to oszczędność w ciągłym tworzeniu zmiennej', 'Skomplikowana obsługa odpowiedzi po stronie Api', NULL, '[4]', '{\"saving\":\"NIE\",\"any_suggestion\":\"10pkt\",\"bhp\":\"0pkt\",\"other_savings\":\"10pkt\",\"independence\":\"0pkt\",\"sum_point\":20}', NULL, '2021-08-18', '2021-08-18', 2, '21818/39'),
+(40, 3, 'Test metody post', 'Persze wypełnić to połę', 'Persze wypełnić to połę', NULL, '[4,8]', '{\"saving\":\"NIE\",\"any_suggestion\":\"10pkt\",\"bhp\":\"20pkt\",\"other_savings\":\"10pkt\",\"independence\":\"0pkt\",\"sum_point\":40}', NULL, '2021-09-10', NULL, 0, '21910/40');
 
 -- --------------------------------------------------------
 
@@ -153,34 +169,44 @@ CREATE TABLE `user_idea` (
   `id_idea` int(11) NOT NULL,
   `id_account` int(11) NOT NULL,
   `id_area` int(11) DEFAULT NULL,
-  `awarded_points` float DEFAULT NULL
+  `awarded_points` float DEFAULT NULL,
+  `date_added` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Zrzut danych tabeli `user_idea`
 --
 
-INSERT INTO `user_idea` (`id_user_idea`, `id_idea`, `id_account`, `id_area`, `awarded_points`) VALUES
-(1, 1, 4, 1, NULL),
-(2, 2, 4, 3, 40),
-(3, 3, 4, 3, NULL),
-(4, 4, 4, 1, NULL),
-(5, 5, 4, 3, 15),
-(6, 5, 5, 3, 15),
-(10, 21, 4, 3, NULL),
-(11, 21, 5, 3, NULL),
-(12, 22, 4, 3, NULL),
-(13, 23, 8, 6, 22.25),
-(14, 23, 4, 6, 22.25),
-(15, 24, 5, 6, 30),
-(16, 25, 8, 6, 20.75),
-(17, 26, 8, 6, 2.75),
-(18, 27, 9, 6, 20.5),
-(19, 21, 5, 3, NULL),
-(20, 28, 8, 3, NULL),
-(21, 29, 8, 3, 20.74),
-(22, 30, 4, 6, 22),
-(23, 31, 8, 3, 24.7);
+INSERT INTO `user_idea` (`id_user_idea`, `id_idea`, `id_account`, `id_area`, `awarded_points`, `date_added`) VALUES
+(1, 1, 4, 1, NULL, '2021-06-02'),
+(2, 2, 4, 3, 40, '2021-06-03'),
+(3, 3, 4, 3, NULL, '2021-06-03'),
+(4, 4, 4, 1, NULL, '2021-06-04'),
+(5, 5, 4, 3, 15, '2021-06-04'),
+(6, 5, 5, 3, 15, '2021-06-05'),
+(10, 21, 4, 3, 0.75, '2021-06-06'),
+(11, 21, 5, 3, 0.75, '2021-06-06'),
+(12, 22, 4, 3, NULL, '2021-06-06'),
+(13, 23, 8, 6, 22.25, '2021-06-15'),
+(14, 23, 4, 6, 22.25, '2021-06-15'),
+(15, 24, 5, 6, 30, '2021-06-16'),
+(16, 25, 8, 6, 20.75, '2021-06-16'),
+(17, 26, 8, 6, 2.75, '2021-06-16'),
+(18, 27, 9, 6, 20.5, '2021-06-16'),
+(20, 28, 8, 3, NULL, '2021-07-12'),
+(21, 29, 8, 3, 20.74, '2021-07-13'),
+(22, 30, 4, 6, 22, '2021-07-13'),
+(23, 31, 8, 3, 24.7, '2021-07-13'),
+(24, 32, 8, 3, NULL, '2021-07-13'),
+(25, 34, 8, 3, NULL, '2021-07-13'),
+(26, 36, 4, 4, NULL, '2021-07-29'),
+(27, 37, 4, 3, NULL, '2021-07-31'),
+(28, 38, 4, 3, NULL, '2021-07-31'),
+(29, 39, 4, 3, 30, '2021-08-18'),
+(30, 40, 4, 3, NULL, '2021-09-10'),
+(31, 40, 8, 3, NULL, '2021-09-10'),
+(36, 35, 8, 4, NULL, '2021-07-29'),
+(37, 6, 4, 3, NULL, '2021-06-05');
 
 -- --------------------------------------------------------
 
@@ -191,10 +217,12 @@ INSERT INTO `user_idea` (`id_user_idea`, `id_idea`, `id_account`, `id_area`, `aw
 CREATE TABLE `view_idea` (
 `id_idea` int(11)
 ,`area_name` varchar(100)
+,`topic` varchar(150)
 ,`after_value` text
 ,`before_value` text
 ,`awarded_points` double(19,2)
 ,`rating_user` text
+,`saving` float
 ,`mod_comment` text
 ,`array_users` text
 ,`date_added` date
@@ -237,7 +265,7 @@ CREATE TABLE `view_points_user` (
 --
 DROP TABLE IF EXISTS `view_idea`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_idea`  AS SELECT `idea`.`id_idea` AS `id_idea`, `area`.`area_name` AS `area_name`, `idea`.`after_value` AS `after_value`, `idea`.`before_value` AS `before_value`, round(sum(`user_idea`.`awarded_points`),2) AS `awarded_points`, `idea`.`rating_user` AS `rating_user`, `idea`.`mod_comment` AS `mod_comment`, `idea`.`array_users` AS `array_users`, `idea`.`date_added` AS `date_added`, `idea`.`date_implementation` AS `date_implementation`, `idea`.`idea_status` AS `idea_status`, `idea`.`token_idea` AS `token_idea` FROM ((`idea` join `area` on(`area`.`id_area` = `idea`.`id_area`)) left join `user_idea` on(`idea`.`id_idea` = `user_idea`.`id_idea`)) GROUP BY `idea`.`id_idea` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_idea`  AS SELECT `idea`.`id_idea` AS `id_idea`, `area`.`area_name` AS `area_name`, `idea`.`topic` AS `topic`, `idea`.`after_value` AS `after_value`, `idea`.`before_value` AS `before_value`, round(sum(`user_idea`.`awarded_points`),2) AS `awarded_points`, `idea`.`rating_user` AS `rating_user`, `idea`.`saving` AS `saving`, `idea`.`mod_comment` AS `mod_comment`, `idea`.`array_users` AS `array_users`, `idea`.`date_added` AS `date_added`, `idea`.`date_implementation` AS `date_implementation`, `idea`.`idea_status` AS `idea_status`, `idea`.`token_idea` AS `token_idea` FROM ((`idea` join `area` on(`area`.`id_area` = `idea`.`id_area`)) left join `user_idea` on(`idea`.`id_idea` = `user_idea`.`id_idea`)) GROUP BY `idea`.`id_idea` ;
 
 -- --------------------------------------------------------
 
@@ -304,7 +332,7 @@ ALTER TABLE `user_idea`
 -- AUTO_INCREMENT dla tabeli `account`
 --
 ALTER TABLE `account`
-  MODIFY `id_account` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_account` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT dla tabeli `area`
@@ -316,7 +344,7 @@ ALTER TABLE `area`
 -- AUTO_INCREMENT dla tabeli `idea`
 --
 ALTER TABLE `idea`
-  MODIFY `id_idea` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id_idea` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT dla tabeli `offer_option`
@@ -328,7 +356,7 @@ ALTER TABLE `offer_option`
 -- AUTO_INCREMENT dla tabeli `user_idea`
 --
 ALTER TABLE `user_idea`
-  MODIFY `id_user_idea` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id_user_idea` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- Ograniczenia dla zrzutów tabel

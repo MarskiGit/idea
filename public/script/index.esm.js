@@ -18,7 +18,7 @@ class Index {
 
         if (this.#userLogin) this.#countDown();
 
-        console.warn('Aktualizacja: 10.09.2021 / 20:30');
+        console.warn('Aktualizacja: 19.09.2021 / 19:30');
     }
     #checkLocationUrl() {
         let page = this.#url.replaceAll('?action=', '');
@@ -39,12 +39,12 @@ class Index {
     async #factory() {
         switch (this.#page) {
             case 'statistics':
-                const { default: TopTen } = await import('./statistics.esm.js');
-                new TopTen().init(Api);
+                const { default: StatisticsController } = await import('./statisticsController.esm.js');
+                new StatisticsController().init(Api);
                 break;
             case 'listOffers':
-                const { default: ListOffers } = await import('./listOffers.esm.js');
-                new ListOffers().init();
+                const { default: OfferController } = await import('./offersController.esm.js');
+                new OfferController().init();
                 break;
             case 'formOffer':
                 const { default: FormOffer } = await import('./formOffer.esm.js');

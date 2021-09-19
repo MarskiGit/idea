@@ -1,6 +1,6 @@
 'use strict';
 import { handleRequestParams } from './modules/modules.esm.js';
-import Idea from './modules/listOffers/Idea.esm.js';
+import Idea from './modules/offersModules/Idea.esm.js';
 import Api from './modules/Api.esm.js';
 import FormHandling from './modules/FormHandling.esm.js';
 
@@ -24,7 +24,7 @@ const ideaDOM = {
     },
 };
 
-export default class ListOffers {
+export default class OfferController {
     #requestParam = handleRequestParams(ideaDOM.list.request);
     #FormHandling = new FormHandling(ideaDOM.search.form);
     #FormTogle = new FormTogle();
