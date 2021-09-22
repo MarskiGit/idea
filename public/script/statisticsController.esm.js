@@ -18,68 +18,88 @@ const statisticsDOM = {
 };
 
 export default class StatisticsController {
-    #requestParam = handleRequestParams(statisticsDOM.request);
     #Api;
-    #flagQuarter = 0;
-    #flagButton = 0;
+    #Api_data;
+    #Api_topTen;
+    #Api_annualStatistics;
+    #Api_chosenQuarter = 0;
 
+    #requestParam = handleRequestParams(statisticsDOM.request);
     #userDOM = statisticsDOM.users;
     #areaDOM = statisticsDOM.areas;
+    #selectTop = statisticsDOM.request;
+
+    #selectQuarter = TimeApp.quarterYear();
+    #isFirstClick = { topUsers: { quarter: this.#selectQuarter }, topAreas: { quarter: this.#selectQuarter } };
 
     init(Api) {
-        this.#requestParam.set('quarter', TimeApp.quarterYear());
+        this.#requestParam.set('quarter', this.#selectQuarter);
         this.#requestParam.set('year', TimeApp.year());
         this.#Api = new Api();
 
-        this.#requestAPI();
+        this.#Api_request();
         this.#eventListeners();
     }
     #eventListeners() {
         this.#userDOM.quarterUl.addEventListener('click', this.#changeQuarter);
         this.#areaDOM.quarterUl.addEventListener('click', this.#changeQuarter);
     }
-    #requestAPI = () => {
+    #Api_request = () => {
         document.body.style.cursor = 'progress';
         this.#Api
             .getJson(this.#requestParam.getUrl())
             .then((data) => {
-                this.apiData = data;
-                this.#responseAPI();
+                this.#Api_data = data;
+                this.#Api_response();
             })
             .finally((document.body.style.cursor = 'default'));
     };
-    #responseAPI() {
-        const request = this.#requestParam.getParam('request');
-        if (request !== this.#flagButton || this.apiData.select_quarter !== this.#flagQuarter) {
-            const { top_ten, select_quarter, annual_statistics } = this.apiData;
-            this.#flagQuarter = select_quarter;
-            this.#flagButton = request;
-            switch (this.#flagButton) {
-                case 'topUsers':
-                    view.displayTopTen(select_quarter, top_ten.users, this.#userDOM);
-                    break;
-                case 'topAreas':
-                    view.displayTopTen(select_quarter, top_ten.areas, this.#areaDOM);
-                    break;
-                case 'topTen':
-                    view.displayTopTen(select_quarter, top_ten.users, this.#userDOM);
-                    view.displayTopTen(select_quarter, top_ten.areas, this.#areaDOM);
-                    break;
-            }
-            if (annual_statistics) annualStatistics.render(annual_statistics);
+    #Api_response() {
+        const { top_ten, select_quarter, annual_statistics } = this.#Api_data;
+        this.#Api_chosenQuarter = Number(select_quarter);
+        this.#Api_topTen = top_ten;
+        this.#Api_annualStatistics = annual_statistics;
+
+        this.#controlerViewTopTen();
+        this.#controlerAnnualStatement();
+    }
+    #controlerViewTopTen() {
+        switch (this.#selectTop) {
+            case 'topUsers':
+                this.#isFirstClick.topUsers.quarter = this.#Api_chosenQuarter;
+                view.displayTopTen(this.#Api_chosenQuarter, this.#Api_topTen.users, this.#userDOM);
+                break;
+            case 'topAreas':
+                this.#isFirstClick.topAreas.quarter = this.#Api_chosenQuarter;
+                view.displayTopTen(this.#Api_chosenQuarter, this.#Api_topTen.areas, this.#areaDOM);
+                break;
+            case 'topTen':
+                view.displayTopTen(this.#Api_chosenQuarter, this.#Api_topTen.users, this.#userDOM);
+                view.displayTopTen(this.#Api_chosenQuarter, this.#Api_topTen.areas, this.#areaDOM);
+                break;
         }
     }
-
+    #controlerAnnualStatement() {
+        if (this.#Api_annualStatistics !== void 0) annualStatistics.render(this.#Api_annualStatistics);
+    }
     #changeQuarter = (event) => {
         if (event.target.nodeName === 'BUTTON') {
-            let dataQuarter = event.target.getAttribute('data-quarter');
-            let dataRequest = event.target.getAttribute('data-request');
+            this.#selectQuarter = Number(event.target.getAttribute('data-quarter'));
+            this.#selectTop = event.target.getAttribute('data-request');
 
-            this.#requestParam.set('quarter', dataQuarter);
-            this.#requestParam.set('request', dataRequest);
+            this.#requestParam.set('quarter', this.#selectQuarter);
+            this.#requestParam.set('request', this.#selectTop);
             this.#requestParam.deletePatam('year');
 
-            if (this.#flagQuarter != dataQuarter || this.#flagButton != dataRequest) this.#requestAPI();
+            if (this.#isClick()) this.#Api_request();
+        }
+    };
+    #isClick = () => {
+        switch (this.#selectTop) {
+            case 'topUsers':
+                return this.#isFirstClick.topUsers.quarter === this.#selectQuarter ? false : true;
+            case 'topAreas':
+                return this.#isFirstClick.topAreas.quarter === this.#selectQuarter ? false : true;
         }
     };
 }
@@ -175,7 +195,7 @@ class AnnualStatistics {
 class View {
     #tbodyTopTen = new TbodyTopTen();
     #table;
-    displayTopTen(select_quarter, data, dom) {
+    displayTopTen(chosenQuarter, data, dom) {
         this.#table = dom.table;
         if (data.length > 0) {
             this.#tbodyTopTen.render(data);
@@ -184,7 +204,7 @@ class View {
         } else {
             this.#cleanTable();
         }
-        this.#changeOrnament(select_quarter, dom.quarterUl);
+        this.#changeOrnament(chosenQuarter, dom.quarterUl);
     }
     displayYear(data, tr) {
         for (const obj of data) {
@@ -192,12 +212,12 @@ class View {
             tr.children[index].innerHTML = obj.total;
         }
     }
-    #changeOrnament(select_quarter, quarter) {
+    #changeOrnament(chosenQuarter, quarter) {
         [...quarter.children].forEach((li) => {
             if (li.classList.contains('ornament_line')) li.classList.remove('ornament_line');
         });
 
-        [...quarter.children][select_quarter - 1].classList.add('ornament_line');
+        [...quarter.children][chosenQuarter - 1].classList.add('ornament_line');
     }
     #cleanTable() {
         if (this.#table.tBodies.length > 0) {

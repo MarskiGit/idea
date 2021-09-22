@@ -3,7 +3,6 @@
     <h2 class="stat_h2">Top 10</h2>
     <section class="statistics_container">
         <section class="wrap_context">
-            <h3>Pomysłodawcy</h3>
             <div class="list_quarter">
                 <ul data-users="change_quarter">
                     <li><button data-quarter="1" data-request="topUsers">I kwartał </button></li>
@@ -13,6 +12,7 @@
                 </ul>
             </div>
             <table class="top_ten" data-users="table">
+                <caption>Pomysłodawcy</caption>
                 <thead>
                     <tr>
                         <th>Miejsce</th>
@@ -21,12 +21,10 @@
                         <th>Zdobyte punkty</th>
                     </tr>
                 </thead>
-
             </table>
         </section>
 
         <section class="wrap_context">
-            <h3>Działy</h3>
             <div class="list_quarter">
                 <ul data-areas="change_quarter">
                     <li><button data-quarter="1" data-request="topAreas">I kwartał </button></li>
@@ -36,6 +34,7 @@
                 </ul>
             </div>
             <table class="top_ten" data-areas="table">
+                <caption>Działy</caption>
                 <thead>
                     <tr>
                         <th>Miejsce</th>
@@ -47,11 +46,11 @@
             </table>
         </section>
     </section>
-
+    <h2 class="stat_h2">Zestawienie</h2>
     <section class="statistics_container">
         <section class="wrap_context">
             <table class="full_year" data-year="table">
-                <caption> Zestawienie roczne</caption>
+                <caption> roczne</caption>
                 <thead>
                     <tr>
                         <th>2021</th>

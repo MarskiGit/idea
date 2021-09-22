@@ -40,6 +40,7 @@ const formDOM = {
 export default class FormOffer {
     #requestParam = handleRequestParams(formDOM.request);
     #Api;
+    #Api_data;
     #FormHandling = new FormHandling(formDOM);
 
     #CountSignTopic = new CountCharacters(formDOM.signTopic);
@@ -100,20 +101,20 @@ export default class FormOffer {
         this.#requestParam.set('id_area', this.#AreaChosen.get().toString());
         this.#requestParam.set('rating_user', this.#Rating.get());
         //console.log(this.#requestParam.get());
-        this.#requestAPI();
+        this.#Api_request();
     }
-    #requestAPI = () => {
+    #Api_request = () => {
         document.body.style.cursor = 'progress';
         this.#Api
             .postJson(this.#requestParam.getPost())
             .then((data) => {
-                this.apiData = data;
-                this.#responseAPI();
+                this.#Api_data = data;
+                this.#Api_response();
             })
             .finally((document.body.style.cursor = 'default'));
     };
-    #responseAPI() {
-        const { ok, title } = this.apiData;
+    #Api_response() {
+        const { ok, title } = this.#Api_data;
         if (ok) {
             this.#clearForm();
             this.#FormHandling.showMessage(`${title}`);

@@ -6,6 +6,7 @@ import RenderLi from './RenderLi.esm.js';
 export default class LiveSearch {
     #requestParam;
     #Api;
+    #Api_data;
     #resultsSearchUl;
     #inputSearch;
     #fragmentList = document.createDocumentFragment();
@@ -54,20 +55,20 @@ export default class LiveSearch {
         } else {
             this.#requestParam.set('area_name', target.value);
         }
-        this.#requestAPI();
+        this.#Api_request();
     }
-    #requestAPI = () => {
+    #Api_request = () => {
         document.body.style.cursor = 'progress';
         this.#Api
             .getJson(this.#requestParam.getUrl())
             .then((data) => {
-                this.apiData = data;
-                this.#responseAPI();
+                this.#Api_data = data;
+                this.#Api_response();
             })
             .finally((document.body.style.cursor = 'default'));
     };
-    #responseAPI() {
-        for (const li of this.apiData) {
+    #Api_response() {
+        for (const li of this.#Api_data) {
             this.#fragmentList.appendChild(new RenderLi(li).get());
         }
         this.#displayLI();

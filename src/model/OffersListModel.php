@@ -33,7 +33,7 @@ class OffersListModel extends AbstractModel
             $stmt = $this->DB->query("SELECT * FROM view_idea WHERE id_idea < " . $this->limitTuples($lastTuple) . " ORDER BY id_idea DESC LIMIT 10 ");
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new ApiException('Error ListOffers MODEL Get');
+            throw new ApiException('Error List MODEL Get');
         }
 
         if ($stmt->rowCount() > 0) {
@@ -54,7 +54,7 @@ class OffersListModel extends AbstractModel
 
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new ApiException('Error ListOffers MODEL search');
+            throw new ApiException('Error List MODEL search');
         }
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -73,7 +73,7 @@ class OffersListModel extends AbstractModel
             $stmt = $this->DB->query("SELECT full_name FROM account WHERE id_account IN (" . $string_id . ")");
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new ApiException('Error ListOffers MODEL Get Name Idea');
+            throw new ApiException('Error List MODEL Get Name Idea');
         }
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -90,7 +90,7 @@ class OffersListModel extends AbstractModel
             $stmt = $this->DB->query("SELECT id_idea FROM idea ORDER BY id_idea DESC LIMIT 1");
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new ApiException('Error ListOffers MODEL Get Number Tuples');
+            throw new ApiException('Error List MODEL Get Number Tuples');
         }
         return intval($stmt->fetchColumn());
     }
@@ -114,7 +114,7 @@ class OffersListModel extends AbstractModel
 //         $stmt->bindValue(':name', $search, PDO::PARAM_STR);
 //         $stmt->execute();
 //     } catch (PDOException $e) {
-//         throw new ApiException('Error ListOffers MODEL search');
+//         throw new ApiException('Error offers list MODEL search');
 //     }
 //     if ($stmt->rowCount() > 0) {
 //         $result = $stmt->fetchColumn();

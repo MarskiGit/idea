@@ -14,6 +14,8 @@ const formDOM = {
 export default class Login {
     #requestParam = handleRequestParams(formDOM.request);
     #Api;
+    #Api_data;
+
     #FormHandling = new FormHandling(formDOM);
     #inputList;
 
@@ -33,21 +35,21 @@ export default class Login {
             const { login, password } = this.#FormHandling.getValue();
             this.#requestParam.set('login', login);
             this.#requestParam.set('password', password);
-            this.#requestAPi();
+            this.#Api_request();
         } else this.#FormHandling.showMessage('Uzupełnij wszystkie pola');
     };
-    #requestAPi = () => {
+    #Api_request = () => {
         document.body.style.cursor = 'progress';
         this.#Api
             .postJson(this.#requestParam.getPost())
             .then((data) => {
-                this.apiData = data;
-                this.#responseAPI();
+                this.#Api_data = data;
+                this.#Api_response();
             })
             .finally((document.body.style.cursor = 'default'));
     };
-    #responseAPI() {
-        const { ok, title } = this.apiData;
+    #Api_response() {
+        const { ok, title } = this.#Api_data;
         if (Boolean(ok)) {
             storage.saveItems('userLogin', true);
             location.replace(Config.localhost);

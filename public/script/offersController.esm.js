@@ -1,7 +1,6 @@
 'use strict';
 import { handleRequestParams } from './modules/modules.esm.js';
 import Idea from './modules/offersModules/Idea.esm.js';
-import Api from './modules/Api.esm.js';
 import FormHandling from './modules/FormHandling.esm.js';
 
 const ideaDOM = {
@@ -25,15 +24,19 @@ const ideaDOM = {
 };
 
 export default class OfferController {
+    #Api;
+    #Api_data;
+
     #requestParam = handleRequestParams(ideaDOM.list.request);
     #FormHandling = new FormHandling(ideaDOM.search.form);
     #FormTogle = new FormTogle();
 
     #inputSearch;
+    #endTuples = false;
 
-    init() {
+    init(Api) {
         this.#inputSearch = this.#FormHandling.getInputs(['INPUT'], 'search')[0];
-
+        this.#Api = new Api();
         this.#factory();
         this.#initList();
         this.#eventListeners();
@@ -43,12 +46,30 @@ export default class OfferController {
     }
     #initList() {
         this.#requestParam.set('last_tuple', view.lastTupleId());
-        getData.requestApi(this.#requestParam.getUrl());
+        this.#Api_request(this.#requestParam.getUrl());
     }
     #eventListeners() {
         window.addEventListener('scroll', this.#throttled(this.#setParam, 1000));
         this.#FormHandling.form.addEventListener('submit', this.#setParam);
         this.#inputSearch.addEventListener('search', this.#setParam);
+    }
+    #Api_request(request) {
+        document.body.style.cursor = 'progress';
+        this.#Api
+            .getJson(request)
+            .then((data) => {
+                this.#Api_data = data;
+                this.#Api_data.length === 0 ? (this.#endTuples = true) : (this.#endTuples = false);
+                this.#Api_response();
+            })
+            .finally((document.body.style.cursor = 'default'));
+    }
+    #Api_response() {
+        if (this.#Api_data.length > 0) {
+            view.displayList(this.#Api_data);
+        } else {
+            view.emptyList();
+        }
     }
     #setParam = (event) => {
         event && event.preventDefault();
@@ -60,7 +81,7 @@ export default class OfferController {
             view.resetTuplesNumber();
             view.clear();
             this.#get();
-        } else if (!getData.getEndTuples()) {
+        } else if (!this.#endTuples) {
             this.#get();
         }
     };
@@ -81,7 +102,7 @@ export default class OfferController {
     }
     #get() {
         this.#requestParam.set('last_tuple', view.lastTupleId());
-        getData.requestApi(this.#requestParam.getUrl());
+        this.#Api_request(this.#requestParam.getUrl());
     }
     #throttled(f, t) {
         let l = Date.now();
@@ -103,33 +124,6 @@ class FormTogle {
     #togleContainer = () => {
         this.#container.classList.toggle('form_open');
     };
-}
-
-class GetData {
-    #dataApi;
-    #endTuples = false;
-    #Api = new Api();
-
-    getEndTuples = () => this.#endTuples;
-    requestApi(request) {
-        document.body.style.cursor = 'progress';
-        this.#Api
-            .getJson(request)
-            .then((data) => {
-                this.#dataApi = data;
-
-                this.#dataApi.length === 0 ? (this.#endTuples = true) : (this.#endTuples = false);
-                this.#responseAPI();
-            })
-            .finally((document.body.style.cursor = 'default'));
-    }
-    #responseAPI() {
-        if (this.#dataApi.length > 0) {
-            view.displayList(this.#dataApi);
-        } else {
-            view.emptyList();
-        }
-    }
 }
 
 class View {
@@ -179,5 +173,4 @@ class View {
     }
 }
 
-const getData = new GetData();
 const view = new View();

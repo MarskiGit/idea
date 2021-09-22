@@ -44,7 +44,7 @@ class Index {
                 break;
             case 'listOffers':
                 const { default: OfferController } = await import('./offersController.esm.js');
-                new OfferController().init();
+                new OfferController().init(Api);
                 break;
             case 'formOffer':
                 const { default: FormOffer } = await import('./formOffer.esm.js');

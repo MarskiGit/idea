@@ -36,11 +36,11 @@ class OfferFormModel extends AbstractModel
                 $this->DB->commit();
             } catch (PDOException $e) {
                 $this->DB->rollback();
-                throw new ApiException('Error FormOffer MODEL Create');
+                throw new ApiException('Error Form MODEL Create');
             }
             $stmt->closeCursor();
         } catch (PDOException $e) {
-            throw new ApiException('Error FormOffer MODEL Create Idea');
+            throw new ApiException('Error Form MODEL Create Idea');
         }
         if ($id) {
             $userIdea = $this->userIdea($id, (int)$requestParam['id_area'], $requestParam);
@@ -83,7 +83,7 @@ class OfferFormModel extends AbstractModel
             }
             $stmt->execute();
         } catch (PDOException $e) {
-            throw new ApiException('Error FormOffer MODEL User Idea');
+            throw new ApiException('Error Form MODEL User Idea');
         }
         return true;
     }
@@ -95,7 +95,7 @@ class OfferFormModel extends AbstractModel
             $stmt->execute();
         } catch (PDOException $e) {
             dump($e);
-            throw new ApiException('Error FormOffer MODEL Create Date');
+            throw new ApiException('Error Form MODEL Create Date');
         }
     }
 }
